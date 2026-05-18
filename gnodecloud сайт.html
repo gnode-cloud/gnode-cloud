@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPU Cloud Marketplace & Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Жесткое CSS-правило для фиксации правой панели при скролле */
+        .sticky-panel {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 100px; /* Отступ от верхней навигационной панели */
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen relative overflow-x-hidden antialiased">
+
+    <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+    <div class="absolute bottom-10 right-1/4 w-[600px] h-[600px] bg-purple-600/5 rounded-full blur-[150px] pointer-events-none -z-10"></div>
+
+    <nav class="border-b border-gray-900 bg-gray-950/60 backdrop-blur-md sticky top-0 z-30 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar(true)" class="p-2 hover:bg-gray-900 rounded-lg text-gray-400 hover:text-white transition-all">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                        <span class="text-darkBg font-black text-sm font-mono">G</span>
+                    </div>
+                    <span class="font-black text-sm tracking-wider font-mono bg-gradient-to-r from-white via-gray-200 to-gray-500 bg-clip-text text-transparent uppercase">NODE.CLOUD</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <select id="lang-select" onchange="changeLanguage()" class="bg-gray-900 border border-gray-800 text-xs text-gray-300 rounded-lg px-2 py-1.5 font-bold focus:outline-none focus:border-cyan-400 cursor-pointer">
+                    <option value="RU">RU (₽)</option>
+                    <option value="EN">EN ($)</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-4 py-8">
+        <div class="bg-gray-950/40 border border-gray-900 rounded-2xl p-6 backdrop-blur-xl shadow-2xl relative">
+            
+            <div class="mb-6 border-b border-gray-900/60 pb-4">
+                <h2 id="calc-title" class="text-xl font-black text-white tracking-tight">Конфигуратор вычислительных мощностей</h2>
+                <p id="calc-subtitle" class="text-xs text-gray-400 mt-1">Выберите облачную видеокарту или зарезервируйте ИИ-кластер для компании</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start w-full">
+                
+                <div class="flex flex-col space-y-2">
+                    <label id="label-gpu" class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1 block">1. Доступные On-Demand графические процессоры:</label>
+                    <div id="gpu-marketplace" class="space-y-2"></div>
+                </div>
+
+                <div class="w-full">
+                    <div class="sticky-panel flex flex-col gap-4 bg-gray-900/20 border border-gray-900/60 p-5 rounded-xl">
+                        
+                        <div>
+                            <label id="label-period" class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-3 block">2. Период аренды узла:</label>
+                            <div class="grid grid-cols-3 gap-1.5 mb-4">
+                                <button id="period-day" onclick="setPeriod('day')" class="py-2 text-xs font-bold rounded bg-cyan-400 text-[#0b0f19]">1 День</button>
+                                <button id="period-week" onclick="setPeriod('week')" class="py-2 text-xs font-bold rounded bg-gray-950 text-gray-400 border border-gray-800">Неделя -5%</button>
+                                <button id="period-month" onclick="setPeriod('month')" class="py-2 text-xs font-bold rounded bg-gray-950 text-gray-400 border border-gray-800">Месяц -10%</button>
+                            </div>
+
+                            <div class="p-4 rounded-xl bg-gray-950/80 border border-gray-900 relative overflow-hidden mb-4">
+                                <span id="label-cost" class="text-[10px] uppercase font-bold text-gray-500 tracking-wider block">Стоимость конфигурации:</span>
+                                <div id="total-price" class="text-2xl font-mono font-black text-green-400 mt-1">0.00 ₽</div>
+                                <div id="discount-compare" class="mt-2 pt-2 border-t border-gray-900/80 text-[11px] space-y-1 hidden">
+                                    <div class="text-gray-400"><span id="text-old-price">Базовая цена за посуточно:</span> <span id="old-price" class="font-mono line-through text-red-400/80">0.00 ₽</span></div>
+                                    <div class="text-green-400 font-bold"><span id="text-save">Ваша экономия:</span> <span id="save-amount" class="font-mono">0.00 ₽</span></div>
+                                </div>
+                            </div>
+
+                            <button id="btn-main-action" onclick="purchaseService()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-extrabold text-xs py-3.5 rounded-xl shadow-lg shadow-cyan-500/10 transition-all uppercase tracking-wider active:scale-[0.98]">
+                                Запустить выделенный узел
+                            </button>
+                        </div>
+
+                        <div class="border-t border-gray-900 my-1"></div>
+
+                        <div class="p-4 rounded-xl bg-gradient-to-br from-purple-950/30 to-gray-950 border border-purple-900/60 shadow-xl relative overflow-hidden">
+                            <div class="absolute top-0 right-0 bg-purple-600 text-white font-mono text-[9px] font-bold px-2 py-0.5 rounded-bl uppercase tracking-widest">Enterprise</div>
+                            
+                            <h3 id="ent-title" class="text-sm font-black text-purple-400 flex items-center gap-1.5">💼 ИИ-Кластеры Blackwell x8</h3>
+                            <p id="ent-desc" class="text-[11px] text-gray-400 mt-1.5 leading-relaxed">
+                                Для масштабного обучения LLM-моделей. Физическое объединение 8x соединенных карт B200 или B300 через высокоскоростную шину NVLink Club.
+                            </p>
+                            
+                            <div class="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-gray-500 font-mono">
+                                <div id="ent-term">• Мин. срок: <span class="text-gray-300 font-bold">3 месяца</span></div>
+                                <div id="ent-net">• Сеть: <span class="text-gray-300 font-bold">InfiniBand / NVLink</span></div>
+                            </div>
+
+                            <div class="mt-4">
+                                <button id="btn-enterprise" onclick="contactEnterpriseSales()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-500 hover:to-indigo-600 text-white font-black text-xs py-3 rounded-xl shadow-lg shadow-purple-500/20 transition-all uppercase tracking-wider active:scale-[0.98]">
+                                    Связаться с отделом продаж
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-gray-950 border-r border-gray-900 z-50 transform -translate-x-full transition-transform duration-300 p-5 flex flex-col justify-between shadow-2xl">
+        <div>
+            <div class="flex justify-between items-center mb-6">
+                <span id="side-title" class="text-xs font-black text-gray-400 uppercase tracking-wider">Панель управления</span>
+                <button onclick="toggleSidebar(false)" class="p-1.5 hover:bg-gray-900 rounded text-gray-500 hover:text-white">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="space-y-1.5">
+                <button onclick="closeAll()" id="side-calc" class="w-full text-left py-2 px-3 text-xs font-bold rounded-lg bg-gray-900 text-cyan-400 flex items-center gap-2">📊 Калькулятор тарифов</button>
+                <button onclick="contactEnterpriseSales()" id="side-pay" class="w-full text-left py-2 px-3 text-xs font-bold rounded-lg text-gray-400 hover:bg-gray-900 hover:text-white transition-all flex items-center gap-2">💼 Связаться по кластерам</button>
+            </div>
+        </div>
+        <div class="text-[10px] text-gray-600 font-mono text-center">v4.0-pure-css-sticky</div>
+    </div>
+
+    <div id="overlay" onclick="closeAll()" class="hidden fixed inset-0 bg-black/70 z-40 backdrop-blur-sm"></div>
+
+    <div id="modal-tg-redirect" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-950 border border-cyan-500/50 rounded-2xl p-6 w-full max-w-sm z-50 shadow-2xl text-center">
+        <div class="flex justify-between items-center mb-4 border-b border-gray-900 pb-2">
+            <h3 class="text-sm font-black text-white">🚀 Заявка сформирована</h3>
+            <button onclick="closeModal('modal-tg-redirect')" class="text-gray-500 hover:text-white text-lg">&times;</button>
+        </div>
+        <div class="py-4 space-y-4">
+            <div class="w-14 h-14 rounded-2xl bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-center mx-auto text-3xl">✈️</div>
+            <div>
+                <p class="text-sm font-bold text-white mb-1">Перенаправление в Telegram</p>
+                <p class="text-xs text-gray-400">Конфигурация подготовлена для менеджера.</p>
+            </div>
+            <div id="tg-config-preview" class="bg-gray-900 border border-gray-800 rounded-lg p-3 text-left text-xs font-mono text-cyan-400 whitespace-pre-line"></div>
+            <a id="tg-direct-link" href="#" target="_blank" class="block w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-sm py-3 rounded-xl transition-all">
+                Открыть диалог →
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const TG_USERNAME = 'gnodecloud';
+
+        let currentLanguage = 'RU';
+        let currentCurrency = '₽';
+        let currentGPU = 'rtx_4090';
+        let currentPeriod = 'day';
+
+        const baseHourlyRates = {
+            'l4': 1.56, 'rtx_a5000': 1.08, 'rtx_3090': 1.84, 'rtx_4090': 2.76, 'rtx_5090': 3.96,
+            'rtx_6000_ada': 3.08, 'a40': 1.76, 'l40': 3.96, 'l40s': 3.44, 'rtx_a6000': 1.96,
+            'a100_pcie': 5.56, 'a100_sxm': 5.96, 'h100_nvl': 12.28, 'h100_pcie': 9.56,
+            'h100_sxm': 11.96, 'h200': 15.96, 'b200': 21.96, 'rtx_pro_6000': 7.56
+        };
+
+        const rubRateMultiplier = 92.00;
+        const periodDays = { 'day': 1, 'week': 7, 'month': 30 };
+        const discounts = { 'day': 0, 'week': 0.05, 'month': 0.10 };
+
+        const periodLabelsShort = {
+            'RU': { day: '1 день', week: '1 неделя', month: '1 месяц' },
+            'EN': { day: '1 day', week: '1 week', month: '1 month' }
+        };
+
+        const gpuSpecifications = {
+            'RU': {
+                'l4': { name: 'NVIDIA L4', desc: '24ГБ Видеопамять | 50ГБ ОЗУ | 12 vCPUs' },
+                'rtx_a5000': { name: 'NVIDIA RTX A5000', desc: '24ГБ Видеопамять | 25ГБ ОЗУ | 9 vCPUs' },
+                'rtx_3090': { name: 'NVIDIA RTX 3090', desc: '24ГБ Видеопамять | 125ГБ ОЗУ | 16 vCPUs' },
+                'rtx_4090': { name: 'NVIDIA RTX 4090', desc: '24ГБ Флагман | 41ГБ ОЗУ | 6 vCPUs' },
+                'rtx_5090': { name: 'NVIDIA RTX 5090', desc: '32ГБ Новое поколение | 35ГБ ОЗУ | 9 vCPUs' },
+                'rtx_6000_ada': { name: 'NVIDIA RTX 6000 Ada', desc: '48ГБ Профессиональная | 167ГБ ОЗУ | 10 vCPUs' },
+                'a40': { name: 'NVIDIA A40', desc: '48ГБ Универсальная | 50ГБ ОЗУ | 9 vCPUs' },
+                'l40': { name: 'NVIDIA L40', desc: '48ГБ Высокопроизводительная | 94ГБ ОЗУ | 8 vCPUs' },
+                'l40s': { name: 'NVIDIA L40S', desc: '48ГБ Специализированная | 94ГБ ОЗУ | 16 vCPUs' },
+                'rtx_a6000': { name: 'NVIDIA RTX A6000', desc: '48ГБ Профессиональная | 50ГБ ОЗУ | 9 vCPUs' },
+                'a100_pcie': { name: 'NVIDIA A100 PCIe', desc: '80ГБ Тензорные ядра | 117ГБ ОЗУ | 8 vCPUs' },
+                'a100_sxm': { name: 'NVIDIA A100 SXM', desc: '80ГБ Тензорные ядра | 125ГБ ОЗУ | 16 vCPUs' },
+                'h100_nvl': { name: 'NVIDIA H100 NVL', desc: '94ГБ Высокая мощность | 94ГБ ОЗУ | 16 vCPUs' },
+                'h100_pcie': { name: 'NVIDIA H100 PCIe', desc: '80ГБ Тензорные ядра | 188ГБ ОЗУ | 16 vCPUs' },
+                'h100_sxm': { name: 'NVIDIA H100 SXM', desc: '80ГБ Архитектура ИИ | 125ГБ ОЗУ | 20 vCPUs' },
+                'h200': { name: 'NVIDIA H200', desc: '141ГБ Новейшая архитектура | 276ГБ ОЗУ | 24 vCPUs' },
+                'b200': { name: 'NVIDIA Blackwell B200', desc: '180ГБ Архитектура ИИ | 283ГБ ОЗУ | 28 vCPUs' },
+                'rtx_pro_6000': { name: 'NVIDIA RTX Pro 6000', desc: '96ГБ Профессиональная | 188ГБ ОЗУ | 16 vCPUs' }
+            },
+            'EN': {
+                'l4': { name: 'NVIDIA L4', desc: '24GB VRAM | 50GB RAM | 12 vCPUs' },
+                'rtx_a5000': { name: 'NVIDIA RTX A5000', desc: '24GB VRAM | 25GB RAM | 9 vCPUs' },
+                'rtx_3090': { name: 'NVIDIA RTX 3090', desc: '24GB VRAM | 125GB RAM | 16 vCPUs' },
+                'rtx_4090': { name: 'NVIDIA RTX 4090', desc: '24GB Flagship GPU | 41GB RAM | 6 vCPUs' },
+                'rtx_5090': { name: 'NVIDIA RTX 5090', desc: '32GB Next-Gen Tech | 35GB RAM | 9 vCPUs' },
+                'rtx_6000_ada': { name: 'NVIDIA RTX 6000 Ada', desc: '48GB Professional | 167GB RAM | 10 vCPUs' },
+                'a40': { name: 'NVIDIA A40', desc: '48GB Universal GPU | 50GB RAM | 9 vCPUs' },
+                'l40': { name: 'NVIDIA L40', desc: '48GB High-Performance | 94GB RAM | 8 vCPUs' },
+                'l40s': { name: 'NVIDIA L40S', desc: '48GB Specialized | 94GB RAM | 16 vCPUs' },
+                'rtx_a6000': { name: 'NVIDIA RTX A6000', desc: '48GB Professional | 50GB RAM | 9 vCPUs' },
+                'a100_pcie': { name: 'NVIDIA A100 PCIe', desc: '80GB Tensor Core | 117GB RAM | 8 vCPUs' },
+                'a100_sxm': { name: 'NVIDIA A100 SXM', desc: '80GB Tensor Core | 125GB RAM | 16 vCPUs' },
+                'h100_nvl': { name: 'NVIDIA H100 NVL', desc: '94GB Ultra Capacity | 94GB RAM | 16 vCPUs' },
+                'h100_pcie': { name: 'NVIDIA H100 PCIe', desc: '80GB Tensor Core | 188GB RAM | 16 vCPUs' },
+                'h100_sxm': { name: 'NVIDIA H100 SXM', desc: '80GB AI Architecture | 125GB RAM | 20 vCPUs' },
+                'h200': { name: 'NVIDIA H200', desc: '141GB Next-Gen | 276GB RAM | 24 vCPUs' },
+                'b200': { name: 'NVIDIA Blackwell B200', desc: '180GB AI Architecture | 283GB RAM | 28 vCPUs' },
+                'rtx_pro_6000': { name: 'NVIDIA RTX Pro 6000', desc: '96GB Professional | 188GB RAM | 16 vCPUs' }
+            }
+        };
+
+        const translations = {
+            'RU': {
+                sideTitle: 'Панель управления', sideCalc: '📊 Калькулятор тарифов', sidePay: '💼 Связаться по кластерам',
+                title: 'Конфигуратор вычислительных мощностей', subtitle: 'Выберите облачную видеокарту или зарезервируйте ИИ-кластер для компании',
+                gpu: '1. Доступные On-Demand графические процессоры:', period: '2. Период аренды узла:',
+                cost: 'Стоимость конфигурации:', oldPrice: 'Базовая цена за посуточно:', save: 'Ваша экономия:', rateLabel: 'в сутки',
+                pDay: '1 День', pWeek: 'Неделя -5%', pMonth: 'Месяц -10%', btnBuy: 'Запустить выделенный узел',
+                entTitle: '💼 ИИ-Кластеры Blackwell x8', 
+                entDesc: 'Для масштабного обучения LLM-моделей. Физическое объединение 8x соединенных карт B200 или B300 через высокоскоростную шину NVLink Club.', 
+                entTerm: '• Мин. срок: <span class="text-gray-300 font-bold">3 месяца</span>',
+                entNet: '• Сеть: <span class="text-gray-300 font-bold">InfiniBand / NVLink</span>',
+                btnEnt: 'Связаться с отделом продаж'
+            },
+            'EN': {
+                sideTitle: 'Control Panel', sideCalc: '📊 Rate Calculator', sidePay: '💼 Contact for Clusters',
+                title: 'Compute Power Configurator', subtitle: 'Select an on-demand GPU node or reserve an AI cluster for your business',
+                gpu: '1. Available On-Demand GPUs:', period: '2. Node Rental Period:',
+                cost: 'Configuration Cost:', oldPrice: 'Base daily price:', save: 'Your savings:', rateLabel: '/day',
+                pDay: '1 Day', pWeek: 'Week -5%', pMonth: 'Month -10%', btnBuy: 'Deploy Dedicated Node',
+                entTitle: '💼 Blackwell x8 AI Clusters', 
+                entDesc: 'For large-scale LLM training. Physical aggregation of 8x connected B200 or B300 GPUs via high-speed NVLink interconnect.', 
+                entTerm: '• Min. term: <span class="text-gray-300 font-bold">3 months</span>',
+                entNet: '• Network: <span class="text-gray-300 font-bold">InfiniBand / NVLink</span>',
+                btnEnt: 'Contact Sales Department'
+            }
+        };
+
+        function getConvertedValue(usdVal) {
+            if (currentLanguage === 'RU') return usdVal * rubRateMultiplier;
+            return usdVal;
+        }
+
+        function formatCurrencyValue(valInUSD) {
+            let localValue = getConvertedValue(valInUSD);
+            if (currentLanguage === 'RU') {
+                let formattedNumber = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(localValue);
+                return `${formattedNumber} ₽`;
+            } else {
+                let formattedNumber = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(valInUSD);
+                return `$${formattedNumber}`;
+            }
+        }
+
+        function getCurrentConfigPriceInUSD() {
+            let dailyRate = baseHourlyRates[currentGPU] * 24;
+            return (dailyRate * periodDays[currentPeriod]) * (1 - discounts[currentPeriod]);
+        }
+
+        function purchaseService() {
+            const gpuName = gpuSpecifications[currentLanguage][currentGPU].name;
+            const period = periodLabelsShort[currentLanguage][currentPeriod];
+            const price = formatCurrencyValue(getCurrentConfigPriceInUSD());
+
+            const isRU = (currentLanguage === 'RU');
+            const msg = isRU 
+                ? `🖥 On-Demand GPU: ${gpuName}\n⏱ Период: ${period}\n💰 Расчетная стоимость: ${price}`
+                : `🖥 On-Demand GPU: ${gpuName}\n⏱ Period: ${period}\n💰 Estimated Cost: ${price}`;
+                
+            const tgUrl = `https://t.me/${TG_USERNAME}?text=${encodeURIComponent(msg)}`;
+
+            document.getElementById('tg-config-preview').innerText = msg;
+            document.getElementById('tg-direct-link').href = tgUrl;
+            openModal('modal-tg-redirect');
+            window.open(tgUrl, '_blank');
+        }
+
+        function contactEnterpriseSales() {
+            const isRU = (currentLanguage === 'RU');
+            const msg = isRU
+                ? `💼 [ENTERPRISE ORDER]\nЗдравствуйте! Нас интересует аренда выделенного ИИ-кластера Blackwell (B200 / B300 x8).\n⏱ Требуемый срок: от 3 месяцев.\nПросьба связаться для обсуждения условий договора и спецификации сети.`
+                : `💼 [ENTERPRISE ORDER]\nHello! We are interested in renting a dedicated Blackwell AI Cluster (B200 / B300 x8).\n⏱ Required term: 3 months minimum.\nPlease contact us to discuss agreement conditions and network specs.`;
+                
+            const tgUrl = `https://t.me/${TG_USERNAME}?text=${encodeURIComponent(msg)}`;
+            
+            document.getElementById('tg-config-preview').innerText = msg;
+            document.getElementById('tg-direct-link').href = tgUrl;
+            openModal('modal-tg-redirect');
+            window.open(tgUrl, '_blank');
+        }
+
+        function toggleSidebar(open) {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            if (open) { sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); }
+            else { sidebar.classList.add('-translate-x-full'); if(document.querySelectorAll('.fixed:not(.hidden)[id^="modal-"]').length === 0) overlay.classList.add('hidden'); }
+        }
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); document.getElementById('overlay').classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); document.getElementById('overlay').className = "hidden fixed inset-0 bg-black/70 z-40 backdrop-blur-sm"; }
+        function closeAll() {
+            toggleSidebar(false);
+            ['modal-tg-redirect'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            document.getElementById('overlay').classList.add('hidden');
+        }
+
+        function renderGpuMarketplace() {
+            const container = document.getElementById('gpu-marketplace');
+            container.innerHTML = "";
+            const t = translations[currentLanguage];
+            const activeSpecs = gpuSpecifications[currentLanguage];
+
+            Object.keys(baseHourlyRates).forEach(key => {
+                let dailyPriceInUSD = baseHourlyRates[key] * 24;
+                const isSelected = (key === currentGPU);
+                const borderClass = isSelected ? 'border-cyan-400 bg-gray-800/60 shadow-md shadow-cyan-400/10' : 'border-gray-900 bg-[#0b0f19] hover:border-gray-800';
+                const currentCardData = activeSpecs[key] || activeSpecs['rtx_4090'];
+
+                container.innerHTML += `
+                    <div onclick="selectGpu('${key}')" class="p-3 border rounded-xl flex justify-between items-center cursor-pointer transition-all active:scale-[0.99] ${borderClass}">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2.5 h-2.5 rounded-full ${isSelected ? 'bg-cyan-400 animate-pulse' : 'bg-gray-700'}"></div>
+                            <div>
+                                <h4 class="text-xs font-bold ${isSelected ? 'text-cyan-400' : 'text-gray-200'}">${currentCardData.name}</h4>
+                                <p class="text-[10px] text-gray-400 mt-0.5">${currentCardData.desc}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs font-mono font-black text-green-400">${formatCurrencyValue(dailyPriceInUSD)}</span>
+                            <span class="text-[9px] text-gray-500 block mt-0.5">${t.rateLabel}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            calculatePrice();
+        }
+
+        function selectGpu(key) { currentGPU = key; renderGpuMarketplace(); }
+
+        function setPeriod(p) {
+            ['day', 'week', 'month'].forEach(item => {
+                document.getElementById(`period-${item}`).className = item === p ? "py-2 text-xs font-bold rounded bg-cyan-400 text-[#0b0f19]" : "py-2 text-xs font-bold rounded bg-gray-950 text-gray-400 border border-gray-800";
+            });
+            currentPeriod = p; calculatePrice();
+        }
+
+        function calculatePrice() {
+            let baseDailyPriceUSD = baseHourlyRates[currentGPU] * 24;
+            let fullPriceInUSD = baseDailyPriceUSD * periodDays[currentPeriod];
+            let finalPriceInUSD = fullPriceInUSD * (1 - discounts[currentPeriod]);
+            
+            document.getElementById('total-price').innerText = formatCurrencyValue(finalPriceInUSD);
+
+            const compareBlock = document.getElementById('discount-compare');
+            if (currentPeriod === 'day') { compareBlock.classList.add('hidden'); }
+            else {
+                compareBlock.className = "mt-2 pt-2 border-t border-gray-900/80 text-[11px] space-y-1 block";
+                document.getElementById('old-price').innerText = formatCurrencyValue(fullPriceInUSD);
+                document.getElementById('save-amount').innerText = formatCurrencyValue(fullPriceInUSD - finalPriceInUSD);
+            }
+        }
+
+        function changeLanguage() {
+            currentLanguage = document.getElementById('lang-select').value;
+            currentCurrency = currentLanguage === 'RU' ? '₽' : '$';
+
+            const t = translations[currentLanguage];
+            document.getElementById('side-title').innerText = t.sideTitle;
+            document.getElementById('side-calc').innerText = t.sideCalc;
+            document.getElementById('side-pay').innerText = t.sidePay;
+            document.getElementById('calc-title').innerText = t.title;
+            document.getElementById('calc-subtitle').innerText = t.subtitle;
+            document.getElementById('label-gpu').innerText = t.gpu;
+            document.getElementById('label-period').innerText = t.period;
+            document.getElementById('label-cost').innerText = t.cost;
+            document.getElementById('text-old-price').innerText = t.oldPrice;
+            document.getElementById('text-save').innerText = t.save;
+            document.getElementById('period-day').innerText = t.pDay;
+            document.getElementById('period-week').innerText = t.pWeek;
+            document.getElementById('period-month').innerText = t.pMonth;
+            document.getElementById('btn-main-action').innerText = t.btnBuy;
+            
+            document.getElementById('ent-title').innerText = t.entTitle;
+            document.getElementById('ent-desc').innerText = t.entDesc;
+            document.getElementById('ent-term').innerHTML = t.entTerm;
+            document.getElementById('ent-net').innerHTML = t.entNet;
+            document.getElementById('btn-enterprise').innerText = t.btnEnt;
+
+            renderGpuMarketplace();
+        }
+
+        window.onload = function() { changeLanguage(); };
+    </script>
+</body>
+</html>
