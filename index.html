@@ -1,26 +1,157 @@
 <!DOCTYPE html>
 <html lang="ru" class="dark">
 <head>
-    <meta property="og:type" content="website">
-<meta property="og:title" content="G NODE.CLOUD | Аренда GPU мощностей">
-<meta property="og:description" content="Калькулятор выделенных узлов GPU для ИИ-стартапов и рендеринга. Запусти свой узел в один клик.">
-<meta property="og:url" content="https://gnode.cloud">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPU Cloud Marketplace & Dashboard</title>
+
+    <!-- ═══════════════════════════════════════════
+         ОСНОВНЫЕ SEO МЕТА-ТЕГИ
+    ═══════════════════════════════════════════ -->
+    <title>Аренда GPU в облаке — RTX 4090, H100, B200 от 143 ₽/час | NODE.CLOUD</title>
+
+    <meta name="description" content="Облачная аренда GPU для ИИ, машинного обучения и рендеринга. RTX 4090, H100 SXM, B200, A100 — запуск за 2 минуты. Почасовая тарификация. Сервера в России.">
+
+    <meta name="keywords" content="аренда GPU, облачные GPU, аренда видеокарты для нейросетей, GPU cloud Россия, арендовать H100, A100 облако, RTX 4090 аренда, вычислительные мощности для ИИ, GPU для обучения нейросетей, машинное обучение облако, GPU сервер аренда, H100 SXM аренда, Blackwell B200, облачные вычисления">
+
+    <!-- Язык и регион -->
+    <meta name="language" content="ru">
+    <meta http-equiv="content-language" content="ru">
+
+    <!-- Индексирование -->
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <meta name="author" content="NODE.CLOUD">
+
+    <!-- Канонический URL (замени на свой домен!) -->
+    <link rel="canonical" href="https://node.cloud/">
+
+    <!-- ═══════════════════════════════════════════
+         OPEN GRAPH — для красивых превью в Telegram,
+         ВКонтакте, соцсетях
+    ═══════════════════════════════════════════ -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:site_name" content="NODE.CLOUD">
+    <meta property="og:title" content="Аренда GPU в облаке — RTX 4090, H100, B200 | NODE.CLOUD">
+    <meta property="og:description" content="Запусти GPU-сервер за 2 минуты. RTX 4090 от 3 856 ₽/сутки, H100 SXM от 26 534 ₽/сутки. Почасовая тарификация, без предоплаты.">
+    <meta property="og:url" content="https://node.cloud/">
+    <!-- Создай og:image 1200x630px и загрузи на сайт -->
+    <meta property="og:image" content="https://node.cloud/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="NODE.CLOUD — Облачная аренда GPU">
+
+    <!-- ═══════════════════════════════════════════
+         TWITTER CARD
+    ═══════════════════════════════════════════ -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Аренда GPU в облаке — RTX 4090, H100, B200 | NODE.CLOUD">
+    <meta name="twitter:description" content="Облачные GPU для ИИ и ML. Запуск за 2 минуты. Почасовая тарификация.">
+    <meta name="twitter:image" content="https://node.cloud/og-image.jpg">
+
+    <!-- ═══════════════════════════════════════════
+         СТРУКТУРИРОВАННЫЕ ДАННЫЕ (Schema.org)
+         Помогает Яндексу и Google понять сайт
+    ═══════════════════════════════════════════ -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "NODE.CLOUD",
+        "url": "https://node.cloud/",
+        "description": "Облачная аренда GPU для ИИ, машинного обучения и рендеринга",
+        "inLanguage": "ru",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://node.cloud/?gpu={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "NODE.CLOUD",
+        "url": "https://node.cloud/",
+        "logo": "https://node.cloud/logo.png",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "sales",
+            "url": "https://t.me/gnodecloud",
+            "availableLanguage": ["Russian", "English"]
+        },
+        "sameAs": [
+            "https://t.me/gnodecloud"
+        ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Облачная аренда GPU",
+        "provider": {
+            "@type": "Organization",
+            "name": "NODE.CLOUD"
+        },
+        "description": "Аренда облачных видеокарт NVIDIA для задач ИИ, машинного обучения, рендеринга и HPC. RTX 4090, H100, A100, B200.",
+        "areaServed": {
+            "@type": "Country",
+            "name": "Russia"
+        },
+        "offers": [
+            {
+                "@type": "Offer",
+                "name": "NVIDIA RTX 4090 — аренда GPU",
+                "price": "3857.76",
+                "priceCurrency": "RUB",
+                "description": "24ГБ VRAM, 41ГБ RAM, 6 vCPUs. Почасовая аренда."
+            },
+            {
+                "@type": "Offer",
+                "name": "NVIDIA H100 SXM — аренда GPU",
+                "price": "26534.72",
+                "priceCurrency": "RUB",
+                "description": "80ГБ VRAM, 125ГБ RAM, 20 vCPUs. Для обучения LLM."
+            },
+            {
+                "@type": "Offer",
+                "name": "NVIDIA B200 Blackwell — аренда GPU",
+                "price": "48668.16",
+                "priceCurrency": "RUB",
+                "description": "180ГБ VRAM, 283ГБ RAM, 28 vCPUs. Топовая AI-архитектура."
+            }
+        ]
+    }
+    </script>
+
+    <!-- ═══════════════════════════════════════════
+         ИКОНКИ САЙТА (favicons)
+         Сгенерируй на https://realfavicongenerator.net
+    ═══════════════════════════════════════════ -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#0b0f19">
+
+    <!-- ═══════════════════════════════════════════
+         ШРИФТЫ (оставь свои)
+    ═══════════════════════════════════════════ -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
-        
-        /* Жесткое CSS-правило для фиксации правой панели при скролле */
         .sticky-panel {
             position: -webkit-sticky;
             position: sticky;
-            top: 100px; /* Отступ от верхней навигационной панели */
+            top: 100px;
             z-index: 10;
         }
     </style>
