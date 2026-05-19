@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22d3ee"/>
+      <stop offset="100%" style="stop-color:#2563eb"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0b0f19;stop-opacity:0"/>
+      <stop offset="100%" style="stop-color:#0b0f19;stop-opacity:0.3"/>
+    </linearGradient>
+  </defs>
+  <!-- Background rounded square -->
+  <rect width="32" height="32" rx="7" fill="#0b0f19"/>
+  <!-- Gradient fill -->
+  <rect width="32" height="32" rx="7" fill="url(#bg)" opacity="0.9"/>
+  <!-- Overlay for depth -->
+  <rect width="32" height="32" rx="7" fill="url(#glow)"/>
+  <!-- Letter G -->
+  <text x="16" y="23" 
+        font-family="'JetBrains Mono', 'Courier New', monospace" 
+        font-size="20" 
+        font-weight="900" 
+        text-anchor="middle" 
+        fill="#0b0f19"
+        letter-spacing="-1">G</text>
+</svg>
