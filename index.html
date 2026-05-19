@@ -19,62 +19,6 @@
     <meta property="og:title" content="Аренда GPU в облаке — RTX 4090, H100, B200 | NODE.CLOUD">
     <meta property="og:description" content="Запусти GPU-сервер за 2 минуты. RTX 4090 от 3 856 ₽/сутки, H100 SXM от 26 534 ₽/сутки. Почасовая тарификация, без предоплаты.">
     <meta property="og:url" content="https://gnode.cloud/">
-    <meta property="og:image" content="https://gnode.cloud/og-image.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="NODE.CLOUD — Облачная аренда GPU">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Аренда GPU в облаке — RTX 4090, H100, B200 | NODE.CLOUD">
-    <meta name="twitter:description" content="Облачные GPU для ИИ и ML. Запуск за 2 минуты. Почасовая тарификация.">
-    <meta name="twitter:image" content="https://gnode.cloud/og-image.jpg">
-
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "NODE.CLOUD",
-        "url": "https://gnode.cloud/",
-        "description": "Облачная аренда GPU для ИИ, машинного обучения и рендеринга",
-        "inLanguage": "ru",
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://gnode.cloud/?gpu={search_term_string}",
-            "query-input": "required name=search_term_string"
-        }
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "NODE.CLOUD",
-        "url": "https://gnode.cloud/",
-        "logo": "https://gnode.cloud/logo.png",
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "contactType": "sales",
-            "url": "https://t.me/gnodecloud",
-            "availableLanguage": ["Russian", "English"]
-        },
-        "sameAs": ["https://t.me/gnodecloud"]
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Service",
-        "name": "Облачная аренда GPU",
-        "provider": { "@type": "Organization", "name": "NODE.CLOUD" },
-        "description": "Аренда облачных видеокарт NVIDIA для задач ИИ, машинного обучения, рендеринга и HPC. RTX 4090, H100, A100, B200.",
-        "areaServed": { "@type": "Country", "name": "Russia" },
-        "offers": [
-            { "@type": "Offer", "name": "NVIDIA RTX 4090 — аренда GPU", "price": "3857.76", "priceCurrency": "RUB" },
-            { "@type": "Offer", "name": "NVIDIA H100 SXM — аренда GPU", "price": "26534.72", "priceCurrency": "RUB" },
-            { "@type": "Offer", "name": "NVIDIA B200 Blackwell — аренда GPU", "price": "48668.16", "priceCurrency": "RUB" }
-        ]
-    }
-    </script>
 
     <meta name="theme-color" content="#0b0f19">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -84,6 +28,22 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        .gpu-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .gpu-expand { overflow: hidden; transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease; max-height: 0; opacity: 0; }
+        .gpu-expand.open { max-height: 480px; opacity: 1; }
+
+        .period-btn { transition: all 0.18s ease; }
+        .period-btn.active { background: #22d3ee; color: #0b0f19; box-shadow: 0 0 12px rgba(34,211,238,0.35); }
+        .period-btn:not(.active) { background: #0b0f19; color: #6b7280; border: 1px solid #1f2937; }
+        .period-btn:not(.active):hover { border-color: #374151; color: #9ca3af; }
+
+        .launch-btn { background: linear-gradient(135deg, #06b6d4, #3b82f6); transition: all 0.2s ease; }
+        .launch-btn:hover { background: linear-gradient(135deg, #22d3ee, #60a5fa); transform: translateY(-1px); box-shadow: 0 8px 25px rgba(6,182,212,0.3); }
+        .launch-btn:active { transform: scale(0.98); }
+
+        @keyframes slideDown { from { transform: translateY(-4px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .slide-in { animation: slideDown 0.25s ease forwards; }
     </style>
 </head>
 <body class="text-gray-100 min-h-screen relative overflow-x-hidden antialiased">
@@ -99,7 +59,7 @@
                 </button>
                 <div class="flex items-center gap-2">
                     <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-                        <span class="text-darkBg font-black text-sm font-mono">G</span>
+                        <span class="text-darkBg font-black text-sm font-mono" style="color:#0b0f19">G</span>
                     </div>
                     <span class="font-black text-sm tracking-wider font-mono bg-gradient-to-r from-white via-gray-200 to-gray-500 bg-clip-text text-transparent uppercase">NODE.CLOUD</span>
                 </div>
@@ -123,37 +83,15 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start w-full">
 
+                <!-- LEFT: GPU list -->
                 <div class="flex flex-col space-y-2">
                     <label id="label-gpu" class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1 block">1. Доступные On-Demand графические процессоры:</label>
                     <div id="gpu-marketplace" class="space-y-2"></div>
                 </div>
 
+                <!-- RIGHT: Enterprise block only -->
                 <div class="w-full">
                     <div class="flex flex-col gap-4 bg-gray-900/20 border border-gray-900/60 p-5 rounded-xl">
-
-                        <div>
-                            <label id="label-period" class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-3 block">2. Период аренды узла:</label>
-                            <div class="grid grid-cols-3 gap-1.5 mb-4">
-                                <button id="period-day" onclick="setPeriod('day')" class="py-2 text-xs font-bold rounded bg-cyan-400 text-[#0b0f19]">1 День</button>
-                                <button id="period-week" onclick="setPeriod('week')" class="py-2 text-xs font-bold rounded bg-gray-950 text-gray-400 border border-gray-800">Неделя -5%</button>
-                                <button id="period-month" onclick="setPeriod('month')" class="py-2 text-xs font-bold rounded bg-gray-950 text-gray-400 border border-gray-800">Месяц -10%</button>
-                            </div>
-
-                            <div class="p-4 rounded-xl bg-gray-950/80 border border-gray-900 relative overflow-hidden mb-4">
-                                <span id="label-cost" class="text-[10px] uppercase font-bold text-gray-500 tracking-wider block">Стоимость конфигурации:</span>
-                                <div id="total-price" class="text-2xl font-mono font-black text-green-400 mt-1">0.00 ₽</div>
-                                <div id="discount-compare" class="mt-2 pt-2 border-t border-gray-900/80 text-[11px] space-y-1 hidden">
-                                    <div class="text-gray-400"><span id="text-old-price">Базовая цена за посуточно:</span> <span id="old-price" class="font-mono line-through text-red-400/80">0.00 ₽</span></div>
-                                    <div class="text-green-400 font-bold"><span id="text-save">Ваша экономия:</span> <span id="save-amount" class="font-mono">0.00 ₽</span></div>
-                                </div>
-                            </div>
-
-                            <button id="btn-main-action" onclick="purchaseService()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-extrabold text-xs py-3.5 rounded-xl shadow-lg shadow-cyan-500/10 transition-all uppercase tracking-wider active:scale-[0.98]">
-                                Запустить выделенный узел
-                            </button>
-                        </div>
-
-                        <div class="border-t border-gray-900 my-1"></div>
 
                         <div class="p-4 rounded-xl bg-gradient-to-br from-purple-950/30 to-gray-950 border border-purple-900/60 shadow-xl relative overflow-hidden">
                             <div class="absolute top-0 right-0 bg-purple-600 text-white font-mono text-[9px] font-bold px-2 py-0.5 rounded-bl uppercase tracking-widest">Enterprise</div>
@@ -175,6 +113,12 @@
                             </div>
                         </div>
 
+                        <!-- Hint when no GPU selected expanded -->
+                        <div id="hint-select" class="text-center py-6 text-gray-600 text-xs">
+                            <div class="text-2xl mb-2">👆</div>
+                            <span id="hint-text">Выбери GPU слева для настройки аренды</span>
+                        </div>
+
                     </div>
                 </div>
 
@@ -182,6 +126,7 @@
         </div>
     </main>
 
+    <!-- Sidebar -->
     <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-gray-950 border-r border-gray-900 z-50 transform -translate-x-full transition-transform duration-300 p-5 flex flex-col justify-between shadow-2xl">
         <div>
             <div class="flex justify-between items-center mb-6">
@@ -195,11 +140,12 @@
                 <button onclick="contactEnterpriseSales()" id="side-pay" class="w-full text-left py-2 px-3 text-xs font-bold rounded-lg text-gray-400 hover:bg-gray-900 hover:text-white transition-all flex items-center gap-2">💼 Связаться по кластерам</button>
             </div>
         </div>
-        <div class="text-[10px] text-gray-600 font-mono text-center">v4.1</div>
+        <div class="text-[10px] text-gray-600 font-mono text-center">v4.2</div>
     </div>
 
     <div id="overlay" onclick="closeAll()" class="hidden fixed inset-0 bg-black/70 z-40 backdrop-blur-sm"></div>
 
+    <!-- Modal -->
     <div id="modal-tg-redirect" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-950 border border-cyan-500/50 rounded-2xl p-6 w-full max-w-sm z-50 shadow-2xl text-center">
         <div class="flex justify-between items-center mb-4 border-b border-gray-900 pb-2">
             <h3 class="text-sm font-black text-white">🚀 Заявка сформирована</h3>
@@ -222,9 +168,8 @@
         const TG_USERNAME = 'gnodecloud';
 
         let currentLanguage = 'RU';
-        let currentCurrency = '₽';
-        let currentGPU = 'rtx_4090';
-        let currentPeriod = 'day';
+        let currentGPU = null;
+        let cardPeriods = {}; // per-card period state
 
         const baseHourlyRates = {
             'l4': 1.56, 'rtx_a5000': 1.08, 'rtx_3090': 1.84, 'rtx_4090': 2.76, 'rtx_5090': 3.96,
@@ -244,44 +189,116 @@
 
         const gpuSpecifications = {
             'RU': {
-                'l4': { name: 'NVIDIA L4', desc: '24ГБ Видеопамять | 50ГБ ОЗУ | 12 vCPUs' },
-                'rtx_a5000': { name: 'NVIDIA RTX A5000', desc: '24ГБ Видеопамять | 25ГБ ОЗУ | 9 vCPUs' },
-                'rtx_3090': { name: 'NVIDIA RTX 3090', desc: '24ГБ Видеопамять | 125ГБ ОЗУ | 16 vCPUs' },
-                'rtx_4090': { name: 'NVIDIA RTX 4090', desc: '24ГБ Флагман | 41ГБ ОЗУ | 6 vCPUs' },
-                'rtx_5090': { name: 'NVIDIA RTX 5090', desc: '32ГБ Новое поколение | 35ГБ ОЗУ | 9 vCPUs' },
-                'rtx_6000_ada': { name: 'NVIDIA RTX 6000 Ada', desc: '48ГБ Профессиональная | 167ГБ ОЗУ | 10 vCPUs' },
-                'a40': { name: 'NVIDIA A40', desc: '48ГБ Универсальная | 50ГБ ОЗУ | 9 vCPUs' },
-                'l40': { name: 'NVIDIA L40', desc: '48ГБ Высокопроизводительная | 94ГБ ОЗУ | 8 vCPUs' },
-                'l40s': { name: 'NVIDIA L40S', desc: '48ГБ Специализированная | 94ГБ ОЗУ | 16 vCPUs' },
-                'rtx_a6000': { name: 'NVIDIA RTX A6000', desc: '48ГБ Профессиональная | 50ГБ ОЗУ | 9 vCPUs' },
-                'a100_pcie': { name: 'NVIDIA A100 PCIe', desc: '80ГБ Тензорные ядра | 117ГБ ОЗУ | 8 vCPUs' },
-                'a100_sxm': { name: 'NVIDIA A100 SXM', desc: '80ГБ Тензорные ядра | 125ГБ ОЗУ | 16 vCPUs' },
-                'h100_nvl': { name: 'NVIDIA H100 NVL', desc: '94ГБ Высокая мощность | 94ГБ ОЗУ | 16 vCPUs' },
-                'h100_pcie': { name: 'NVIDIA H100 PCIe', desc: '80ГБ Тензорные ядра | 188ГБ ОЗУ | 16 vCPUs' },
-                'h100_sxm': { name: 'NVIDIA H100 SXM', desc: '80ГБ Архитектура ИИ | 125ГБ ОЗУ | 20 vCPUs' },
-                'h200': { name: 'NVIDIA H200', desc: '141ГБ Новейшая архитектура | 276ГБ ОЗУ | 24 vCPUs' },
-                'b200': { name: 'NVIDIA Blackwell B200', desc: '180ГБ Архитектура ИИ | 283ГБ ОЗУ | 28 vCPUs' },
-                'rtx_pro_6000': { name: 'NVIDIA RTX Pro 6000', desc: '96ГБ Профессиональная | 188ГБ ОЗУ | 16 vCPUs' }
+                'l4': { name: 'NVIDIA L4', desc: '24ГБ Видеопамять | 50ГБ ОЗУ | 12 vCPUs',
+                    badge: 'Оптимальный выбор', badgeColor: 'text-emerald-400 border-emerald-800 bg-emerald-950/40',
+                    useCases: ['🤖 Инференс моделей', '🎨 Обработка изображений', '💬 Чат-боты', '🔍 Компьютерное зрение'] },
+                'rtx_a5000': { name: 'NVIDIA RTX A5000', desc: '24ГБ Видеопамять | 25ГБ ОЗУ | 9 vCPUs',
+                    badge: 'Бюджетный', badgeColor: 'text-sky-400 border-sky-800 bg-sky-950/40',
+                    useCases: ['🎬 3D-рендеринг', '🖥️ CAD/CAM', '🎨 Визуализация', '📐 Инженерные расчёты'] },
+                'rtx_3090': { name: 'NVIDIA RTX 3090', desc: '24ГБ Видеопамять | 125ГБ ОЗУ | 16 vCPUs',
+                    badge: 'Популярный', badgeColor: 'text-orange-400 border-orange-800 bg-orange-950/40',
+                    useCases: ['🧠 Fine-tuning LLM', '🎮 Игровые движки', '🎬 Рендеринг видео', '🔬 ML-эксперименты'] },
+                'rtx_4090': { name: 'NVIDIA RTX 4090', desc: '24ГБ Флагман | 41ГБ ОЗУ | 6 vCPUs',
+                    badge: '🔥 Топ продаж', badgeColor: 'text-amber-400 border-amber-700 bg-amber-950/50',
+                    useCases: ['🧠 Fine-tuning LLM до 13B', '🎨 Stable Diffusion / ComfyUI', '🚀 Быстрый инференс', '🎬 4K рендеринг'] },
+                'rtx_5090': { name: 'NVIDIA RTX 5090', desc: '32ГБ Новое поколение | 35ГБ ОЗУ | 9 vCPUs',
+                    badge: 'Новинка', badgeColor: 'text-violet-400 border-violet-800 bg-violet-950/40',
+                    useCases: ['🧠 LLM до 30B параметров', '🎨 Генерация изображений', '🤖 Мультимодальные модели', '⚡ AI-видео в реальном времени'] },
+                'rtx_6000_ada': { name: 'NVIDIA RTX 6000 Ada', desc: '48ГБ Профессиональная | 167ГБ ОЗУ | 10 vCPUs',
+                    badge: 'Pro', badgeColor: 'text-cyan-400 border-cyan-800 bg-cyan-950/40',
+                    useCases: ['🏗️ BIM / Архитектура', '🎬 VFX и анимация', '🔬 Научные симуляции', '🧬 Медицинская визуализация'] },
+                'a40': { name: 'NVIDIA A40', desc: '48ГБ Универсальная | 50ГБ ОЗУ | 9 vCPUs',
+                    badge: 'Универсальный', badgeColor: 'text-teal-400 border-teal-800 bg-teal-950/40',
+                    useCases: ['🤖 ML-пайплайны', '🎨 Генерация контента', '📊 Аналитика данных', '🔄 Параллельные задачи'] },
+                'l40': { name: 'NVIDIA L40', desc: '48ГБ Высокопроизводительная | 94ГБ ОЗУ | 8 vCPUs',
+                    badge: 'Медиа & AI', badgeColor: 'text-pink-400 border-pink-800 bg-pink-950/40',
+                    useCases: ['🎬 AI-видео генерация', '🖼️ Генерация изображений', '🔊 Синтез речи', '🎭 Deepfake / Avatar'] },
+                'l40s': { name: 'NVIDIA L40S', desc: '48ГБ Специализированная | 94ГБ ОЗУ | 16 vCPUs',
+                    badge: 'Рекомендуем', badgeColor: 'text-lime-400 border-lime-800 bg-lime-950/40',
+                    useCases: ['⚡ Ускоренный инференс', '🧠 Обучение нейросетей', '🌐 Серверный AI', '📡 Обработка потоков данных'] },
+                'rtx_a6000': { name: 'NVIDIA RTX A6000', desc: '48ГБ Профессиональная | 50ГБ ОЗУ | 9 vCPUs',
+                    badge: 'Workstation', badgeColor: 'text-indigo-400 border-indigo-800 bg-indigo-950/40',
+                    useCases: ['🎨 3D/VFX студии', '🔬 Научный рендеринг', '🏎️ Автодизайн', '💊 Фармацевтика / молекулы'] },
+                'a100_pcie': { name: 'NVIDIA A100 PCIe', desc: '80ГБ Тензорные ядра | 117ГБ ОЗУ | 8 vCPUs',
+                    badge: 'AI Datacenter', badgeColor: 'text-blue-400 border-blue-800 bg-blue-950/40',
+                    useCases: ['🧠 Обучение LLM 30–70B', '🔬 Научные вычисления HPC', '🧬 Геномика и биоинформатика', '📈 Финансовые модели'] },
+                'a100_sxm': { name: 'NVIDIA A100 SXM', desc: '80ГБ Тензорные ядра | 125ГБ ОЗУ | 16 vCPUs',
+                    badge: 'HPC', badgeColor: 'text-blue-300 border-blue-700 bg-blue-950/50',
+                    useCases: ['🧠 Обучение больших моделей', '🔭 Астрофизика / климат', '⚛️ Квантовые симуляции', '🏭 Промышленный AI'] },
+                'h100_nvl': { name: 'NVIDIA H100 NVL', desc: '94ГБ Высокая мощность | 94ГБ ОЗУ | 16 vCPUs',
+                    badge: 'Топ AI', badgeColor: 'text-green-400 border-green-800 bg-green-950/40',
+                    useCases: ['🧠 GPT-класс обучение', '⚡ Сверхбыстрый инференс', '🌐 Мультиузловые кластеры', '🔬 Frontier AI исследования'] },
+                'h100_pcie': { name: 'NVIDIA H100 PCIe', desc: '80ГБ Тензорные ядра | 188ГБ ОЗУ | 16 vCPUs',
+                    badge: 'Enterprise AI', badgeColor: 'text-green-300 border-green-700 bg-green-950/50',
+                    useCases: ['🤖 LLM инференс в проде', '📊 Корпоративная аналитика', '🔐 Приватный AI в контуре', '🏦 Банки и финтех'] },
+                'h100_sxm': { name: 'NVIDIA H100 SXM', desc: '80ГБ Архитектура ИИ | 125ГБ ОЗУ | 20 vCPUs',
+                    badge: '⚡ Мощнейший', badgeColor: 'text-yellow-400 border-yellow-700 bg-yellow-950/50',
+                    useCases: ['🧠 Обучение 100B+ моделей', '🌐 Распределённое обучение', '🔬 AI-исследования мирового уровня', '🚀 AGI-пайплайны'] },
+                'h200': { name: 'NVIDIA H200', desc: '141ГБ Новейшая архитектура | 276ГБ ОЗУ | 24 vCPUs',
+                    badge: 'Next-Gen', badgeColor: 'text-fuchsia-400 border-fuchsia-800 bg-fuchsia-950/40',
+                    useCases: ['🧠 Обучение мультимодальных LLM', '🔭 Климатическое моделирование', '💊 Drug Discovery AI', '🧬 Протеиновые структуры'] },
+                'b200': { name: 'NVIDIA Blackwell B200', desc: '180ГБ Архитектура ИИ | 283ГБ ОЗУ | 28 vCPUs',
+                    badge: '🚀 Флагман', badgeColor: 'text-red-400 border-red-700 bg-red-950/50',
+                    useCases: ['🌐 Обучение триллион-параметровых моделей', '🧠 AGI / Foundation Models', '⚛️ Квантовые симуляции', '🛰️ Государственный HPC'] },
+                'rtx_pro_6000': { name: 'NVIDIA RTX Pro 6000', desc: '96ГБ Профессиональная | 188ГБ ОЗУ | 16 vCPUs',
+                    badge: 'Creator Pro', badgeColor: 'text-rose-400 border-rose-800 bg-rose-950/40',
+                    useCases: ['🎬 Голливудский рендеринг', '🏗️ Digital Twin / BIM', '🔬 Медицина / МРТ/КТ AI', '🎨 Генеративный дизайн'] }
             },
             'EN': {
-                'l4': { name: 'NVIDIA L4', desc: '24GB VRAM | 50GB RAM | 12 vCPUs' },
-                'rtx_a5000': { name: 'NVIDIA RTX A5000', desc: '24GB VRAM | 25GB RAM | 9 vCPUs' },
-                'rtx_3090': { name: 'NVIDIA RTX 3090', desc: '24GB VRAM | 125GB RAM | 16 vCPUs' },
-                'rtx_4090': { name: 'NVIDIA RTX 4090', desc: '24GB Flagship GPU | 41GB RAM | 6 vCPUs' },
-                'rtx_5090': { name: 'NVIDIA RTX 5090', desc: '32GB Next-Gen Tech | 35GB RAM | 9 vCPUs' },
-                'rtx_6000_ada': { name: 'NVIDIA RTX 6000 Ada', desc: '48GB Professional | 167GB RAM | 10 vCPUs' },
-                'a40': { name: 'NVIDIA A40', desc: '48GB Universal GPU | 50GB RAM | 9 vCPUs' },
-                'l40': { name: 'NVIDIA L40', desc: '48GB High-Performance | 94GB RAM | 8 vCPUs' },
-                'l40s': { name: 'NVIDIA L40S', desc: '48GB Specialized | 94GB RAM | 16 vCPUs' },
-                'rtx_a6000': { name: 'NVIDIA RTX A6000', desc: '48GB Professional | 50GB RAM | 9 vCPUs' },
-                'a100_pcie': { name: 'NVIDIA A100 PCIe', desc: '80GB Tensor Core | 117GB RAM | 8 vCPUs' },
-                'a100_sxm': { name: 'NVIDIA A100 SXM', desc: '80GB Tensor Core | 125GB RAM | 16 vCPUs' },
-                'h100_nvl': { name: 'NVIDIA H100 NVL', desc: '94GB Ultra Capacity | 94GB RAM | 16 vCPUs' },
-                'h100_pcie': { name: 'NVIDIA H100 PCIe', desc: '80GB Tensor Core | 188GB RAM | 16 vCPUs' },
-                'h100_sxm': { name: 'NVIDIA H100 SXM', desc: '80GB AI Architecture | 125GB RAM | 20 vCPUs' },
-                'h200': { name: 'NVIDIA H200', desc: '141GB Next-Gen | 276GB RAM | 24 vCPUs' },
-                'b200': { name: 'NVIDIA Blackwell B200', desc: '180GB AI Architecture | 283GB RAM | 28 vCPUs' },
-                'rtx_pro_6000': { name: 'NVIDIA RTX Pro 6000', desc: '96GB Professional | 188GB RAM | 16 vCPUs' }
+                'l4': { name: 'NVIDIA L4', desc: '24GB VRAM | 50GB RAM | 12 vCPUs',
+                    badge: 'Best Value', badgeColor: 'text-emerald-400 border-emerald-800 bg-emerald-950/40',
+                    useCases: ['🤖 Model Inference', '🎨 Image Processing', '💬 Chatbots', '🔍 Computer Vision'] },
+                'rtx_a5000': { name: 'NVIDIA RTX A5000', desc: '24GB VRAM | 25GB RAM | 9 vCPUs',
+                    badge: 'Budget', badgeColor: 'text-sky-400 border-sky-800 bg-sky-950/40',
+                    useCases: ['🎬 3D Rendering', '🖥️ CAD/CAM', '🎨 Visualization', '📐 Engineering Compute'] },
+                'rtx_3090': { name: 'NVIDIA RTX 3090', desc: '24GB VRAM | 125GB RAM | 16 vCPUs',
+                    badge: 'Popular', badgeColor: 'text-orange-400 border-orange-800 bg-orange-950/40',
+                    useCases: ['🧠 LLM Fine-tuning', '🎮 Game Engines', '🎬 Video Rendering', '🔬 ML Experiments'] },
+                'rtx_4090': { name: 'NVIDIA RTX 4090', desc: '24GB Flagship GPU | 41GB RAM | 6 vCPUs',
+                    badge: '🔥 Best Seller', badgeColor: 'text-amber-400 border-amber-700 bg-amber-950/50',
+                    useCases: ['🧠 Fine-tuning LLM up to 13B', '🎨 Stable Diffusion / ComfyUI', '🚀 Fast Inference', '🎬 4K Rendering'] },
+                'rtx_5090': { name: 'NVIDIA RTX 5090', desc: '32GB Next-Gen Tech | 35GB RAM | 9 vCPUs',
+                    badge: 'New', badgeColor: 'text-violet-400 border-violet-800 bg-violet-950/40',
+                    useCases: ['🧠 LLM up to 30B params', '🎨 Image Generation', '🤖 Multimodal Models', '⚡ Real-time AI Video'] },
+                'rtx_6000_ada': { name: 'NVIDIA RTX 6000 Ada', desc: '48GB Professional | 167GB RAM | 10 vCPUs',
+                    badge: 'Pro', badgeColor: 'text-cyan-400 border-cyan-800 bg-cyan-950/40',
+                    useCases: ['🏗️ BIM / Architecture', '🎬 VFX & Animation', '🔬 Scientific Simulations', '🧬 Medical Imaging'] },
+                'a40': { name: 'NVIDIA A40', desc: '48GB Universal GPU | 50GB RAM | 9 vCPUs',
+                    badge: 'Versatile', badgeColor: 'text-teal-400 border-teal-800 bg-teal-950/40',
+                    useCases: ['🤖 ML Pipelines', '🎨 Content Generation', '📊 Data Analytics', '🔄 Parallel Workloads'] },
+                'l40': { name: 'NVIDIA L40', desc: '48GB High-Performance | 94GB RAM | 8 vCPUs',
+                    badge: 'Media & AI', badgeColor: 'text-pink-400 border-pink-800 bg-pink-950/40',
+                    useCases: ['🎬 AI Video Generation', '🖼️ Image Synthesis', '🔊 Speech Synthesis', '🎭 Deepfake / Avatar'] },
+                'l40s': { name: 'NVIDIA L40S', desc: '48GB Specialized | 94GB RAM | 16 vCPUs',
+                    badge: 'Recommended', badgeColor: 'text-lime-400 border-lime-800 bg-lime-950/40',
+                    useCases: ['⚡ Accelerated Inference', '🧠 Neural Net Training', '🌐 Server AI', '📡 Data Stream Processing'] },
+                'rtx_a6000': { name: 'NVIDIA RTX A6000', desc: '48GB Professional | 50GB RAM | 9 vCPUs',
+                    badge: 'Workstation', badgeColor: 'text-indigo-400 border-indigo-800 bg-indigo-950/40',
+                    useCases: ['🎨 3D/VFX Studios', '🔬 Scientific Rendering', '🏎️ Auto Design', '💊 Pharma / Molecules'] },
+                'a100_pcie': { name: 'NVIDIA A100 PCIe', desc: '80GB Tensor Core | 117GB RAM | 8 vCPUs',
+                    badge: 'AI Datacenter', badgeColor: 'text-blue-400 border-blue-800 bg-blue-950/40',
+                    useCases: ['🧠 Training LLM 30–70B', '🔬 HPC Scientific Compute', '🧬 Genomics & Bioinformatics', '📈 Financial Models'] },
+                'a100_sxm': { name: 'NVIDIA A100 SXM', desc: '80GB Tensor Core | 125GB RAM | 16 vCPUs',
+                    badge: 'HPC', badgeColor: 'text-blue-300 border-blue-700 bg-blue-950/50',
+                    useCases: ['🧠 Large Model Training', '🔭 Astrophysics / Climate', '⚛️ Quantum Simulations', '🏭 Industrial AI'] },
+                'h100_nvl': { name: 'NVIDIA H100 NVL', desc: '94GB Ultra Capacity | 94GB RAM | 16 vCPUs',
+                    badge: 'Top AI', badgeColor: 'text-green-400 border-green-800 bg-green-950/40',
+                    useCases: ['🧠 GPT-class Training', '⚡ Ultra-fast Inference', '🌐 Multi-node Clusters', '🔬 Frontier AI Research'] },
+                'h100_pcie': { name: 'NVIDIA H100 PCIe', desc: '80GB Tensor Core | 188GB RAM | 16 vCPUs',
+                    badge: 'Enterprise AI', badgeColor: 'text-green-300 border-green-700 bg-green-950/50',
+                    useCases: ['🤖 Production LLM Inference', '📊 Enterprise Analytics', '🔐 Private On-prem AI', '🏦 Banking & Fintech'] },
+                'h100_sxm': { name: 'NVIDIA H100 SXM', desc: '80GB AI Architecture | 125GB RAM | 20 vCPUs',
+                    badge: '⚡ Most Powerful', badgeColor: 'text-yellow-400 border-yellow-700 bg-yellow-950/50',
+                    useCases: ['🧠 Training 100B+ Models', '🌐 Distributed Training', '🔬 World-class AI Research', '🚀 AGI Pipelines'] },
+                'h200': { name: 'NVIDIA H200', desc: '141GB Next-Gen | 276GB RAM | 24 vCPUs',
+                    badge: 'Next-Gen', badgeColor: 'text-fuchsia-400 border-fuchsia-800 bg-fuchsia-950/40',
+                    useCases: ['🧠 Multimodal LLM Training', '🔭 Climate Modeling', '💊 Drug Discovery AI', '🧬 Protein Structures'] },
+                'b200': { name: 'NVIDIA Blackwell B200', desc: '180GB AI Architecture | 283GB RAM | 28 vCPUs',
+                    badge: '🚀 Flagship', badgeColor: 'text-red-400 border-red-700 bg-red-950/50',
+                    useCases: ['🌐 Trillion-param Model Training', '🧠 AGI / Foundation Models', '⚛️ Quantum Simulations', '🛰️ Government HPC'] },
+                'rtx_pro_6000': { name: 'NVIDIA RTX Pro 6000', desc: '96GB Professional | 188GB RAM | 16 vCPUs',
+                    badge: 'Creator Pro', badgeColor: 'text-rose-400 border-rose-800 bg-rose-950/40',
+                    useCases: ['🎬 Hollywood Rendering', '🏗️ Digital Twin / BIM', '🔬 Medical AI (MRI/CT)', '🎨 Generative Design'] }
             }
         };
 
@@ -290,59 +307,115 @@
                 sideTitle: 'Панель управления', sideCalc: '📊 Калькулятор тарифов', sidePay: '💼 Связаться по кластерам',
                 title: 'GPU Instance Provisioner',
                 subtitle: 'Выбери on-demand инстанс или задеплой выделенный ИИ-кластер для своей команды',
-                gpu: '1. Доступные On-Demand графические процессоры:', period: '2. Период аренды узла:',
-                cost: 'Стоимость конфигурации:', oldPrice: 'Базовая цена за посуточно:', save: 'Ваша экономия:', rateLabel: 'в сутки',
-                pDay: '1 День', pWeek: 'Неделя -5%', pMonth: 'Месяц -10%', btnBuy: 'Запустить выделенный узел',
+                gpu: '1. Доступные On-Demand графические процессоры:',
+                rateLabel: 'в сутки',
+                pDay: '1 День', pWeek: 'Неделя −5%', pMonth: 'Месяц −10%',
+                btnBuy: 'Запустить выделенный узел',
+                cost: 'Стоимость конфигурации:', oldPrice: 'Базовая цена за посуточно:', save: 'Ваша экономия:',
+                periodLabel: 'Период аренды:',
+                useCasesLabel: 'Идеально подходит для:',
                 entTitle: '💼 ИИ-Кластеры Blackwell x8',
                 entDesc: 'Для масштабного обучения LLM-моделей. Физическое объединение 8x соединенных карт B200 или B300 через высокоскоростную шину NVLink Club.',
                 entTerm: '• Мин. срок: <span class="text-gray-300 font-bold">3 месяца</span>',
                 entNet: '• Сеть: <span class="text-gray-300 font-bold">InfiniBand / NVLink</span>',
-                btnEnt: 'Связаться с отделом продаж'
+                btnEnt: 'Связаться с отделом продаж',
+                hint: 'Выбери GPU слева для настройки аренды'
             },
             'EN': {
                 sideTitle: 'Control Panel', sideCalc: '📊 Rate Calculator', sidePay: '💼 Contact for Clusters',
                 title: 'GPU Instance Provisioner',
                 subtitle: 'Select an on-demand instance or deploy a dedicated AI cluster for your team',
-                gpu: '1. Available On-Demand GPUs:', period: '2. Node Rental Period:',
-                cost: 'Configuration Cost:', oldPrice: 'Base daily price:', save: 'Your savings:', rateLabel: '/day',
-                pDay: '1 Day', pWeek: 'Week -5%', pMonth: 'Month -10%', btnBuy: 'Deploy Dedicated Node',
+                gpu: '1. Available On-Demand GPUs:',
+                rateLabel: '/day',
+                pDay: '1 Day', pWeek: 'Week −5%', pMonth: 'Month −10%',
+                btnBuy: 'Deploy Dedicated Node',
+                cost: 'Configuration Cost:', oldPrice: 'Base daily price:', save: 'Your savings:',
+                periodLabel: 'Rental Period:',
+                useCasesLabel: 'Ideal for:',
                 entTitle: '💼 Blackwell x8 AI Clusters',
                 entDesc: 'For large-scale LLM training. Physical aggregation of 8x connected B200 or B300 GPUs via high-speed NVLink interconnect.',
                 entTerm: '• Min. term: <span class="text-gray-300 font-bold">3 months</span>',
                 entNet: '• Network: <span class="text-gray-300 font-bold">InfiniBand / NVLink</span>',
-                btnEnt: 'Contact Sales Department'
+                btnEnt: 'Contact Sales Department',
+                hint: 'Select a GPU from the list to configure rental'
             }
         };
 
         function getConvertedValue(usdVal) {
-            if (currentLanguage === 'RU') return usdVal * rubRateMultiplier;
-            return usdVal;
+            return currentLanguage === 'RU' ? usdVal * rubRateMultiplier : usdVal;
         }
 
         function formatCurrencyValue(valInUSD) {
             let localValue = getConvertedValue(valInUSD);
             if (currentLanguage === 'RU') {
-                let formattedNumber = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(localValue);
-                return `${formattedNumber} ₽`;
-            } else {
-                let formattedNumber = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(valInUSD);
-                return `$${formattedNumber}`;
+                return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(localValue) + ' ₽';
+            }
+            return '$' + new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(valInUSD);
+        }
+
+        function calcPrice(gpuKey, period) {
+            const daily = baseHourlyRates[gpuKey] * 24;
+            const full = daily * periodDays[period];
+            const final = full * (1 - discounts[period]);
+            return { full, final, saved: full - final };
+        }
+
+        function selectGpu(key) {
+            const wasSelected = (currentGPU === key);
+            currentGPU = wasSelected ? null : key;
+            if (!cardPeriods[key]) cardPeriods[key] = 'day';
+            renderGpuMarketplace();
+            // Show/hide hint
+            document.getElementById('hint-select').style.display = currentGPU ? 'none' : 'block';
+        }
+
+        function setCardPeriod(key, period, event) {
+            event.stopPropagation();
+            cardPeriods[key] = period;
+            updateCardExpand(key);
+        }
+
+        function updateCardExpand(key) {
+            const period = cardPeriods[key] || 'day';
+            const t = translations[currentLanguage];
+            const { full, final, saved } = calcPrice(key, period);
+
+            // Period buttons
+            ['day','week','month'].forEach(p => {
+                const btn = document.getElementById(`pbtn-${key}-${p}`);
+                if (btn) {
+                    btn.className = 'period-btn text-[11px] font-bold rounded-lg px-2 py-1.5 cursor-pointer' + (p === period ? ' active' : '');
+                }
+            });
+
+            // Price display
+            const priceEl = document.getElementById(`card-price-${key}`);
+            if (priceEl) priceEl.textContent = formatCurrencyValue(final);
+
+            // Discount block
+            const discEl = document.getElementById(`card-discount-${key}`);
+            if (discEl) {
+                if (period === 'day') {
+                    discEl.classList.add('hidden');
+                } else {
+                    discEl.classList.remove('hidden');
+                    document.getElementById(`card-old-${key}`).textContent = formatCurrencyValue(full);
+                    document.getElementById(`card-saved-${key}`).textContent = formatCurrencyValue(saved);
+                }
             }
         }
 
-        function getCurrentConfigPriceInUSD() {
-            let dailyRate = baseHourlyRates[currentGPU] * 24;
-            return (dailyRate * periodDays[currentPeriod]) * (1 - discounts[currentPeriod]);
-        }
-
-        function purchaseService() {
-            const gpuName = gpuSpecifications[currentLanguage][currentGPU].name;
-            const period = periodLabelsShort[currentLanguage][currentPeriod];
-            const price = formatCurrencyValue(getCurrentConfigPriceInUSD());
+        function purchaseService(key, event) {
+            event.stopPropagation();
+            const period = cardPeriods[key] || 'day';
+            const gpuName = gpuSpecifications[currentLanguage][key].name;
+            const periodLabel = periodLabelsShort[currentLanguage][period];
+            const { final } = calcPrice(key, period);
+            const price = formatCurrencyValue(final);
             const isRU = (currentLanguage === 'RU');
             const msg = isRU
-                ? `🖥 On-Demand GPU: ${gpuName}\n⏱ Период: ${period}\n💰 Расчетная стоимость: ${price}`
-                : `🖥 On-Demand GPU: ${gpuName}\n⏱ Period: ${period}\n💰 Estimated Cost: ${price}`;
+                ? `🖥 On-Demand GPU: ${gpuName}\n⏱ Период: ${periodLabel}\n💰 Расчетная стоимость: ${price}`
+                : `🖥 On-Demand GPU: ${gpuName}\n⏱ Period: ${periodLabel}\n💰 Estimated Cost: ${price}`;
             const tgUrl = `https://t.me/${TG_USERNAME}?text=${encodeURIComponent(msg)}`;
             document.getElementById('tg-config-preview').innerText = msg;
             document.getElementById('tg-direct-link').href = tgUrl;
@@ -361,6 +434,198 @@
             window.open(tgUrl, '_blank');
         }
 
+        // Tier definitions: order, label, icon, keys, styling
+        const gpuTiers = {
+            'RU': [
+                {
+                    id: 'budget',
+                    label: 'Начальный уровень',
+                    sublabel: 'Инференс, рендеринг, старт в AI',
+                    icon: '🟢',
+                    keys: ['l4', 'rtx_a5000', 'rtx_3090'],
+                    wrapperBg: 'bg-emerald-950/10 border border-emerald-900/30',
+                    headerColor: 'text-emerald-400',
+                    dotIdle: 'bg-emerald-800',
+                    cardIdle: 'border-emerald-900/40 bg-emerald-950/10 hover:border-emerald-700/50 hover:bg-emerald-950/20',
+                    cardActive: 'border-cyan-400 bg-emerald-950/30 shadow-lg shadow-cyan-400/10',
+                },
+                {
+                    id: 'mid',
+                    label: 'Средний класс',
+                    sublabel: 'Fine-tuning, генерация, профессиональный рендер',
+                    icon: '🔵',
+                    keys: ['rtx_4090', 'rtx_5090', 'rtx_6000_ada', 'a40', 'l40', 'l40s', 'rtx_a6000', 'rtx_pro_6000'],
+                    wrapperBg: 'bg-blue-950/10 border border-blue-900/30',
+                    headerColor: 'text-blue-400',
+                    dotIdle: 'bg-blue-800',
+                    cardIdle: 'border-blue-900/40 bg-blue-950/10 hover:border-blue-700/50 hover:bg-blue-950/20',
+                    cardActive: 'border-cyan-400 bg-blue-950/30 shadow-lg shadow-cyan-400/10',
+                },
+                {
+                    id: 'pro',
+                    label: 'Профессиональный AI',
+                    sublabel: 'Обучение больших моделей, HPC, datacenter',
+                    icon: '🟣',
+                    keys: ['a100_pcie', 'a100_sxm'],
+                    wrapperBg: 'bg-violet-950/15 border border-violet-900/40',
+                    headerColor: 'text-violet-400',
+                    dotIdle: 'bg-violet-800',
+                    cardIdle: 'border-violet-900/50 bg-violet-950/15 hover:border-violet-700/60 hover:bg-violet-950/25',
+                    cardActive: 'border-cyan-400 bg-violet-950/30 shadow-lg shadow-cyan-400/10',
+                },
+                {
+                    id: 'elite',
+                    label: '⚡ Элита — Hopper / Blackwell',
+                    sublabel: 'Топовые LLM, AGI, государственный HPC',
+                    icon: '🔴',
+                    keys: ['h100_nvl', 'h100_pcie', 'h100_sxm', 'h200', 'b200'],
+                    wrapperBg: 'bg-gradient-to-br from-red-950/20 via-orange-950/10 to-amber-950/10 border border-red-900/50',
+                    headerColor: 'text-red-400',
+                    dotIdle: 'bg-red-800',
+                    cardIdle: 'border-red-900/50 bg-red-950/15 hover:border-red-700/60 hover:bg-red-950/25',
+                    cardActive: 'border-cyan-400 bg-red-950/30 shadow-lg shadow-cyan-400/15',
+                },
+            ],
+            'EN': [
+                {
+                    id: 'budget',
+                    label: 'Entry Level',
+                    sublabel: 'Inference, rendering, getting started with AI',
+                    icon: '🟢',
+                    keys: ['l4', 'rtx_a5000', 'rtx_3090'],
+                    wrapperBg: 'bg-emerald-950/10 border border-emerald-900/30',
+                    headerColor: 'text-emerald-400',
+                    dotIdle: 'bg-emerald-800',
+                    cardIdle: 'border-emerald-900/40 bg-emerald-950/10 hover:border-emerald-700/50 hover:bg-emerald-950/20',
+                    cardActive: 'border-cyan-400 bg-emerald-950/30 shadow-lg shadow-cyan-400/10',
+                },
+                {
+                    id: 'mid',
+                    label: 'Mid-Range',
+                    sublabel: 'Fine-tuning, generation, professional rendering',
+                    icon: '🔵',
+                    keys: ['rtx_4090', 'rtx_5090', 'rtx_6000_ada', 'a40', 'l40', 'l40s', 'rtx_a6000', 'rtx_pro_6000'],
+                    wrapperBg: 'bg-blue-950/10 border border-blue-900/30',
+                    headerColor: 'text-blue-400',
+                    dotIdle: 'bg-blue-800',
+                    cardIdle: 'border-blue-900/40 bg-blue-950/10 hover:border-blue-700/50 hover:bg-blue-950/20',
+                    cardActive: 'border-cyan-400 bg-blue-950/30 shadow-lg shadow-cyan-400/10',
+                },
+                {
+                    id: 'pro',
+                    label: 'Professional AI',
+                    sublabel: 'Large model training, HPC, datacenter',
+                    icon: '🟣',
+                    keys: ['a100_pcie', 'a100_sxm'],
+                    wrapperBg: 'bg-violet-950/15 border border-violet-900/40',
+                    headerColor: 'text-violet-400',
+                    dotIdle: 'bg-violet-800',
+                    cardIdle: 'border-violet-900/50 bg-violet-950/15 hover:border-violet-700/60 hover:bg-violet-950/25',
+                    cardActive: 'border-cyan-400 bg-violet-950/30 shadow-lg shadow-cyan-400/10',
+                },
+                {
+                    id: 'elite',
+                    label: '⚡ Elite — Hopper / Blackwell',
+                    sublabel: 'Top-tier LLMs, AGI, government HPC',
+                    icon: '🔴',
+                    keys: ['h100_nvl', 'h100_pcie', 'h100_sxm', 'h200', 'b200'],
+                    wrapperBg: 'bg-gradient-to-br from-red-950/20 via-orange-950/10 to-amber-950/10 border border-red-900/50',
+                    headerColor: 'text-red-400',
+                    dotIdle: 'bg-red-800',
+                    cardIdle: 'border-red-900/50 bg-red-950/15 hover:border-red-700/60 hover:bg-red-950/25',
+                    cardActive: 'border-cyan-400 bg-red-950/30 shadow-lg shadow-cyan-400/15',
+                },
+            ]
+        };
+
+        function buildCard(key, tier, t, activeSpecs) {
+            const isSelected = (key === currentGPU);
+            const period = cardPeriods[key] || 'day';
+            const dailyPriceUSD = baseHourlyRates[key] * 24;
+            const spec = activeSpecs[key];
+            const borderClass = isSelected ? tier.cardActive : tier.cardIdle;
+            const { full, final, saved } = calcPrice(key, period);
+            const discountHidden = period === 'day' ? 'hidden' : '';
+            const useCaseTags = spec.useCases.map(u =>
+                `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold border ${spec.badgeColor}">${u}</span>`
+            ).join('');
+
+            return `
+                <div class="gpu-card border rounded-xl cursor-pointer transition-all active:scale-[0.99] ${borderClass}" onclick="selectGpu('${key}')">
+                    <div class="p-3 flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2.5 h-2.5 rounded-full flex-shrink-0 ${isSelected ? 'bg-cyan-400 animate-pulse' : tier.dotIdle}"></div>
+                            <div>
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <h4 class="text-xs font-bold ${isSelected ? 'text-cyan-400' : 'text-gray-200'}">${spec.name}</h4>
+                                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded border ${spec.badgeColor}">${spec.badge}</span>
+                                </div>
+                                <p class="text-[10px] text-gray-400 mt-0.5">${spec.desc}</p>
+                            </div>
+                        </div>
+                        <div class="text-right flex-shrink-0 ml-2">
+                            <span class="text-xs font-mono font-black text-green-400">${formatCurrencyValue(dailyPriceUSD)}</span>
+                            <span class="text-[9px] text-gray-500 block mt-0.5">${t.rateLabel}</span>
+                        </div>
+                    </div>
+                    <div class="gpu-expand ${isSelected ? 'open' : ''}" id="expand-${key}">
+                        <div class="px-3 pb-3 slide-in" onclick="event.stopPropagation()">
+                            <div class="border-t border-gray-800/80 pt-3">
+                                <div class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">${t.useCasesLabel}</div>
+                                <div class="flex flex-wrap gap-1.5 mb-3">${useCaseTags}</div>
+                                <div class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">${t.periodLabel}</div>
+                                <div class="grid grid-cols-3 gap-1.5 mb-3">
+                                    <button id="pbtn-${key}-day" onclick="setCardPeriod('${key}', 'day', event)"
+                                        class="period-btn text-[11px] font-bold rounded-lg px-2 py-1.5 cursor-pointer ${period === 'day' ? 'active' : ''}">${t.pDay}</button>
+                                    <button id="pbtn-${key}-week" onclick="setCardPeriod('${key}', 'week', event)"
+                                        class="period-btn text-[11px] font-bold rounded-lg px-2 py-1.5 cursor-pointer ${period === 'week' ? 'active' : ''}">${t.pWeek}</button>
+                                    <button id="pbtn-${key}-month" onclick="setCardPeriod('${key}', 'month', event)"
+                                        class="period-btn text-[11px] font-bold rounded-lg px-2 py-1.5 cursor-pointer ${period === 'month' ? 'active' : ''}">${t.pMonth}</button>
+                                </div>
+                                <div class="p-3 rounded-xl bg-gray-950/90 border border-gray-800/60 mb-3">
+                                    <span class="text-[9px] uppercase font-bold text-gray-500 tracking-wider block">${t.cost}</span>
+                                    <div id="card-price-${key}" class="text-xl font-mono font-black text-green-400 mt-1">${formatCurrencyValue(final)}</div>
+                                    <div id="card-discount-${key}" class="mt-1.5 pt-1.5 border-t border-gray-800/60 text-[10px] space-y-0.5 ${discountHidden}">
+                                        <div class="text-gray-400">${t.oldPrice} <span id="card-old-${key}" class="font-mono line-through text-red-400/80">${formatCurrencyValue(full)}</span></div>
+                                        <div class="text-green-400 font-bold">${t.save} <span id="card-saved-${key}" class="font-mono">${formatCurrencyValue(saved)}</span></div>
+                                    </div>
+                                </div>
+                                <button onclick="purchaseService('${key}', event)"
+                                    class="launch-btn w-full text-white font-extrabold text-xs py-3 rounded-xl uppercase tracking-wider">
+                                    ${t.btnBuy}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderGpuMarketplace() {
+            const container = document.getElementById('gpu-marketplace');
+            container.innerHTML = '';
+            const t = translations[currentLanguage];
+            const activeSpecs = gpuSpecifications[currentLanguage];
+            const tiers = gpuTiers[currentLanguage];
+
+            tiers.forEach(tier => {
+                const cardsHtml = tier.keys.map(key => buildCard(key, tier, t, activeSpecs)).join('');
+                container.innerHTML += `
+                    <div class="rounded-2xl p-3 ${tier.wrapperBg}">
+                        <div class="flex items-center justify-between mb-2 px-1">
+                            <div>
+                                <span class="text-[11px] font-black uppercase tracking-wider ${tier.headerColor}">${tier.label}</span>
+                                <p class="text-[9px] text-gray-500 mt-0.5">${tier.sublabel}</p>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">${cardsHtml}</div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('hint-select').style.display = currentGPU ? 'none' : 'block';
+        }
+
         function toggleSidebar(open) {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('overlay');
@@ -376,66 +641,8 @@
             document.getElementById('overlay').classList.add('hidden');
         }
 
-        function renderGpuMarketplace() {
-            const container = document.getElementById('gpu-marketplace');
-            container.innerHTML = "";
-            const t = translations[currentLanguage];
-            const activeSpecs = gpuSpecifications[currentLanguage];
-
-            Object.keys(baseHourlyRates).forEach(key => {
-                let dailyPriceInUSD = baseHourlyRates[key] * 24;
-                const isSelected = (key === currentGPU);
-                const borderClass = isSelected ? 'border-cyan-400 bg-gray-800/60 shadow-md shadow-cyan-400/10' : 'border-gray-900 bg-[#0b0f19] hover:border-gray-800';
-                const currentCardData = activeSpecs[key] || activeSpecs['rtx_4090'];
-
-                container.innerHTML += `
-                    <div onclick="selectGpu('${key}')" class="p-3 border rounded-xl flex justify-between items-center cursor-pointer transition-all active:scale-[0.99] ${borderClass}">
-                        <div class="flex items-center gap-3">
-                            <div class="w-2.5 h-2.5 rounded-full ${isSelected ? 'bg-cyan-400 animate-pulse' : 'bg-gray-700'}"></div>
-                            <div>
-                                <h4 class="text-xs font-bold ${isSelected ? 'text-cyan-400' : 'text-gray-200'}">${currentCardData.name}</h4>
-                                <p class="text-[10px] text-gray-400 mt-0.5">${currentCardData.desc}</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-xs font-mono font-black text-green-400">${formatCurrencyValue(dailyPriceInUSD)}</span>
-                            <span class="text-[9px] text-gray-500 block mt-0.5">${t.rateLabel}</span>
-                        </div>
-                    </div>
-                `;
-            });
-            calculatePrice();
-        }
-
-        function selectGpu(key) { currentGPU = key; renderGpuMarketplace(); }
-
-        function setPeriod(p) {
-            ['day', 'week', 'month'].forEach(item => {
-                document.getElementById(`period-${item}`).className = item === p
-                    ? "py-2 text-xs font-bold rounded bg-cyan-400 text-[#0b0f19]"
-                    : "py-2 text-xs font-bold rounded bg-gray-950 text-gray-400 border border-gray-800";
-            });
-            currentPeriod = p;
-            calculatePrice();
-        }
-
-        function calculatePrice() {
-            let baseDailyPriceUSD = baseHourlyRates[currentGPU] * 24;
-            let fullPriceInUSD = baseDailyPriceUSD * periodDays[currentPeriod];
-            let finalPriceInUSD = fullPriceInUSD * (1 - discounts[currentPeriod]);
-            document.getElementById('total-price').innerText = formatCurrencyValue(finalPriceInUSD);
-            const compareBlock = document.getElementById('discount-compare');
-            if (currentPeriod === 'day') { compareBlock.classList.add('hidden'); }
-            else {
-                compareBlock.className = "mt-2 pt-2 border-t border-gray-900/80 text-[11px] space-y-1 block";
-                document.getElementById('old-price').innerText = formatCurrencyValue(fullPriceInUSD);
-                document.getElementById('save-amount').innerText = formatCurrencyValue(fullPriceInUSD - finalPriceInUSD);
-            }
-        }
-
         function changeLanguage() {
             currentLanguage = document.getElementById('lang-select').value;
-            currentCurrency = currentLanguage === 'RU' ? '₽' : '$';
             const t = translations[currentLanguage];
             document.getElementById('side-title').innerText = t.sideTitle;
             document.getElementById('side-calc').innerText = t.sideCalc;
@@ -443,19 +650,12 @@
             document.getElementById('calc-title').innerText = t.title;
             document.getElementById('calc-subtitle').innerText = t.subtitle;
             document.getElementById('label-gpu').innerText = t.gpu;
-            document.getElementById('label-period').innerText = t.period;
-            document.getElementById('label-cost').innerText = t.cost;
-            document.getElementById('text-old-price').innerText = t.oldPrice;
-            document.getElementById('text-save').innerText = t.save;
-            document.getElementById('period-day').innerText = t.pDay;
-            document.getElementById('period-week').innerText = t.pWeek;
-            document.getElementById('period-month').innerText = t.pMonth;
-            document.getElementById('btn-main-action').innerText = t.btnBuy;
             document.getElementById('ent-title').innerText = t.entTitle;
             document.getElementById('ent-desc').innerText = t.entDesc;
             document.getElementById('ent-term').innerHTML = t.entTerm;
             document.getElementById('ent-net').innerHTML = t.entNet;
             document.getElementById('btn-enterprise').innerText = t.btnEnt;
+            document.getElementById('hint-text').innerText = t.hint;
             renderGpuMarketplace();
         }
 
