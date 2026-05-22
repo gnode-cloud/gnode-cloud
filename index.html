@@ -43,7 +43,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── NOISE GRAIN ── */
 body::before {
   content: '';
   position: fixed;
@@ -54,7 +53,6 @@ body::before {
   opacity: 0.4;
 }
 
-/* ── AMBIENT BACKGROUND ── */
 .ambient {
   position: fixed;
   inset: 0;
@@ -94,7 +92,6 @@ body::before {
   66% { transform: translate(-20px, 30px) scale(0.95); }
 }
 
-/* ── NAV ── */
 nav {
   position: sticky;
   top: 0;
@@ -188,7 +185,6 @@ nav {
 }
 .menu-btn svg { width: 16px; height: 16px; }
 
-/* ── MAIN ── */
 main {
   position: relative;
   z-index: 1;
@@ -197,7 +193,6 @@ main {
   padding: 40px 24px 80px;
 }
 
-/* ── HERO ── */
 .hero {
   text-align: center;
   margin-bottom: 56px;
@@ -257,7 +252,6 @@ main {
   margin: 0 auto;
 }
 
-/* ── LAYOUT ── */
 .layout {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -269,7 +263,6 @@ main {
   .layout { grid-template-columns: 1fr; }
 }
 
-/* ── SECTION LABEL ── */
 .section-label {
   font-size: 11px;
   font-weight: 600;
@@ -279,7 +272,6 @@ main {
   margin-bottom: 14px;
 }
 
-/* ── TIER GROUP ── */
 .tier-group {
   margin-bottom: 12px;
   border-radius: var(--radius-lg);
@@ -341,7 +333,6 @@ main {
   padding-bottom: 0;
 }
 
-/* ── GPU CARD ── */
 .gpu-card {
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
@@ -429,7 +420,6 @@ main {
   margin-top: 1px;
 }
 
-/* ── EXPAND PANEL ── */
 .gpu-expand {
   overflow: hidden;
   max-height: 0;
@@ -451,7 +441,6 @@ main {
   margin-bottom: 14px;
 }
 
-/* use case chips */
 .use-cases {
   display: flex;
   flex-wrap: wrap;
@@ -468,7 +457,6 @@ main {
   background: rgba(255,255,255,0.03);
 }
 
-/* period selector */
 .period-label {
   font-size: 10px;
   font-weight: 600;
@@ -508,7 +496,6 @@ main {
   box-shadow: 0 2px 12px rgba(41,151,255,0.35);
 }
 
-/* price display */
 .price-box {
   background: rgba(255,255,255,0.03);
   border: 1px solid var(--border);
@@ -560,7 +547,6 @@ main {
   font-variant-numeric: tabular-nums;
 }
 
-/* launch button */
 .launch-btn {
   width: 100%;
   padding: 13px;
@@ -592,7 +578,6 @@ main {
 .launch-btn:hover::before { opacity: 1; }
 .launch-btn:active { transform: scale(0.98); }
 
-/* ── RIGHT PANEL ── */
 .right-panel {
   position: sticky;
   top: 76px;
@@ -601,7 +586,6 @@ main {
   gap: 16px;
 }
 
-/* empty state */
 .empty-state {
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
@@ -627,7 +611,6 @@ main {
   line-height: 1.5;
 }
 
-/* enterprise card */
 .enterprise-card {
   border-radius: var(--radius-xl);
   border: 1px solid rgba(191,90,242,0.2);
@@ -717,7 +700,6 @@ main {
 }
 .ent-btn:active { transform: scale(0.98); }
 
-/* ── SIDEBAR ── */
 .sidebar-overlay {
   position: fixed;
   inset: 0;
@@ -818,7 +800,6 @@ main {
   letter-spacing: 0.05em;
 }
 
-/* ── MODAL ── */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -940,13 +921,11 @@ main {
   box-shadow: 0 6px 20px rgba(41,151,255,0.35);
 }
 
-/* ── SCROLL BAR ── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 
-/* ── SELECTION ── */
 ::selection { background: rgba(41,151,255,0.3); }
 </style>
 </head>
@@ -1069,6 +1048,7 @@ main {
 const TG_USERNAME = 'gnodecloud';
 let lang = 'RU';
 let selectedGpu = null;
+let currentPeriod = 'day';
 
 const rubRate = 92;
 const hourlyUSD = {
@@ -1162,248 +1142,275 @@ const GPUS = {
     l40:{name:'NVIDIA L40',spec:'48 ГБ VRAM · 94 ГБ ОЗУ · 8 vCPU',badge:'Медиа & AI',badgeStyle:'background:rgba(255,55,95,0.1);color:#ff375f;border:1px solid rgba(255,55,95,0.2)',uses:['🎬 AI-видео генерация','🖼️ Генерация изображений','🔊 Синтез речи']},
     l40s:{name:'NVIDIA L40S',spec:'48 ГБ VRAM · 94 ГБ ОЗУ · 16 vCPU',badge:'Рекомендуем',badgeStyle:'background:rgba(48,209,88,0.1);color:#30d158;border:1px solid rgba(48,209,88,0.2)',uses:['⚡ Ускоренный инференс','🧠 Обучение нейросетей','🌐 Серверный AI']},
     rtx_a6000:{name:'RTX A6000',spec:'48 ГБ VRAM · 50 ГБ ОЗУ · 9 vCPU',badge:'Workstation',badgeStyle:'background:rgba(94,92,230,0.12);color:#5e5ce6;border:1px solid rgba(94,92,230,0.25)',uses:['🎨 3D/VFX студии','🔬 Научный рендеринг','🏎️ Автодизайн']},
-    a100_pcie:{name:'A100 PCIe',spec:'80 ГБ VRAM · 125 ГБ ОЗУ · 16 vCPU',badge:'Data Center',badgeStyle:'background:rgba(255,255,255,0.08);color:#fff;border:1px solid var(--border)',uses:['🧠 Обучение LLM','🔬 Большие данные','⚡ Тяжелый HPC']},
-    a100_sxm:{name:'A100 SXM4',spec:'80 ГБ VRAM · 240 ГБ ОЗУ · 24 vCPU',badge:'Высокая скорость',badgeStyle:'background:rgba(41,151,255,0.15);color:#2997ff;border:1px solid rgba(41,151,255,0.3)',uses:['🚀 NVLink Кластеры','🧠 Deep Learning','🧬 Биоинформатика']},
-    rtx_pro_6000:{name:'RTX Pro 6000',spec:'96 ГБ VRAM · 188 ГБ ОЗУ · 16 vCPU',badge:'Creator Pro',badgeStyle:'background:rgba(255,69,58,0.1);color:#ff453a;border:1px solid rgba(255,69,58,0.2)',uses:['🎬 Рендеринг сцен 8K','🏗️ Мега-проекты','🎮 Разработка AAA']},
-    h100_nvl:{name:'H100 NVL',spec:'94 ГБ VRAM · 188 ГБ ОЗУ · 16 vCPU',badge:'Топ Инференс',badgeStyle:'background:rgba(191,90,242,0.15);color:#bf5af2;border:1px solid rgba(191,90,242,0.3)',uses:['🤖 Инференс больших LLM','⚡ Экстремальный ИИ']},
-    h100_pcie:{name:'H100 PCIe',spec:'80 ГБ VRAM · 125 ГБ ОЗУ · 16 vCPU',badge:'Hopper',badgeStyle:'background:rgba(255,159,10,0.15);color:#ff9f0a;border:1px solid rgba(255,159,10,0.3)',uses:['🧠 Обучение моделей','⚡ AI Вычисления']},
-    h100_sxm:{name:'H100 SXM5',spec:'80 ГБ VRAM · 250 ГБ ОЗУ · 26 vCPU',badge:'⚡ Бестселлер',badgeStyle:'background:rgba(255,69,58,0.15);color:#ff453a;border:1px solid rgba(255,69,58,0.3)',uses:['🤖 Обучение GPT моделей','🚀 Ультра-HPC']},
-    h200:{name:'NVIDIA H200',spec:'141 ГБ HBM3e · 300 ГБ ОЗУ · 32 vCPU',badge:'Суперфлагман',badgeStyle:'background:linear-gradient(135deg, rgba(255,69,58,0.2), rgba(191,90,242,0.2));color:#ff9f0a;border:1px solid rgba(255,159,10,0.4)',uses:['🧠 Мультимодальные LLM','🚀 Будущее AI']},
-    b200:{name:'Blackwell B200',spec:'192 ГБ HBM3e · 512 ГБ ОЗУ · 64 vCPU',badge:'🌌 Завтрашний день',badgeStyle:'background:linear-gradient(135deg, #bf5af2, #ff453a);color:#fff',uses:['🔮 Обучение моделей ИИ 1Т+','🌌 Пре-AGI Эра']}
+    a100_pcie:{name:'A100 PCIe',spec:'80 ГБ VRAM · 125 ГБ ОЗУ · 16 vCPU',badge:'Data Center',badgeStyle:'background:rgba(255,255,255,0.08);color:#fff;border:1px solid var(--border)',uses:['🧠 Обучение LLM','🔬 Большие данные','🖥️ HPC Кластеры']},
+    a100_sxm:{name:'A100 SXM4',spec:'80 ГБ VRAM · 250 ГБ ОЗУ · 32 vCPU',badge:'High Perf',badgeStyle:'background:rgba(41,151,255,0.1);color:#2997ff;border:1px solid rgba(41,151,255,0.2)',uses:['⚡ Максимальная скорость','🧠 Обучение моделей','📊 Научный анализ']},
+    rtx_pro_6000:{name:'NVIDIA 6000 Ada Pro',spec:'48 ГБ VRAM · 128 ГБ ОЗУ · 24 vCPU',badge:'Datacenter',badgeStyle:'background:rgba(255,255,255,0.05);color:#aaa;border:1px solid var(--border)',uses:['🎨 Рендеринг фермы','🤖 Корпоративный AI','⚙️ Тяжелые вычисления']},
+    h100_nvl:{name:'H100 NVL',spec:'94 ГБ VRAM · 180 ГБ ОЗУ · 24 vCPU',badge:'⚡ LLM King',badgeStyle:'background:rgba(255,69,58,0.15);color:#ff453a;border:1px solid rgba(255,69,58,0.3)',uses:['🧠 LLM Обучение','🚀 Ультра инференс','🌐 Передовые технологии']},
+    h100_pcie:{name:'H100 PCIe',spec:'80 ГБ VRAM · 150 ГБ ОЗУ · 16 vCPU',badge:'Hopper',badgeStyle:'background:rgba(255,255,255,0.1);color:#fff;border:1px solid var(--border)',uses:['🔬 Исследования','🧠 Генеративный AI','⚡ HPC вычисления']},
+    h100_sxm:{name:'H100 SXM5',spec:'80 ГБ VRAM · 250 ГБ ОЗУ · 32 vCPU',badge:'🔥 Топ AI',badgeStyle:'background:rgba(255,69,58,0.12);color:#ff453a;border:1px solid rgba(255,69,58,0.25)',uses:['🧠 Обучение GPT-класса','🔬 Дата-сайнс','⚡ Макс. тензорная мощь']},
+    h200:{name:'NVIDIA H200',spec:'141 ГБ HBM3e · 300 ГБ ОЗУ · 48 vCPU',badge:'🚀 Эксклюзив',badgeStyle:'background:rgba(191,90,242,0.15);color:#bf5af2;border:1px solid rgba(191,90,242,0.3)',uses:['🧠 Огромные LLM','⚡ Ускорение х2 к H100','🌍 Будущее AI']},
+    b200:{name:'Blackwell B200',spec:'192 ГБ HBM3e · 500 ГБ ОЗУ · 64 vCPU',badge:'👑 Абсолютный топ',badgeStyle:'background:linear-gradient(135deg,rgba(255,69,58,0.2),rgba(191,90,242,0.2));color:#fff;border:1px solid #ff453a',uses:['🧠 Обучение триллионных моделей','🚀 Граница технологий','⚡ AGI симуляторы']}
   },
   EN: {
     l4:{name:'NVIDIA L4',spec:'24 GB VRAM · 50 GB RAM · 12 vCPU',badge:'Optimal',badgeStyle:'background:rgba(48,209,88,0.12);color:#30d158;border:1px solid rgba(48,209,88,0.2)',uses:['🤖 Model Inference','🎨 Image Processing','💬 Chatbots']},
     rtx_a5000:{name:'RTX A5000',spec:'24 GB VRAM · 25 GB RAM · 9 vCPU',badge:'Budget',badgeStyle:'background:rgba(41,151,255,0.1);color:#2997ff;border:1px solid rgba(41,151,255,0.2)',uses:['🎬 3D Rendering','🖥️ CAD/CAM','📐 Engineering']},
     rtx_3090:{name:'RTX 3090',spec:'24 GB VRAM · 125 GB RAM · 16 vCPU',badge:'Popular',badgeStyle:'background:rgba(255,159,10,0.1);color:#ff9f0a;border:1px solid rgba(255,159,10,0.2)',uses:['🧠 LLM Fine-tuning','🎬 Video Rendering','🔬 ML Experiments']},
-    rtx_4090:{name:'RTX 4090',spec:'24 GB VRAM · 41 GB RAM · 6 vCPU',badge:'🔥 Top Seller',badgeStyle:'background:rgba(255,159,10,0.12);color:#ff9f0a;border:1px solid rgba(255,159,10,0.25)',uses:['🧠 Up to 13B Fine-tuning','🎨 Stable Diffusion','🚀 Fast Inference']},
-    rtx_5090:{name:'RTX 5090',spec:'32 GB VRAM · 35 GB RAM · 9 vCPU',badge:'New',badgeStyle:'background:rgba(191,90,242,0.1);color:#bf5af2;border:1px solid rgba(191,90,242,0.2)',uses:['🧠 Up to 30B LLM','🤖 Multimodal Models','⚡ Real-time AI Video']},
+    rtx_4090:{name:'RTX 4090',spec:'24 GB VRAM · 41 GB RAM · 6 vCPU',badge:'🔥 Bestseller',badgeStyle:'background:rgba(255,159,10,0.12);color:#ff9f0a;border:1px solid rgba(255,159,10,0.25)',uses:['🧠 Up to 13B Fine-tuning','🎨 Stable Diffusion','🚀 Fast Inference']},
+    rtx_5090:{name:'RTX 5090',spec:'32 GB VRAM · 35 GB RAM · 9 vCPU',badge:'New',badgeStyle:'background:rgba(191,90,242,0.1);color:#bf5af2;border:1px solid rgba(191,90,242,0.2)',uses:['🧠 Up to 30B LLMs','🤖 Multimodal Models','⚡ Real-time AI Video']},
     rtx_6000_ada:{name:'RTX 6000 Ada',spec:'48 GB VRAM · 167 GB RAM · 10 vCPU',badge:'Pro',badgeStyle:'background:rgba(41,151,255,0.1);color:#64d2ff;border:1px solid rgba(100,210,255,0.2)',uses:['🏗️ BIM / Architecture','🎬 VFX & Animation','🔬 Simulations']},
-    a40:{name:'NVIDIA A40',spec:'48 GB VRAM · 50 GB RAM · 9 vCPU',badge:'Universal',badgeStyle:'background:rgba(48,209,88,0.08);color:#34c759;border:1px solid rgba(52,199,89,0.2)',uses:['🤖 ML Pipelines','📊 Data Analytics','🔄 Parallel Tasks']},
-    l40:{name:'NVIDIA L40',spec:'48 GB VRAM · 94 GB RAM · 8 vCPU',badge:'Media & AI',badgeStyle:'background:rgba(255,55,95,0.1);color:#ff375f;border:1px solid rgba(255,55,95,0.2)',uses:['🎬 AI Video Gen','🖼️ Image Generation','🔊 Speech Synthesis']},
-    l40s:{name:'NVIDIA L40S',spec:'48 GB VRAM · 94 GB RAM · 16 vCPU',badge:'Recommended',badgeStyle:'background:rgba(48,209,88,0.1);color:#30d158;border:1px solid rgba(48,209,88,0.2)',uses:['⚡ Faster Inference','🧠 Neural Net Training','🌐 Server AI']},
-    rtx_a6000:{name:'RTX A6000',spec:'48 GB VRAM · 50 GB RAM · 9 vCPU',badge:'Workstation',badgeStyle:'background:rgba(94,92,230,0.12);color:#5e5ce6;border:1px solid rgba(94,92,230,0.25)',uses:['🎨 3D/VFX Studios','🔬 Scientific Render','🏎️ Automotive Design']},
-    a100_pcie:{name:'A100 PCIe',spec:'80 GB VRAM · 125 GB RAM · 16 vCPU',badge:'Data Center',badgeStyle:'background:rgba(255,255,255,0.08);color:#fff;border:1px solid var(--border)',uses:['🧠 LLM Training','🔬 Big Data','⚡ Heavy HPC']},
-    a100_sxm:{name:'A100 SXM4',spec:'80 GB VRAM · 240 GB RAM · 24 vCPU',badge:'High Speed',badgeStyle:'background:rgba(41,151,255,0.15);color:#2997ff;border:1px solid rgba(41,151,255,0.3)',uses:['🚀 NVLink Clusters','🧠 Deep Learning','🧬 Bioinformatics']},
-    rtx_pro_6000:{name:'RTX Pro 6000',spec:'96 GB VRAM · 188 GB RAM · 16 vCPU',badge:'Creator Pro',badgeStyle:'background:rgba(255,69,58,0.1);color:#ff453a;border:1px solid rgba(255,69,58,0.2)',uses:['🎬 8K Scene Rendering','🏗️ Mega Projects','🎮 AAA Dev']},
-    h100_nvl:{name:'H100 NVL',spec:'94 GB VRAM · 188 GB RAM · 16 vCPU',badge:'Top Inference',badgeStyle:'background:rgba(191,90,242,0.15);color:#bf5af2;border:1px solid rgba(191,90,242,0.3)',uses:['🤖 Large LLM Inference','⚡ Extreme AI']},
-    h100_pcie:{name:'H100 PCIe',spec:'80 GB VRAM · 125 GB RAM · 16 vCPU',badge:'Hopper',badgeStyle:'background:rgba(255,159,10,0.15);color:#ff9f0a;border:1px solid rgba(255,159,10,0.3)',uses:['🧠 Model Training','⚡ AI Compute']},
-    h100_sxm:{name:'H100 SXM5',spec:'80 GB VRAM · 250 GB RAM · 26 vCPU',badge:'⚡ Bestseller',badgeStyle:'background:rgba(255,69,58,0.15);color:#ff453a;border:1px solid rgba(255,69,58,0.3)',uses:['🤖 GPT Training','🚀 Ultra-HPC']},
-    h200:{name:'NVIDIA H200',spec:'141 GB HBM3e · 300 GB RAM · 32 vCPU',badge:'Superflagship',badgeStyle:'background:linear-gradient(135deg, rgba(255,69,58,0.2), rgba(191,90,242,0.2));color:#ff9f0a;border:1px solid rgba(255,159,10,0.4)',uses:['🧠 Multimodal LLMs','🚀 Future of AI']},
-    b200:{name:'Blackwell B200',spec:'192 GB HBM3e · 512 GB RAM · 64 vCPU',badge:'🌌 Pre-AGI Era',badgeStyle:'background:linear-gradient(135deg, #bf5af2, #ff453a);color:#fff',uses:['🔮 1T+ AI Training','🌌 Pre-AGI Systems']}
+    a40:{name:'NVIDIA A40',spec:'48 GB VRAM · 50 GB RAM · 9 vCPU',badge:'Versatile',badgeStyle:'background:rgba(48,209,88,0.08);color:#34c759;border:1px solid rgba(52,199,89,0.2)',uses:['🤖 ML Pipelines','📊 Data Analytics','🔄 Parallel Tasks']},
+    l40:{name:'NVIDIA L40',spec:'48 GB VRAM · 94 GB RAM · 8 vCPU',badge:'Media & AI',badgeStyle:'background:rgba(255,55,95,0.1);color:#ff375f;border:1px solid rgba(255,55,95,0.2)',uses:['🎬 AI Video Generation','🖼️ Image Generation','🔊 Speech Synthesis']},
+    l40s:{name:'NVIDIA L40S',spec:'48 GB VRAM · 94 GB RAM · 16 vCPU',badge:'Recommended',badgeStyle:'background:rgba(48,209,88,0.1);color:#30d158;border:1px solid rgba(48,209,88,0.2)',uses:['⚡ Fast Inference','🧠 NN Training','🌐 Server AI']},
+    rtx_a6000:{name:'RTX A6000',spec:'48 GB VRAM · 50 GB RAM · 9 vCPU',badge:'Workstation',badgeStyle:'background:rgba(94,92,230,0.12);color:#5e5ce6;border:1px solid rgba(94,92,230,0.25)',uses:['🎨 3D/VFX Studios','🔬 Science Render','🏎️ Car Design']},
+    a100_pcie:{name:'A100 PCIe',spec:'80 GB VRAM · 125 GB RAM · 16 vCPU',badge:'Data Center',badgeStyle:'background:rgba(255,255,255,0.08);color:#fff;border:1px solid var(--border)',uses:['🧠 LLM Training','🔬 Big Data','🖥️ HPC Clusters']},
+    a100_sxm:{name:'A100 SXM4',spec:'80 GB VRAM · 250 GB RAM · 32 vCPU',badge:'High Perf',badgeStyle:'background:rgba(41,151,255,0.1);color:#2997ff;border:1px solid rgba(41,151,255,0.2)',uses:['⚡ Max Speed','🧠 Model Training','📊 Scientific Analysis']},
+    rtx_pro_6000:{name:'NVIDIA 6000 Ada Pro',spec:'48 GB VRAM · 128 GB RAM · 24 vCPU',badge:'Datacenter',badgeStyle:'background:rgba(255,255,255,0.05);color:#aaa;border:1px solid var(--border)',uses:['🎨 Render Farms','🤖 Enterprise AI','⚙️ Heavy Compute']},
+    h100_nvl:{name:'H100 NVL',spec:'94 GB VRAM · 180 GB RAM · 24 vCPU',badge:'⚡ LLM King',badgeStyle:'background:rgba(255,69,58,0.15);color:#ff453a;border:1px solid rgba(255,69,58,0.3)',uses:['🧠 LLM Training','🚀 Ultra Inference','🌐 Frontier Tech']},
+    h100_pcie:{name:'H100 PCIe',spec:'80 GB VRAM · 150 GB RAM · 16 vCPU',badge:'Hopper',badgeStyle:'background:rgba(255,255,255,0.1);color:#fff;border:1px solid var(--border)',uses:['🔬 Research','🧠 GenAI','⚡ HPC Tasks']},
+    h100_sxm:{name:'H100 SXM5',spec:'80 GB VRAM · 250 GB RAM · 32 vCPU',badge:'🔥 Top AI',badgeStyle:'background:rgba(255,69,58,0.12);color:#ff453a;border:1px solid rgba(255,69,58,0.25)',uses:['🧠 GPT-class Training','🔬 Data Science','⚡ Max Tensor Power']},
+    h200:{name:'NVIDIA H200',spec:'141 GB HBM3e · 300 GB RAM · 48 vCPU',badge:'🚀 Exclusive',badgeStyle:'background:rgba(191,90,242,0.15);color:#bf5af2;border:1px solid rgba(191,90,242,0.3)',uses:['🧠 Giant LLMs','⚡ 2x Faster than H100','🌍 Future of AI']},
+    b200:{name:'Blackwell B200',spec:'192 GB HBM3e · 500 GB RAM · 64 vCPU',badge:'👑 Absolute Top',badgeStyle:'background:linear-gradient(135deg,rgba(255,69,58,0.2),rgba(191,90,242,0.2));color:#fff;border:1px solid #ff453a',uses:['🧠 Trillion-param Models','🚀 Edge of Tech','⚡ AGI Simulators']}
   }
 };
 
-function setLang(l, btn) {
-  lang = l;
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  
-  document.getElementById('heroEyebrow').innerText = T[lang].eyebrow;
-  document.getElementById('heroH1').innerHTML = T[lang].h1;
-  document.getElementById('heroP').innerText = T[lang].p;
-  document.getElementById('gpuSectionLabel').innerText = T[lang].gpuLabel;
-  document.getElementById('emptyTitle').innerText = T[lang].emptyTitle;
-  document.getElementById('emptySub').innerHTML = T[lang].emptySub;
-  document.getElementById('entBadge').innerText = T[lang].entBadge;
-  document.getElementById('entTitle').innerHTML = T[lang].entTitle;
-  document.getElementById('entDesc').innerText = T[lang].entDesc;
-  document.getElementById('entTerm').innerHTML = '&nbsp;' + T[lang].entTerm;
-  document.getElementById('entNet').innerHTML = '&nbsp;' + T[lang].entNet;
-  document.getElementById('entConfig').innerHTML = '&nbsp;' + T[lang].entConfig;
-  document.getElementById('entBtn').innerText = T[lang].entBtn;
-  
-  for(let i=1; i<=4; i++) {
-    document.getElementById('sNav' + i).innerText = T[lang].sNav[i-1];
-  }
-  
-  renderGPUs();
-  if (selectedGpu) {
-    selectGpu(selectedGpu);
-  }
-}
-
-function renderGPUs() {
+function renderTiers() {
   const container = document.getElementById('gpuList');
   container.innerHTML = '';
-  
-  T[lang].tiers.forEach((tier, tierIdx) => {
+  const currentText = T[lang];
+  const gpuData = GPUS[lang];
+
+  currentText.tiers.forEach((tier, idx) => {
     const group = document.createElement('div');
     group.className = 'tier-group';
-    group.id = 'tier-' + tierIdx;
-    
-    group.innerHTML = `
-      <div class="tier-header" onclick="toggleTier(${tierIdx})">
-        <div class="tier-dot" style="background:${tier.color}"></div>
-        <div class="tier-info">
-          <div class="tier-name">${tier.label}</div>
-          <div class="tier-sub">${tier.sub}</div>
-        </div>
-        <svg class="tier-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+    group.id = `tier-group-${idx}`;
+
+    const header = document.createElement('div');
+    header.className = 'tier-header';
+    header.onclick = () => {
+      group.classList.toggle('collapsed');
+    };
+
+    header.innerHTML = `
+      <div class="tier-dot" style="background:${tier.color}"></div>
+      <div class="tier-info">
+        <div class="tier-name">${tier.label}</div>
+        <div class="tier-sub">${tier.sub}</div>
       </div>
-      <div class="tier-cards" id="tier-cards-${tierIdx}"></div>
+      <svg class="tier-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+      </svg>
     `;
-    
-    container.appendChild(group);
-    const cardsCont = document.getElementById(`tier-cards-${tierIdx}`);
-    
+
+    const cardsContainer = document.createElement('div');
+    cardsContainer.className = 'tier-cards';
+
     tier.keys.forEach(key => {
-      const gpu = GPUS[lang][key];
-      if(!gpu) return;
-      
+      const item = gpuData[key];
+      if (!item) return;
+      const prices = calcPrice(key, 'day');
       const card = document.createElement('div');
       card.className = `gpu-card ${selectedGpu === key ? 'selected' : ''}`;
-      card.id = 'card-' + key;
+      card.id = `gpu-card-${key}`;
       card.onclick = (e) => {
-        if(e.target.closest('.gpu-expand') || e.target.closest('.period-pill')) return;
+        e.stopPropagation();
         selectGpu(key);
       };
-      
-      const dailyPrice = hourlyUSD[key] * 24;
-      
+
       card.innerHTML = `
         <div class="gpu-card-header">
           <div class="gpu-status"></div>
           <div class="gpu-info">
             <div class="gpu-name-row">
-              <span class="gpu-name">${gpu.name}</span>
-              ${gpu.badge ? `<span class="gpu-badge" style="${gpu.badgeStyle}">${gpu.badge}</span>` : ''}
+              <span class="gpu-name">${item.name}</span>
+              ${item.badge ? `<span class="gpu-badge" style="${item.badgeStyle}">${item.badge}</span>` : ''}
             </div>
-            <div class="gpu-spec">${gpu.spec}</div>
+            <div class="gpu-spec">${item.spec}</div>
           </div>
           <div class="gpu-price-col">
-            <div class="gpu-price">${fmt(dailyPrice)}</div>
-            <div class="gpu-price-label">${T[lang].rateLabel}</div>
-          </div>
-        </div>
-        
-        <div class="gpu-expand ${selectedGpu === key ? 'open' : ''}" id="expand-${key}">
-          <div class="gpu-expand-inner">
-            <div class="divider"></div>
-            <div class="period-label">${T[lang].useCasesLabel}</div>
-            <div class="use-cases">
-              ${gpu.uses.map(u => `<span class="use-chip">${u}</span>`).join('')}
-            </div>
-            
-            <div class="period-label">${T[lang].periodLabel}</div>
-            <div class="period-row">
-              <button class="period-pill active" id="p-day-${key}" onclick="setPeriod('${key}', 'day')">${T[lang].pDay}</button>
-              <button class="period-pill" id="p-week-${key}" onclick="setPeriod('${key}', 'week')">${T[lang].pWeek}</button>
-              <button class="period-pill" id="p-month-${key}" onclick="setPeriod('${key}', 'month')">${T[lang].pMonth}</button>
-            </div>
-            
-            <div class="price-box">
-              <div class="price-box-label">${T[lang].costLabel}</div>
-              <div class="price-main" id="price-${key}">-</div>
-              <div class="price-savings hidden" id="savings-box-${key}">
-                <div class="price-old">${T[lang].baseLabel} <s id="old-price-${key}">-</s></div>
-                <div class="price-save" id="save-pct-${key}">-</div>
-              </div>
-            </div>
-            
-            <button class="launch-btn" onclick="orderGpu('${key}')">${T[lang].launchBtn}</button>
+            <div class="gpu-price">${fmt(prices.final)}</div>
+            <div class="gpu-price-label">${currentText.rateLabel}</div>
           </div>
         </div>
       `;
-      cardsCont.appendChild(card);
+      cardsContainer.appendChild(card);
     });
-    
-    // Вычисляем max-height динамически для анимации аккордеона
-    cardsCont.style.maxHeight = cardsCont.scrollHeight + 'px';
+
+    group.appendChild(header);
+    group.appendChild(cardsContainer);
+    container.appendChild(group);
   });
 }
 
-function toggleTier(idx) {
-  const g = document.getElementById('tier-' + idx);
-  const c = document.getElementById('tier-cards' + '-' + idx);
-  g.classList.toggle('collapsed');
-  if(g.classList.contains('collapsed')) {
-    c.style.maxHeight = '0px';
-  } else {
-    c.style.maxHeight = c.scrollHeight + 'px';
-  }
-}
-
 function selectGpu(key) {
-  if (selectedGpu && selectedGpu !== key) {
-    document.getElementById('card-' + selectedGpu)?.classList.remove('selected');
-    document.getElementById('expand-' + selectedGpu)?.classList.remove('open');
-  }
-  
   selectedGpu = key;
-  const card = document.getElementById('card-' + key);
-  const expand = document.getElementById('expand-' + key);
-  
-  card.classList.add('selected');
-  expand.classList.add('open');
-  
-  document.getElementById('emptyState').style.display = 'none';
-  
-  setPeriod(key, 'day');
+  document.querySelectorAll('.gpu-card').forEach(c => c.classList.remove('selected'));
+  const currentCard = document.getElementById(`gpu-card-${key}`);
+  if (currentCard) currentCard.classList.add('selected');
+
+  const emptyState = document.getElementById('emptyState');
+  const currentText = T[lang];
+  const item = GPUS[lang][key];
+
+  const pDay = calcPrice(key, 'day').final;
+  const pWeek = calcPrice(key, 'week').final;
+  const pMonth = calcPrice(key, 'month').final;
+
+  emptyState.className = "price-box-container";
+  emptyState.style.textAlign = "left";
+  emptyState.style.padding = "0";
+  emptyState.style.background = "transparent";
+  emptyState.style.border = "none";
+
+  emptyState.innerHTML = `
+    <div class="price-box" style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-xl); padding:22px;">
+      <h2 style="font-size:20px; font-weight:800; margin-bottom:16px; color:var(--text-primary);">${item.name}</h2>
+      
+      <div class="period-label">${currentText.useCasesLabel}</div>
+      <div class="use-cases">
+        ${item.uses.map(u => `<span class="use-chip">${u}</span>`).join('')}
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="period-label">${currentText.periodLabel}</div>
+      <div class="period-row">
+        <button class="period-pill ${currentPeriod === 'day' ? 'active' : ''}" onclick="changePeriod('day')">${currentText.pDay}</button>
+        <button class="period-pill ${currentPeriod === 'week' ? 'active' : ''}" onclick="changePeriod('week')">${currentText.pWeek}</button>
+        <button class="period-pill ${currentPeriod === 'month' ? 'active' : ''}" onclick="changePeriod('month')">${currentText.pMonth}</button>
+      </div>
+
+      <div class="price-box" style="margin-bottom:16px; padding:12px 14px;">
+        <div class="price-box-label">${currentText.costLabel}</div>
+        <div class="price-main" id="sidePrice"></div>
+        <div class="price-savings" id="sideSavings"></div>
+      </div>
+
+      <button class="launch-btn" onclick="launchInstance()">${currentText.launchBtn}</button>
+    </div>
+  `;
+  updateSidePrice();
 }
 
-function setPeriod(key, period) {
-  document.querySelectorAll(`#expand-${key} .period-pill`).forEach(b => b.classList.remove('active'));
-  document.getElementById(`p-${period}-${key}`).classList.add('active');
+function changePeriod(period) {
+  currentPeriod = period;
+  document.querySelectorAll('.period-pill').forEach(b => b.classList.remove('active'));
+  updateSidePrice();
+}
+
+function updateSidePrice() {
+  if (!selectedGpu) return;
+  const currentText = T[lang];
+  const p = calcPrice(selectedGpu, currentPeriod);
   
-  const p = calcPrice(key, period);
-  document.getElementById(`price-${key}`).innerText = fmt(p.final);
+  const sidePrice = document.getElementById('sidePrice');
+  const sideSavings = document.getElementById('sideSavings');
   
-  const savingsBox = document.getElementById(`savings-box-${key}`);
-  if (p.saved > 0) {
-    savingsBox.classList.remove('hidden');
-    document.getElementById(`old-price-${key}`).innerText = fmt(p.full);
-    document.getElementById(`save-pct-${key}`).innerText = `−${discounts[period]*100}%`;
+  if (sidePrice) sidePrice.innerText = fmt(p.final);
+  
+  if (sideSavings) {
+    if (p.saved > 0) {
+      sideSavings.classList.remove('hidden');
+      sideSavings.innerHTML = `
+        <span class="price-old">${currentText.baseLabel} <s>${fmt(p.full)}</s></span>
+        <span class="price-save">${currentText.saveLabel} ${fmt(p.saved)}</span>
+      `;
+    } else {
+      sideSavings.classList.add('hidden');
+    }
+  }
+
+  document.querySelectorAll('.period-pill').forEach(b => {
+    if(b.innerText.toLowerCase().includes('day') || b.innerText.toLowerCase().includes('день')) {
+      if(currentPeriod === 'day') b.classList.add('active');
+    }
+    if(b.innerText.toLowerCase().includes('week') || b.innerText.toLowerCase().includes('недел')) {
+      if(currentPeriod === 'week') b.classList.add('active');
+    }
+    if(b.innerText.toLowerCase().includes('month') || b.innerText.toLowerCase().includes('месяц')) {
+      if(currentPeriod === 'month') b.classList.add('active');
+    }
+  });
+}
+
+function setLang(l, btn) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const text = T[lang];
+  document.getElementById('heroEyebrow').innerText = text.eyebrow;
+  document.getElementById('heroH1').innerHTML = text.h1;
+  document.getElementById('heroP').innerText = text.p;
+  document.getElementById('gpuSectionLabel').innerText = text.gpuLabel;
+  
+  document.getElementById('entBadge').innerText = text.entBadge;
+  document.getElementById('entTitle').innerHTML = text.entTitle;
+  document.getElementById('entDesc').innerText = text.entDesc;
+  document.getElementById('entTerm').innerHTML = `&nbsp;${text.entTerm}`;
+  document.getElementById('entNet').innerHTML = `&nbsp;${text.entNet}`;
+  document.getElementById('entConfig').innerHTML = `&nbsp;${text.entConfig}`;
+  document.getElementById('entBtn').innerText = text.entBtn;
+
+  document.getElementById('modalTitle').innerText = text.modalTitle;
+  document.getElementById('modalH3').innerText = text.modalH3;
+  document.getElementById('modalP').innerText = text.modalP;
+  document.getElementById('modalBtn').innerText = text.modalBtn;
+
+  document.getElementById('sNav1').innerText = text.sNav[0];
+  document.getElementById('sNav2').innerText = text.sNav[1];
+  document.getElementById('sNav3').innerText = text.sNav[2];
+  document.getElementById('sNav4').innerText = text.sNav[3];
+
+  renderTiers();
+  if (selectedGpu) {
+    selectGpu(selectedGpu);
   } else {
-    savingsBox.classList.add('hidden');
+    document.getElementById('emptyTitle').innerText = text.emptyTitle;
+    document.getElementById('emptySub').innerHTML = text.emptySub;
   }
 }
 
-function orderGpu(key) {
-  const activePeriodBtn = document.querySelector(`#expand-${key} .period-pill.active`);
-  let pLabel = '1 день';
-  if (activePeriodBtn.id.includes('week')) pLabel = 'Неделя';
-  if (activePeriodBtn.id.includes('month')) pLabel = 'Месяц';
-  
-  const gpu = GPUS[lang][key];
-  const activePeriod = activePeriodBtn.id.split('-')[1];
-  const p = calcPrice(key, activePeriod);
-  
-  document.getElementById('modalTitle').innerText = T[lang].modalTitle;
-  document.getElementById('modalH3').innerText = T[lang].modalH3;
-  document.getElementById('modalP').innerText = T[lang].modalP;
-  document.getElementById('modalIcon').innerText = '🚀';
-  
-  const confText = `GPU: ${gpu.name}\nPeriod: ${pLabel}\nPrice: ${fmt(p.final)}`;
-  document.getElementById('modalConfig').innerText = confText;
-  
-  const tgMsg = encodeURIComponent(`Привет! Хочу арендовать GPU:\n\n${confText}`);
-  document.getElementById('modalLink').href = `https://t.me/${TG_USERNAME}?text=${tgMsg}`;
-  document.getElementById('modalLink').innerText = T[lang].modalBtn;
-  
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('show');
+  document.getElementById('sbOverlay').classList.add('show');
+}
+function stroke-linecap() {} 
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('show');
+  document.getElementById('sbOverlay').classList.remove('show');
+}
+
+function openModal(configText, link) {
+  document.getElementById('modalConfig').innerText = configText;
+  document.getElementById('modalLink').href = link;
   document.getElementById('modalOverlay').classList.add('show');
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+function launchInstance() {
+  if (!selectedGpu) return;
+  const item = GPUS[lang][selectedGpu];
+  const p = calcPrice(selectedGpu, currentPeriod);
+  const periodText = currentPeriod === 'day' ? '1 Day' : currentPeriod === 'week' ? '1 Week' : '1 Month';
+  
+  const configText = `Order: GPU Cloud\nNode: ${item.name}\nSpecs: ${item.spec}\nPeriod: ${periodText}\nTotal: ${fmt(p.final)}`;
+  const encodedText = encodeURIComponent(configText);
+  const tgLink = `https://t.me/${TG_USERNAME}?text=${encodedText}`;
+  
+  openModal(configText, tgLink);
 }
 
 function openEnterpriseModal() {
-  document.getElementById('modalTitle').innerText = lang === 'RU' ? 'Связь с отделом продаж' : 'Contact Sales';
-  document.getElementById('modalH3').innerText = lang === 'RU' ? 'Заявка Enterprise' : 'Enterprise Request';
-  document.getElementById('modalP').innerText = lang === 'RU' ? 'Индивидуальные кластеры под ваши задачи' : 'Custom high-performance clusters';
-  document.getElementById('modalIcon').innerText = '🏢';
-  document.getElementById('modalConfig').innerText = lang === 'RU' ? 'Тип: AI Кластер / NVLink\nСрок: от 3 месяцев' : 'Type: AI Cluster / NVLink\nTerm: 3+ months';
-  
-  const tgMsg = encodeURIComponent(`Здравствуйте! Интересуют Enterprise кластеры Blackwell x8.`);
-  document.getElementById('modalLink').href = `https://t.me/${TG_USERNAME}?text=${tgMsg}`;
-  document.getElementById('modalLink').innerText = T[lang].modalBtn;
-  
-  document.getElementById('modalOverlay').classList.add('show');
+  const configText = `Order: Enterprise Cluster\nCluster: Blackwell x8 AI\nNetwork: InfiniBand / NVLink\nTerm: min. 3 months`;
+  const encodedText = encodeURIComponent(configText);
+  const tgLink = `https://t.me/${TG_USERNAME}?text=${encodedText}`;
+  openModal(configText, tgLink);
 }
 
-function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
-function openSidebar() { document.getElementById('sidebar').classList.add('show'); document.getElementById('sbOverlay').classList.add('show'); }
-function closeSidebar() { document.getElementById('sidebar').classList.remove('show'); document.getElementById('sbOverlay').classList.remove('show'); }
-
-// Инициализация
-setLang('RU');
+// Initial Init
+renderTiers();
 </script>
-
 </body>
 </html>
