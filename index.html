@@ -1,530 +1,1408 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NODE.CLOUD — Личный кабинет</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #000000;
-            --bg-sidebar: #0a0a0a;
-            --surface: rgba(255, 255, 255, 0.04);
-            --surface-hover: rgba(255, 255, 255, 0.08);
-            --border: rgba(255, 255, 255, 0.08);
-            --border-hover: rgba(255, 255, 255, 0.15);
-            --text: #f5f5f7;
-            --text-secondary: rgba(245, 245, 247, 0.6);
-            --text-muted: rgba(245, 245, 247, 0.35);
-            --blue: #2997ff;
-            --green: #30d158;
-            --red: #ff453a;
-            --orange: #ff9f0a;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NODE.CLOUD — GPU Cloud</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #000000;
+  --surface: rgba(255,255,255,0.04);
+  --surface-hover: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.08);
+  --border-hover: rgba(255,255,255,0.16);
+  --text-primary: #f5f5f7;
+  --text-secondary: rgba(245,245,247,0.6);
+  --text-tertiary: rgba(245,245,247,0.35);
+  --accent: #2997ff;
+  --accent-glow: rgba(41,151,255,0.25);
+  --green: #30d158;
+  --red: #ff453a;
+  --orange: #ff9f0a;
+  --purple: #bf5af2;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --transition: cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        /* Базовые сбросы */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
+html { scroll-behavior: smooth; }
 
-        /* Главный контейнер */
-        .shell {
-            display: flex;
-            min-height: 100vh;
-            position: relative;
-            z-index: 1;
-        }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-        /* Боковое меню */
-        .sidebar {
-            width: 240px;
-            flex-shrink: 0;
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            position: sticky;
-            top: 0;
-            height: 100vh;
-        }
+/* ── NOISE GRAIN ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
+}
 
-        .sb-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 20px;
-            border-bottom: 1px solid var(--border);
-        }
+/* ── AMBIENT BACKGROUND ── */
+.ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.6;
+  animation: ambientFloat 20s ease-in-out infinite;
+}
+.ambient-orb:nth-child(1) {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(41,151,255,0.12) 0%, transparent 70%);
+  top: -200px; left: -100px;
+  animation-delay: 0s;
+}
+.ambient-orb:nth-child(2) {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(191,90,242,0.08) 0%, transparent 70%);
+  bottom: -100px; right: -100px;
+  animation-delay: -7s;
+}
+.ambient-orb:nth-child(3) {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(48,209,88,0.06) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: -14s;
+}
+@keyframes ambientFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-20px, 30px) scale(0.95); }
+}
 
-        .sb-logo-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 7px;
-            background: linear-gradient(135deg, #2997ff, #5e5ce6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 13px;
-            color: #fff;
-        }
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+}
 
-        .sb-logo-txt {
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: .08em;
-        }
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
 
-        .sb-user {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+.nav-logo-icon {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, #2997ff, #5e5ce6);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 13px;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
 
-        .sb-avatar {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #2997ff, #5e5ce6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: 700;
-            color: #fff;
-        }
+.nav-logo-text {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+}
 
-        .sb-user-name { font-size: 12px; font-weight: 600; }
-        .sb-user-email { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-        .sb-balance {
-            margin: 12px 14px;
-            padding: 12px 14px;
-            border-radius: 12px;
-            background: rgba(41, 151, 255, 0.07);
-            border: 1px solid rgba(41, 151, 255, 0.15);
-        }
+.lang-pill {
+  display: flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3px;
+  gap: 2px;
+}
 
-        .sb-balance-label {
-            font-size: 9px;
-            font-weight: 600;
-            letter-spacing: .07em;
-            text-transform: uppercase;
-            color: var(--blue);
-            margin-bottom: 4px;
-        }
+.lang-btn {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all 0.2s var(--transition);
+}
+.lang-btn.active {
+  background: rgba(255,255,255,0.1);
+  color: var(--text-primary);
+}
 
-        .sb-balance-val {
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: -.02em;
-        }
+.menu-btn {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s var(--transition);
+}
+.menu-btn:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+}
+.menu-btn svg { width: 16px; height: 16px; }
 
-        .sb-balance-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+/* ── MAIN ── */
+main {
+  position: relative;
+  z-index: 1;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
 
-        .sb-top-btn {
-            margin: 0 14px 12px;
-            padding: 9px;
-            border-radius: 10px;
-            border: none;
-            background: var(--blue);
-            color: #fff;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .sb-top-btn:hover { background: #3aa0ff; }
+/* ── HERO ── */
+.hero {
+  text-align: center;
+  margin-bottom: 56px;
+  animation: fadeUp 0.8s var(--transition) both;
+}
 
-        .sb-nav { padding: 6px 10px; flex: 1; display: flex; flex-direction: column; gap: 2px; }
-        .sb-nav-section { font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); padding: 10px 8px 6px; }
-        
-        .sb-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 9px 10px;
-            border-radius: 9px;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            cursor: pointer;
-            text-decoration: none;
-            border: 1px solid transparent;
-        }
-        .sb-item:hover { background: var(--surface-hover); color: var(--text); border-color: var(--border); }
-        .sb-item.active { background: rgba(41, 151, 255, 0.1); color: var(--blue); border-color: rgba(41, 151, 255, 0.18); }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-        .sb-badge {
-            margin-left: auto;
-            background: var(--red);
-            color: #fff;
-            font-size: 9px;
-            font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 20px;
-        }
-        .sb-badge.green { background: rgba(48, 209, 88, 0.15); color: var(--green); border: 1px solid rgba(48, 209, 88, 0.2); }
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  background: rgba(41,151,255,0.1);
+  border: 1px solid rgba(41,151,255,0.2);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100%{ opacity:1; transform:scale(1); }
+  50%{ opacity:0.5; transform:scale(0.8); }
+}
 
-        .sb-footer { padding: 14px; border-top: 1px solid var(--border); font-size: 10px; color: var(--text-muted); text-align: center; }
+.hero h1 {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: 16px;
+  background: linear-gradient(160deg, #f5f5f7 0%, rgba(245,245,247,0.55) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-        /* Контентная область */
-        .main { flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100vh; overflow-y: auto; }
+.hero p {
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 480px;
+  margin: 0 auto;
+}
 
-        /* Верхняя панель */
-        .topnav {
-            height: 56px;
-            padding: 0 28px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #000;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-        .topnav-title { font-size: 15px; font-weight: 700; }
+/* ── LAYOUT ── */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 20px;
+  align-items: start;
+}
 
-        /* Страница */
-        .page { padding: 28px; max-width: 1100px; width: 100%; margin: 0 auto; }
-        .sec-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-        .sec-title span { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+}
 
-        /* Карточки метрик */
-        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
-        .stat-card { padding: 18px 20px; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); }
-        .stat-icon { font-size: 20px; margin-bottom: 10px; }
-        .stat-label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; }
-        .stat-val { font-size: 22px; font-weight: 800; }
-        .stat-val.green { color: var(--green); }
-        .stat-val.blue { color: var(--blue); }
-        .stat-val.orange { color: var(--orange); }
-        .stat-sub { font-size: 10px; color: var(--text-muted); margin-top: 5px; }
+/* ── SECTION LABEL ── */
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 14px;
+}
 
-        /* Двухколоночный грид */
-        .grid2 { display: grid; grid-template-columns: 1fr 340px; gap: 16px; margin-bottom: 28px; }
+/* ── TIER GROUP ── */
+.tier-group {
+  margin-bottom: 12px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  animation: fadeUp 0.6s var(--transition) both;
+}
 
-        .card { border-radius: 18px; border: 1px solid var(--border); background: var(--surface); overflow: hidden; }
-        
-        /* Инстансы */
-        .instance { padding: 18px 20px; border-bottom: 1px solid var(--border); }
-        .instance:last-child { border-bottom: none; }
-        .inst-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
-        .inst-icon {
-            width: 38px; height: 38px; border-radius: 10px;
-            background: rgba(41, 151, 255, 0.1); border: 1px solid rgba(41, 151, 255, 0.2);
-            display: flex; align-items: center; justify-content: center; font-size: 17px;
-        }
-        .inst-info { flex: 1; min-width: 0; }
-        .inst-name { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
-        .inst-spec { font-size: 11px; color: var(--text-muted); }
-        
-        .inst-status { display: flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 600; }
-        .status-dot { width: 6px; height: 6px; border-radius: 50%; }
-        .status-dot.running { background: var(--green); }
-        .status-text.running { color: var(--green); }
+.tier-header {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+}
+.tier-header:hover { background: var(--surface-hover); }
 
-        /* Таймер и Стоимость */
-        .timer-row {
-            display: flex; align-items: center; justify-content: space-between;
-            background: rgba(255,255,255,.02); border: 1px solid var(--border);
-            border-radius: 10px; padding: 10px 14px; margin-bottom: 12px;
-        }
-        .timer-label { font-size: 9px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 3px; }
-        .timer-val { font-size: 15px; font-weight: 800; font-family: monospace; }
-        .timer-val.urgent { color: var(--orange); }
-        .timer-bar-wrap { flex: 1; margin: 0 14px; height: 4px; background: rgba(255,255,255,.06); border-radius: 2px; }
-        .timer-bar { height: 100%; border-radius: 2px; }
-        .timer-bar.green { background: var(--green); }
-        .timer-bar.orange { background: var(--orange); }
-        .timer-cost { text-align: right; }
-        .timer-cost-val { font-size: 13px; font-weight: 700; }
-        .timer-cost-label { font-size: 9px; color: var(--text-muted); }
+.tier-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
 
-        /* Доступы */
-        .access-details { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
-        .access-row {
-            display: flex; align-items: center; gap: 8px;
-            padding: 8px 12px; border-radius: 8px;
-            background: rgba(255,255,255,.02); border: 1px solid var(--border);
-        }
-        .access-key { font-size: 10px; color: var(--text-muted); width: 70px; flex-shrink: 0; }
-        .access-val { flex: 1; font-size: 11px; font-weight: 600; font-family: monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .access-val.secret { filter: blur(4px); cursor: pointer; }
-        .access-val.secret:hover { filter: none; }
-        
-        .access-copy {
-            width: 24px; height: 24px; border-radius: 6px;
-            border: 1px solid var(--border); background: transparent;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; color: var(--text-muted);
-        }
-        .access-copy:hover { color: var(--text); border-color: var(--border-hover); }
+.tier-info { flex: 1; min-width: 0; }
+.tier-name {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.tier-sub {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  margin-top: 1px;
+}
 
-        .inst-actions { display: flex; gap: 8px; }
-        .inst-btn {
-            flex: 1; padding: 9px; border-radius: 9px; border: 1px solid var(--border);
-            background: transparent; color: var(--text-secondary); font-size: 11px; font-weight: 600; cursor: pointer;
-        }
-        .inst-btn:hover { background: var(--surface-hover); color: var(--text); }
-        .inst-btn.primary { background: rgba(41,151,255,.1); color: var(--blue); border-color: rgba(41,151,255,.2); }
-        .inst-btn.danger:hover { background: rgba(255,69,58,.1); color: var(--red); }
+.tier-chevron {
+  width: 16px; height: 16px;
+  color: var(--text-tertiary);
+  transition: transform 0.25s var(--transition);
+}
+.tier-group.collapsed .tier-chevron { transform: rotate(-90deg); }
 
-        /* Баланс справа */
-        .balance-card {
-            border-radius: 18px;
-            background: linear-gradient(145deg, rgba(41,151,255,.05), rgba(94,92,230,.02));
-            border: 1px solid rgba(41,151,255,.15); padding: 22px; margin-bottom: 16px;
-        }
-        .bc-label { font-size: 10px; color: var(--blue); text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
-        .bc-val { font-size: 36px; font-weight: 900; margin-bottom: 4px; }
-        .bc-sub { font-size: 11px; color: var(--text-muted); }
-        .bc-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 18px; }
-        .bc-btn { padding: 11px; border-radius: 11px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; }
-        .bc-btn.primary { background: var(--blue); color: #fff; }
-        .bc-btn.secondary { background: rgba(255,255,255,.05); color: var(--text); border: 1px solid var(--border); }
+.tier-cards {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+  transition: max-height 0.35s var(--transition), opacity 0.25s ease, padding 0.25s;
+}
+.tier-group.collapsed .tier-cards {
+  max-height: 0 !important;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
 
-        /* Уведомления */
-        .notif-item { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; }
-        .notif-item:last-child { border-bottom: none; }
-        .notif-item.unread { background: rgba(41,151,255,.03); }
-        .notif-ico { width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-        .notif-title { font-size: 12px; font-weight: 600; margin-bottom: 3px; }
-        .notif-sub { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
-        .notif-time { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+/* ── GPU CARD ── */
+.gpu-card {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.22s var(--transition);
+  overflow: hidden;
+}
+.gpu-card:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-hover);
+}
+.gpu-card.selected {
+  border-color: var(--accent);
+  background: rgba(41,151,255,0.06);
+}
 
-        /* Всплывающее окно уведомлений (Toast) */
-        .toast {
-            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-            background: #1c1c1e; border: 1px solid var(--border-hover);
-            border-radius: 12px; padding: 10px 18px; font-size: 12px; font-weight: 600;
-            z-index: 100; display: none; gap: 8px; box-shadow: 0 8px 32px rgba(0,0,0,.5);
-        }
+.gpu-card-header {
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-        /* Адаптив */
-        @media(max-width: 900px) { .stats-row { grid-template-columns: 1fr 1fr; } .grid2 { grid-template-columns: 1fr; } }
-        @media(max-width: 640px) { .sidebar { display: none; } .page { padding: 16px; } }
-    </style>
+.gpu-status {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+.gpu-card.selected .gpu-status {
+  background: var(--green);
+  box-shadow: 0 0 8px rgba(48,209,88,0.6);
+}
+
+.gpu-info { flex: 1; min-width: 0; }
+
+.gpu-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.gpu-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+.gpu-card.selected .gpu-name { color: var(--accent); }
+
+.gpu-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.gpu-spec {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+.gpu-price-col {
+  text-align: right;
+  flex-shrink: 0;
+}
+.gpu-price {
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--green);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+.gpu-price-label {
+  font-size: 9px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  margin-top: 1px;
+}
+
+/* ── EXPAND PANEL ── */
+.gpu-expand {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.38s var(--transition), opacity 0.22s ease;
+}
+.gpu-expand.open {
+  max-height: 600px;
+  opacity: 1;
+}
+
+.gpu-expand-inner {
+  padding: 0 14px 14px;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 14px;
+}
+
+/* use case chips */
+.use-cases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.use-chip {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  background: rgba(255,255,255,0.03);
+}
+
+/* period selector */
+.period-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 8px;
+}
+
+.period-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.period-pill {
+  padding: 8px 4px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s var(--transition);
+  text-align: center;
+}
+.period-pill:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+.period-pill.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(41,151,255,0.35);
+}
+
+/* price display */
+.price-box {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+.price-box-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 6px;
+}
+
+.price-main {
+  font-size: 28px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--green);
+  letter-spacing: -0.02em;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.price-savings {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.price-savings.hidden { display: none !important; }
+
+.price-old {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+.price-old s { color: var(--red); opacity: 0.7; }
+
+.price-save {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--green);
+  font-variant-numeric: tabular-nums;
+}
+
+/* launch button */
+.launch-btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: var(--radius-md);
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: all 0.2s var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.launch-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.launch-btn:hover {
+  background: #3aa0ff;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(41,151,255,0.4);
+}
+.launch-btn:hover::before { opacity: 1; }
+.launch-btn:active { transform: scale(0.98); }
+
+/* ── RIGHT PANEL ── */
+.right-panel {
+  position: sticky;
+  top: 76px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* empty state */
+.empty-state {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+  padding: 40px 24px;
+  text-align: center;
+  animation: fadeUp 0.6s var(--transition) 0.25s both;
+}
+.empty-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+  filter: grayscale(0.3);
+}
+.empty-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+.empty-sub {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+}
+
+/* enterprise card */
+.enterprise-card {
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(191,90,242,0.2);
+  background: linear-gradient(145deg, rgba(191,90,242,0.07) 0%, rgba(94,92,230,0.05) 100%);
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp 0.6s var(--transition) 0.3s both;
+}
+.enterprise-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle at top right, rgba(191,90,242,0.12), transparent 70%);
+  pointer-events: none;
+}
+
+.ent-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--purple);
+  background: rgba(191,90,242,0.1);
+  border: 1px solid rgba(191,90,242,0.2);
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+
+.ent-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.ent-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.ent-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.ent-spec-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.ent-spec-row::before {
+  content: '';
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--purple);
+  flex-shrink: 0;
+}
+.ent-spec-val { font-weight: 600; color: var(--text-primary); }
+
+.ent-btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: var(--radius-md);
+  border: none;
+  background: linear-gradient(135deg, #bf5af2, #5e5ce6);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s var(--transition);
+  letter-spacing: 0.01em;
+}
+.ent-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(191,90,242,0.4);
+  filter: brightness(1.08);
+}
+.ent-btn:active { transform: scale(0.98); }
+
+/* ── SIDEBAR ── */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.sidebar-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 280px;
+  background: rgba(18,18,18,0.95);
+  backdrop-filter: blur(30px);
+  border-right: 1px solid var(--border);
+  z-index: 300;
+  transform: translateX(-100%);
+  transition: transform 0.35s var(--transition);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+.sidebar.show { transform: translateX(0); }
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-close {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+.sidebar-close:hover { background: var(--surface-hover); color: var(--text-primary); }
+.sidebar-close svg { width: 12px; height: 12px; }
+
+.sidebar-nav {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.18s;
+  border: 1px solid transparent;
+}
+.sidebar-item:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+.sidebar-item.active {
+  background: rgba(41,151,255,0.08);
+  color: var(--accent);
+  border-color: rgba(41,151,255,0.15);
+}
+
+.sidebar-icon { font-size: 15px; flex-shrink: 0; }
+
+.sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid var(--border);
+}
+.sidebar-version {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  text-align: center;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  letter-spacing: 0.05em;
+}
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(12px);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.modal-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal {
+  background: #111;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 360px;
+  overflow: hidden;
+  transform: scale(0.95) translateY(10px);
+  transition: transform 0.3s var(--transition);
+}
+.modal-overlay.show .modal { transform: scale(1) translateY(0); }
+
+.modal-header {
+  padding: 20px 20px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.modal-close {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 16px;
+  transition: all 0.2s;
+}
+.modal-close:hover { background: var(--surface-hover); color: var(--text-primary); }
+
+.modal-body { padding: 24px 20px; }
+
+.modal-icon {
+  width: 56px; height: 56px;
+  border-radius: 16px;
+  background: rgba(41,151,255,0.1);
+  border: 1px solid rgba(41,151,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin: 0 auto 16px;
+}
+
+.modal-caption {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.modal-caption h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.modal-caption p {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.modal-config {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 11px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  color: var(--accent);
+  white-space: pre-line;
+  margin-bottom: 16px;
+  line-height: 1.7;
+}
+
+.modal-btn {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  border-radius: var(--radius-md);
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.modal-btn:hover {
+  background: #3aa0ff;
+  box-shadow: 0 6px 20px rgba(41,151,255,0.35);
+}
+
+/* ── SCROLL BAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+/* ── SELECTION ── */
+::selection { background: rgba(41,151,255,0.3); }
+</style>
 </head>
 <body>
 
-<div class="toast" id="toast">📋 <span id="toastMsg">Скопировано</span></div>
+<div class="ambient">
+  <div class="ambient-orb"></div>
+  <div class="ambient-orb"></div>
+  <div class="ambient-orb"></div>
+</div>
 
-<div class="shell">
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">G</div>
+    <span class="nav-logo-text">NODE.CLOUD</span>
+  </a>
+  <div class="nav-right">
+    <div class="lang-pill">
+      <button class="lang-btn active" onclick="setLang('RU', this)">RU</button>
+      <button class="lang-btn" onclick="setLang('EN', this)">EN</button>
+    </div>
+    <button class="menu-btn" onclick="openSidebar()">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7"/>
+      </svg>
+    </button>
+  </div>
+</nav>
 
-    <aside class="sidebar">
-        <div class="sb-logo">
-            <div class="sb-logo-icon">G</div>
-            <span class="sb-logo-txt">NODE.CLOUD</span>
+<div class="sidebar-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="nav-logo">
+      <div class="nav-logo-icon">G</div>
+      <span class="nav-logo-text">NODE.CLOUD</span>
+    </div>
+    <button class="sidebar-close" onclick="closeSidebar()">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="sidebar-item active">
+      <span class="sidebar-icon">⚡</span>
+      <span id="sNav1">GPU Marketplace</span>
+    </div>
+    <div class="sidebar-item" onclick="openEnterpriseModal()">
+      <span class="sidebar-icon">🏢</span>
+      <span id="sNav2">Enterprise Clusters</span>
+    </div>
+    <div class="sidebar-item">
+      <span class="sidebar-icon">📖</span>
+      <span id="sNav3">Documentation</span>
+    </div>
+    <div class="sidebar-item">
+      <span class="sidebar-icon">💬</span>
+      <span id="sNav4">Support</span>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-version">v4.2 · NODE.CLOUD</div>
+  </div>
+</aside>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">Заявка сформирована</span>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-icon" id="modalIcon">✈️</div>
+      <div class="modal-caption">
+        <h3 id="modalH3">Переход в Telegram</h3>
+        <p id="modalP">Конфигурация передана менеджеру</p>
+      </div>
+      <div class="modal-config" id="modalConfig"></div>
+      <a class="modal-btn" id="modalLink" href="#" target="_blank">Открыть диалог →</a>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="hero">
+    <div class="hero-eyebrow" id="heroEyebrow">GPU Cloud · On-Demand · Россия</div>
+    <h1 id="heroH1">Мощь GPU.<br>Без компромиссов.</h1>
+    <p id="heroP">От RTX 4090 до Blackwell B200 — запуск за 2 минуты. Почасовая тарификация, данные в России.</p>
+  </div>
+
+  <div class="layout">
+    <div>
+      <div class="section-label" id="gpuSectionLabel">Доступные GPU — On-Demand</div>
+      <div id="gpuList"></div>
+    </div>
+
+    <div class="right-panel">
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">👆</div>
+        <div class="empty-title" id="emptyTitle">Выберите GPU</div>
+        <div class="empty-sub" id="emptySub">Нажмите на карточку слева,<br>чтобы настроить аренду</div>
+      </div>
+
+      <div class="enterprise-card">
+        <div class="ent-badge" id="entBadge">Enterprise</div>
+        <div class="ent-title" id="entTitle">Blackwell x8<br>AI Кластеры</div>
+        <div class="ent-desc" id="entDesc">Для масштабного обучения LLM. 8× B200 / B300 объединены через NVLink с InfiniBand-сетью.</div>
+        <div class="ent-specs">
+          <div class="ent-spec-row">Мин. срок: <span class="ent-spec-val" id="entTerm">&nbsp;3 месяца</span></div>
+          <div class="ent-spec-row">Сеть: <span class="ent-spec-val" id="entNet">&nbsp;InfiniBand / NVLink</span></div>
+          <div class="ent-spec-row">Конфигурация: <span class="ent-spec-val" id="entConfig">&nbsp;Custom</span></div>
         </div>
-        <div class="sb-user">
-            <div class="sb-avatar">АК</div>
-            <div class="sb-user-info">
-                <div class="sb-user-name">Алексей К.</div>
-                <div class="sb-user-email">alex@company.ru</div>
+        <button class="ent-btn" id="entBtn" onclick="openEnterpriseModal()">Связаться с отделом продаж</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const TG_USERNAME = 'gnodecloud';
+let lang = 'RU';
+let selectedGpu = null;
+
+const rubRate = 92;
+const hourlyUSD = {
+  l4:1.56, rtx_a5000:1.08, rtx_3090:1.84, rtx_4090:2.76, rtx_5090:3.96,
+  rtx_6000_ada:3.08, a40:1.76, l40:3.96, l40s:3.44, rtx_a6000:1.96,
+  a100_pcie:5.56, a100_sxm:5.96, h100_nvl:12.28, h100_pcie:9.56,
+  h100_sxm:11.96, h200:15.96, b200:21.96, rtx_pro_6000:7.56
+};
+const periodDays = {day:1, week:7, month:30};
+const discounts = {day:0, week:0.05, month:0.10};
+
+function fmt(usd) {
+  const v = lang === 'RU' ? usd * rubRate : usd;
+  const s = new Intl.NumberFormat('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}).format(v);
+  return lang === 'RU' ? s + ' ₽' : '$' + s;
+}
+
+function calcPrice(key, period) {
+  const daily = hourlyUSD[key] * 24;
+  const full = daily * periodDays[period];
+  const final = full * (1 - discounts[period]);
+  return {full, final, saved: full - final};
+}
+
+const T = {
+  RU: {
+    eyebrow:'GPU Cloud · On-Demand · Россия',
+    h1:'Мощь GPU.<br>Без компромиссов.',
+    p:'От RTX 4090 до Blackwell B200 — запуск за 2 минуты. Почасовая тарификация, данные в России.',
+    gpuLabel:'Доступные GPU — On-Demand',
+    emptyTitle:'Выберите GPU',
+    emptySub:'Нажмите на карточку слева,<br>чтобы настроить аренду',
+    rateLabel:'сутки',
+    useCasesLabel:'Применение',
+    periodLabel:'Период аренды',
+    pDay:'1 день', pWeek:'Неделя −5%', pMonth:'Месяц −10%',
+    costLabel:'Стоимость', baseLabel:'Базовая цена:', saveLabel:'Экономия:',
+    launchBtn:'Запустить GPU-инстанс',
+    entBadge:'Enterprise', entTitle:'Blackwell x8<br>AI Кластеры',
+    entDesc:'Для масштабного обучения LLM. 8× B200 / B300 объединены через NVLink с InfiniBand-сетью.',
+    entTerm:' 3 месяца', entNet:' InfiniBand / NVLink', entConfig:' Custom',
+    entBtn:'Связаться с отделом продаж',
+    modalTitle:'Заявка сформирована', modalH3:'Переход в Telegram', modalP:'Конфигурация передана менеджеру',
+    modalBtn:'Открыть диалог →',
+    sNav:['GPU Marketplace','Enterprise Кластеры','Документация','Поддержка'],
+    tiers:[
+      {label:'Начальный уровень', sub:'Инференс, рендеринг, старт в AI', color:'#30d158', keys:['l4','rtx_a5000','rtx_3090']},
+      {label:'Средний класс', sub:'Fine-tuning, генерация, профессиональный рендер', color:'#2997ff', keys:['rtx_4090','rtx_5090','rtx_6000_ada','a40','l40','l40s','rtx_a6000']},
+      {label:'Профессиональный AI', sub:'Обучение больших моделей, HPC, datacenter', color:'#bf5af2', keys:['a100_pcie','a100_sxm','rtx_pro_6000']},
+      {label:'⚡ Элита — Hopper / Blackwell', sub:'Топовые LLM, AGI, государственный HPC', color:'#ff453a', keys:['h100_nvl','h100_pcie','h100_sxm','h200','b200']}
+    ]
+  },
+  EN: {
+    eyebrow:'GPU Cloud · On-Demand · Russia',
+    h1:'GPU Power.<br>No Compromise.',
+    p:'From RTX 4090 to Blackwell B200 — deploy in 2 minutes. Hourly billing, data stays in Russia.',
+    gpuLabel:'Available GPUs — On-Demand',
+    emptyTitle:'Select a GPU',
+    emptySub:'Click a card on the left<br>to configure your rental',
+    rateLabel:'/day',
+    useCasesLabel:'Use cases',
+    periodLabel:'Rental period',
+    pDay:'1 day', pWeek:'Week −5%', pMonth:'Month −10%',
+    costLabel:'Cost', baseLabel:'Base price:', saveLabel:'Savings:',
+    launchBtn:'Deploy GPU Instance',
+    entBadge:'Enterprise', entTitle:'Blackwell x8<br>AI Clusters',
+    entDesc:'For large-scale LLM training. 8× B200 / B300 connected via NVLink with InfiniBand.',
+    entTerm:' 3 months', entNet:' InfiniBand / NVLink', entConfig:' Custom',
+    entBtn:'Contact Sales',
+    modalTitle:'Order created', modalH3:'Opening Telegram', modalP:'Config sent to manager',
+    modalBtn:'Open chat →',
+    sNav:['GPU Marketplace','Enterprise Clusters','Documentation','Support'],
+    tiers:[
+      {label:'Entry Level', sub:'Inference, rendering, AI starter', color:'#30d158', keys:['l4','rtx_a5000','rtx_3090']},
+      {label:'Mid-Range', sub:'Fine-tuning, generation, professional rendering', color:'#2997ff', keys:['rtx_4090','rtx_5090','rtx_6000_ada','a40','l40','l40s','rtx_a6000']},
+      {label:'Professional AI', sub:'Large model training, HPC, datacenter', color:'#bf5af2', keys:['a100_pcie','a100_sxm','rtx_pro_6000']},
+      {label:'⚡ Elite — Hopper / Blackwell', sub:'Top-tier LLMs, AGI, government HPC', color:'#ff453a', keys:['h100_nvl','h100_pcie','h100_sxm','h200','b200']}
+    ]
+  }
+};
+
+const GPUS = {
+  RU: {
+    l4:{name:'NVIDIA L4',spec:'24 ГБ VRAM · 50 ГБ ОЗУ · 12 vCPU',badge:'Оптимальный',badgeStyle:'background:rgba(48,209,88,0.12);color:#30d158;border:1px solid rgba(48,209,88,0.2)',uses:['🤖 Инференс моделей','🎨 Обработка изображений','💬 Чат-боты']},
+    rtx_a5000:{name:'RTX A5000',spec:'24 ГБ VRAM · 25 ГБ ОЗУ · 9 vCPU',badge:'Бюджетный',badgeStyle:'background:rgba(41,151,255,0.1);color:#2997ff;border:1px solid rgba(41,151,255,0.2)',uses:['🎬 3D-рендеринг','🖥️ CAD/CAM','📐 Инженерные расчёты']},
+    rtx_3090:{name:'RTX 3090',spec:'24 ГБ VRAM · 125 ГБ ОЗУ · 16 vCPU',badge:'Популярный',badgeStyle:'background:rgba(255,159,10,0.1);color:#ff9f0a;border:1px solid rgba(255,159,10,0.2)',uses:['🧠 Fine-tuning LLM','🎬 Рендеринг видео','🔬 ML-эксперименты']},
+    rtx_4090:{name:'RTX 4090',spec:'24 ГБ VRAM · 41 ГБ ОЗУ · 6 vCPU',badge:'🔥 Топ продаж',badgeStyle:'background:rgba(255,159,10,0.12);color:#ff9f0a;border:1px solid rgba(255,159,10,0.25)',uses:['🧠 Fine-tuning до 13B','🎨 Stable Diffusion','🚀 Быстрый инференс']},
+    rtx_5090:{name:'RTX 5090',spec:'32 ГБ VRAM · 35 ГБ ОЗУ · 9 vCPU',badge:'Новинка',badgeStyle:'background:rgba(191,90,242,0.1);color:#bf5af2;border:1px solid rgba(191,90,242,0.2)',uses:['🧠 LLM до 30B','🤖 Мультимодальные модели','⚡ AI-видео реального времени']},
+    rtx_6000_ada:{name:'RTX 6000 Ada',spec:'48 ГБ VRAM · 167 ГБ ОЗУ · 10 vCPU',badge:'Pro',badgeStyle:'background:rgba(41,151,255,0.1);color:#64d2ff;border:1px solid rgba(100,210,255,0.2)',uses:['🏗️ BIM / Архитектура','🎬 VFX и анимация','🔬 Научные симуляции']},
+    a40:{name:'NVIDIA A40',spec:'48 ГБ VRAM · 50 ГБ ОЗУ · 9 vCPU',badge:'Универсальный',badgeStyle:'background:rgba(48,209,88,0.08);color:#34c759;border:1px solid rgba(52,199,89,0.2)',uses:['🤖 ML-пайплайны','📊 Аналитика данных','🔄 Параллельные задачи']},
+    l40:{name:'NVIDIA L40',spec:'48 ГБ VRAM · 94 ГБ ОЗУ · 8 vCPU',badge:'Медиа & AI',badgeStyle:'background:rgba(255,55,95,0.1);color:#ff375f;border:1px solid rgba(255,55,95,0.2)',uses:['🎬 AI-видео генерация','🖼️ Генерация изображений','🔊 Синтез речи']},
+    l40s:{name:'NVIDIA L40S',spec:'48 ГБ VRAM · 94 ГБ ОЗУ · 16 vCPU',badge:'Рекомендуем',badgeStyle:'background:rgba(48,209,88,0.1);color:#30d158;border:1px solid rgba(48,209,88,0.2)',uses:['⚡ Ускоренный инференс','🧠 Обучение нейросетей','🌐 Серверный AI']},
+    rtx_a6000:{name:'RTX A6000',spec:'48 ГБ VRAM · 50 ГБ ОЗУ · 9 vCPU',badge:'Workstation',badgeStyle:'background:rgba(94,92,230,0.12);color:#5e5ce6;border:1px solid rgba(94,92,230,0.25)',uses:['🎨 3D/VFX студии','🔬 Научный рендеринг','🏎️ Автодизайн']},
+    a100_pcie:{name:'A100 PCIe',spec:'80 ГБ VRAM · 125 ГБ ОЗУ · 16 vCPU',badge:'Data Center',badgeStyle:'background:rgba(255,255,255,0.08);color:#fff;border:1px solid var(--border)',uses:['🧠 Обучение LLM','🔬 Большие данные','⚡ Тяжелый HPC']},
+    a100_sxm:{name:'A100 SXM4',spec:'80 ГБ VRAM · 240 ГБ ОЗУ · 24 vCPU',badge:'Высокая скорость',badgeStyle:'background:rgba(41,151,255,0.15);color:#2997ff;border:1px solid rgba(41,151,255,0.3)',uses:['🚀 NVLink Кластеры','🧠 Deep Learning','🧬 Биоинформатика']},
+    rtx_pro_6000:{name:'RTX Pro 6000',spec:'96 ГБ VRAM · 188 ГБ ОЗУ · 16 vCPU',badge:'Creator Pro',badgeStyle:'background:rgba(255,69,58,0.1);color:#ff453a;border:1px solid rgba(255,69,58,0.2)',uses:['🎬 Рендеринг сцен 8K','🏗️ Мега-проекты','🎮 Разработка AAA']},
+    h100_nvl:{name:'H100 NVL',spec:'94 ГБ VRAM · 188 ГБ ОЗУ · 16 vCPU',badge:'Топ Инференс',badgeStyle:'background:rgba(191,90,242,0.15);color:#bf5af2;border:1px solid rgba(191,90,242,0.3)',uses:['🤖 Инференс больших LLM','⚡ Экстремальный ИИ']},
+    h100_pcie:{name:'H100 PCIe',spec:'80 ГБ VRAM · 125 ГБ ОЗУ · 16 vCPU',badge:'Hopper',badgeStyle:'background:rgba(255,159,10,0.15);color:#ff9f0a;border:1px solid rgba(255,159,10,0.3)',uses:['🧠 Обучение моделей','⚡ AI Вычисления']},
+    h100_sxm:{name:'H100 SXM5',spec:'80 ГБ VRAM · 250 ГБ ОЗУ · 26 vCPU',badge:'⚡ Бестселлер',badgeStyle:'background:rgba(255,69,58,0.15);color:#ff453a;border:1px solid rgba(255,69,58,0.3)',uses:['🤖 Обучение GPT моделей','🚀 Ультра-HPC']},
+    h200:{name:'NVIDIA H200',spec:'141 ГБ HBM3e · 300 ГБ ОЗУ · 32 vCPU',badge:'Суперфлагман',badgeStyle:'background:linear-gradient(135deg, rgba(255,69,58,0.2), rgba(191,90,242,0.2));color:#ff9f0a;border:1px solid rgba(255,159,10,0.4)',uses:['🧠 Мультимодальные LLM','🚀 Будущее AI']},
+    b200:{name:'Blackwell B200',spec:'192 ГБ HBM3e · 512 ГБ ОЗУ · 64 vCPU',badge:'🌌 Завтрашний день',badgeStyle:'background:linear-gradient(135deg, #bf5af2, #ff453a);color:#fff',uses:['🔮 Обучение моделей ИИ 1Т+','🌌 Пре-AGI Эра']}
+  },
+  EN: {
+    l4:{name:'NVIDIA L4',spec:'24 GB VRAM · 50 GB RAM · 12 vCPU',badge:'Optimal',badgeStyle:'background:rgba(48,209,88,0.12);color:#30d158;border:1px solid rgba(48,209,88,0.2)',uses:['🤖 Model Inference','🎨 Image Processing','💬 Chatbots']},
+    rtx_a5000:{name:'RTX A5000',spec:'24 GB VRAM · 25 GB RAM · 9 vCPU',badge:'Budget',badgeStyle:'background:rgba(41,151,255,0.1);color:#2997ff;border:1px solid rgba(41,151,255,0.2)',uses:['🎬 3D Rendering','🖥️ CAD/CAM','📐 Engineering']},
+    rtx_3090:{name:'RTX 3090',spec:'24 GB VRAM · 125 GB RAM · 16 vCPU',badge:'Popular',badgeStyle:'background:rgba(255,159,10,0.1);color:#ff9f0a;border:1px solid rgba(255,159,10,0.2)',uses:['🧠 LLM Fine-tuning','🎬 Video Rendering','🔬 ML Experiments']},
+    rtx_4090:{name:'RTX 4090',spec:'24 GB VRAM · 41 GB RAM · 6 vCPU',badge:'🔥 Top Seller',badgeStyle:'background:rgba(255,159,10,0.12);color:#ff9f0a;border:1px solid rgba(255,159,10,0.25)',uses:['🧠 Up to 13B Fine-tuning','🎨 Stable Diffusion','🚀 Fast Inference']},
+    rtx_5090:{name:'RTX 5090',spec:'32 GB VRAM · 35 GB RAM · 9 vCPU',badge:'New',badgeStyle:'background:rgba(191,90,242,0.1);color:#bf5af2;border:1px solid rgba(191,90,242,0.2)',uses:['🧠 Up to 30B LLM','🤖 Multimodal Models','⚡ Real-time AI Video']},
+    rtx_6000_ada:{name:'RTX 6000 Ada',spec:'48 GB VRAM · 167 GB RAM · 10 vCPU',badge:'Pro',badgeStyle:'background:rgba(41,151,255,0.1);color:#64d2ff;border:1px solid rgba(100,210,255,0.2)',uses:['🏗️ BIM / Architecture','🎬 VFX & Animation','🔬 Simulations']},
+    a40:{name:'NVIDIA A40',spec:'48 GB VRAM · 50 GB RAM · 9 vCPU',badge:'Universal',badgeStyle:'background:rgba(48,209,88,0.08);color:#34c759;border:1px solid rgba(52,199,89,0.2)',uses:['🤖 ML Pipelines','📊 Data Analytics','🔄 Parallel Tasks']},
+    l40:{name:'NVIDIA L40',spec:'48 GB VRAM · 94 GB RAM · 8 vCPU',badge:'Media & AI',badgeStyle:'background:rgba(255,55,95,0.1);color:#ff375f;border:1px solid rgba(255,55,95,0.2)',uses:['🎬 AI Video Gen','🖼️ Image Generation','🔊 Speech Synthesis']},
+    l40s:{name:'NVIDIA L40S',spec:'48 GB VRAM · 94 GB RAM · 16 vCPU',badge:'Recommended',badgeStyle:'background:rgba(48,209,88,0.1);color:#30d158;border:1px solid rgba(48,209,88,0.2)',uses:['⚡ Faster Inference','🧠 Neural Net Training','🌐 Server AI']},
+    rtx_a6000:{name:'RTX A6000',spec:'48 GB VRAM · 50 GB RAM · 9 vCPU',badge:'Workstation',badgeStyle:'background:rgba(94,92,230,0.12);color:#5e5ce6;border:1px solid rgba(94,92,230,0.25)',uses:['🎨 3D/VFX Studios','🔬 Scientific Render','🏎️ Automotive Design']},
+    a100_pcie:{name:'A100 PCIe',spec:'80 GB VRAM · 125 GB RAM · 16 vCPU',badge:'Data Center',badgeStyle:'background:rgba(255,255,255,0.08);color:#fff;border:1px solid var(--border)',uses:['🧠 LLM Training','🔬 Big Data','⚡ Heavy HPC']},
+    a100_sxm:{name:'A100 SXM4',spec:'80 GB VRAM · 240 GB RAM · 24 vCPU',badge:'High Speed',badgeStyle:'background:rgba(41,151,255,0.15);color:#2997ff;border:1px solid rgba(41,151,255,0.3)',uses:['🚀 NVLink Clusters','🧠 Deep Learning','🧬 Bioinformatics']},
+    rtx_pro_6000:{name:'RTX Pro 6000',spec:'96 GB VRAM · 188 GB RAM · 16 vCPU',badge:'Creator Pro',badgeStyle:'background:rgba(255,69,58,0.1);color:#ff453a;border:1px solid rgba(255,69,58,0.2)',uses:['🎬 8K Scene Rendering','🏗️ Mega Projects','🎮 AAA Dev']},
+    h100_nvl:{name:'H100 NVL',spec:'94 GB VRAM · 188 GB RAM · 16 vCPU',badge:'Top Inference',badgeStyle:'background:rgba(191,90,242,0.15);color:#bf5af2;border:1px solid rgba(191,90,242,0.3)',uses:['🤖 Large LLM Inference','⚡ Extreme AI']},
+    h100_pcie:{name:'H100 PCIe',spec:'80 GB VRAM · 125 GB RAM · 16 vCPU',badge:'Hopper',badgeStyle:'background:rgba(255,159,10,0.15);color:#ff9f0a;border:1px solid rgba(255,159,10,0.3)',uses:['🧠 Model Training','⚡ AI Compute']},
+    h100_sxm:{name:'H100 SXM5',spec:'80 GB VRAM · 250 GB RAM · 26 vCPU',badge:'⚡ Bestseller',badgeStyle:'background:rgba(255,69,58,0.15);color:#ff453a;border:1px solid rgba(255,69,58,0.3)',uses:['🤖 GPT Training','🚀 Ultra-HPC']},
+    h200:{name:'NVIDIA H200',spec:'141 GB HBM3e · 300 GB RAM · 32 vCPU',badge:'Superflagship',badgeStyle:'background:linear-gradient(135deg, rgba(255,69,58,0.2), rgba(191,90,242,0.2));color:#ff9f0a;border:1px solid rgba(255,159,10,0.4)',uses:['🧠 Multimodal LLMs','🚀 Future of AI']},
+    b200:{name:'Blackwell B200',spec:'192 GB HBM3e · 512 GB RAM · 64 vCPU',badge:'🌌 Pre-AGI Era',badgeStyle:'background:linear-gradient(135deg, #bf5af2, #ff453a);color:#fff',uses:['🔮 1T+ AI Training','🌌 Pre-AGI Systems']}
+  }
+};
+
+function setLang(l, btn) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  
+  document.getElementById('heroEyebrow').innerText = T[lang].eyebrow;
+  document.getElementById('heroH1').innerHTML = T[lang].h1;
+  document.getElementById('heroP').innerText = T[lang].p;
+  document.getElementById('gpuSectionLabel').innerText = T[lang].gpuLabel;
+  document.getElementById('emptyTitle').innerText = T[lang].emptyTitle;
+  document.getElementById('emptySub').innerHTML = T[lang].emptySub;
+  document.getElementById('entBadge').innerText = T[lang].entBadge;
+  document.getElementById('entTitle').innerHTML = T[lang].entTitle;
+  document.getElementById('entDesc').innerText = T[lang].entDesc;
+  document.getElementById('entTerm').innerHTML = '&nbsp;' + T[lang].entTerm;
+  document.getElementById('entNet').innerHTML = '&nbsp;' + T[lang].entNet;
+  document.getElementById('entConfig').innerHTML = '&nbsp;' + T[lang].entConfig;
+  document.getElementById('entBtn').innerText = T[lang].entBtn;
+  
+  for(let i=1; i<=4; i++) {
+    document.getElementById('sNav' + i).innerText = T[lang].sNav[i-1];
+  }
+  
+  renderGPUs();
+  if (selectedGpu) {
+    selectGpu(selectedGpu);
+  }
+}
+
+function renderGPUs() {
+  const container = document.getElementById('gpuList');
+  container.innerHTML = '';
+  
+  T[lang].tiers.forEach((tier, tierIdx) => {
+    const group = document.createElement('div');
+    group.className = 'tier-group';
+    group.id = 'tier-' + tierIdx;
+    
+    group.innerHTML = `
+      <div class="tier-header" onclick="toggleTier(${tierIdx})">
+        <div class="tier-dot" style="background:${tier.color}"></div>
+        <div class="tier-info">
+          <div class="tier-name">${tier.label}</div>
+          <div class="tier-sub">${tier.sub}</div>
+        </div>
+        <svg class="tier-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      </div>
+      <div class="tier-cards" id="tier-cards-${tierIdx}"></div>
+    `;
+    
+    container.appendChild(group);
+    const cardsCont = document.getElementById(`tier-cards-${tierIdx}`);
+    
+    tier.keys.forEach(key => {
+      const gpu = GPUS[lang][key];
+      if(!gpu) return;
+      
+      const card = document.createElement('div');
+      card.className = `gpu-card ${selectedGpu === key ? 'selected' : ''}`;
+      card.id = 'card-' + key;
+      card.onclick = (e) => {
+        if(e.target.closest('.gpu-expand') || e.target.closest('.period-pill')) return;
+        selectGpu(key);
+      };
+      
+      const dailyPrice = hourlyUSD[key] * 24;
+      
+      card.innerHTML = `
+        <div class="gpu-card-header">
+          <div class="gpu-status"></div>
+          <div class="gpu-info">
+            <div class="gpu-name-row">
+              <span class="gpu-name">${gpu.name}</span>
+              ${gpu.badge ? `<span class="gpu-badge" style="${gpu.badgeStyle}">${gpu.badge}</span>` : ''}
             </div>
+            <div class="gpu-spec">${gpu.spec}</div>
+          </div>
+          <div class="gpu-price-col">
+            <div class="gpu-price">${fmt(dailyPrice)}</div>
+            <div class="gpu-price-label">${T[lang].rateLabel}</div>
+          </div>
         </div>
-        <div class="sb-balance">
-            <div class="sb-balance-label">Баланс</div>
-            <div class="sb-balance-val">12 840 ₽</div>
-            <div class="sb-balance-sub">≈ 139 $ · ~22 ч H100</div>
-        </div>
-        <button class="sb-top-btn" onclick="alert('Окно оплаты в разработке')">+ Пополнить баланс</button>
         
-        <nav class="sb-nav">
-            <div class="sb-nav-section">Управление</div>
-            <a class="sb-item active"><span style="margin-right:4px">⚡</span> Дашборд <span class="sb-badge green">2</span></a>
-            <a class="sb-item"><span>🖥️</span> GPU Marketplace</a>
-            <a class="sb-item"><span>🖧</span> Мои инстансы <span class="sb-badge green">2</span></a>
-            <div class="sb-nav-section">Финансы</div>
-            <a class="sb-item"><span>💳</span> Баланс и платежи</a>
-            <a class="sb-item"><span>📋</span> История операций</a>
-        </nav>
-        <div class="sb-footer">NODE.CLOUD · v4.2</div>
-    </aside>
-
-    <main class="main">
-        <div class="topnav">
-            <span class="topnav-title">Дашборд</span>
-            <div style="font-size:12px; color:var(--text-secondary)">Аккаунт: Алексей К.</div>
-        </div>
-
-        <div class="page">
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div class="stat-icon">💰</div>
-                    <div class="stat-label">Баланс</div>
-                    <div class="stat-val green">12 840 ₽</div>
-                    <div class="stat-sub">≈ $139.57</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">⚡</div>
-                    <div class="stat-label">Активных GPU</div>
-                    <div class="stat-val blue">2</div>
-                    <div class="stat-sub">RTX 4090, H100 SXM</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">🕒</div>
-                    <div class="stat-label">Часов использовано</div>
-                    <div class="stat-val">347</div>
-                    <div class="stat-sub">За 30 дней</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">📦</div>
-                    <div class="stat-label">Потрачено</div>
-                    <div class="stat-val orange">48 320 ₽</div>
-                    <div class="stat-sub">За все время</div>
-                </div>
+        <div class="gpu-expand ${selectedGpu === key ? 'open' : ''}" id="expand-${key}">
+          <div class="gpu-expand-inner">
+            <div class="divider"></div>
+            <div class="period-label">${T[lang].useCasesLabel}</div>
+            <div class="use-cases">
+              ${gpu.uses.map(u => `<span class="use-chip">${u}</span>`).join('')}
             </div>
-
-            <div class="grid2">
-                <div>
-                    <div class="sec-title">Активные инстансы <span>2 в работе</span></div>
-                    <div class="card">
-                        
-                        <div class="instance">
-                            <div class="inst-header">
-                                <div class="inst-icon">🚀</div>
-                                <div class="inst-info">
-                                    <div class="inst-name">RTX 4090 · prod-inference-01</div>
-                                    <div class="inst-spec">24 ГБ VRAM · 41 ГБ RAM · 6 vCPU · Ubuntu 22.04</div>
-                                </div>
-                                <div class="inst-status">
-                                    <div class="status-dot running"></div>
-                                    <span class="status-text running">Running</span>
-                                </div>
-                            </div>
-                            <div class="timer-row">
-                                <div>
-                                    <div class="timer-label">Осталось времени</div>
-                                    <div class="timer-val">18:24:11</div>
-                                </div>
-                                <div class="timer-bar-wrap"><div class="timer-bar green" style="width: 76%"></div></div>
-                                <div class="timer-cost">
-                                    <div class="timer-cost-val">2 760 ₽</div>
-                                    <div class="timer-cost-label">стоимость аренды</div>
-                                </div>
-                            </div>
-                            <div class="access-details">
-                                <div class="access-row">
-                                    <span class="access-key">IP адрес</span>
-                                    <span class="access-val">185.246.88.142</span>
-                                    <button class="access-copy" onclick="copyText('185.246.88.142')">📋</button>
-                                </div>
-                                <div class="access-row">
-                                    <span class="access-key">SSH команда</span>
-                                    <span class="access-val">ssh -p 22041 root@185.246.88.142</span>
-                                    <button class="access-copy" onclick="copyText('ssh -p 22041 root@185.246.88.142')">📋</button>
-                                </div>
-                                <div class="access-row">
-                                    <span class="access-key">Пароль root</span>
-                                    <span class="access-val secret" title="Нажмите, чтобы показать">Xk9#mP2@vQ7nR</span>
-                                    <button class="access-copy" onclick="copyText('Xk9#mP2@vQ7nR')">📋</button>
-                                </div>
-                            </div>
-                            <div class="inst-actions">
-                                <button class="inst-btn primary" onclick="alert('Подключение...')">Подключиться</button>
-                                <button class="inst-btn" onclick="alert('Продлено')">Продлить +24ч</button>
-                                <button class="inst-btn danger" onclick="alert('Остановлено')">Остановить</button>
-                            </div>
-                        </div>
-
-                        <div class="instance">
-                            <div class="inst-header">
-                                <div class="inst-icon" style="background:rgba(255,159,10,.1)">🧠</div>
-                                <div class="inst-info">
-                                    <div class="inst-name">H100 SXM · llm-training-02</div>
-                                    <div class="inst-spec">80 ГБ VRAM · 125 ГБ RAM · 20 vCPU · PyTorch 2.3</div>
-                                </div>
-                                <div class="inst-status">
-                                    <div class="status-dot running"></div>
-                                    <span class="status-text running">Running</span>
-                                </div>
-                            </div>
-                            <div class="timer-row">
-                                <div>
-                                    <div class="timer-label">Осталось времени</div>
-                                    <div class="timer-val urgent">03:15:42</div>
-                                </div>
-                                <div class="timer-bar-wrap"><div class="timer-bar orange" style="width: 15%"></div></div>
-                                <div class="timer-cost">
-                                    <div class="timer-cost-val">11 200 ₽</div>
-                                    <div class="timer-cost-label">стоимость аренды</div>
-                                </div>
-                            </div>
-                            <div class="access-details">
-                                <div class="access-row">
-                                    <span class="access-key">IP адрес</span>
-                                    <span class="access-val">185.246.88.143</span>
-                                    <button class="access-copy" onclick="copyText('185.246.88.143')">📋</button>
-                                </div>
-                            </div>
-                            <div class="inst-actions">
-                                <button class="inst-btn primary" onclick="alert('Подключение...')">Подключиться</button>
-                                <button class="inst-btn danger" onclick="alert('Остановлено')">Остановить</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div>
-                    <div class="sec-title">Баланс аккаунта</div>
-                    <div class="balance-card">
-                        <div class="bc-label">Текущий счет</div>
-                        <div class="bc-val">12 840 ₽</div>
-                        <div class="bc-sub">Расход: ~580 ₽/час</div>
-                        <div class="bc-actions">
-                            <button class="bc-btn primary" onclick="alert('Окно оплаты')">Пополнить</button>
-                            <button class="bc-btn secondary" onclick="alert('Выписка отправлена')">Выписка</button>
-                        </div>
-                    </div>
-
-                    <div class="sec-title">Уведомления</div>
-                    <div class="card">
-                        <div class="notif-item unread">
-                            <div class="notif-ico" style="background:rgba(255,159,0,0.15);color:var(--orange)">⚠️</div>
-                            <div class="notif-body">
-                                <div class="notif-title">llm-training-02 скоро отключится</div>
-                                <div class="notif-sub">Осталось менее 4 часов работы. Пополните счет.</div>
-                                <div class="notif-time">5 мин. назад</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div> </div> </main>
-</div> <script>
-    // Функция копирования
-    function copyText(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            const t = document.getElementById('toast');
-            t.style.display = 'flex';
-            setTimeout(() => { t.style.display = 'none'; }, 2000);
-        });
-    }
-
-    // Показ/скрытие пароля
-    document.querySelectorAll('.access-val.secret').forEach(el => {
-        el.addEventListener('click', function() {
-            this.style.filter = this.style.filter === 'none' ? 'blur(4px)' : 'none';
-        });
+            
+            <div class="period-label">${T[lang].periodLabel}</div>
+            <div class="period-row">
+              <button class="period-pill active" id="p-day-${key}" onclick="setPeriod('${key}', 'day')">${T[lang].pDay}</button>
+              <button class="period-pill" id="p-week-${key}" onclick="setPeriod('${key}', 'week')">${T[lang].pWeek}</button>
+              <button class="period-pill" id="p-month-${key}" onclick="setPeriod('${key}', 'month')">${T[lang].pMonth}</button>
+            </div>
+            
+            <div class="price-box">
+              <div class="price-box-label">${T[lang].costLabel}</div>
+              <div class="price-main" id="price-${key}">-</div>
+              <div class="price-savings hidden" id="savings-box-${key}">
+                <div class="price-old">${T[lang].baseLabel} <s id="old-price-${key}">-</s></div>
+                <div class="price-save" id="save-pct-${key}">-</div>
+              </div>
+            </div>
+            
+            <button class="launch-btn" onclick="orderGpu('${key}')">${T[lang].launchBtn}</button>
+          </div>
+        </div>
+      `;
+      cardsCont.appendChild(card);
     });
+    
+    // Вычисляем max-height динамически для анимации аккордеона
+    cardsCont.style.maxHeight = cardsCont.scrollHeight + 'px';
+  });
+}
+
+function toggleTier(idx) {
+  const g = document.getElementById('tier-' + idx);
+  const c = document.getElementById('tier-cards' + '-' + idx);
+  g.classList.toggle('collapsed');
+  if(g.classList.contains('collapsed')) {
+    c.style.maxHeight = '0px';
+  } else {
+    c.style.maxHeight = c.scrollHeight + 'px';
+  }
+}
+
+function selectGpu(key) {
+  if (selectedGpu && selectedGpu !== key) {
+    document.getElementById('card-' + selectedGpu)?.classList.remove('selected');
+    document.getElementById('expand-' + selectedGpu)?.classList.remove('open');
+  }
+  
+  selectedGpu = key;
+  const card = document.getElementById('card-' + key);
+  const expand = document.getElementById('expand-' + key);
+  
+  card.classList.add('selected');
+  expand.classList.add('open');
+  
+  document.getElementById('emptyState').style.display = 'none';
+  
+  setPeriod(key, 'day');
+}
+
+function setPeriod(key, period) {
+  document.querySelectorAll(`#expand-${key} .period-pill`).forEach(b => b.classList.remove('active'));
+  document.getElementById(`p-${period}-${key}`).classList.add('active');
+  
+  const p = calcPrice(key, period);
+  document.getElementById(`price-${key}`).innerText = fmt(p.final);
+  
+  const savingsBox = document.getElementById(`savings-box-${key}`);
+  if (p.saved > 0) {
+    savingsBox.classList.remove('hidden');
+    document.getElementById(`old-price-${key}`).innerText = fmt(p.full);
+    document.getElementById(`save-pct-${key}`).innerText = `−${discounts[period]*100}%`;
+  } else {
+    savingsBox.classList.add('hidden');
+  }
+}
+
+function orderGpu(key) {
+  const activePeriodBtn = document.querySelector(`#expand-${key} .period-pill.active`);
+  let pLabel = '1 день';
+  if (activePeriodBtn.id.includes('week')) pLabel = 'Неделя';
+  if (activePeriodBtn.id.includes('month')) pLabel = 'Месяц';
+  
+  const gpu = GPUS[lang][key];
+  const activePeriod = activePeriodBtn.id.split('-')[1];
+  const p = calcPrice(key, activePeriod);
+  
+  document.getElementById('modalTitle').innerText = T[lang].modalTitle;
+  document.getElementById('modalH3').innerText = T[lang].modalH3;
+  document.getElementById('modalP').innerText = T[lang].modalP;
+  document.getElementById('modalIcon').innerText = '🚀';
+  
+  const confText = `GPU: ${gpu.name}\nPeriod: ${pLabel}\nPrice: ${fmt(p.final)}`;
+  document.getElementById('modalConfig').innerText = confText;
+  
+  const tgMsg = encodeURIComponent(`Привет! Хочу арендовать GPU:\n\n${confText}`);
+  document.getElementById('modalLink').href = `https://t.me/${TG_USERNAME}?text=${tgMsg}`;
+  document.getElementById('modalLink').innerText = T[lang].modalBtn;
+  
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function openEnterpriseModal() {
+  document.getElementById('modalTitle').innerText = lang === 'RU' ? 'Связь с отделом продаж' : 'Contact Sales';
+  document.getElementById('modalH3').innerText = lang === 'RU' ? 'Заявка Enterprise' : 'Enterprise Request';
+  document.getElementById('modalP').innerText = lang === 'RU' ? 'Индивидуальные кластеры под ваши задачи' : 'Custom high-performance clusters';
+  document.getElementById('modalIcon').innerText = '🏢';
+  document.getElementById('modalConfig').innerText = lang === 'RU' ? 'Тип: AI Кластер / NVLink\nСрок: от 3 месяцев' : 'Type: AI Cluster / NVLink\nTerm: 3+ months';
+  
+  const tgMsg = encodeURIComponent(`Здравствуйте! Интересуют Enterprise кластеры Blackwell x8.`);
+  document.getElementById('modalLink').href = `https://t.me/${TG_USERNAME}?text=${tgMsg}`;
+  document.getElementById('modalLink').innerText = T[lang].modalBtn;
+  
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
+function openSidebar() { document.getElementById('sidebar').classList.add('show'); document.getElementById('sbOverlay').classList.add('show'); }
+function closeSidebar() { document.getElementById('sidebar').classList.remove('show'); document.getElementById('sbOverlay').classList.remove('show'); }
+
+// Инициализация
+setLang('RU');
 </script>
 
 </body>
