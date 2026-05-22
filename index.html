@@ -738,11 +738,11 @@ main {
   pointer-events: all;
 }
 
-#pg-landing #pg-landing .sidebar {
+.sidebar {
   position: fixed;
   inset: 0 auto 0 0;
   width: 280px;
-  background: rgba(18,18,18,0.95);
+  background: rgba(18,18,18,0.97);
   backdrop-filter: blur(30px);
   border-right: 1px solid var(--border);
   z-index: 300;
@@ -1005,12 +1005,13 @@ body{
 .shell{display:flex;min-height:100vh;position:relative;z-index:1;overflow:hidden;}
 
 /* SIDEBAR */
-#pg-dash #pg-dash .sidebar{
+#pg-dash .dash-shell .sidebar, #pg-dash .sidebar{
   width:240px;flex-shrink:0;
   background:rgba(10,10,10,.95);
   border-right:1px solid var(--border);
   display:flex;flex-direction:column;
   position:sticky;top:0;height:100vh;
+  transform:none;
   backdrop-filter:blur(20px);
 }
 
