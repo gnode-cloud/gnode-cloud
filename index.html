@@ -2420,27 +2420,7 @@ function setUdTab(tab) {
 function showUdErr(msg) {
   const e = document.getElementById('udErrMsg'); e.textContent = msg; e.style.display = 'block';
 }
-function doUdLogin() {
-  const email = document.getElementById('udEmail').value.trim();
-  const pw = document.getElementById('udPw').value;
-  if (!email || !pw) { showUdErr('Введите email и пароль'); return; }
-  closeUserDropdown();
-  showToast('Выполняем вход…','🔄');
-  setTimeout(() => { goPage('pg-dash'); showPage('dashboard'); showToast('Добро пожаловать!','👋'); }, 800);
-}
-function doUdRegister() {
-  const name = document.getElementById('udName').value.trim();
-  const email = document.getElementById('udRegEmail').value.trim();
-  const pw = document.getElementById('udRegPw').value;
-  if (!name||!email) { showUdErr('Заполните имя и email'); return; }
-  if (pw.length < 8) { showUdErr('Пароль минимум 8 символов'); return; }
-  closeUserDropdown();
-  showToast('Создаём аккаунт…','🔄');
-  setTimeout(() => { goPage('pg-dash'); showPage('dashboard'); showToast('🎁 Аккаунт создан! Бонус 500 ₽ зачислен','🎉'); }, 900);
-}
-function authGoogle() { closeUserDropdown(); showToast('Google OAuth (подключается)','🔵'); setTimeout(()=>{goPage('pg-dash');showPage('dashboard');showToast('Добро пожаловать!','👋');},1000); }
-function authApple() { closeUserDropdown(); showToast('Apple Sign In (подключается)','🍎'); setTimeout(()=>{goPage('pg-dash');showPage('dashboard');showToast('Добро пожаловать!','👋');},1000); }
-function authTelegram() { closeUserDropdown(); showToast('Telegram Auth (подключается)','✈️'); setTimeout(()=>{goPage('pg-dash');showPage('dashboard');showToast('Добро пожаловать!','👋');},1000); }
+/* Auth functions moved to API layer above */
 
 /* ══ INJECT USER BUTTON INTO LANDING NAV ══ */
 function injectUserBtn() {
@@ -2932,12 +2912,7 @@ function selPay(btn) {
   btn.closest('.modal-body').querySelectorAll('.pay-method').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }
-function doTopup() {
-  const v = parseInt(document.getElementById('topupAmount').value) || 0;
-  if (v < 100) { toast('Минимальная сумма 100 ₽','⚠️'); return; }
-  closeModal('topupModal');
-  toast(`Пополнение ${v.toLocaleString('ru')} ₽ обрабатывается`,'💳');
-}
+function doTopup() { doTopupReal(); }
 
 // ── NOTIF READ ──
 function markRead(el) {
@@ -2957,6 +2932,331 @@ window.addEventListener('load', () => {
   // Render GPU list on landing
   if (typeof render === 'function') render();
 });
+
+/* ════════════════════════════════════════════════════
+   API LAYER — реальные вызовы к бэкенду
+   Backend: https://gnode-cloud-backend-production.up.railway.app
+════════════════════════════════════════════════════ */
+const API_BASE = 'https://gnode-cloud-backend-production.up.railway.app';
+
+// Текущий пользователь
+let currentUser = null;
+let authToken = localStorage.getItem('nodecloud_token') || null;
+
+// Базовый fetch с авторизацией
+async function apiFetch(path, options = {}) {
+  const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+  if (authToken) headers['Authorization'] = 'Bearer ' + authToken;
+  const res = await fetch(API_BASE + path, { ...options, headers });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Ошибка сервера');
+  return data;
+}
+
+// ── Сохранить сессию ──
+function saveSession(token, user) {
+  authToken = token;
+  currentUser = user;
+  localStorage.setItem('nodecloud_token', token);
+  localStorage.setItem('nodecloud_user', JSON.stringify(user));
+  updateUIAfterLogin(user);
+}
+
+// ── Обновить UI после входа ──
+function updateUIAfterLogin(user) {
+  // Обновить аватар и имя в дашборде
+  const name = user.name || user.email.split('@')[0];
+  const initials = name.substring(0, 2).toUpperCase();
+  const sbAvt = document.getElementById('sbAvt');
+  if (sbAvt) sbAvt.textContent = initials;
+  const topAvt = document.getElementById('topAvt');
+  if (topAvt) topAvt.textContent = initials;
+  const sbName = document.getElementById('sbName');
+  if (sbName) sbName.textContent = name;
+  const sbEmail = document.getElementById('sbEmail');
+  if (sbEmail) sbEmail.textContent = user.email;
+  // Кнопка user в навбаре
+  const userBtnTxt = document.querySelector('.user-btn span');
+  if (userBtnTxt) userBtnTxt.textContent = name;
+  const userBtnAvatar = document.querySelector('.user-btn-avatar');
+  if (userBtnAvatar) userBtnAvatar.textContent = initials;
+  // Загрузить данные дашборда
+  loadDashboard();
+}
+
+// ── Выход ──
+function logout() {
+  authToken = null;
+  currentUser = null;
+  localStorage.removeItem('nodecloud_token');
+  localStorage.removeItem('nodecloud_user');
+  goPage('pg-landing');
+  showToast('До свидания!', '👋');
+}
+
+// ── Загрузить дашборд ──
+async function loadDashboard() {
+  try {
+    // Баланс
+    const balData = await apiFetch('/api/billing/balance');
+    const balFmt = new Intl.NumberFormat('ru-RU').format(balData.balance) + ' ₽';
+    document.querySelectorAll('[id="sbBalVal"], .bal-val').forEach(el => el.textContent = balFmt);
+    const statBal = document.getElementById('statBal');
+    if (statBal) statBal.textContent = balFmt;
+  } catch(e) { console.log('Balance error:', e.message); }
+
+  try {
+    // Уведомления
+    const notifs = await apiFetch('/api/billing/notifications');
+    renderNotifications(notifs);
+  } catch(e) { console.log('Notifs error:', e.message); }
+
+  try {
+    // Инстансы
+    const instances = await apiFetch('/api/gpu/instances');
+    if (instances.length > 0) renderInstances(instances);
+  } catch(e) { console.log('Instances error:', e.message); }
+
+  try {
+    // История
+    const txns = await apiFetch('/api/billing/transactions?limit=5');
+    renderTransactions(txns);
+  } catch(e) { console.log('Transactions error:', e.message); }
+}
+
+// ── Рендер уведомлений ──
+function renderNotifications(notifs) {
+  const containers = document.querySelectorAll('.notif-list-container');
+  if (!notifs.length) return;
+  const icons = { success:'✅', warning:'⚠️', info:'💳', error:'🛑' };
+  const html = notifs.slice(0,5).map(n => `
+    <div class="notif-item ${n.is_read?'':'unread'}" onclick="markReadApi(this,${n.id})">
+      <div class="notif-ico" style="background:rgba(41,151,255,.1)">${icons[n.type]||'🔔'}</div>
+      <div style="flex:1;min-width:0">
+        <div class="notif-title">${n.title}</div>
+        <div class="notif-sub">${n.body||''}</div>
+        <div class="notif-time">${new Date(n.created_at).toLocaleString('ru-RU')}</div>
+      </div>
+      ${n.is_read?'':'<div class="notif-unread-dot"></div>'}
+    </div>`).join('');
+  containers.forEach(c => c.innerHTML = html);
+}
+
+// ── Рендер транзакций ──
+function renderTransactions(txns) {
+  const tbody = document.getElementById('txn-tbody');
+  if (!tbody || !txns.length) return;
+  const typeMap = { topup:'top', spend:'sp', bonus:'ref' };
+  const typeLabel = { topup:'Пополнение', spend:'Аренда', bonus:'Бонус' };
+  tbody.innerHTML = txns.map(t => `
+    <tr class="hist-tr">
+      <td class="hist-td"><span class="hist-badge ${typeMap[t.type]||'sp'}">${typeLabel[t.type]||t.type}</span></td>
+      <td class="hist-td">${t.description||'—'}</td>
+      <td class="hist-td" style="color:var(--t3)">${new Date(t.created_at).toLocaleDateString('ru-RU')}</td>
+      <td class="hist-td" style="text-align:right">
+        <span class="hist-amt ${t.type==='topup'||t.type==='bonus'?'plus':'minus'}">
+          ${t.type==='topup'||t.type==='bonus'?'+':'−'}${new Intl.NumberFormat('ru-RU').format(t.amount_rub)} ₽
+        </span>
+      </td>
+    </tr>`).join('');
+}
+
+// ── Рендер инстансов ──
+function renderInstances(instances) {
+  const container = document.getElementById('instances-container');
+  if (!container) return;
+  const running = instances.filter(i => i.status === 'running' || i.status === 'pending');
+  if (!running.length) return;
+  container.innerHTML = running.map(inst => {
+    const pct = inst.seconds_left && inst.total_seconds ? (inst.seconds_left / inst.total_seconds * 100).toFixed(1) : 50;
+    const barClass = pct > 40 ? 'green' : pct > 15 ? 'orange' : 'red';
+    const h = Math.floor((inst.seconds_left||0)/3600).toString().padStart(2,'0');
+    const m = Math.floor(((inst.seconds_left||0)%3600)/60).toString().padStart(2,'0');
+    const s = ((inst.seconds_left||0)%60).toString().padStart(2,'0');
+    return `<div class="inst">
+      <div class="inst-hd">
+        <div class="inst-ico blue">🖥️</div>
+        <div style="flex:1;min-width:0">
+          <div class="inst-name">${inst.gpu_name||inst.gpu_key} · ${inst.instance_name||'instance'}</div>
+          <div class="inst-spec">${inst.image_name||'Ubuntu'} · Запущен</div>
+        </div>
+        <div class="inst-status"><div class="s-dot ${inst.status==='running'?'run':'pend'}"></div><span class="s-txt ${inst.status==='running'?'run':'pend'}">${inst.status==='running'?'Running':'Pending'}</span></div>
+      </div>
+      ${inst.ip_address ? `
+      <div class="access-list">
+        <div class="acc-row"><span class="acc-key">IP адрес</span><span class="acc-val">${inst.ip_address}</span><button class="copy-btn" onclick="cp('${inst.ip_address}','IP скопирован')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
+        ${inst.ssh_command ? `<div class="acc-row"><span class="acc-key">SSH</span><span class="acc-val">${inst.ssh_command}</span><button class="copy-btn" onclick="cp('${inst.ssh_command}','SSH скопирован')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>` : ''}
+        ${inst.ssh_password ? `<div class="acc-row"><span class="acc-key">Пароль</span><span class="acc-val blur">${inst.ssh_password}</span><button class="copy-btn" onclick="cp('${inst.ssh_password}','Пароль скопирован')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>` : ''}
+      </div>` : '<div style="padding:8px 12px;font-size:11px;color:var(--orange)">⏳ Получаем данные доступа (~2 мин)...</div>'}
+      <div class="inst-acts">
+        <button class="ia-btn prim" onclick="extendInstance(${inst.id})">Продлить +1д</button>
+        <button class="ia-btn danger" onclick="stopInstance(${inst.id})">Остановить</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Пометить уведомление прочитанным ──
+async function markReadApi(el, id) {
+  el.classList.remove('unread');
+  const d = el.querySelector('.notif-unread-dot');
+  if (d) d.style.opacity = '0';
+  try { await apiFetch('/api/billing/notifications/' + id + '/read', { method: 'PUT' }); } catch(e) {}
+}
+
+// ── Продлить инстанс ──
+async function extendInstance(id) {
+  try {
+    showToast('Продление...', '⏳');
+    await apiFetch('/api/gpu/instances/' + id + '/extend', { method: 'POST', body: JSON.stringify({ period: 'day' }) });
+    showToast('✅ Продлено на 24ч', '✅');
+    loadDashboard();
+  } catch(e) { showToast('Ошибка: ' + e.message, '❌'); }
+}
+
+// ── Остановить инстанс ──
+async function stopInstance(id) {
+  if (!confirm('Остановить инстанс?')) return;
+  try {
+    showToast('Останавливаем...', '⏳');
+    await apiFetch('/api/gpu/instances/' + id, { method: 'DELETE' });
+    showToast('🛑 Инстанс остановлен', '🛑');
+    loadDashboard();
+  } catch(e) { showToast('Ошибка: ' + e.message, '❌'); }
+}
+
+/* ════════════════════════════════════════════════════
+   AUTH — реальные запросы
+════════════════════════════════════════════════════ */
+async function doUdLogin() {
+  const email = document.getElementById('udEmail').value.trim();
+  const pw = document.getElementById('udPw').value;
+  if (!email || !pw) { showUdErr('Введите email и пароль'); return; }
+  showToast('Выполняем вход…', '🔄');
+  try {
+    const data = await apiFetch('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password: pw })
+    });
+    saveSession(data.token, data.user);
+    closeUserDropdown();
+    goPage('pg-dash');
+    showPage('dashboard');
+    showToast('Добро пожаловать, ' + (data.user.name || data.user.email) + '!', '👋');
+  } catch(e) {
+    showUdErr(e.message === 'Invalid email or password' ? 'Неверный email или пароль' : e.message);
+    showToast('Ошибка входа', '❌');
+  }
+}
+
+async function doUdRegister() {
+  const name = document.getElementById('udName').value.trim();
+  const email = document.getElementById('udRegEmail').value.trim();
+  const pw = document.getElementById('udRegPw').value;
+  if (!name || !email) { showUdErr('Заполните имя и email'); return; }
+  if (pw.length < 8) { showUdErr('Пароль минимум 8 символов'); return; }
+  showToast('Создаём аккаунт…', '🔄');
+  try {
+    const data = await apiFetch('/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ email, password: pw, name })
+    });
+    saveSession(data.token, data.user);
+    closeUserDropdown();
+    goPage('pg-dash');
+    showPage('dashboard');
+    showToast('🎁 Аккаунт создан! Бонус 500 ₽ зачислен', '🎉');
+  } catch(e) {
+    showUdErr(e.message === 'Email already registered' ? 'Email уже зарегистрирован' : e.message);
+    showToast('Ошибка регистрации', '❌');
+  }
+}
+
+function authGoogle() { closeUserDropdown(); showToast('Google OAuth — скоро!', '🔵'); }
+function authApple() { closeUserDropdown(); showToast('Apple ID — скоро!', '🍎'); }
+function authTelegram() { closeUserDropdown(); showToast('Telegram Auth — скоро!', '✈️'); }
+
+/* ════════════════════════════════════════════════════
+   GPU LAUNCH — реальный запуск
+════════════════════════════════════════════════════ */
+async function launchGpuReal(gpuKey, period, imageName, instanceName) {
+  if (!authToken) {
+    const ud = document.getElementById('userDropdown');
+    if (ud) { ud.classList.add('open'); showEmailForm(); setUdTab('reg'); }
+    return;
+  }
+  showToast('Запускаем ' + gpuKey + '...', '🚀');
+  try {
+    const data = await apiFetch('/api/gpu/launch', {
+      method: 'POST',
+      body: JSON.stringify({ gpuKey, period, imageName: imageName||'pytorch', instanceName })
+    });
+    showToast('🚀 GPU запущен! Данные доступа через ~2 мин', '⚡');
+    goPage('pg-dash');
+    showPage('dashboard');
+    setTimeout(loadDashboard, 3000);
+  } catch(e) {
+    if (e.message.includes('balance')) {
+      showToast('Недостаточно баланса — пополните счёт', '💳');
+      goPage('pg-dash');
+      showPage('billing');
+    } else {
+      showToast('Ошибка запуска: ' + e.message, '❌');
+    }
+  }
+}
+
+/* ════════════════════════════════════════════════════
+   TOPUP — пополнение баланса
+════════════════════════════════════════════════════ */
+async function doTopupReal() {
+  if (!authToken) { showToast('Войдите в аккаунт', '⚠️'); return; }
+  const amtEl = document.getElementById('topupAmount') || document.getElementById('topupAmt');
+  const v = parseInt(amtEl?.value) || 0;
+  if (v < 100) { showToast('Минимум 100 ₽', '⚠️'); return; }
+  // TODO: здесь будет ЮКасса — пока тестовое пополнение
+  showToast('Переход к оплате...', '💳');
+  try {
+    const data = await apiFetch('/api/billing/topup', {
+      method: 'POST',
+      body: JSON.stringify({ amount: v, method: 'card' })
+    });
+    const closeId = document.querySelector('.modal-bg.show')?.id;
+    if (closeId) closeModal(closeId);
+    showToast('✅ Баланс пополнен на ' + v.toLocaleString('ru') + ' ₽', '💰');
+    loadDashboard();
+  } catch(e) {
+    showToast('Ошибка: ' + e.message, '❌');
+  }
+}
+
+/* ════════════════════════════════════════════════════
+   AUTO-LOGIN при загрузке страницы
+════════════════════════════════════════════════════ */
+function tryAutoLogin() {
+  const token = localStorage.getItem('nodecloud_token');
+  const userStr = localStorage.getItem('nodecloud_user');
+  if (token && userStr) {
+    try {
+      authToken = token;
+      currentUser = JSON.parse(userStr);
+      updateUIAfterLogin(currentUser);
+      // Проверить что токен ещё валидный
+      apiFetch('/api/auth/me').then(user => {
+        currentUser = user;
+        updateUIAfterLogin(user);
+      }).catch(() => {
+        // Токен протух — выйти
+        logout();
+      });
+    } catch(e) { logout(); }
+  }
+}
+
+
+// Init
+tryAutoLogin();
+
 </script>
 </body>
 </html>
