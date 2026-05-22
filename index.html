@@ -393,5 +393,182 @@
         // Запуск маркетплейса при загрузке страницы
         document.addEventListener('DOMContentLoaded', loadGpuMarketplace);
     </script>
+<div class="instance">
+              <div class="inst-header">
+                <div class="inst-icon" style="background:linear-gradient(135deg,rgba(255,159,10,.15),rgba(255,69,58,.08));border-color:rgba(255,159,10,.15)">🧠</div>
+                <div class="inst-info">
+                  <div class="inst-name">H100 SXM · llm-training-02</div>
+                  <div class="inst-spec">80 ГБ VRAM · 125 ГБ RAM · 20 vCPU · PyTorch 2.3</div>
+                </div>
+                <div class="inst-status">
+                  <div class="status-dot running"></div>
+                  <span class="status-text running">Running</span>
+                </div>
+              </div>
+
+              <div class="timer-row">
+                <div class="timer-left">
+                  <div class="timer-label">Осталось времени</div>
+                  <div class="timer-val urgent" id="timer2">03:15:42</div>
+                </div>
+                <div class="timer-bar-wrap"><div class="timer-bar orange" id="bar2" style="width:15%"></div></div>
+                <div class="timer-cost">
+                  <div class="timer-cost-val">11 200 ₽</div>
+                  <div class="timer-cost-label">стоимость аренды</div>
+                </div>
+              </div>
+
+              <div class="access-details">
+                <div class="access-row">
+                  <span class="access-key">IP адрес</span>
+                  <span class="access-val" id="ip2">185.246.88.143</span>
+                  <button class="access-copy" onclick="copyText('185.246.88.143','IP скопирован')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
+                <div class="access-row">
+                  <span class="access-key">SSH команда</span>
+                  <span class="access-val">ssh -p 22042 root@185.246.88.143</span>
+                  <button class="access-copy" onclick="copyText('ssh -p 22042 root@185.246.88.143','SSH команда скопирована')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="inst-actions">
+                <button class="inst-btn primary" onclick="toast('🔗 Подключение к H100...','✅')">Подключиться</button>
+                <button class="inst-btn" style="background: rgba(255,159,10,0.1); color: var(--orange); border-color: rgba(255,159,10,0.2)" onclick="openModal('topupModal')">Продлить (Низкий баланс)</button>
+                <button class="inst-btn danger" onclick="toast('🛑 Инстанс остановлен','⚠️')">Остановить</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="right-col">
+          <div class="sec-title">Баланс аккаунта</div>
+          <div class="balance-card">
+            <div class="bc-label">Текущий счет</div>
+            <div class="bc-val">12 840 ₽</div>
+            <div class="bc-sub">Расход: ~580 ₽/час</div>
+            <div class="bc-actions">
+              <button class="bc-btn primary" onclick="openModal('topupModal')">Пополнить</button>
+              <button class="bc-btn secondary" onclick="toast('Выписка отправлена на email','📩')">Выписка</button>
+            </div>
+          </div>
+
+          <div class="sec-title">Последние уведомления</div>
+          <div class="card">
+            <div class="notif-item unread">
+              <div class="notif-ico" style="background:rgba(255,159,0,0.15);color:var(--orange)">⚠️</div>
+              <div class="notif-body">
+                <div class="notif-title">Инстанс llm-training-02 скоро завершится</div>
+                <div class="notif-sub">Осталось менее 4 часов работы. Пополните баланс для автоматического продления.</div>
+                <div class="notif-time">5 мин. назад</div>
+              </div>
+              <div class="notif-unread-dot"></div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-ico" style="background:rgba(48,209,88,0.15);color:var(--green)">✓</div>
+              <div class="notif-body">
+                <div class="notif-title">Успешное пополнение</div>
+                <div class="notif-sub">Баланс пополнен на 10 000 ₽ через СБП.</div>
+                <div class="notif-time">Вчера, 14:20</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div> </div> </div> </div> <script>
+  // Показ уведомлений (Toast)
+  function toast(msg, icon = '✓') {
+    const t = document.getElementById('toast');
+    document.getElementById('toastIcon').innerText = icon;
+    document.getElementById('toastMsg').innerText = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  // Копирование текста в буфер обмена
+  function copyText(text, successMessage) {
+    navigator.clipboard.writeText(text).then(() => {
+      toast(successMessage || 'Скопировано в буфер', '📋');
+    }).catch(() => {
+      toast('Ошибка копирования', '❌');
+    });
+    
+    // Эффект временного снятия blur, если кликнули на скрытый пароль
+    if(event && event.target.classList.contains('secret')) {
+        event.target.style.filter = 'none';
+        setTimeout(() => { event.target.style.filter = ''; }, 2000);
+    }
+  }
+
+  // Модальные окна
+  function openModal(id) {
+    document.getElementById(id).classList.add('show');
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('show');
+  }
+
+  // Выбор суммы в модальном окне
+  function setAmount(val, btn) {
+    document.getElementById('topupAmount').value = val;
+    document.querySelectorAll('.amount-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  // Выбор способа оплаты
+  function selPay(btn) {
+    document.querySelectorAll('.pay-method').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  // Эмуляция оплаты
+  function doTopup() {
+    const am = document.getElementById('topupAmount').value;
+    if(!am || am <= 0) return toast('Введите корректную сумму', '❌');
+    
+    closeModal('topupModal');
+    toast(`Запрос на ${parseInt(am).toLocaleString()} ₽ отправлен!`, '⚡');
+  }
+
+  // Простая симуляция переключения страниц табами (в левом меню)
+  function showPage(pageId) {
+    // Меняем заголовок в топбаре
+    const titles = {
+      'dashboard': 'Дашборд',
+      'marketplace': 'GPU Marketplace',
+      'instances': 'Мои инстансы',
+      'billing': 'Баланс и платежи',
+      'history': 'История операций',
+      'notifications': 'Уведомления',
+      'settings': 'Настройки',
+      'ssh': 'SSH-ключи'
+    };
+    if(titles[pageId]) document.getElementById('topnavTitle').innerText = titles[pageId];
+
+    // Подсвечиваем активный пункт в меню
+    document.querySelectorAll('.sb-item').forEach(item => {
+      item.classList.remove('active');
+      if(item.setAttribute('onclick') && item.getAttribute('onclick').includes(pageId)) {
+        item.classList.add('active');
+      }
+    });
+
+    toast(`Переход в раздел ${titles[pageId] || pageId}`, '📂');
+  }
+
+  // Скрытие/раскрытие паролей при клике на заблюренные элементы
+  document.querySelectorAll('.access-val.secret').forEach(el => {
+    el.addEventListener('click', function() {
+      this.style.filter = this.style.filter === 'none' ? 'blur(4px)' : 'none';
+    });
+  });
+</script>
+
+</body>
+</html>
 </body>
 </html>
