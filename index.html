@@ -1,574 +1,239 @@
 <!DOCTYPE html>
-<html lang="ru" class="dark">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NODE.CLOUD — Личный кабинет</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #000;
+  --bg2: #0a0a0a;
+  --bg3: #111;
+  --surface: rgba(255,255,255,0.04);
+  --surface2: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --text: #f5f5f7;
+  --text2: rgba(245,245,247,0.6);
+  --text3: rgba(245,245,247,0.35);
+  --blue: #2997ff;
+  --green: #30d158;
+  --red: #ff453a;
+  --orange: #ff9f0a;
+  --purple: #bf5af2;
+  --yellow: #ffd60a;
+  --r: cubic-bezier(0.4,0,0.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
 
-    <title>Аренда GPU в облаке — RTX 4090, H100, B200 от 143 ₽/час | NODE.CLOUD</title>
-    <meta name="description" content="Облачная аренда GPU для ИИ, машинного обучения и рендеринга. RTX 4090, H100 SXM, B200, A100 — запуск за 2 минуты. Почасовая тарификация. Сервера в России.">
-    <meta name="keywords" content="аренда GPU, облачные GPU, аренда видеокарты для нейросетей, GPU cloud Россия, арендовать H100, A100 облако, RTX 4090 аренда, вычислительные мощности для ИИ, GPU для обучения нейросетей, машинное обучение облако, GPU сервер аренда, H100 SXM аренда, Blackwell B200, облачные вычисления">
-    <meta name="language" content="ru">
-    <meta http-equiv="content-language" content="ru">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
-    <meta name="author" content="NODE.CLOUD">
-    <link rel="canonical" href="https://gnode.cloud/">
+/* GRAIN */
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9999;opacity:.5;
+}
 
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="ru_RU">
-    <meta property="og:site_name" content="NODE.CLOUD">
-    <meta property="og:title" content="Аренда GPU в облаке — RTX 4090, H100, B200 | NODE.CLOUD">
-    <meta property="og:description" content="Запусти GPU-сервер за 2 минуты. RTX 4090 от 3 856 ₽/сутки, H100 SXM от 26 534 ₽/сутки. Почасовая тарификация, без предоплаты.">
-    <meta property="og:url" content="https://gnode.cloud/">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+/* AMBIENT */
+.amb{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.amb span{position:absolute;border-radius:50%;filter:blur(90px);opacity:.7;animation:af 18s ease-in-out infinite}
+.amb span:nth-child(1){width:500px;height:500px;background:radial-gradient(circle,rgba(41,151,255,.1),transparent 70%);top:-150px;left:-100px;animation-delay:0s}
+.amb span:nth-child(2){width:400px;height:400px;background:radial-gradient(circle,rgba(191,90,242,.07),transparent 70%);bottom:-100px;right:-80px;animation-delay:-9s}
+@keyframes af{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-15px) scale(1.05)}}
 
-    <meta name="theme-color" content="#0b0f19">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
+/* LAYOUT */
+.shell{display:flex;min-height:100vh;position:relative;z-index:1}
 
-        .gpu-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .gpu-expand { overflow: hidden; transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease; max-height: 0; opacity: 0; }
-        .gpu-expand.open { max-height: 480px; opacity: 1; }
+/* SIDEBAR */
+.sidebar{
+  width:240px;flex-shrink:0;
+  background:rgba(10,10,10,.95);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;
+  backdrop-filter:blur(20px);
+}
 
-        .period-btn { transition: all 0.18s ease; }
-        .period-btn.active { background: #22d3ee; color: #0b0f19; box-shadow: 0 0 12px rgba(34,211,238,0.35); }
-        .period-btn:not(.active) { background: #0b0f19; color: #6b7280; border: 1px solid #1f2937; }
-        .period-btn:not(.active):hover { border-color: #374151; color: #9ca3af; }
+.sb-logo{
+  display:flex;align-items:center;gap:10px;
+  padding:22px 20px 18px;
+  border-bottom:1px solid var(--border);
+}
+.sb-logo-icon{
+  width:28px;height:28px;border-radius:7px;
+  background:linear-gradient(135deg,#2997ff,#5e5ce6);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:13px;color:#fff;
+}
+.sb-logo-txt{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--text)}
 
-        .launch-btn { background: linear-gradient(135deg, #06b6d4, #3b82f6); transition: all 0.2s ease; }
-        .launch-btn:hover { background: linear-gradient(135deg, #22d3ee, #60a5fa); transform: translateY(-1px); box-shadow: 0 8px 25px rgba(6,182,212,0.3); }
-        .launch-btn:active { transform: scale(0.98); }
+.sb-user{
+  padding:14px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.sb-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,#2997ff,#5e5ce6);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.sb-user-name{font-size:12px;font-weight:600;color:var(--text)}
+.sb-user-email{font-size:10px;color:var(--text3);margin-top:1px}
 
-        @keyframes slideDown { from { transform: translateY(-4px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .slide-in { animation: slideDown 0.25s ease forwards; }
-    </style>
-</head>
-<body class="text-gray-100 min-h-screen relative overflow-x-hidden antialiased">
+.sb-balance{
+  margin:12px 14px;
+  padding:12px 14px;
+  border-radius:12px;
+  background:rgba(41,151,255,.07);
+  border:1px solid rgba(41,151,255,.15);
+}
+.sb-balance-label{font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--blue);margin-bottom:4px}
+.sb-balance-val{font-size:20px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--text)}
+.sb-balance-sub{font-size:10px;color:var(--text3);margin-top:2px}
 
-    <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
-    <div class="absolute bottom-10 right-1/4 w-[600px] h-[600px] bg-purple-600/5 rounded-full blur-[150px] pointer-events-none -z-10"></div>
+.sb-top-btn{
+  margin:0 14px 12px;width:calc(100% - 28px);
+  padding:9px;border-radius:10px;border:none;
+  background:var(--blue);color:#fff;
+  font-size:12px;font-weight:700;cursor:pointer;
+  transition:all .2s var(--r);letter-spacing:.01em;
+}
+.sb-top-btn:hover{background:#3aa0ff;transform:translateY(-1px);box-shadow:0 6px 20px rgba(41,151,255,.35)}
 
-    <nav class="border-b border-gray-900 bg-gray-950/60 backdrop-blur-md sticky top-0 z-30 px-4 py-3">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <button onclick="toggleSidebar(true)" class="p-2 hover:bg-gray-900 rounded-lg text-gray-400 hover:text-white transition-all">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                </button>
-                <div class="flex items-center gap-2">
-                    <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-                        <span class="text-darkBg font-black text-sm font-mono" style="color:#0b0f19">G</span>
-                    </div>
-                    <span class="font-black text-sm tracking-wider font-mono bg-gradient-to-r from-white via-gray-200 to-gray-500 bg-clip-text text-transparent uppercase">NODE.CLOUD</span>
-                </div>
-            </div>
-            <div class="flex items-center gap-4">
-                <select id="lang-select" onchange="changeLanguage()" class="bg-gray-900 border border-gray-800 text-xs text-gray-300 rounded-lg px-2 py-1.5 font-bold focus:outline-none focus:border-cyan-400 cursor-pointer">
-                    <option value="RU">RU (₽)</option>
-                    <option value="EN">EN ($)</option>
-                </select>
-            </div>
-        </div>
-    </nav>
+.sb-nav{padding:6px 10px;flex:1;display:flex;flex-direction:column;gap:2px}
+.sb-nav-section{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);padding:10px 8px 6px}
+.sb-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 10px;border-radius:9px;
+  font-size:12px;font-weight:500;color:var(--text2);
+  cursor:pointer;transition:all .18s;border:1px solid transparent;
+  text-decoration:none;
+}
+.sb-item:hover{background:var(--surface2);color:var(--text);border-color:var(--border)}
+.sb-item.active{background:rgba(41,151,255,.1);color:var(--blue);border-color:rgba(41,151,255,.18)}
+.sb-item-icon{font-size:14px;flex-shrink:0;width:18px;text-align:center}
+.sb-badge{
+  margin-left:auto;
+  background:var(--red);color:#fff;
+  font-size:9px;font-weight:700;
+  padding:2px 6px;border-radius:20px;min-width:18px;text-align:center;
+}
+.sb-badge.green{background:rgba(48,209,88,.15);color:var(--green);border:1px solid rgba(48,209,88,.2)}
 
-    <main class="max-w-5xl mx-auto px-4 py-8">
-        <div class="bg-gray-950/40 border border-gray-900 rounded-2xl p-6 backdrop-blur-xl shadow-2xl relative">
+.sb-footer{padding:14px;border-top:1px solid var(--border)}
+.sb-footer-text{font-size:10px;color:var(--text3);text-align:center;font-family:'SF Mono','Fira Code',monospace}
 
-            <div class="mb-6 border-b border-gray-900/60 pb-4">
-                <h2 id="calc-title" class="text-xl font-black text-white tracking-tight">GPU Instance Provisioner</h2>
-                <p id="calc-subtitle" class="text-xs text-gray-400 mt-1">Выбери on-demand инстанс или задеплой выделенный ИИ-кластер для своей команды</p>
-            </div>
+/* MAIN */
+.main{flex:1;overflow-y:auto;min-width:0}
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start w-full">
-                <div class="flex flex-col space-y-2">
-                    <label id="label-gpu" class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1 block">1. Доступные On-Demand графические процессоры:</label>
-                    <div id="gpu-marketplace" class="space-y-2">
-                        <div id="gpu-loading" class="text-xs text-gray-500 py-4 font-mono">Запрос актуальных квот к API...</div>
-                    </div>
-                </div>
+/* TOP NAV */
+.topnav{
+  position:sticky;top:0;z-index:50;
+  height:56px;padding:0 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(0,0,0,.8);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.topnav-title{font-size:15px;font-weight:700;letter-spacing:-.01em}
+.topnav-right{display:flex;align-items:center;gap:10px}
+.notif-btn{
+  position:relative;
+  width:34px;height:34px;border-radius:9px;
+  border:1px solid var(--border);background:var(--surface);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text2);transition:all .2s;
+}
+.notif-btn:hover{background:var(--surface2);color:var(--text);border-color:var(--border2)}
+.notif-dot{
+  position:absolute;top:7px;right:7px;
+  width:7px;height:7px;border-radius:50%;
+  background:var(--red);border:1.5px solid var(--bg);
+}
 
-                <div class="w-full">
-                    <div class="flex flex-col gap-4 bg-gray-900/20 border border-gray-900/60 p-5 rounded-xl">
-                        <div class="p-4 rounded-xl bg-gradient-to-br from-purple-950/30 to-gray-950 border border-purple-900/60 shadow-xl relative overflow-hidden">
-                            <div class="absolute top-0 right-0 bg-purple-600 text-white font-mono text-[9px] font-bold px-2 py-0.5 rounded-bl uppercase tracking-widest">Enterprise</div>
-                            <h3 id="ent-title" class="text-sm font-black text-purple-400 flex items-center gap-1.5">💼 ИИ-Кластеры Blackwell x8</h3>
-                            <p id="ent-desc" class="text-[11px] text-gray-400 mt-1.5 leading-relaxed">
-                                Для масштабного обучения LLM-моделей. Физическое объединение 8x соединенных карт B200 или B300 через высокоскоростную шину NVLink Club.
-                            </p>
-                            <div class="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-gray-500 font-mono">
-                                <div id="ent-term">• Мин. срок: <span class="text-gray-300 font-bold">3 месяца</span></div>
-                                <div id="ent-net">• Сеть: <span class="text-gray-300 font-bold">InfiniBand / NVLink</span></div>
-                            </div>
-                            <div class="mt-4">
-                                <button id="btn-enterprise" onclick="contactEnterpriseSales()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-500 hover:to-indigo-600 text-white font-black text-xs py-3 rounded-xl shadow-lg shadow-purple-500/20 transition-all uppercase tracking-wider active:scale-[0.98]">
-                                    Связаться с отделом продаж
-                                </button>
-                            </div>
-                        </div>
+/* PAGE */
+.page{padding:28px;max-width:1100px;margin:0 auto}
 
-                        <div id="hint-select" class="text-center py-6 text-gray-600 text-xs">
-                            <div class="text-2xl mb-2">👆</div>
-                            <span id="hint-text">Выбери GPU слева для настройки аренды</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+/* SECTION TITLE */
+.sec-title{font-size:13px;font-weight:700;letter-spacing:-.01em;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sec-title span{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text3)}
 
-    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-gray-950 border-r border-gray-900 z-50 transform -translate-x-full transition-transform duration-300 p-5 flex flex-col justify-between shadow-2xl">
-        <div>
-            <div class="flex justify-between items-center mb-6">
-                <span id="side-title" class="text-xs font-black text-gray-400 uppercase tracking-wider">Панель управления</span>
-                <button onclick="toggleSidebar(false)" class="p-1.5 hover:bg-gray-900 rounded text-gray-500 hover:text-white">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-            </div>
-            <div class="space-y-1.5">
-                <button onclick="closeAll()" id="side-calc" class="w-full text-left py-2 px-3 text-xs font-bold rounded-lg bg-gray-900 text-cyan-400 flex items-center gap-2">📊 Калькулятор тарифов</button>
-                <button onclick="contactEnterpriseSales()" id="side-pay" class="w-full text-left py-2 px-3 text-xs font-bold rounded-lg text-gray-400 hover:bg-gray-900 hover:text-white transition-all flex items-center gap-2">💼 Связаться по кластерам</button>
-            </div>
-        </div>
-        <div class="text-[10px] text-gray-600 font-mono text-center">v4.5-stable</div>
-    </div>
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+.stat-card{
+  padding:18px 20px;border-radius:16px;
+  border:1px solid var(--border);background:var(--surface);
+  transition:all .2s var(--r);
+}
+.stat-card:hover{background:var(--surface2);border-color:var(--border2)}
+.stat-icon{font-size:20px;margin-bottom:10px}
+.stat-label{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.stat-val{font-size:22px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1}
+.stat-val.green{color:var(--green)}
+.stat-val.blue{color:var(--blue)}
+.stat-val.orange{color:var(--orange)}
+.stat-sub{font-size:10px;color:var(--text3);margin-top:5px}
 
-    <div id="overlay" onclick="closeAll()" class="hidden fixed inset-0 bg-black/70 z-40 backdrop-blur-sm"></div>
+/* GRID 2 COL */
+.grid2{display:grid;grid-template-columns:1fr 340px;gap:16px;margin-bottom:28px}
 
-    <div id="modal-tg-redirect" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-950 border border-cyan-500/50 rounded-2xl p-6 w-full max-w-sm z-50 shadow-2xl text-center">
-        <div class="flex justify-between items-center mb-4 border-b border-gray-900 pb-2">
-            <h3 class="text-sm font-black text-white">🚀 Заявка сформирована</h3>
-            <button onclick="closeModal('modal-tg-redirect')" class="text-gray-500 hover:text-white text-lg">&times;</button>
-        </div>
-        <div class="py-4 space-y-4">
-            <div class="w-14 h-14 rounded-2xl bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-center mx-auto text-3xl">✈️</div>
-            <div>
-                <p class="text-sm font-bold text-white mb-1">Перенаправление в Telegram</p>
-                <p class="text-xs text-gray-400">Конфигурация подготовлена для менеджера.</p>
-            </div>
-            <div id="tg-config-preview" class="bg-gray-900 border border-gray-800 rounded-lg p-3 text-left text-xs font-mono text-cyan-400 whitespace-pre-line"></div>
-            <a id="tg-direct-link" href="#" target="_blank" class="block w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-sm py-3 rounded-xl transition-all">
-                Открыть диалог →
-            </a>
-        </div>
-    </div>
+/* CARD */
+.card{
+  border-radius:18px;border:1px solid var(--border);
+  background:var(--surface);overflow:hidden;
+}
+.card-head{
+  padding:18px 20px 14px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.card-head-title{font-size:13px;font-weight:700}
+.card-head-action{font-size:11px;color:var(--blue);cursor:pointer;font-weight:600;transition:opacity .2s}
+.card-head-action:hover{opacity:.7}
 
-    <script>
-        const TG_USERNAME = 'gnodecloud';
-        // Укажи URL твоего FastAPI сервера. Если запускаешь локально, оставь http://127.0.0.1:8000
-        const BACKEND_API_URL = 'https://api.gnode.cloud'; 
+/* INSTANCE CARD */
+.instance{
+  padding:18px 20px;
+  border-bottom:1px solid var(--border);
+  transition:background .2s;
+}
+.instance:last-child{border-bottom:none}
+.instance:hover{background:rgba(255,255,255,.02)}
 
-        let currentLanguage = 'RU';
-        let currentGPU = null;
-        let cardPeriods = {}; 
-        let baseHourlyRates = {}; // Сюда прилетят данные из бэкенда
+.inst-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.inst-icon{
+  width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(41,151,255,.15),rgba(94,92,230,.1));
+  border:1px solid rgba(41,151,255,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;flex-shrink:0;
+}
+.inst-info{flex:1;min-width:0}
+.inst-name{font-size:14px;font-weight:700;letter-spacing:-.01em;margin-bottom:3px}
+.inst-spec{font-size:11px;color:var(--text3);font-weight:500}
+.inst-status{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.04em}
+.status-dot{width:6px;height:6px;border-radius:50%;animation:pdot 2s ease-in-out infinite}
+.status-dot.running{background:var(--green);box-shadow:0 0 6px rgba(48,209,88,.7)}
+.status-dot.stopped{background:var(--red);animation:none}
+.status-dot.pending{background:var(--orange)}
+@keyframes pdot{0%,100%{opacity:1}50%{opacity:.4}}
+.status-text.running{color:var(--green)}
+.status-text.stopped{color:var(--red)}
+.status-text.pending{color:var(--orange)}
 
-        const rubRateMultiplier = 92.00;
-        const periodDays = { 'day': 1, 'week': 7, 'month': 30 };
-        const discounts = { 'day': 0, 'week': 0.05, 'month': 0.10 };
-
-        const periodLabelsShort = {
-            'RU': { day: '1 день', week: '1 неделя', month: '1 месяц' },
-            'EN': { day: '1 day', week: '1 week', month: '1 month' }
-        };
-
-        // Подробные спецификации оставляем на фронтенде для красоты интерфейса
-        const gpuSpecifications = {
-            'RU': {
-                'l4': { name: 'NVIDIA L4', desc: '24ГБ Видеопамять | 50ГБ ОЗУ | 12 vCPUs', badge: 'Оптимальный выбор', badgeColor: 'text-emerald-400 border-emerald-800 bg-emerald-950/40', useCases: ['🤖 Инференс моделей', '🎨 Обработка изображений', '🔍 Компьютерное зрение'] },
-                'rtx_a5000': { name: 'NVIDIA RTX A5000', desc: '24ГБ Видеопамять | 25ГБ ОЗУ | 9 vCPUs', badge: 'Бюджетный', badgeColor: 'text-sky-400 border-sky-800 bg-sky-950/40', useCases: ['🎬 3D-рендеринг', '🖥️ CAD/CAM', '📐 Инженерные расчёты'] },
-                'rtx_3090': { name: 'NVIDIA RTX 3090', desc: '24ГБ Видеопамять | 125ГБ ОЗУ | 16 vCPUs', badge: 'Популярный', badgeColor: 'text-orange-400 border-orange-800 bg-orange-950/40', useCases: ['🧠 Fine-tuning LLM', '🎬 Рендеринг видео', '🔬 ML-эксперименты'] },
-                'rtx_4090': { name: 'NVIDIA RTX 4090', desc: '24ГБ Флагман | 41ГБ ОЗУ | 6 vCPUs', badge: '🔥 Топ продаж', badgeColor: 'text-amber-400 border-amber-700 bg-amber-950/50', useCases: ['🧠 Fine-tuning LLM до 13B', '🎨 Stable Diffusion / ComfyUI', '🚀 Быстрый инференс'] },
-                'rtx_5090': { name: 'NVIDIA RTX 5090', desc: '32ГБ Новое поколение | 35ГБ ОЗУ | 9 vCPUs', badge: 'Новинка', badgeColor: 'text-violet-400 border-violet-800 bg-violet-950/40', useCases: ['🧠 LLM до 30B параметров', '🎨 Генерация изображений', '⚡ AI-видео в реальном времени'] },
-                'h100_sxm': { name: 'NVIDIA H100 SXM', desc: '80ГБ Архитектура ИИ | 125ГБ ОЗУ | 20 vCPUs', badge: '⚡ Мощнейший', badgeColor: 'text-yellow-400 border-yellow-700 bg-yellow-950/50', useCases: ['🧠 Обучение 100B+ моделей', '🌐 Распределённое обучение', '🚀 AGI-пайплайны'] },
-                'b200': { name: 'NVIDIA Blackwell B200', desc: '180ГБ Архитектура ИИ | 283ГБ ОЗУ | 28 vCPUs', badge: '🚀 Флагман', badgeColor: 'text-red-400 border-red-700 bg-red-950/50', useCases: ['🌐 Обучение триллионных моделей', '🧠 AGI / Foundation Models', '🛰️ Государственный HPC'] }
-            },
-            'EN': {
-                'l4': { name: 'NVIDIA L4', desc: '24GB VRAM | 50GB RAM | 12 vCPUs', badge: 'Best Value', badgeColor: 'text-emerald-400 border-emerald-800 bg-emerald-950/40', useCases: ['🤖 Model Inference', '🎨 Image Processing', '🔍 Computer Vision'] },
-                'rtx_a5000': { name: 'NVIDIA RTX A5000', desc: '24GB VRAM | 25GB RAM | 9 vCPUs', badge: 'Budget', badgeColor: 'text-sky-400 border-sky-800 bg-sky-950/40', useCases: ['🎬 3D Rendering', '🖥️ CAD/CAM', '📐 Engineering Compute'] },
-                'rtx_3090': { name: 'NVIDIA RTX 3090', desc: '24GB VRAM | 125GB RAM | 16 vCPUs', badge: 'Popular', badgeColor: 'text-orange-400 border-orange-800 bg-orange-950/40', useCases: ['🧠 LLM Fine-tuning', '🎬 Video Rendering', '🔬 ML Experiments'] },
-                'rtx_4090': { name: 'NVIDIA RTX 4090', desc: '24GB Flagship GPU | 41GB RAM | 6 vCPUs', badge: '🔥 Best Seller', badgeColor: 'text-amber-400 border-amber-700 bg-amber-950/50', useCases: ['🧠 Fine-tuning LLM up to 13B', '🎨 Stable Diffusion / ComfyUI', '🚀 Fast Inference'] },
-                'rtx_5090': { name: 'NVIDIA RTX 5090', desc: '32GB Next-Gen Tech | 35GB RAM | 9 vCPUs', badge: 'New', badgeColor: 'text-violet-400 border-violet-800 bg-violet-950/40', useCases: ['🧠 LLM up to 30B params', '🎨 Image Generation', '⚡ Real-time AI Video'] },
-                'h100_sxm': { name: 'NVIDIA H100 SXM', desc: '80GB AI Architecture | 125GB RAM | 20 vCPUs', badge: '⚡ Most Powerful', badgeColor: 'text-yellow-400 border-yellow-700 bg-yellow-950/50', useCases: ['🧠 Training 100B+ Models', '🌐 Distributed Training', '🚀 AGI Pipelines'] },
-                'b200': { name: 'NVIDIA Blackwell B200', desc: '180GB AI Architecture | 283GB RAM | 28 vCPUs', badge: '🚀 Flagship', badgeColor: 'text-red-400 border-red-700 bg-red-950/50', useCases: ['🌐 Trillion-param Model Training', '🧠 AGI / Foundation Models', '🛰️ Government HPC'] }
-            }
-        };
-
-        const translations = {
-            'RU': {
-                sideTitle: 'Панель управления', sideCalc: '📊 Калькулятор тарифов', sidePay: '💼 Связаться по кластерам',
-                title: 'GPU Instance Provisioner', subtitle: 'Выбери on-demand инстанс или задеплой выделенный ИИ-кластер для своей команды',
-                gpu: '1. Доступные On-Demand графические процессоры:', rateLabel: 'в сутки',
-                pDay: '1 День', pWeek: 'Неделя −5%', pMonth: 'Месяц −10%', btnBuy: 'Запустить выделенный узел',
-                cost: 'Стоимость конфигурации:', oldPrice: 'Базовая цена за посуточно:', save: 'Ваша экономия:',
-                periodLabel: 'Период аренды:', useCasesLabel: 'Идеально подходит для:',
-                entTitle: '💼 ИИ-Кластеры Blackwell x8', entDesc: 'Для масштабного обучения LLM-моделей. Физическое объединение 8x соединенных карт B200 или B300 через высокоскоростную шину NVLink Club.',
-                entTerm: '• Мин. срок: <span class="text-gray-300 font-bold">3 месяца</span>', entNet: '• Сеть: <span class="text-gray-300 font-bold">InfiniBand / NVLink</span>',
-                btnEnt: 'Связаться с отделом продаж', hint: 'Выбери GPU слева для настройки аренды'
-            },
-            'EN': {
-                sideTitle: 'Control Panel', sideCalc: '📊 Rate Calculator', sidePay: '💼 Contact for Clusters',
-                title: 'GPU Instance Provisioner', subtitle: 'Select an on-demand instance or deploy a dedicated AI cluster for your team',
-                gpu: '1. Available On-Demand GPUs:', rateLabel: '/day',
-                pDay: '1 Day', pWeek: 'Week −5%', pMonth: 'Month −10%', btnBuy: 'Deploy Dedicated Node',
-                cost: 'Configuration Cost:', oldPrice: 'Base daily price:', save: 'Your savings:',
-                periodLabel: 'Rental Period:', useCasesLabel: 'Ideal for:',
-                entTitle: '💼 Blackwell x8 AI Clusters', entDesc: 'For large-scale LLM training. Physical aggregation of 8x connected B200 or B300 GPUs via high-speed NVLink interconnect.',
-                entTerm: '• Min. term: <span class="text-gray-300 font-bold">3 months</span>', entNet: '• Network: <span class="text-gray-300 font-bold">InfiniBand / NVLink</span>',
-                btnEnt: 'Contact Sales Department', hint: 'Select a GPU from the list to configure rental'
-            }
-        };
-
-        // КРИТИЧЕСКАЯ ФУНКЦИЯ: Получение реальных цен с твоего бэкенда
-        async function loadGpuMarketplace() {
-            try {
-                const response = await fetch(`${BACKEND_API_URL}/v1/market/gpus`);
-                if (!response.ok) throw new Error('Ошибка сервера');
-                
-                // Сервер вернет объект вида {"rtx_4090": 2.76, "h100_sxm": 11.96} с уже примененной наценкой x4
-                baseHourlyRates = await response.json();
-                renderGpuMarketplace();
-            } catch (error) {
-                console.error("Не удалось связаться с бэкендом, включаю резервный режим:", error);
-                // Резервный хардкод на случай падения бэкенда, чтобы сайт продолжал жить
-                baseHourlyRates = {
-                    'l4': 1.56, 'rtx_a5000': 1.08, 'rtx_3090': 1.84, 'rtx_4090': 2.76, 
-                    'rtx_5090': 3.96, 'h100_sxm': 11.96, 'b200': 21.96
-                };
-                renderGpuMarketplace();
-            }
-        }
-
-        function getConvertedValue(usdVal) {
-            return currentLanguage === 'RU' ? usdVal * rubRateMultiplier : usdVal;
-        }
-
-        function formatCurrencyValue(valInUSD) {
-            let localValue = getConvertedValue(valInUSD);
-            if (currentLanguage === 'RU') {
-                return new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(localValue) + ' ₽';
-            }
-            return '$' + new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(valInUSD);
-        }
-
-        function calcPrice(gpuKey, period) {
-            const hourly = baseHourlyRates[gpuKey] || 0;
-            const daily = hourly * 24;
-            const full = daily * periodDays[period];
-            const final = full * (1 - discounts[period]);
-            return { full, final, saved: full - final };
-        }
-
-        function renderGpuMarketplace() {
-            const container = document.getElementById('gpu-marketplace');
-            if (!container) return;
-            container.innerHTML = '';
-
-            const specs = gpuSpecifications[currentLanguage];
-            const t = translations[currentLanguage];
-
-            Object.keys(baseHourlyRates).forEach(key => {
-                const item = specs[key];
-                if (!item) return;
-
-                const isSelected = (currentGPU === key);
-                const period = cardPeriods[key] || 'day';
-                const { full, final, saved } = calcPrice(key, period);
-                
-                // Базовая посуточная ставка для превью
-                const ratePreview = formatCurrencyValue(baseHourlyRates[key] * 24);
-
-                let cardHtml = `
-                    <div onclick="selectGpu('${key}')" class="gpu-card bg-gray-950/60 border ${isSelected ? 'border-cyan-500/80 shadow-lg shadow-cyan-500/5' : 'border-gray-900/80'} hover:border-gray-800 rounded-xl p-4 cursor-pointer relative overflow-hidden">
-                        <div class="flex justify-between items-start gap-4">
-                            <div>
-                                <div class="flex items-center gap-2 flex-wrap">
-                                    <h4 class="text-xs font-black text-white font-mono">${item.name}</h4>
-                                    ${item.badge ? `<span class="border text-[9px] font-bold px-1.5 py-0.5 rounded font-mono ${item.badgeColor}">${item.badge}</span>` : ''}
-                                </div>
-                                <p class="text-[10px] text-gray-500 mt-1 font-mono">${item.desc}</p>
-                            </div>
-                            <div class="text-right shrink-0">
-                                <div class="text-xs font-black text-cyan-400 font-mono">${ratePreview}</div>
-                                <div class="text-[9px] text-gray-600 font-mono mt-0.5">${t.rateLabel}</div>
-                            </div>
-                        </div>
-
-                        <div id="expand-${key}" class="gpu-expand ${isSelected ? 'open' : ''}">
-                            <div class="mt-4 pt-4 border-t border-gray-900/60 space-y-4" onclick="event.stopPropagation()">
-                                
-                                <div>
-                                    <div class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">${t.periodLabel}</div>
-                                    <div class="grid grid-cols-3 gap-2">
-                                        <button id="pbtn-${key}-day" onclick="setCardPeriod('${key}', 'day', event)" class="period-btn text-[11px] font-bold rounded-lg px-2 py-1.5 cursor-pointer ${period === 'day' ? 'active' : ''}">${t.pDay}</button>
-                                        <button id="pbtn-${key}-week" onclick="setCardPeriod('${key}', 'week', event)" class="period-btn text-[11px] font-bold rounded-lg px-2 py-1.5 cursor-pointer ${period === 'week' ? 'active' : ''}">${t.pWeek}</button>
-                                        <button id="pbtn-${key}-month" onclick="setCardPeriod('${key}', 'month', event)" class="period-btn text-[11px] font-bold rounded-lg px-2 py-1.5 cursor-pointer ${period === 'month' ? 'active' : ''}">${t.pMonth}</button>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <div class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">${t.useCasesLabel}</div>
-                                    <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-[10px] text-gray-400 font-mono">
-                                        ${item.useCases.map(uc => `<div>${uc}</div>`).join('')}
-                                    </div>
-                                </div>
-
-                                <div class="bg-gray-900/30 border border-gray-900 rounded-xl p-3 space-y-1.5">
-                                    <div class="flex justify-between items-baseline">
-                                        <span class="text-[10px] text-gray-400">${t.cost}</span>
-                                        <span id="card-price-${key}" class="text-sm font-black text-cyan-400 font-mono">${formatCurrencyValue(final)}</span>
-                                    </div>
-                                    <div id="card-discount-${key}" class="space-y-1 ${period === 'day' ? 'hidden' : ''}">
-                                        <div class="flex justify-between text-[9px] text-gray-600 font-mono">
-                                            <span>${t.oldPrice}</span>
-                                            <span id="card-old-${key}" class="line-through">${formatCurrencyValue(full)}</span>
-                                        </div>
-                                        <div class="flex justify-between text-[9px] text-emerald-500/80 font-mono">
-                                            <span>${t.save}</span>
-                                            <span id="card-saved-${key}">-${formatCurrencyValue(saved)}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <button onclick="purchaseService('${key}', event)" class="launch-btn w-full text-white font-black text-xs py-2.5 rounded-xl transition-all uppercase tracking-wider">
-                                    ${t.btnBuy}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += cardHtml;
-            }
-            );
-        }
-
-        function selectGpu(key) {
-            currentGPU = (currentGPU === key) ? null : key;
-            if (currentGPU && !cardPeriods[currentGPU]) cardPeriods[currentGPU] = 'day';
-            renderGpuMarketplace();
-            document.getElementById('hint-select').style.display = currentGPU ? 'none' : 'block';
-        }
-
-        function setCardPeriod(key, period, event) {
-            event.stopPropagation();
-            cardPeriods[key] = period;
-            renderGpuMarketplace();
-        }
-
-        // Включение мультиязычности
-        function changeLanguage() {
-            currentLanguage = document.getElementById('lang-select').value;
-            
-            // Статичные элементы переводим на лету
-            const t = translations[currentLanguage];
-            document.getElementById('side-title').innerText = t.sideTitle;
-            document.getElementById('side-calc').innerText = t.sideCalc;
-            document.getElementById('side-pay').innerText = t.sidePay;
-            document.getElementById('calc-title').innerText = t.title;
-            document.getElementById('calc-subtitle').innerText = t.subtitle;
-            document.getElementById('label-gpu').innerText = t.gpu;
-            document.getElementById('ent-title').innerText = t.entTitle;
-            document.getElementById('ent-desc').innerText = t.entDesc;
-            document.getElementById('ent-term').innerHTML = t.entTerm;
-            document.getElementById('ent-net').innerHTML = t.entNet;
-            document.getElementById('btn-enterprise').innerText = t.btnEnt;
-            document.getElementById('hint-text').innerText = t.hint;
-
-            renderGpuMarketplace();
-        }
-
-        // Интерфейсные утилиты (Sidebar / Modals)
-        function toggleSidebar(open) {
-            const side = document.getElementById('sidebar');
-            const over = document.getElementById('overlay');
-            if (open) { side.classList.remove('-translate-x-full'); over.classList.remove('hidden'); }
-            else { side.classList.add('-translate-x-full'); over.classList.add('hidden'); }
-        }
-        function closeAll() { toggleSidebar(false); closeModal('modal-tg-redirect'); }
-        function openModal(id) { document.getElementById(id).classList.remove('hidden'); document.getElementById('overlay').classList.remove('hidden'); }
-        function closeModal(id) { document.getElementById(id).classList.add('hidden'); if(document.getElementById('sidebar').classList.contains('-translate-x-full')) document.getElementById('overlay').classList.add('hidden'); }
-
-        // Запуск маркетплейса при загрузке страницы
-        document.addEventListener('DOMContentLoaded', loadGpuMarketplace);
-    </script>
-<div class="instance">
-              <div class="inst-header">
-                <div class="inst-icon" style="background:linear-gradient(135deg,rgba(255,159,10,.15),rgba(255,69,58,.08));border-color:rgba(255,159,10,.15)">🧠</div>
-                <div class="inst-info">
-                  <div class="inst-name">H100 SXM · llm-training-02</div>
-                  <div class="inst-spec">80 ГБ VRAM · 125 ГБ RAM · 20 vCPU · PyTorch 2.3</div>
-                </div>
-                <div class="inst-status">
-                  <div class="status-dot running"></div>
-                  <span class="status-text running">Running</span>
-                </div>
-              </div>
-
-              <div class="timer-row">
-                <div class="timer-left">
-                  <div class="timer-label">Осталось времени</div>
-                  <div class="timer-val urgent" id="timer2">03:15:42</div>
-                </div>
-                <div class="timer-bar-wrap"><div class="timer-bar orange" id="bar2" style="width:15%"></div></div>
-                <div class="timer-cost">
-                  <div class="timer-cost-val">11 200 ₽</div>
-                  <div class="timer-cost-label">стоимость аренды</div>
-                </div>
-              </div>
-
-              <div class="access-details">
-                <div class="access-row">
-                  <span class="access-key">IP адрес</span>
-                  <span class="access-val" id="ip2">185.246.88.143</span>
-                  <button class="access-copy" onclick="copyText('185.246.88.143','IP скопирован')">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                  </button>
-                </div>
-                <div class="access-row">
-                  <span class="access-key">SSH команда</span>
-                  <span class="access-val">ssh -p 22042 root@185.246.88.143</span>
-                  <button class="access-copy" onclick="copyText('ssh -p 22042 root@185.246.88.143','SSH команда скопирована')">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                  </button>
-                </div>
-              </div>
-
-              <div class="inst-actions">
-                <button class="inst-btn primary" onclick="toast('🔗 Подключение к H100...','✅')">Подключиться</button>
-                <button class="inst-btn" style="background: rgba(255,159,10,0.1); color: var(--orange); border-color: rgba(255,159,10,0.2)" onclick="openModal('topupModal')">Продлить (Низкий баланс)</button>
-                <button class="inst-btn danger" onclick="toast('🛑 Инстанс остановлен','⚠️')">Остановить</button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="right-col">
-          <div class="sec-title">Баланс аккаунта</div>
-          <div class="balance-card">
-            <div class="bc-label">Текущий счет</div>
-            <div class="bc-val">12 840 ₽</div>
-            <div class="bc-sub">Расход: ~580 ₽/час</div>
-            <div class="bc-actions">
-              <button class="bc-btn primary" onclick="openModal('topupModal')">Пополнить</button>
-              <button class="bc-btn secondary" onclick="toast('Выписка отправлена на email','📩')">Выписка</button>
-            </div>
-          </div>
-
-          <div class="sec-title">Последние уведомления</div>
-          <div class="card">
-            <div class="notif-item unread">
-              <div class="notif-ico" style="background:rgba(255,159,0,0.15);color:var(--orange)">⚠️</div>
-              <div class="notif-body">
-                <div class="notif-title">Инстанс llm-training-02 скоро завершится</div>
-                <div class="notif-sub">Осталось менее 4 часов работы. Пополните баланс для автоматического продления.</div>
-                <div class="notif-time">5 мин. назад</div>
-              </div>
-              <div class="notif-unread-dot"></div>
-            </div>
-            <div class="notif-item">
-              <div class="notif-ico" style="background:rgba(48,209,88,0.15);color:var(--green)">✓</div>
-              <div class="notif-body">
-                <div class="notif-title">Успешное пополнение</div>
-                <div class="notif-sub">Баланс пополнен на 10 000 ₽ через СБП.</div>
-                <div class="notif-time">Вчера, 14:20</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div> </div> </div> </div> <script>
-  // Показ уведомлений (Toast)
-  function toast(msg, icon = '✓') {
-    const t = document.getElementById('toast');
-    document.getElementById('toastIcon').innerText = icon;
-    document.getElementById('toastMsg').innerText = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2800);
-  }
-
-  // Копирование текста в буфер обмена
-  function copyText(text, successMessage) {
-    navigator.clipboard.writeText(text).then(() => {
-      toast(successMessage || 'Скопировано в буфер', '📋');
-    }).catch(() => {
-      toast('Ошибка копирования', '❌');
-    });
-    
-    // Эффект временного снятия blur, если кликнули на скрытый пароль
-    if(event && event.target.classList.contains('secret')) {
-        event.target.style.filter = 'none';
-        setTimeout(() => { event.target.style.filter = ''; }, 2000);
-    }
-  }
-
-  // Модальные окна
-  function openModal(id) {
-    document.getElementById(id).classList.add('show');
-  }
-  function closeModal(id) {
-    document.getElementById(id).classList.remove('show');
-  }
-
-  // Выбор суммы в модальном окне
-  function setAmount(val, btn) {
-    document.getElementById('topupAmount').value = val;
-    document.querySelectorAll('.amount-pill').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  }
-
-  // Выбор способа оплаты
-  function selPay(btn) {
-    document.querySelectorAll('.pay-method').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  }
-
-  // Эмуляция оплаты
-  function doTopup() {
-    const am = document.getElementById('topupAmount').value;
-    if(!am || am <= 0) return toast('Введите корректную сумму', '❌');
-    
-    closeModal('topupModal');
-    toast(`Запрос на ${parseInt(am).toLocaleString()} ₽ отправлен!`, '⚡');
-  }
-
-  // Простая симуляция переключения страниц табами (в левом меню)
-  function showPage(pageId) {
-    // Меняем заголовок в топбаре
-    const titles = {
-      'dashboard': 'Дашборд',
-      'marketplace': 'GPU Marketplace',
-      'instances': 'Мои инстансы',
-      'billing': 'Баланс и платежи',
-      'history': 'История операций',
-      'notifications': 'Уведомления',
-      'settings': 'Настройки',
-      'ssh': 'SSH-ключи'
-    };
-    if(titles[pageId]) document.getElementById('topnavTitle').innerText = titles[pageId];
-
-    // Подсвечиваем активный пункт в меню
-    document.querySelectorAll('.sb-item').forEach(item => {
-      item.classList.remove('active');
-      if(item.setAttribute('onclick') && item.getAttribute('onclick').includes(pageId)) {
-        item.classList.add('active');
-      }
-    });
-
-    toast(`Переход в раздел ${titles[pageId] || pageId}`, '📂');
-  }
-
-  // Скрытие/раскрытие паролей при клике на заблюренные элементы
-  document.querySelectorAll('.access-val.secret').forEach(el => {
-    el.addEventListener('click', function() {
-      this.style.filter = this.style.filter === 'none' ? 'blur(4px)' : 'none';
-    });
-  });
-</script>
-
-</body>
-</html>
-</body>
-</html>
+/* TIMER */
+.timer-row{
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:10px;padding:10px 14px;margin-bottom:12px;
+}
+.timer-label{font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
+.timer-val{font-size:15px;font-weight:800;letter
