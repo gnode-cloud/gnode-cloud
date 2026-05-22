@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
+
 :root {
   --bg: #000000;
   --surface: rgba(255,255,255,0.04);
@@ -43,7 +44,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-body::before {
+/* ── NOISE GRAIN ── */
+#pg-landing::before {
   content: '';
   position: fixed;
   inset: 0;
@@ -53,33 +55,34 @@ body::before {
   opacity: 0.4;
 }
 
-.ambient {
+/* ── AMBIENT BACKGROUND ── */
+#pg-landing .ambient {
   position: fixed;
   inset: 0;
   pointer-events: none;
   overflow: hidden;
   z-index: 0;
 }
-.ambient-orb {
+#pg-landing .ambient-orb {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.6;
+  opacity: 1;
   animation: ambientFloat 20s ease-in-out infinite;
 }
-.ambient-orb:nth-child(1) {
+#pg-landing .ambient-orb:nth-child(1) {
   width: 600px; height: 600px;
   background: radial-gradient(circle, rgba(41,151,255,0.12) 0%, transparent 70%);
   top: -200px; left: -100px;
   animation-delay: 0s;
 }
-.ambient-orb:nth-child(2) {
+#pg-landing .ambient-orb:nth-child(2) {
   width: 500px; height: 500px;
   background: radial-gradient(circle, rgba(191,90,242,0.08) 0%, transparent 70%);
   bottom: -100px; right: -100px;
   animation-delay: -7s;
 }
-.ambient-orb:nth-child(3) {
+#pg-landing .ambient-orb:nth-child(3) {
   width: 400px; height: 400px;
   background: radial-gradient(circle, rgba(48,209,88,0.06) 0%, transparent 70%);
   top: 50%; left: 50%;
@@ -87,11 +90,12 @@ body::before {
   animation-delay: -14s;
 }
 @keyframes ambientFloat {
-  0%, 100% { transform: translate(0, 0) scale(1); }
+  0%, 100% { opacity: 1; transform: translate(0, 0) scale(1); }
   33% { transform: translate(30px, -20px) scale(1.05); }
   66% { transform: translate(-20px, 30px) scale(0.95); }
 }
 
+/* ── NAV ── */
 nav {
   position: sticky;
   top: 0;
@@ -101,7 +105,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(0,0,0,0.72);
+  background: rgba(0,0,0,0.82);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid var(--border);
@@ -137,7 +141,7 @@ nav {
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .lang-pill {
@@ -166,50 +170,6 @@ nav {
   color: var(--text-primary);
 }
 
-<a href="dashboard/index.html" style="
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 8px 16px;
-  border-radius: 14px;
-  color: #f5f5f7;
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 600;
-  margin-right: 10px;
-  transition: all 0.2s ease;
-" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
-  👤 Личный кабинет
-</a>
-/* Кнопка Аккаунта */
-.account-btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 14px;
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  font-size: 12px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s var(--transition);
-}
-
-.account-btn:hover {
-  background: var(--surface-hover);
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.account-btn svg {
-  width: 14px;
-  height: 14px;
-  margin-right: 6px;
-}
-
 .menu-btn {
   width: 36px; height: 36px;
   border-radius: 10px;
@@ -229,22 +189,24 @@ nav {
 }
 .menu-btn svg { width: 16px; height: 16px; }
 
+/* ── MAIN ── */
 main {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: 1080px;
   margin: 0 auto;
-  padding: 40px 24px 80px;
+  padding: 20px 24px 80px;
 }
 
+/* ── HERO ── */
 .hero {
   text-align: center;
   margin-bottom: 56px;
-  animation: fadeUp 0.8s var(--transition) both;
+  animation: fadeUp 0.4s var(--transition);
 }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0.3; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -296,6 +258,7 @@ main {
   margin: 0 auto;
 }
 
+/* ── LAYOUT ── */
 .layout {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -307,6 +270,7 @@ main {
   .layout { grid-template-columns: 1fr; }
 }
 
+/* ── SECTION LABEL ── */
 .section-label {
   font-size: 11px;
   font-weight: 600;
@@ -316,14 +280,19 @@ main {
   margin-bottom: 14px;
 }
 
+/* ── TIER GROUP ── */
 .tier-group {
   margin-bottom: 12px;
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--border);
   background: var(--surface);
-  animation: fadeUp 0.6s var(--transition) both;
+  animation: fadeUp 0.4s var(--transition);
 }
+.tier-group:nth-child(1){ animation-delay: 0.05s; }
+.tier-group:nth-child(2){ animation-delay: 0.1s; }
+.tier-group:nth-child(3){ animation-delay: 0.15s; }
+.tier-group:nth-child(4){ animation-delay: 0.2s; }
 
 .tier-header {
   padding: 14px 16px;
@@ -377,6 +346,7 @@ main {
   padding-bottom: 0;
 }
 
+/* ── GPU CARD ── */
 .gpu-card {
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
@@ -464,6 +434,7 @@ main {
   margin-top: 1px;
 }
 
+/* ── EXPAND PANEL ── */
 .gpu-expand {
   overflow: hidden;
   max-height: 0;
@@ -485,6 +456,7 @@ main {
   margin-bottom: 14px;
 }
 
+/* use case chips */
 .use-cases {
   display: flex;
   flex-wrap: wrap;
@@ -501,6 +473,7 @@ main {
   background: rgba(255,255,255,0.03);
 }
 
+/* period selector */
 .period-label {
   font-size: 10px;
   font-weight: 600;
@@ -522,7 +495,7 @@ main {
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background: transparent;
-  color: var(--text-secondary);
+  color: var(--text-tertiary);
   font-size: 11px;
   font-weight: 600;
   cursor: pointer;
@@ -531,7 +504,7 @@ main {
 }
 .period-pill:hover {
   border-color: var(--border-hover);
-  color: var(--text-primary);
+  color: var(--text-secondary);
 }
 .period-pill.active {
   background: var(--accent);
@@ -540,6 +513,7 @@ main {
   box-shadow: 0 2px 12px rgba(41,151,255,0.35);
 }
 
+/* price display */
 .price-box {
   background: rgba(255,255,255,0.03);
   border: 1px solid var(--border);
@@ -574,7 +548,7 @@ main {
   justify-content: space-between;
   align-items: center;
 }
-.price-savings.hidden { display: none !important; }
+.price-savings.hidden { display: none; }
 
 .price-old {
   font-size: 11px;
@@ -591,6 +565,7 @@ main {
   font-variant-numeric: tabular-nums;
 }
 
+/* launch button */
 .launch-btn {
   width: 100%;
   padding: 13px;
@@ -622,6 +597,7 @@ main {
 .launch-btn:hover::before { opacity: 1; }
 .launch-btn:active { transform: scale(0.98); }
 
+/* ── RIGHT PANEL ── */
 .right-panel {
   position: sticky;
   top: 76px;
@@ -630,13 +606,14 @@ main {
   gap: 16px;
 }
 
+/* empty state */
 .empty-state {
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   background: var(--surface);
   padding: 40px 24px;
   text-align: center;
-  animation: fadeUp 0.6s var(--transition) 0.25s both;
+  animation: fadeUp 0.4s var(--transition) 0.1s;
 }
 .empty-icon {
   font-size: 36px;
@@ -655,6 +632,7 @@ main {
   line-height: 1.5;
 }
 
+/* enterprise card */
 .enterprise-card {
   border-radius: var(--radius-xl);
   border: 1px solid rgba(191,90,242,0.2);
@@ -662,7 +640,7 @@ main {
   padding: 22px;
   position: relative;
   overflow: hidden;
-  animation: fadeUp 0.6s var(--transition) 0.3s both;
+  animation: fadeUp 0.4s var(--transition) 0.15s;
 }
 .enterprise-card::before {
   content: '';
@@ -744,6 +722,7 @@ main {
 }
 .ent-btn:active { transform: scale(0.98); }
 
+/* ── SIDEBAR ── */
 .sidebar-overlay {
   position: fixed;
   inset: 0;
@@ -759,7 +738,7 @@ main {
   pointer-events: all;
 }
 
-.sidebar {
+#pg-landing #pg-landing .sidebar {
   position: fixed;
   inset: 0 auto 0 0;
   width: 280px;
@@ -844,6 +823,7 @@ main {
   letter-spacing: 0.05em;
 }
 
+/* ── MODAL ── */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -965,12 +945,613 @@ main {
   box-shadow: 0 6px 20px rgba(41,151,255,0.35);
 }
 
+/* ── SCROLL BAR ── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 
+/* ── SELECTION ── */
 ::selection { background: rgba(41,151,255,0.3); }
+
+
+/* ═══════════════════════════════
+   DASHBOARD STYLES
+═══════════════════════════════ */
+
+:root {
+  --bg: #000;
+  --bg2: #0a0a0a;
+  --bg3: #111;
+  --surface: rgba(255,255,255,0.04);
+  --surface2: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --text: #f5f5f7;
+  --text2: rgba(245,245,247,0.6);
+  --text3: rgba(245,245,247,0.35);
+  --blue: #2997ff;
+  --green: #30d158;
+  --red: #ff453a;
+  --orange: #ff9f0a;
+  --purple: #bf5af2;
+  --yellow: #ffd60a;
+  --r: cubic-bezier(0.4,0,0.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* GRAIN - only in dashboard */
+#pg-dash::after{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9999;opacity:.5;
+}
+
+/* AMBIENT */
+#pg-dash .amb{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.amb span{position:absolute;border-radius:50%;filter:blur(90px);opacity:.7;animation:af 18s ease-in-out infinite}
+.amb span:nth-child(1){width:500px;height:500px;background:radial-gradient(circle,rgba(41,151,255,.1),transparent 70%);top:-150px;left:-100px;animation-delay:0s}
+.amb span:nth-child(2){width:400px;height:400px;background:radial-gradient(circle,rgba(191,90,242,.07),transparent 70%);bottom:-100px;right:-80px;animation-delay:-9s}
+@keyframes af{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-15px) scale(1.05)}}
+
+/* LAYOUT */
+.shell{display:flex;min-height:100vh;position:relative;z-index:1;overflow:hidden;}
+
+/* SIDEBAR */
+#pg-dash #pg-dash .sidebar{
+  width:240px;flex-shrink:0;
+  background:rgba(10,10,10,.95);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;
+  backdrop-filter:blur(20px);
+}
+
+.sb-logo{
+  display:flex;align-items:center;gap:10px;
+  padding:22px 20px 18px;
+  border-bottom:1px solid var(--border);
+}
+.sb-logo-icon{
+  width:28px;height:28px;border-radius:7px;
+  background:linear-gradient(135deg,#2997ff,#5e5ce6);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:13px;color:#fff;
+}
+.sb-logo-txt{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--text)}
+
+.sb-user{
+  padding:14px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.sb-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,#2997ff,#5e5ce6);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.sb-user-info{}
+.sb-user-name{font-size:12px;font-weight:600;color:var(--text)}
+.sb-user-email{font-size:10px;color:var(--text3);margin-top:1px}
+
+.sb-balance{
+  margin:12px 14px;
+  padding:12px 14px;
+  border-radius:12px;
+  background:rgba(41,151,255,.07);
+  border:1px solid rgba(41,151,255,.15);
+}
+.sb-balance-label{font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--blue);margin-bottom:4px}
+.sb-balance-val{font-size:20px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--text)}
+.sb-balance-sub{font-size:10px;color:var(--text3);margin-top:2px}
+
+.sb-top-btn{
+  margin:0 14px 12px;width:calc(100% - 28px);
+  padding:9px;border-radius:10px;border:none;
+  background:var(--blue);color:#fff;
+  font-size:12px;font-weight:700;cursor:pointer;
+  transition:all .2s var(--r);letter-spacing:.01em;
+}
+.sb-top-btn:hover{background:#3aa0ff;transform:translateY(-1px);box-shadow:0 6px 20px rgba(41,151,255,.35)}
+
+.sb-nav{padding:6px 10px;flex:1;display:flex;flex-direction:column;gap:2px}
+.sb-nav-section{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);padding:10px 8px 6px}
+.sb-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 10px;border-radius:9px;
+  font-size:12px;font-weight:500;color:var(--text2);
+  cursor:pointer;transition:all .18s;border:1px solid transparent;
+  text-decoration:none;
+}
+.sb-item:hover{background:var(--surface2);color:var(--text);border-color:var(--border)}
+.sb-item.active{background:rgba(41,151,255,.1);color:var(--blue);border-color:rgba(41,151,255,.18)}
+.sb-item-icon{font-size:14px;flex-shrink:0;width:18px;text-align:center}
+.sb-badge{
+  margin-left:auto;
+  background:var(--red);color:#fff;
+  font-size:9px;font-weight:700;
+  padding:2px 6px;border-radius:20px;min-width:18px;text-align:center;
+}
+.sb-badge.green{background:rgba(48,209,88,.15);color:var(--green);border:1px solid rgba(48,209,88,.2)}
+
+.sb-footer{padding:14px;border-top:1px solid var(--border)}
+.sb-footer-text{font-size:10px;color:var(--text3);text-align:center;font-family:'SF Mono','Fira Code',monospace}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;min-width:0}
+
+/* TOP NAV */
+.topnav{
+  position:sticky;top:0;z-index:50;
+  height:56px;padding:0 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(0,0,0,.8);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.topnav-title{font-size:15px;font-weight:700;letter-spacing:-.01em}
+.topnav-right{display:flex;align-items:center;gap:10px}
+.notif-btn{
+  position:relative;
+  width:34px;height:34px;border-radius:9px;
+  border:1px solid var(--border);background:var(--surface);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text2);transition:all .2s;
+}
+.notif-btn:hover{background:var(--surface2);color:var(--text);border-color:var(--border2)}
+.notif-dot{
+  position:absolute;top:7px;right:7px;
+  width:7px;height:7px;border-radius:50%;
+  background:var(--red);border:1.5px solid var(--bg);
+}
+
+/* PAGE */
+.page{padding:28px;max-width:1100px;margin:0 auto}
+
+/* SECTION TITLE */
+.sec-title{font-size:13px;font-weight:700;letter-spacing:-.01em;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sec-title span{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text3)}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+.stat-card{
+  padding:18px 20px;border-radius:16px;
+  border:1px solid var(--border);background:var(--surface);
+  transition:all .2s var(--r);
+}
+.stat-card:hover{background:var(--surface2);border-color:var(--border2)}
+.stat-icon{font-size:20px;margin-bottom:10px}
+.stat-label{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.stat-val{font-size:22px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1}
+.stat-val.green{color:var(--green)}
+.stat-val.blue{color:var(--blue)}
+.stat-val.orange{color:var(--orange)}
+.stat-sub{font-size:10px;color:var(--text3);margin-top:5px}
+
+/* GRID 2 COL */
+.grid2{display:grid;grid-template-columns:1fr 340px;gap:16px;margin-bottom:28px}
+
+/* CARD */
+.card{
+  border-radius:18px;border:1px solid var(--border);
+  background:var(--surface);overflow:hidden;
+}
+.card-head{
+  padding:18px 20px 14px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.card-head-title{font-size:13px;font-weight:700}
+.card-head-action{font-size:11px;color:var(--blue);cursor:pointer;font-weight:600;transition:opacity .2s}
+.card-head-action:hover{opacity:.7}
+
+/* INSTANCE CARD */
+.instance{
+  padding:18px 20px;
+  border-bottom:1px solid var(--border);
+  transition:background .2s;
+}
+.instance:last-child{border-bottom:none}
+.instance:hover{background:rgba(255,255,255,.02)}
+
+.inst-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.inst-icon{
+  width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(41,151,255,.15),rgba(94,92,230,.1));
+  border:1px solid rgba(41,151,255,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;flex-shrink:0;
+}
+.inst-info{flex:1;min-width:0}
+.inst-name{font-size:14px;font-weight:700;letter-spacing:-.01em;margin-bottom:3px}
+.inst-spec{font-size:11px;color:var(--text3);font-weight:500}
+.inst-status{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.04em}
+.status-dot{width:6px;height:6px;border-radius:50%;animation:pdot 2s ease-in-out infinite}
+.status-dot.running{background:var(--green);box-shadow:0 0 6px rgba(48,209,88,.7)}
+.status-dot.stopped{background:var(--red);animation:none}
+.status-dot.pending{background:var(--orange)}
+@keyframes pdot{0%,100%{opacity:1}50%{opacity:.4}}
+.status-text.running{color:var(--green)}
+.status-text.stopped{color:var(--red)}
+.status-text.pending{color:var(--orange)}
+
+/* TIMER */
+.timer-row{
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:10px;padding:10px 14px;margin-bottom:12px;
+}
+.timer-left{}
+.timer-label{font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
+.timer-val{font-size:15px;font-weight:800;letter-spacing:-.01em;font-family:'SF Mono','Fira Code',monospace;font-variant-numeric:tabular-nums}
+.timer-val.urgent{color:var(--orange)}
+.timer-bar-wrap{flex:1;margin:0 14px;height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.timer-bar{height:100%;border-radius:2px;transition:width 1s linear}
+.timer-bar.green{background:linear-gradient(90deg,#30d158,#34c759)}
+.timer-bar.orange{background:linear-gradient(90deg,#ff9f0a,#ffd60a)}
+.timer-bar.red{background:linear-gradient(90deg,#ff453a,#ff6961)}
+.timer-cost{text-align:right}
+.timer-cost-val{font-size:13px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}
+.timer-cost-label{font-size:9px;color:var(--text3);margin-top:1px}
+
+/* ACCESS DETAILS */
+.access-details{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.access-row{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 12px;border-radius:8px;
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  transition:border-color .15s;
+}
+.access-row:hover{border-color:var(--border2)}
+.access-key{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.03em;width:70px;flex-shrink:0}
+.access-val{
+  flex:1;font-size:11px;font-weight:600;
+  font-family:'SF Mono','Fira Code',monospace;
+  color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.access-val.secret{filter:blur(4px);transition:filter .2s;cursor:pointer}
+.access-val.secret:hover{filter:none}
+.access-copy{
+  width:24px;height:24px;border-radius:6px;
+  border:1px solid var(--border);background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text3);transition:all .18s;flex-shrink:0;
+}
+.access-copy:hover{background:var(--surface2);color:var(--text);border-color:var(--border2)}
+.access-copy svg{width:11px;height:11px}
+
+.inst-actions{display:flex;gap:8px}
+.inst-btn{
+  flex:1;padding:9px;border-radius:9px;border:1px solid var(--border);
+  background:transparent;color:var(--text2);
+  font-size:11px;font-weight:600;cursor:pointer;
+  transition:all .18s;letter-spacing:.01em;
+}
+.inst-btn:hover{background:var(--surface2);color:var(--text);border-color:var(--border2)}
+.inst-btn.danger:hover{background:rgba(255,69,58,.1);color:var(--red);border-color:rgba(255,69,58,.25)}
+.inst-btn.primary{background:rgba(41,151,255,.1);color:var(--blue);border-color:rgba(41,151,255,.2)}
+.inst-btn.primary:hover{background:rgba(41,151,255,.18)}
+
+/* NOTIFICATIONS */
+.notif-item{
+  padding:14px 18px;
+  border-bottom:1px solid var(--border);
+  display:flex;gap:12px;align-items:flex-start;
+  transition:background .18s;cursor:pointer;
+}
+.notif-item:last-child{border-bottom:none}
+.notif-item:hover{background:rgba(255,255,255,.02)}
+.notif-item.unread{background:rgba(41,151,255,.04)}
+.notif-ico{
+  width:32px;height:32px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;margin-top:1px;
+}
+.notif-body{flex:1;min-width:0}
+.notif-title{font-size:12px;font-weight:600;margin-bottom:3px;line-height:1.3}
+.notif-sub{font-size:11px;color:var(--text3);line-height:1.4}
+.notif-time{font-size:10px;color:var(--text3);margin-top:4px}
+.notif-unread-dot{width:7px;height:7px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:5px}
+
+/* BALANCE CARD */
+.balance-card{
+  border-radius:18px;
+  background:linear-gradient(145deg,rgba(41,151,255,.08),rgba(94,92,230,.05));
+  border:1px solid rgba(41,151,255,.15);
+  padding:22px;margin-bottom:16px;
+  position:relative;overflow:hidden;
+}
+.balance-card::before{
+  content:'';position:absolute;top:-40px;right:-40px;
+  width:160px;height:160px;
+  background:radial-gradient(circle,rgba(41,151,255,.12),transparent 70%);
+  pointer-events:none;
+}
+.bc-label{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.bc-val{font-size:36px;font-weight:900;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1;margin-bottom:4px}
+.bc-sub{font-size:11px;color:var(--text3)}
+.bc-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}
+.bc-btn{
+  padding:11px;border-radius:11px;border:none;
+  font-size:12px;font-weight:700;cursor:pointer;
+  transition:all .2s var(--r);letter-spacing:.01em;
+}
+.bc-btn.primary{background:var(--blue);color:#fff}
+.bc-btn.primary:hover{background:#3aa0ff;transform:translateY(-1px);box-shadow:0 6px 18px rgba(41,151,255,.35)}
+.bc-btn.secondary{background:rgba(255,255,255,.07);color:var(--text);border:1px solid var(--border)}
+.bc-btn.secondary:hover{background:rgba(255,255,255,.1)}
+
+/* TOPUP FORM */
+.topup-form{padding:18px 20px}
+.topup-amounts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px}
+.amount-pill{
+  padding:10px 6px;border-radius:9px;
+  border:1px solid var(--border);background:transparent;
+  color:var(--text2);font-size:12px;font-weight:700;
+  cursor:pointer;transition:all .18s;text-align:center;
+}
+.amount-pill:hover{border-color:var(--border2);color:var(--text)}
+.amount-pill.active{background:rgba(41,151,255,.1);color:var(--blue);border-color:rgba(41,151,255,.25)}
+.topup-input-row{display:flex;gap:8px;margin-bottom:12px}
+.topup-input{
+  flex:1;padding:10px 14px;
+  border-radius:9px;border:1px solid var(--border);
+  background:rgba(255,255,255,.04);
+  color:var(--text);font-size:13px;font-weight:600;
+  font-family:'Inter',sans-serif;outline:none;
+  transition:border-color .18s;
+}
+.topup-input:focus{border-color:var(--blue)}
+.topup-input::placeholder{color:var(--text3)}
+.topup-submit{
+  padding:10px 18px;border-radius:9px;border:none;
+  background:var(--blue);color:#fff;font-size:12px;font-weight:700;
+  cursor:pointer;transition:all .2s var(--r);white-space:nowrap;
+}
+.topup-submit:hover{background:#3aa0ff;transform:translateY(-1px)}
+.payment-methods{display:flex;gap:8px;flex-wrap:wrap}
+.pay-method{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 12px;border-radius:8px;
+  border:1px solid var(--border);background:transparent;
+  font-size:11px;font-weight:600;color:var(--text2);
+  cursor:pointer;transition:all .18s;
+}
+.pay-method:hover{border-color:var(--border2);color:var(--text)}
+.pay-method.active{border-color:rgba(41,151,255,.3);background:rgba(41,151,255,.08);color:var(--blue)}
+
+/* HISTORY TABLE */
+.hist-table{width:100%;border-collapse:collapse}
+.hist-th{
+  padding:10px 14px;
+  text-align:left;font-size:9px;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--text3);
+  border-bottom:1px solid var(--border);
+}
+.hist-td{
+  padding:11px 14px;font-size:11px;font-weight:500;
+  border-bottom:1px solid rgba(255,255,255,.04);color:var(--text2);
+  vertical-align:middle;
+}
+.hist-tr:last-child .hist-td{border-bottom:none}
+.hist-tr:hover .hist-td{background:rgba(255,255,255,.02)}
+.hist-type{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;
+}
+.hist-type.topup{background:rgba(48,209,88,.1);color:var(--green);border:1px solid rgba(48,209,88,.15)}
+.hist-type.spend{background:rgba(255,69,58,.08);color:var(--red);border:1px solid rgba(255,69,58,.12)}
+.hist-amount{font-variant-numeric:tabular-nums;font-family:'SF Mono','Fira Code',monospace;font-weight:700}
+.hist-amount.plus{color:var(--green)}
+.hist-amount.minus{color:var(--red)}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(10px);
+  background:#1c1c1e;border:1px solid var(--border2);
+  border-radius:12px;padding:10px 18px;
+  font-size:12px;font-weight:600;color:var(--text);
+  z-index:9000;opacity:0;transition:all .25s var(--r);
+  display:flex;align-items:center;gap:8px;white-space:nowrap;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast-icon{font-size:14px}
+
+/* MODAL */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);
+  backdrop-filter:blur(12px);z-index:800;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.modal-bg.show{opacity:1;pointer-events:all}
+.modal{
+  background:#111;border:1px solid var(--border);
+  border-radius:22px;width:100%;max-width:420px;
+  transform:scale(.96) translateY(8px);
+  transition:transform .28s var(--r);overflow:hidden;
+}
+.modal-bg.show .modal{transform:scale(1) translateY(0)}
+.modal-hd{
+  padding:20px 22px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.modal-hd-title{font-size:15px;font-weight:700}
+.modal-close{
+  width:28px;height:28px;border-radius:7px;
+  border:1px solid var(--border);background:var(--surface);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text2);font-size:16px;transition:all .18s;
+}
+.modal-close:hover{background:var(--surface2);color:var(--text)}
+.modal-body{padding:22px}
+.modal-row{margin-bottom:14px}
+.modal-label{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:7px}
+.modal-input{
+  width:100%;padding:11px 14px;border-radius:10px;
+  border:1px solid var(--border);background:rgba(255,255,255,.04);
+  color:var(--text);font-size:13px;font-weight:500;
+  font-family:'Inter',sans-serif;outline:none;transition:border-color .18s;
+}
+.modal-input:focus{border-color:var(--blue)}
+.modal-btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.m-btn{
+  padding:12px;border-radius:10px;border:none;
+  font-size:13px;font-weight:700;cursor:pointer;
+  transition:all .2s var(--r);letter-spacing:.01em;
+}
+.m-btn.primary{background:var(--blue);color:#fff}
+.m-btn.primary:hover{background:#3aa0ff;transform:translateY(-1px);box-shadow:0 6px 18px rgba(41,151,255,.3)}
+.m-btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.m-btn.secondary:hover{background:rgba(255,255,255,.1)}
+
+/* RESPONSIVE */
+@media(max-width:900px){.stats-row{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
+@media(max-width:640px){.sidebar{display:none}.stats-row{grid-template-columns:1fr 1fr}.page{padding:16px}}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}
+::selection{background:rgba(41,151,255,.3)}
+
+
+/* ═══════════════════════════════
+   SPA SYSTEM
+═══════════════════════════════ */
+.spa-page { display:none!important; }
+.spa-page.active { display:block!important; }
+#pg-dash.active { display:block!important; }
+
+/* Fix: ensure landing content is above ambient */
+#pg-landing { position:relative; z-index:1; }
+#pg-dash { position:relative; z-index:1; }
+
+/* ═══════════════════════════════
+   USER BUTTON + DROPDOWN
+═══════════════════════════════ */
+.user-btn-wrap { position:relative; }
+.user-btn {
+  display:flex; align-items:center; gap:8px;
+  padding:6px 14px 6px 8px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);
+  color:rgba(245,245,247,.8);
+  font-size:12px; font-weight:600;
+  cursor:pointer;
+  transition:all .2s;
+  font-family:Inter,sans-serif;
+}
+.user-btn:hover { background:rgba(255,255,255,.09); border-color:rgba(255,255,255,.18); color:#f5f5f7; }
+.user-btn-avatar {
+  width:24px; height:24px; border-radius:50%;
+  background:linear-gradient(135deg,#2997ff,#5e5ce6);
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700; color:#fff; flex-shrink:0;
+}
+.user-dropdown {
+  position:absolute; top:calc(100% + 10px); right:0;
+  width:280px;
+  background:#111; border:1px solid rgba(255,255,255,.1);
+  border-radius:18px; overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.7);
+  opacity:0; pointer-events:none;
+  transform:translateY(-6px) scale(.97);
+  transition:all .22s cubic-bezier(.4,0,.2,1);
+  z-index:200;
+}
+.user-dropdown.open { opacity:1; pointer-events:all; transform:translateY(0) scale(1); }
+.ud-head {
+  padding:20px 20px 16px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  text-align:center;
+}
+.ud-head-title { font-size:15px; font-weight:800; color:#f5f5f7; margin-bottom:4px; }
+.ud-head-sub { font-size:12px; color:rgba(245,245,247,.4); }
+.ud-methods { padding:12px; display:flex; flex-direction:column; gap:6px; }
+.ud-method {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 14px; border-radius:12px;
+  border:1px solid rgba(255,255,255,.07);
+  background:transparent;
+  color:#f5f5f7; font-size:13px; font-weight:500;
+  cursor:pointer; transition:all .18s;
+  font-family:Inter,sans-serif; text-align:left; width:100%;
+}
+.ud-method:hover { background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.14); }
+.ud-method-icon {
+  width:36px; height:36px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; flex-shrink:0;
+}
+.ud-method-text {}
+.ud-method-title { font-size:13px; font-weight:600; color:#f5f5f7; }
+.ud-method-sub { font-size:10px; color:rgba(245,245,247,.4); margin-top:1px; }
+.ud-divider { height:1px; background:rgba(255,255,255,.06); margin:4px 12px; }
+.ud-footer { padding:12px; }
+.ud-email-form { display:none; padding:12px; border-top:1px solid rgba(255,255,255,.07); }
+.ud-email-form.show { display:block; }
+.ud-input {
+  width:100%; padding:10px 13px; border-radius:10px;
+  border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.05);
+  color:#f5f5f7; font-size:12px; font-family:Inter,sans-serif;
+  outline:none; transition:border-color .18s; margin-bottom:8px;
+}
+.ud-input:focus { border-color:#2997ff; }
+.ud-input::placeholder { color:rgba(245,245,247,.25); }
+.ud-submit {
+  width:100%; padding:11px; border-radius:10px; border:none;
+  background:#2997ff; color:#fff; font-size:12px; font-weight:700;
+  cursor:pointer; font-family:Inter,sans-serif; transition:all .2s;
+}
+.ud-submit:hover { background:#3aa0ff; }
+.ud-back {
+  width:100%; padding:8px; border-radius:10px;
+  border:1px solid rgba(255,255,255,.08); background:transparent;
+  color:rgba(245,245,247,.5); font-size:11px; font-weight:600;
+  cursor:pointer; font-family:Inter,sans-serif; margin-top:6px; transition:all .18s;
+}
+.ud-back:hover { background:rgba(255,255,255,.05); color:#f5f5f7; }
+.ud-tabs { display:flex; background:rgba(255,255,255,.05); border-radius:9px; padding:3px; gap:3px; margin-bottom:12px; }
+.ud-tab { flex:1; padding:7px; border-radius:7px; border:none; background:transparent; color:rgba(245,245,247,.4); font-size:11px; font-weight:700; cursor:pointer; transition:all .18s; font-family:Inter,sans-serif; }
+.ud-tab.on { background:#fff; color:#000; }
+
+/* ═══════════════════════════════
+   AUTH PAGE (full page fallback)
+═══════════════════════════════ */
+.auth-page { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; background:#000; }
+
+/* ═══════════════════════════════
+   TOAST (override to use class)
+═══════════════════════════════ */
+#toast.show { opacity:1!important; transform:translateX(-50%) translateY(0)!important; }
+
+@media(max-width:768px) {
+  .features { grid-template-columns:1fr!important; }
+  .mkt-layout { grid-template-columns:1fr!important; }
+  .dstats { grid-template-columns:1fr 1fr!important; }
+  .g2,.grid2 { grid-template-columns:1fr!important; }
+  .sidebar,.dsb { display:none!important; }
+  .user-dropdown { right:-10px; width:260px; }
+}
+
+/* ═══ CRITICAL FIX: content visible immediately ═══ */
+html, body { scroll-behavior: smooth; }
+#pg-landing { min-height:auto !important; }
+#pg-landing > nav { position:sticky; top:0; z-index:100; }
+#pg-landing > * { position:relative; z-index:1; }
+.spa-page.active > * { visibility:visible !important; }
+
 </style>
 </head>
 <body>
@@ -981,32 +1562,78 @@ main {
   <div class="ambient-orb"></div>
 </div>
 
-<nav>
-  <a class="nav-logo" href="#">
-    <div class="nav-logo-icon">G</div>
-    <span class="nav-logo-text">NODE.CLOUD</span>
-  </a>
-  <div class="nav-right">
-    <div class="lang-pill">
-      <button class="lang-btn active" onclick="setLang('RU', this)">RU</button>
-      <button class="lang-btn" onclick="setLang('EN', this)">EN</button>
-    </div>
-    
-    <a href="dashboard.html" class="account-btn" id="navAccountBtn">
-      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-      </svg>
-      <span id="navAccountTxt">Личный кабинет</span>
-    </a>
+<div id="toast" style="position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(14px);background:#1c1c1e;border:1px solid rgba(255,255,255,.14);border-radius:13px;padding:11px 20px;font-size:12px;font-weight:600;color:#f5f5f7;z-index:9990;opacity:0;transition:all .25s;display:flex;align-items:center;gap:9px;white-space:nowrap;box-shadow:0 12px 40px rgba(0,0,0,.6);pointer-events:none">
+  <span id="toastIco">✅</span><span id="toastMsg">Готово</span>
+</div>
 
-    <button class="menu-btn" onclick="openSidebar()">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7"/>
-      </svg>
+<!-- USER DROPDOWN (used on landing nav) -->
+<div class="user-dropdown" id="userDropdown">
+  <div class="ud-head">
+    <div class="ud-head-title">Войти в NODE.CLOUD</div>
+    <div class="ud-head-sub">Выберите способ входа</div>
+  </div>
+  <div id="udMethods" class="ud-methods">
+    <button class="ud-method" onclick="authGoogle()">
+      <div class="ud-method-icon" style="background:rgba(255,255,255,.06)">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      </div>
+      <div class="ud-method-text">
+        <div class="ud-method-title">Войти через Google</div>
+        <div class="ud-method-sub">Быстрый вход через аккаунт Google</div>
+      </div>
+    </button>
+    <button class="ud-method" onclick="authApple()">
+      <div class="ud-method-icon" style="background:rgba(255,255,255,.06)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#f5f5f7"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+      </div>
+      <div class="ud-method-text">
+        <div class="ud-method-title">Войти через Apple</div>
+        <div class="ud-method-sub">Вход с Apple ID</div>
+      </div>
+    </button>
+    <button class="ud-method" onclick="authTelegram()">
+      <div class="ud-method-icon" style="background:rgba(41,151,255,.1)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#2997ff"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+      </div>
+      <div class="ud-method-text">
+        <div class="ud-method-title">Войти через Telegram</div>
+        <div class="ud-method-sub">Вход без пароля</div>
+      </div>
+    </button>
+    <div class="ud-divider"></div>
+    <button class="ud-method" onclick="showEmailForm()">
+      <div class="ud-method-icon" style="background:rgba(255,255,255,.05)">
+        <svg width="18" height="18" fill="none" stroke="rgba(245,245,247,.7)" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+      </div>
+      <div class="ud-method-text">
+        <div class="ud-method-title">Email и пароль</div>
+        <div class="ud-method-sub">Войти или зарегистрироваться</div>
+      </div>
     </button>
   </div>
-</nav>
 
+  <!-- EMAIL FORM -->
+  <div class="ud-email-form" id="udEmailForm">
+    <div class="ud-tabs">
+      <button class="ud-tab on" id="udTabLogin" onclick="setUdTab('login')">Войти</button>
+      <button class="ud-tab" id="udTabReg" onclick="setUdTab('reg')">Регистрация</button>
+    </div>
+    <div id="udErrMsg" style="font-size:11px;color:#ff453a;margin-bottom:8px;display:none"></div>
+    <div id="udLoginFields">
+      <input class="ud-input" type="email" id="udEmail" placeholder="Email">
+      <input class="ud-input" type="password" id="udPw" placeholder="Пароль" onkeydown="if(event.key==='Enter')doUdLogin()">
+    </div>
+    <div id="udRegFields" style="display:none">
+      <input class="ud-input" type="text" id="udName" placeholder="Имя">
+      <input class="ud-input" type="email" id="udRegEmail" placeholder="Email">
+      <input class="ud-input" type="password" id="udRegPw" placeholder="Пароль (мин. 8 символов)">
+    </div>
+    <button class="ud-submit" id="udSubmitBtn" onclick="doUdLogin()">Войти</button>
+    <button class="ud-back" onclick="hideEmailForm()">← Назад</button>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
 <div class="sidebar-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-header">
@@ -1037,47 +1664,78 @@ main {
       <span class="sidebar-icon">💬</span>
       <span id="sNav4">Support</span>
     </div>
-    <a href="dashboard.html" class="sidebar-item" style="text-decoration: none;">
-      <span class="sidebar-icon">👤</span>
-      <span id="sNav5">Личный кабинет</span>
-    </a>
   </nav>
   <div class="sidebar-footer">
     <div class="sidebar-version">v4.2 · NODE.CLOUD</div>
   </div>
 </aside>
 
-<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
-  <div class="modal" onclick="event.stopPropagation()">
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
     <div class="modal-header">
       <span class="modal-title" id="modalTitle">Заявка сформирована</span>
       <button class="modal-close" onclick="closeModal()">&times;</button>
     </div>
     <div class="modal-body">
-      <div class="modal-icon" id="modalIcon">✈️</div>
+      <div class="modal-icon">✈️</div>
       <div class="modal-caption">
         <h3 id="modalH3">Переход в Telegram</h3>
         <p id="modalP">Конфигурация передана менеджеру</p>
       </div>
       <div class="modal-config" id="modalConfig"></div>
-      <a class="modal-btn" id="modalLink" href="#" target="_blank">Открыть диалог →</a>
+      <a class="modal-btn" id="modalLink" href="#" target="_blank" id="modalOpenBtn">Открыть диалог →</a>
     </div>
   </div>
 </div>
 
+<!-- ══════════════════════════════
+     LANDING
+══════════════════════════════ -->
+<div id="pg-landing" class="spa-page active">
+<div class="ambient">
+  <div class="ambient-orb"></div>
+  <div class="ambient-orb"></div>
+  <div class="ambient-orb"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">G</div>
+    <span class="nav-logo-text">NODE.CLOUD</span>
+  </a>
+  <div class="nav-right" id="landNavRight">
+    <div class="lang-pill">
+      <button class="lang-btn active" onclick="setLang('RU', this)">RU</button>
+      <button class="lang-btn" onclick="setLang('EN', this)">EN</button>
+    </div>
+    <button class="menu-btn" onclick="openSidebar()">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+
+
+<!-- MAIN -->
 <main>
   <div class="hero">
-    <div class="hero-eyebrow" id="heroEyebrow">GPU Cloud · On-Demand · Россия</div>
+    <div class="hero-eyebrow" id="heroEyebrow">GPU Cloud · On-Demand · Russia</div>
     <h1 id="heroH1">Мощь GPU.<br>Без компромиссов.</h1>
     <p id="heroP">От RTX 4090 до Blackwell B200 — запуск за 2 минуты. Почасовая тарификация, данные в России.</p>
   </div>
 
   <div class="layout">
+    <!-- LEFT -->
     <div>
       <div class="section-label" id="gpuSectionLabel">Доступные GPU — On-Demand</div>
       <div id="gpuList"></div>
     </div>
 
+    <!-- RIGHT -->
     <div class="right-panel">
       <div class="empty-state" id="emptyState">
         <div class="empty-icon">👆</div>
@@ -1099,34 +1757,749 @@ main {
     </div>
   </div>
 </main>
+</div>
+
+<!-- ══════════════════════════════
+     DASHBOARD
+══════════════════════════════ -->
+<div id="pg-dash" class="spa-page">
+<div class="amb"><span></span><span></span></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="toast-icon" id="toastIcon">✓</span><span id="toastMsg">Скопировано</span></div>
+
+<!-- TOPUP MODAL -->
+<div class="modal-bg" id="topupModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <span class="modal-hd-title">Пополнение баланса</span>
+      <button class="modal-close" onclick="closeModal('topupModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-row">
+        <div class="modal-label">Способ оплаты</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+          <button class="pay-method active" onclick="selPay(this)">💳 Карта</button>
+          <button class="pay-method" onclick="selPay(this)">🏦 СБП</button>
+          <button class="pay-method" onclick="selPay(this)">₿ Крипто</button>
+          <button class="pay-method" onclick="selPay(this)">🧾 Счёт</button>
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="modal-label">Сумма пополнения</div>
+        <div class="topup-amounts" style="margin-bottom:10px">
+          <button class="amount-pill" onclick="setAmount(1000,this)">1 000 ₽</button>
+          <button class="amount-pill active" onclick="setAmount(5000,this)">5 000 ₽</button>
+          <button class="amount-pill" onclick="setAmount(10000,this)">10 000 ₽</button>
+          <button class="amount-pill" onclick="setAmount(25000,this)">25 000 ₽</button>
+          <button class="amount-pill" onclick="setAmount(50000,this)">50 000 ₽</button>
+          <button class="amount-pill" onclick="setAmount(100000,this)">100 000 ₽</button>
+        </div>
+        <div class="topup-input-row">
+          <input class="modal-input" type="number" id="topupAmount" value="5000" placeholder="Введите сумму">
+          <button class="topup-submit" onclick="doTopup()">Оплатить</button>
+        </div>
+      </div>
+      <div style="font-size:10px;color:var(--text3);line-height:1.5">
+        💡 Средства зачисляются мгновенно. При оплате картой комиссия 0%. НДС включён.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SHELL -->
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-icon">G</div>
+      <span class="sb-logo-txt">NODE.CLOUD</span>
+    </div>
+
+    <div class="sb-user">
+      <div class="sb-avatar">АК</div>
+      <div class="sb-user-info">
+        <div class="sb-user-name">Алексей К.</div>
+        <div class="sb-user-email">alex@company.ru</div>
+      </div>
+    </div>
+
+    <div class="sb-balance">
+      <div class="sb-balance-label">Баланс</div>
+      <div class="sb-balance-val" id="sbBalVal">12 840 ₽</div>
+      <div class="sb-balance-sub">≈ 139 $ · Хватит на ~22 ч H100</div>
+    </div>
+    <button class="sb-top-btn" onclick="openModal('topupModal')">+ Пополнить баланс</button>
+
+    <nav class="sb-nav">
+      <div class="sb-nav-section">Управление</div>
+      <a class="sb-item active" onclick="showPage('dashboard')">
+        <span class="sb-item-icon">⚡</span>Дашборд
+        <span class="sb-badge green">2</span>
+      </a>
+      <a class="sb-item" onclick="showPage('marketplace')">
+        <span class="sb-item-icon">🖥️</span>GPU Marketplace
+      </a>
+      <a class="sb-item" onclick="showPage('instances')">
+        <span class="sb-item-icon">🖧</span>Мои инстансы
+        <span class="sb-badge green">2</span>
+      </a>
+
+      <div class="sb-nav-section">Финансы</div>
+      <a class="sb-item" onclick="showPage('billing')">
+        <span class="sb-item-icon">💳</span>Баланс и платежи
+      </a>
+      <a class="sb-item" onclick="showPage('history')">
+        <span class="sb-item-icon">📋</span>История операций
+      </a>
+
+      <div class="sb-nav-section">Аккаунт</div>
+      <a class="sb-item" onclick="showPage('notifications')">
+        <span class="sb-item-icon">🔔</span>Уведомления
+        <span class="sb-badge">3</span>
+      </a>
+      <a class="sb-item" onclick="showPage('settings')">
+        <span class="sb-item-icon">⚙️</span>Настройки
+      </a>
+      <a class="sb-item" onclick="showPage('ssh')">
+        <span class="sb-item-icon">🔑</span>SSH-ключи
+      </a>
+    </nav>
+
+    <div class="sb-footer">
+      <div class="sb-footer-text">NODE.CLOUD · v4.2 · 2025</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main" id="mainArea">
+
+    <!-- TOP NAV -->
+    <div class="topnav">
+      <span class="topnav-title" id="topnavTitle">Дашборд</span>
+      <div class="topnav-right">
+        <button class="notif-btn" onclick="showPage('notifications')">
+          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+          </svg>
+          <div class="notif-dot"></div>
+        </button>
+        <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#2997ff,#5e5ce6);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;cursor:pointer">АК</div>
+      </div>
+    </div>
+
+    <!-- PAGES -->
+    <div id="page-dashboard" class="page">
+
+      <!-- STATS -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <div class="stat-label">Баланс</div>
+          <div class="stat-val green">12 840 ₽</div>
+          <div class="stat-sub">≈ $139.57</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⚡</div>
+          <div class="stat-label">Активных GPU</div>
+          <div class="stat-val blue">2</div>
+          <div class="stat-sub">RTX 4090, H100 SXM</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🕒</div>
+          <div class="stat-label">Часов использовано</div>
+          <div class="stat-val" style="color:var(--text)">347</div>
+          <div class="stat-sub">За последние 30 дней</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📦</div>
+          <div class="stat-label">Потрачено</div>
+          <div class="stat-val orange">48 320 ₽</div>
+          <div class="stat-sub">За все время</div>
+        </div>
+      </div>
+
+      <!-- MAIN GRID -->
+      <div class="grid2">
+
+        <!-- INSTANCES -->
+        <div>
+          <div class="sec-title">Активные инстансы <span>2 running</span></div>
+          <div class="card">
+
+            <!-- INSTANCE 1 -->
+            <div class="instance">
+              <div class="inst-header">
+                <div class="inst-icon">🚀</div>
+                <div class="inst-info">
+                  <div class="inst-name">RTX 4090 · prod-inference-01</div>
+                  <div class="inst-spec">24 ГБ VRAM · 41 ГБ RAM · 6 vCPU · Ubuntu 22.04</div>
+                </div>
+                <div class="inst-status">
+                  <div class="status-dot running"></div>
+                  <span class="status-text running">Running</span>
+                </div>
+              </div>
+
+              <div class="timer-row">
+                <div class="timer-left">
+                  <div class="timer-label">Осталось времени</div>
+                  <div class="timer-val" id="timer1">18:24:11</div>
+                </div>
+                <div class="timer-bar-wrap"><div class="timer-bar green" id="bar1" style="width:76%"></div></div>
+                <div class="timer-cost">
+                  <div class="timer-cost-val">2 760 ₽</div>
+                  <div class="timer-cost-label">стоимость аренды</div>
+                </div>
+              </div>
+
+              <div class="access-details">
+                <div class="access-row">
+                  <span class="access-key">IP адрес</span>
+                  <span class="access-val" id="ip1">185.246.88.142</span>
+                  <button class="access-copy" onclick="copyText('185.246.88.142','IP скопирован')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
+                <div class="access-row">
+                  <span class="access-key">SSH порт</span>
+                  <span class="access-val">22041</span>
+                  <button class="access-copy" onclick="copyText('22041','Порт скопирован')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
+                <div class="access-row">
+                  <span class="access-key">SSH команда</span>
+                  <span class="access-val">ssh -p 22041 root@185.246.88.142</span>
+                  <button class="access-copy" onclick="copyText('ssh -p 22041 root@185.246.88.142','SSH команда скопирована')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
+                <div class="access-row">
+                  <span class="access-key">Пароль root</span>
+                  <span class="access-val secret" title="Нажмите чтобы показать">••••••••••••••••</span>
+                  <button class="access-copy" onclick="copyText('Xk9#mP2@vQ7nR','Пароль скопирован')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
+                <div class="access-row">
+                  <span class="access-key">Jupyter</span>
+                  <span class="access-val" style="color:var(--blue)">http://185.246.88.142:8888</span>
+                  <button class="access-copy" onclick="copyText('http://185.246.88.142:8888','Ссылка скопирована')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="inst-actions">
+                <button class="inst-btn primary" onclick="toast('🔗 Подключение установлено','✅')">Подключиться</button>
+                <button class="inst-btn" onclick="toast('⏳ Продление на 24ч — обрабатывается','🕒')">Продлить +1 день</button>
+                <button class="inst-btn danger" onclick="toast('🛑 Инстанс остановлен','⚠️')">Остановить</button>
+              </div>
+            </div>
+
+            <!-- INSTANCE 2 -->
+            <div class="instance">
+              <div class="inst-header">
+                <div class="inst-icon" style="background:linear-gradient(135deg,rgba(255,159,10,.15),rgba(255,69,58,.08));border-color:rgba(255,159,10,.15)">🧠</div>
+                <div class="inst-info">
+                  <div class="inst-name">H100 SXM · llm-training-02</div>
+                  <div class="inst-spec">80 ГБ VRAM · 125 ГБ RAM · 20 vCPU · PyTorch 2.3</div>
+                </div>
+                <div class="inst-status">
+                  <div class="status-dot running"></div>
+                  <span class="status-text running">Running</span>
+                </div>
+              </div>
+
+              <div class="timer-row">
+                <div class="timer-left">
+                  <div class="timer-label">Осталось времени</div>
+                  <div class="timer-val urgent" id="timer2">03:47:29</div>
+                </div>
+                <div class="timer-bar-wrap"><div class="timer-bar orange" id="bar2" style="width:16%"></div></div>
+                <div class="timer-cost">
+                  <div class="timer-cost-val">12 400 ₽</div>
+                  <div class="timer-cost-label">стоимость аренды</div>
+                </div>
+              </div>
+
+              <div class="access-details">
+                <div class="access-row">
+                  <span class="access-key">IP адрес</span>
+                  <span class="access-val">91.197.122.77</span>
+                  <button class="access-copy" onclick="copyText('91.197.122.77','IP скопирован')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
+                <div class="access-row">
+                  <span class="access-key">SSH команда</span>
+                  <span class="access-val">ssh -p 22199 root@91.197.122.77</span>
+                  <button class="access-copy" onclick="copyText('ssh -p 22199 root@91.197.122.77','SSH скопирован')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
+                <div class="access-row">
+                  <span class="access-key">Пароль root</span>
+                  <span class="access-val secret" title="Нажмите чтобы показать">••••••••••••••••</span>
+                  <button class="access-copy" onclick="copyText('Nh4&kL8!pW3mZ','Пароль скопирован')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
+                <div class="access-row">
+                  <span class="access-key">TensorBoard</span>
+                  <span class="access-val" style="color:var(--orange)">http://91.197.122.77:6006</span>
+                  <button class="access-copy" onclick="copyText('http://91.197.122.77:6006','Ссылка скопирована')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div style="padding:8px 0 4px;font-size:10px;font-weight:600;color:var(--orange);display:flex;align-items:center;gap:6px;margin-bottom:8px">
+                ⚠️ Инстанс истекает менее чем через 4 часа — продлите аренду
+              </div>
+
+              <div class="inst-actions">
+                <button class="inst-btn primary" onclick="toast('🔗 Подключение установлено','✅')">Подключиться</button>
+                <button class="inst-btn" style="background:rgba(255,159,10,.1);color:var(--orange);border-color:rgba(255,159,10,.25)" onclick="toast('✅ Продлено на 24 часа. Баланс списан','💳')">⚡ Продлить срочно</button>
+                <button class="inst-btn danger" onclick="toast('🛑 Инстанс остановлен','⚠️')">Стоп</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div>
+          <!-- BALANCE -->
+          <div class="sec-title">Баланс</div>
+          <div class="balance-card">
+            <div class="bc-label">Доступно</div>
+            <div class="bc-val">12 840 ₽</div>
+            <div class="bc-sub">≈ $139.57 · Обновлено только что</div>
+            <div class="bc-actions">
+              <button class="bc-btn primary" onclick="openModal('topupModal')">+ Пополнить</button>
+              <button class="bc-btn secondary" onclick="showPage('history')">История</button>
+            </div>
+          </div>
+
+          <!-- NOTIFICATIONS -->
+          <div class="sec-title" style="margin-top:22px">Уведомления <span>3 новых</span></div>
+          <div class="card">
+            <div class="notif-item unread" onclick="markRead(this)">
+              <div class="notif-ico" style="background:rgba(255,159,10,.1)">⚠️</div>
+              <div class="notif-body">
+                <div class="notif-title">H100 SXM истекает через 4 часа</div>
+                <div class="notif-sub">Инстанс llm-training-02 будет автоматически остановлен. Продлите аренду.</div>
+                <div class="notif-time">2 минуты назад</div>
+              </div>
+              <div class="notif-unread-dot"></div>
+            </div>
+            <div class="notif-item unread" onclick="markRead(this)">
+              <div class="notif-ico" style="background:rgba(48,209,88,.1)">✅</div>
+              <div class="notif-body">
+                <div class="notif-title">RTX 4090 успешно запущен</div>
+                <div class="notif-sub">Инстанс prod-inference-01 готов к работе. IP: 185.246.88.142</div>
+                <div class="notif-time">6 часов назад</div>
+              </div>
+              <div class="notif-unread-dot"></div>
+            </div>
+            <div class="notif-item unread" onclick="markRead(this)">
+              <div class="notif-ico" style="background:rgba(41,151,255,.1)">💳</div>
+              <div class="notif-body">
+                <div class="notif-title">Баланс пополнен на 10 000 ₽</div>
+                <div class="notif-sub">Оплата картой успешно проведена. Квитанция отправлена на email.</div>
+                <div class="notif-time">Вчера, 14:32</div>
+              </div>
+              <div class="notif-unread-dot"></div>
+            </div>
+            <div class="notif-item" onclick="markRead(this)">
+              <div class="notif-ico" style="background:rgba(255,69,58,.08)">🛑</div>
+              <div class="notif-body">
+                <div class="notif-title">RTX 3090 остановлен по таймеру</div>
+                <div class="notif-sub">Аренда завершена в 23:59. Данные сохранены 48ч.</div>
+                <div class="notif-time">2 дня назад</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTORY TABLE -->
+      <div class="sec-title">Последние операции</div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-head">
+          <span class="card-head-title">История транзакций</span>
+          <span class="card-head-action" onclick="showPage('history')">Все операции →</span>
+        </div>
+        <table class="hist-table">
+          <thead>
+            <tr>
+              <th class="hist-th">Тип</th>
+              <th class="hist-th">Описание</th>
+              <th class="hist-th">Дата</th>
+              <th class="hist-th" style="text-align:right">Сумма</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="hist-tr">
+              <td class="hist-td"><span class="hist-type spend">Аренда</span></td>
+              <td class="hist-td">H100 SXM · 24 ч · llm-training-02</td>
+              <td class="hist-td" style="color:var(--text3)">Сегодня</td>
+              <td class="hist-td" style="text-align:right"><span class="hist-amount minus">−12 400 ₽</span></td>
+            </tr>
+            <tr class="hist-tr">
+              <td class="hist-td"><span class="hist-type topup">Пополнение</span></td>
+              <td class="hist-td">Visa •• 4821 · СБП</td>
+              <td class="hist-td" style="color:var(--text3)">Вчера</td>
+              <td class="hist-td" style="text-align:right"><span class="hist-amount plus">+10 000 ₽</span></td>
+            </tr>
+            <tr class="hist-tr">
+              <td class="hist-td"><span class="hist-type spend">Аренда</span></td>
+              <td class="hist-td">RTX 4090 · 24 ч · prod-inference-01</td>
+              <td class="hist-td" style="color:var(--text3)">20 мая</td>
+              <td class="hist-td" style="text-align:right"><span class="hist-amount minus">−2 760 ₽</span></td>
+            </tr>
+            <tr class="hist-tr">
+              <td class="hist-td"><span class="hist-type spend">Аренда</span></td>
+              <td class="hist-td">RTX 3090 · 7 дней · dev-01</td>
+              <td class="hist-td" style="color:var(--text3)">14 мая</td>
+              <td class="hist-td" style="text-align:right"><span class="hist-amount minus">−11 802 ₽</span></td>
+            </tr>
+            <tr class="hist-tr">
+              <td class="hist-td"><span class="hist-type topup">Пополнение</span></td>
+              <td class="hist-td">Visa •• 4821</td>
+              <td class="hist-td" style="color:var(--text3)">10 мая</td>
+              <td class="hist-td" style="text-align:right"><span class="hist-amount plus">+25 000 ₽</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /page-dashboard -->
+
+    <!-- NOTIFICATIONS PAGE -->
+    <div id="page-notifications" class="page" style="display:none">
+      <div class="sec-title" style="font-size:17px;margin-bottom:20px">Уведомления</div>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-head-title">Все уведомления</span>
+          <span class="card-head-action" onclick="toast('✓ Все прочитаны','✅')">Отметить все прочитанными</span>
+        </div>
+        <div class="notif-item unread" onclick="markRead(this)">
+          <div class="notif-ico" style="background:rgba(255,159,10,.1)">⚠️</div>
+          <div class="notif-body">
+            <div class="notif-title">H100 SXM истекает через 4 часа</div>
+            <div class="notif-sub">Инстанс llm-training-02 будет автоматически остановлен. Продлите аренду чтобы не потерять данные.</div>
+            <div class="notif-time">2 минуты назад</div>
+          </div>
+          <div class="notif-unread-dot"></div>
+        </div>
+        <div class="notif-item unread" onclick="markRead(this)">
+          <div class="notif-ico" style="background:rgba(48,209,88,.1)">✅</div>
+          <div class="notif-body">
+            <div class="notif-title">RTX 4090 успешно запущен</div>
+            <div class="notif-sub">prod-inference-01 готов. IP: 185.246.88.142 · SSH порт: 22041</div>
+            <div class="notif-time">6 часов назад</div>
+          </div>
+          <div class="notif-unread-dot"></div>
+        </div>
+        <div class="notif-item unread" onclick="markRead(this)">
+          <div class="notif-ico" style="background:rgba(41,151,255,.1)">💳</div>
+          <div class="notif-body">
+            <div class="notif-title">Баланс пополнен на 10 000 ₽</div>
+            <div class="notif-sub">Оплата проведена через СБП. Квитанция отправлена на alex@company.ru</div>
+            <div class="notif-time">Вчера, 14:32</div>
+          </div>
+          <div class="notif-unread-dot"></div>
+        </div>
+        <div class="notif-item" onclick="markRead(this)">
+          <div class="notif-ico" style="background:rgba(255,69,58,.08)">🛑</div>
+          <div class="notif-body">
+            <div class="notif-title">RTX 3090 остановлен автоматически</div>
+            <div class="notif-sub">Аренда dev-01 завершена по истечению 7 дней в 23:59. Данные доступны 48 часов.</div>
+            <div class="notif-time">2 дня назад</div>
+          </div>
+        </div>
+        <div class="notif-item" onclick="markRead(this)">
+          <div class="notif-ico" style="background:rgba(191,90,242,.1)">🚀</div>
+          <div class="notif-body">
+            <div class="notif-title">Добро пожаловать в NODE.CLOUD</div>
+            <div class="notif-sub">Аккаунт успешно создан. Бонус 500 ₽ зачислен на баланс.</div>
+            <div class="notif-time">15 мая</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BILLING PAGE -->
+    <div id="page-billing" class="page" style="display:none">
+      <div class="sec-title" style="font-size:17px;margin-bottom:20px">Баланс и платежи</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+        <div class="balance-card">
+          <div class="bc-label">Текущий баланс</div>
+          <div class="bc-val">12 840 ₽</div>
+          <div class="bc-sub">≈ $139.57 · Обновлено только что</div>
+          <div class="bc-actions">
+            <button class="bc-btn primary" onclick="openModal('topupModal')">+ Пополнить</button>
+            <button class="bc-btn secondary">Вывести</button>
+          </div>
+        </div>
+        <div class="card" style="padding:22px">
+          <div class="stat-label">Способ оплаты</div>
+          <div style="margin:12px 0 16px;display:flex;flex-direction:column;gap:8px">
+            <div class="access-row" style="cursor:pointer" onclick="toast('Карта выбрана как основная','💳')">
+              <span style="font-size:18px">💳</span>
+              <span style="flex:1;font-size:12px;font-weight:600;color:var(--text)">Visa •••• 4821</span>
+              <span style="font-size:10px;color:var(--green);font-weight:700">Основная</span>
+            </div>
+            <div class="access-row" style="cursor:pointer" onclick="toast('СБП добавлен','🏦')">
+              <span style="font-size:18px">🏦</span>
+              <span style="flex:1;font-size:12px;font-weight:600;color:var(--text)">СБП · Сбербанк</span>
+            </div>
+          </div>
+          <button class="inst-btn primary" style="width:100%;padding:10px" onclick="toast('Переход к добавлению карты','💳')">+ Добавить способ оплаты</button>
+        </div>
+      </div>
+      <div class="sec-title">Автопополнение</div>
+      <div class="card" style="padding:20px;margin-bottom:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:3px">Автопополнение при низком балансе</div>
+            <div style="font-size:11px;color:var(--text3)">Пополнять автоматически при балансе ниже порогового</div>
+          </div>
+          <div style="width:44px;height:26px;border-radius:13px;background:var(--green);cursor:pointer;position:relative;transition:background .2s" onclick="this.style.background=this.style.background===''?'var(--green)':'';toast('Автопополнение обновлено','⚡')">
+            <div style="position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .2s"></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <div class="modal-label">Порог баланса</div>
+            <input class="modal-input" type="number" value="2000" placeholder="₽">
+          </div>
+          <div>
+            <div class="modal-label">Сумма пополнения</div>
+            <input class="modal-input" type="number" value="5000" placeholder="₽">
+          </div>
+        </div>
+        <button class="inst-btn primary" style="width:100%;margin-top:14px;padding:11px" onclick="toast('Настройки автопополнения сохранены','✅')">Сохранить настройки</button>
+      </div>
+    </div>
+
+    <!-- SETTINGS PAGE -->
+    <div id="page-settings" class="page" style="display:none">
+      <div class="sec-title" style="font-size:17px;margin-bottom:20px">Настройки аккаунта</div>
+      <div class="card" style="padding:24px;margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)">
+          <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#2997ff,#5e5ce6);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff">АК</div>
+          <div>
+            <div style="font-size:16px;font-weight:700">Алексей Кузнецов</div>
+            <div style="font-size:12px;color:var(--text3);margin-top:3px">alex@company.ru · Участник с 15 мая 2025</div>
+          </div>
+          <button class="inst-btn primary" style="margin-left:auto;padding:9px 16px" onclick="toast('Фото обновлено','📸')">Изменить фото</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="modal-row"><div class="modal-label">Имя</div><input class="modal-input" value="Алексей"></div>
+          <div class="modal-row"><div class="modal-label">Фамилия</div><input class="modal-input" value="Кузнецов"></div>
+          <div class="modal-row"><div class="modal-label">Email</div><input class="modal-input" value="alex@company.ru"></div>
+          <div class="modal-row"><div class="modal-label">Телефон</div><input class="modal-input" value="+7 999 123-45-67"></div>
+          <div class="modal-row"><div class="modal-label">Компания</div><input class="modal-input" value="ООО Технологии"></div>
+          <div class="modal-row"><div class="modal-label">Telegram</div><input class="modal-input" value="@alex_dev"></div>
+        </div>
+        <button class="inst-btn primary" style="margin-top:16px;padding:12px;width:200px" onclick="toast('Профиль сохранён','✅')">Сохранить изменения</button>
+      </div>
+      <div class="card" style="padding:24px">
+        <div class="sec-title" style="margin-bottom:16px">Уведомления</div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div><div style="font-size:13px;font-weight:600">Email о запуске инстанса</div><div style="font-size:11px;color:var(--text3)">Когда GPU успешно запущен</div></div>
+            <div style="width:44px;height:26px;border-radius:13px;background:var(--green);cursor:pointer;position:relative" onclick="toast('Настройка обновлена','✅')"><div style="position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:#fff"></div></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div><div style="font-size:13px;font-weight:600">Предупреждение за 2 часа</div><div style="font-size:11px;color:var(--text3)">Уведомление об истечении аренды</div></div>
+            <div style="width:44px;height:26px;border-radius:13px;background:var(--green);cursor:pointer;position:relative" onclick="toast('Настройка обновлена','✅')"><div style="position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:#fff"></div></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div><div style="font-size:13px;font-weight:600">Telegram уведомления</div><div style="font-size:11px;color:var(--text3)">Дублировать в Telegram бот</div></div>
+            <div style="width:44px;height:26px;border-radius:13px;background:var(--blue);cursor:pointer;position:relative" onclick="toast('Telegram подключён','✅')"><div style="position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:#fff"></div></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div><div style="font-size:13px;font-weight:600">Автостоп по таймеру</div><div style="font-size:11px;color:var(--text3)">Останавливать инстанс точно по таймеру</div></div>
+            <div style="width:44px;height:26px;border-radius:13px;background:var(--green);cursor:pointer;position:relative" onclick="toast('Автостоп включён','✅')"><div style="position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:#fff"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SSH PAGE -->
+    <div id="page-ssh" class="page" style="display:none">
+      <div class="sec-title" style="font-size:17px;margin-bottom:20px">SSH-ключи</div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-head">
+          <span class="card-head-title">Добавленные ключи</span>
+          <span class="card-head-action" onclick="toast('Диалог добавления ключа','🔑')">+ Добавить ключ</span>
+        </div>
+        <div style="padding:16px 20px;border-bottom:1px solid var(--border)">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:36px;height:36px;border-radius:9px;background:rgba(48,209,88,.1);border:1px solid rgba(48,209,88,.15);display:flex;align-items:center;justify-content:center;font-size:16px">🔑</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;margin-bottom:2px">MacBook Pro Work</div>
+              <div style="font-size:10px;color:var(--text3);font-family:'SF Mono','Fira Code',monospace">SHA256:8Kj2mN9pQr4sT6uV · Добавлен 15 мая 2025</div>
+            </div>
+            <span style="font-size:10px;font-weight:700;color:var(--green);background:rgba(48,209,88,.1);padding:3px 9px;border-radius:20px;border:1px solid rgba(48,209,88,.15)">Активен</span>
+          </div>
+        </div>
+        <div style="padding:16px 20px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:36px;height:36px;border-radius:9px;background:rgba(41,151,255,.08);border:1px solid rgba(41,151,255,.12);display:flex;align-items:center;justify-content:center;font-size:16px">🔑</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;margin-bottom:2px">Home Desktop</div>
+              <div style="font-size:10px;color:var(--text3);font-family:'SF Mono','Fira Code',monospace">SHA256:3Lp7nK1hRw5xY2zA · Добавлен 18 мая 2025</div>
+            </div>
+            <span style="font-size:10px;font-weight:700;color:var(--blue);background:rgba(41,151,255,.1);padding:3px 9px;border-radius:20px;border:1px solid rgba(41,151,255,.15)">Активен</span>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="padding:22px">
+        <div class="modal-label" style="margin-bottom:10px">Добавить новый SSH-ключ</div>
+        <textarea class="modal-input" rows="4" placeholder="Вставьте публичный ключ (ssh-rsa, ssh-ed25519...)" style="resize:none;font-family:'SF Mono','Fira Code',monospace;font-size:11px"></textarea>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:10px">
+          <input class="modal-input" placeholder="Название ключа (например: My MacBook)">
+          <button class="topup-submit" onclick="toast('SSH-ключ добавлен','🔑')">Добавить</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /shell -->
+</div>
 
 <script>
+/* ══ SPA ══ */
+function goPage(id) {
+  document.querySelectorAll('.spa-page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+  closeUserDropdown();
+}
+
+/* ══ USER DROPDOWN ══ */
+function toggleUserDropdown() {
+  const dd = document.getElementById('userDropdown');
+  dd.classList.toggle('open');
+}
+function closeUserDropdown() {
+  document.getElementById('userDropdown').classList.remove('open');
+  hideEmailForm();
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.user-btn-wrap') && !e.target.closest('#userDropdown')) closeUserDropdown();
+});
+
+function showEmailForm() {
+  document.getElementById('udMethods').style.display = 'none';
+  document.getElementById('udEmailForm').classList.add('show');
+  document.getElementById('udEmail')?.focus();
+}
+function hideEmailForm() {
+  document.getElementById('udMethods').style.display = 'flex';
+  document.getElementById('udEmailForm').classList.remove('show');
+  document.getElementById('udErrMsg').style.display = 'none';
+}
+function setUdTab(tab) {
+  document.getElementById('udTabLogin').classList.toggle('on', tab==='login');
+  document.getElementById('udTabReg').classList.toggle('on', tab==='reg');
+  document.getElementById('udLoginFields').style.display = tab==='login' ? 'block' : 'none';
+  document.getElementById('udRegFields').style.display = tab==='reg' ? 'block' : 'none';
+  document.getElementById('udSubmitBtn').textContent = tab==='login' ? 'Войти' : 'Создать аккаунт';
+  document.getElementById('udSubmitBtn').onclick = tab==='login' ? doUdLogin : doUdRegister;
+  document.getElementById('udErrMsg').style.display = 'none';
+}
+function showUdErr(msg) {
+  const e = document.getElementById('udErrMsg'); e.textContent = msg; e.style.display = 'block';
+}
+function doUdLogin() {
+  const email = document.getElementById('udEmail').value.trim();
+  const pw = document.getElementById('udPw').value;
+  if (!email || !pw) { showUdErr('Введите email и пароль'); return; }
+  closeUserDropdown();
+  showToast('Выполняем вход…','🔄');
+  setTimeout(() => { goPage('pg-dash'); showPage('dashboard'); showToast('Добро пожаловать!','👋'); }, 800);
+}
+function doUdRegister() {
+  const name = document.getElementById('udName').value.trim();
+  const email = document.getElementById('udRegEmail').value.trim();
+  const pw = document.getElementById('udRegPw').value;
+  if (!name||!email) { showUdErr('Заполните имя и email'); return; }
+  if (pw.length < 8) { showUdErr('Пароль минимум 8 символов'); return; }
+  closeUserDropdown();
+  showToast('Создаём аккаунт…','🔄');
+  setTimeout(() => { goPage('pg-dash'); showPage('dashboard'); showToast('🎁 Аккаунт создан! Бонус 500 ₽ зачислен','🎉'); }, 900);
+}
+function authGoogle() { closeUserDropdown(); showToast('Google OAuth (подключается)','🔵'); setTimeout(()=>{goPage('pg-dash');showPage('dashboard');showToast('Добро пожаловать!','👋');},1000); }
+function authApple() { closeUserDropdown(); showToast('Apple Sign In (подключается)','🍎'); setTimeout(()=>{goPage('pg-dash');showPage('dashboard');showToast('Добро пожаловать!','👋');},1000); }
+function authTelegram() { closeUserDropdown(); showToast('Telegram Auth (подключается)','✈️'); setTimeout(()=>{goPage('pg-dash');showPage('dashboard');showToast('Добро пожаловать!','👋');},1000); }
+
+/* ══ INJECT USER BUTTON INTO LANDING NAV ══ */
+function injectUserBtn() {
+  const navRight = document.getElementById('landNavRight');
+  if (!navRight) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'user-btn-wrap';
+  wrap.innerHTML = `<button class="user-btn" onclick="toggleUserDropdown()">
+    <div class="user-btn-avatar">👤</div>
+    <span>Войти</span>
+    <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+  </button>`;
+
+  // Position dropdown relative to this button
+  wrap.appendChild(document.getElementById('userDropdown'));
+  navRight.appendChild(wrap);
+}
+
+/* ══ TOAST ══ */
+function showToast(msg, ico) {
+  document.getElementById('toastMsg').textContent = msg;
+  document.getElementById('toastIco').textContent = ico||'✅';
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(t._tid);
+  t._tid = setTimeout(()=>t.classList.remove('show'), 2600);
+}
+
+/* ══ COPY ══ */
+function copyText(text, msg) { navigator.clipboard.writeText(text).then(()=>showToast(msg,'✅')).catch(()=>showToast(msg,'✅')); }
+function cp(text, msg) { copyText(text, msg); }
+
+/* ══ LANDING JS ══ */
+
 const TG_USERNAME = 'gnodecloud';
 let lang = 'RU';
 let selectedGpu = null;
-let currentPeriod = 'day';
+let cardPeriods = {};
 
 const rubRate = 92;
 const hourlyUSD = {
-  l4:1.56, rtx_a5000:1.08, rtx_3090:1.84, rtx_4090:2.76, rtx_5090:3.96,
-  rtx_6000_ada:3.08, a40:1.76, l40:3.96, l40s:3.44, rtx_a6000:1.96,
-  a100_pcie:5.56, a100_sxm:5.96, h100_nvl:12.28, h100_pcie:9.56,
-  h100_sxm:11.96, h200:15.96, b200:21.96, rtx_pro_6000:7.56
+  l4:1.56,rtx_a5000:1.08,rtx_3090:1.84,rtx_4090:2.76,rtx_5090:3.96,
+  rtx_6000_ada:3.08,a40:1.76,l40:3.96,l40s:3.44,rtx_a6000:1.96,
+  a100_pcie:5.56,a100_sxm:5.96,h100_nvl:12.28,h100_pcie:9.56,
+  h100_sxm:11.96,h200:15.96,b200:21.96,rtx_pro_6000:7.56
 };
-const periodDays = {day:1, week:7, month:30};
-const discounts = {day:0, week:0.05, month:0.10};
+const periodDays = {day:1,week:7,month:30};
+const discounts = {day:0,week:0.05,month:0.10};
 
 function fmt(usd) {
-  const v = lang === 'RU' ? usd * rubRate : usd;
+  const v = lang==='RU' ? usd*rubRate : usd;
   const s = new Intl.NumberFormat('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}).format(v);
-  return lang === 'RU' ? s + ' ₽' : '$' + s;
+  return lang==='RU' ? s+' ₽' : '$'+s;
 }
 
 function calcPrice(key, period) {
-  const daily = hourlyUSD[key] * 24;
-  const full = daily * periodDays[period];
-  const final = full * (1 - discounts[period]);
-  return {full, final, saved: full - final};
+  const daily = hourlyUSD[key]*24;
+  const full = daily*periodDays[period];
+  const final = full*(1-discounts[period]);
+  return {full, final, saved: full-final};
 }
 
 const T = {
@@ -1149,13 +2522,12 @@ const T = {
     entBtn:'Связаться с отделом продаж',
     modalTitle:'Заявка сформирована', modalH3:'Переход в Telegram', modalP:'Конфигурация передана менеджеру',
     modalBtn:'Открыть диалог →',
-    sNav:['GPU Marketplace','Enterprise Кластеры','Документация','Поддержка', 'Личный кабинет'],
-    accountTxt:'Личный кабинет',
+    sNav:['GPU Marketplace','Enterprise Кластеры','Документация','Поддержка'],
     tiers:[
-      {label:'Начальный уровень', sub:'Инференс, рендеринг, старт в AI', color:'#30d158', keys:['l4','rtx_a5000','rtx_3090']},
-      {label:'Средний класс', sub:'Fine-tuning, генерация, профессиональный рендер', color:'#2997ff', keys:['rtx_4090','rtx_5090','rtx_6000_ada','a40','l40','l40s','rtx_a6000']},
-      {label:'Профессиональный AI', sub:'Обучение больших моделей, HPC, datacenter', color:'#bf5af2', keys:['a100_pcie','a100_sxm','rtx_pro_6000']},
-      {label:'⚡ Элита — Hopper / Blackwell', sub:'Топовые LLM, AGI, государственный HPC', color:'#ff453a', keys:['h100_nvl','h100_pcie','h100_sxm','h200','b200']}
+      {label:'Начальный уровень', sub:'Инференс, рендеринг, старт в AI', color:'#30d158'},
+      {label:'Средний класс', sub:'Fine-tuning, генерация, профессиональный рендер', color:'#2997ff'},
+      {label:'Профессиональный AI', sub:'Обучение больших моделей, HPC, datacenter', color:'#bf5af2'},
+      {label:'⚡ Элита — Hopper / Blackwell', sub:'Топовые LLM, AGI, государственный HPC', color:'#ff453a'},
     ]
   },
   EN: {
@@ -1177,239 +2549,270 @@ const T = {
     entBtn:'Contact Sales',
     modalTitle:'Order created', modalH3:'Opening Telegram', modalP:'Config sent to manager',
     modalBtn:'Open chat →',
-    sNav:['GPU Marketplace','Enterprise Clusters','Documentation','Support', 'Account Dashboard'],
-    accountTxt:'Account',
+    sNav:['GPU Marketplace','Enterprise Clusters','Documentation','Support'],
     tiers:[
-      {label:'Entry Level', sub:'Inference, rendering, AI starter', color:'#30d158', keys:['l4','rtx_a5000','rtx_3090']},
-      {label:'Mid-Range', sub:'Fine-tuning, generation, professional rendering', color:'#2997ff', keys:['rtx_4090','rtx_5090','rtx_6000_ada','a40','l40','l40s','rtx_a6000']},
-      {label:'Professional AI', sub:'Large model training, HPC, datacenter', color:'#bf5af2', keys:['a100_pcie','a100_sxm','rtx_pro_6000']},
-      {label:'⚡ Elite — Hopper / Blackwell', sub:'Top-tier LLMs, AGI, government HPC', color:'#ff453a', keys:['h100_nvl','h100_pcie','h100_sxm','h200','b200']}
+      {label:'Entry Level', sub:'Inference, rendering, AI starter', color:'#30d158'},
+      {label:'Mid-Range', sub:'Fine-tuning, generation, professional rendering', color:'#2997ff'},
+      {label:'Professional AI', sub:'Large model training, HPC, datacenter', color:'#bf5af2'},
+      {label:'⚡ Elite — Hopper / Blackwell', sub:'Top-tier LLMs, AGI, government HPC', color:'#ff453a'},
     ]
   }
 };
 
 const GPUS = {
   RU: {
-    l4:{name:'NVIDIA L4',spec:'24 ГБ VRAM · 50 ГБ ОЗУ · 12 vCPU',badge:'Оптимальный',badgeStyle:'background:rgba(48,209,88,0.12);color:#30d158;border:1px solid rgba(48,209,88,0.2)',uses:['🤖 Инференс моделей','🎨 Обработка изображений','💬 Чат-боты']},
-    rtx_a5000:{name:'RTX A5000',spec:'24 ГБ VRAM · 25 ГБ ОЗУ · 9 vCPU',badge:'Бюджетный',badgeStyle:'background:rgba(41,151,255,0.1);color:#2997ff;border:1px solid rgba(41,151,255,0.2)',uses:['🎬 3D-рендеринг','🖥️ CAD/CAM','📐 Инженерные расчёты']},
-    rtx_3090:{name:'RTX 3090',spec:'24 ГБ VRAM · 125 ГБ ОЗУ · 16 vCPU',badge:'Популярный',badgeStyle:'background:rgba(255,159,10,0.1);color:#ff9f0a;border:1px solid rgba(255,159,10,0.2)',uses:['🧠 Fine-tuning LLM','🎬 Рендеринг видео','🔬 ML-эксперименты']},
-    rtx_4090:{name:'RTX 4090',spec:'24 ГБ VRAM · 41 ГБ ОЗУ · 6 vCPU',badge:'🔥 Топ продаж',badgeStyle:'background:rgba(255,159,10,0.12);color:#ff9f0a;border:1px solid rgba(255,159,10,0.25)',uses:['🧠 Fine-tuning до 13B','🎨 Stable Diffusion','🚀 Быстрый инференс']},
-    rtx_5090:{name:'RTX 5090',spec:'32 ГБ VRAM · 35 ГБ ОЗУ · 9 vCPU',badge:'Новинка',badgeStyle:'background:rgba(191,90,242,0.1);color:#bf5af2;border:1px solid rgba(191,90,242,0.2)',uses:['🧠 LLM до 30B','🤖 Мультимодальные модели','⚡ AI-видео реального времени']},
-    rtx_6000_ada:{name:'RTX 6000 Ada',spec:'48 ГБ VRAM · 167 ГБ ОЗУ · 10 vCPU',badge:'Pro',badgeStyle:'background:rgba(41,151,255,0.1);color:#64d2ff;border:1px solid rgba(100,210,255,0.2)',uses:['🏗️ BIM / Архитектура','🎬 VFX и анимация','🔬 Научные симуляции']},
-    a40:{name:'NVIDIA A40',spec:'48 ГБ VRAM · 50 ГБ ОЗУ · 9 vCPU',badge:'Универсальный',badgeStyle:'background:rgba(48,209,88,0.08);color:#34c759;border:1px solid rgba(52,199,89,0.2)',uses:['🤖 ML-пайплайны','📊 Аналитика данных','🔄 Параллельные задачи']},
-    l40:{name:'NVIDIA L40',spec:'48 ГБ VRAM · 94 ГБ ОЗУ · 8 vCPU',badge:'Медиа & AI',badgeStyle:'background:rgba(255,55,95,0.1);color:#ff375f;border:1px solid rgba(255,55,95,0.2)',uses:['🎬 AI-видео генерация','🖼️ Генерация изображений','🔊 Синтез речи']},
-    l40s:{name:'NVIDIA L40S',spec:'48 ГБ VRAM · 94 ГБ ОЗУ · 16 vCPU',badge:'Рекомендуем',badgeStyle:'background:rgba(48,209,88,0.1);color:#30d158;border:1px solid rgba(48,209,88,0.2)',uses:['⚡ Ускоренный инференс','🧠 Обучение нейросетей','🌐 Серверный AI']},
-    rtx_a6000:{name:'RTX A6000',spec:'48 ГБ VRAM · 50 ГБ ОЗУ · 9 vCPU',badge:'Workstation',badgeStyle:'background:rgba(94,92,230,0.12);color:#5e5ce6;border:1px solid rgba(94,92,230,0.25)',uses:['🎨 3D/VFX студии','🔬 Научный рендеринг','🏎️ Автодизайн']},
-    a100_pcie:{name:'A100 PCIe',spec:'80 ГБ VRAM · 125 ГБ ОЗУ · 16 vCPU',badge:'Data Center',badgeStyle:'background:rgba(255,255,255,0.08);color:#fff;border:1px solid var(--border)',uses:['🧠 Обучение LLM','🔬 Большие данные','🖥️ HPC Кластеры']},
-    a100_sxm:{name:'A100 SXM4',spec:'80 ГБ VRAM · 250 ГБ ОЗУ · 32 vCPU',badge:'High Perf',badgeStyle:'background:rgba(41,151,255,0.1);color:#2997ff;border:1px solid rgba(41,151,255,0.2)',uses:['⚡ Максимальная скорость','🧠 Обучение моделей','📊 Научный анализ']},
-    rtx_pro_6000:{name:'NVIDIA 6000 Ada Pro',spec:'48 ГБ VRAM · 128 ГБ ОЗУ · 24 vCPU',badge:'Data Center Pro',badgeStyle:'background:rgba(191,90,242,0.12);color:#bf5af2;border:1px solid rgba(191,90,242,0.2)',uses:['⚡ Облачный HPC','🧠 Тяжелый ИИ инференс','📊 Симуляции']},
-    h100_nvl:{name:'H100 NVL',spec:'94 ГБ VRAM · 180 ГБ ОЗУ · 12 vCPU',badge:'Флагман NVL',badgeStyle:'background:rgba(255,69,58,0.1);color:#ff453a;border:1px solid rgba(255,69,58,0.2)',uses:['🧠 Обучение LLM','⚡ Сверхбыстрый ИИ','🧬 Биоинформатика']},
-    h100_pcie:{name:'H100 PCIe',spec:'80 ГБ VRAM · 125 ГБ ОЗУ · 16 vCPU',badge:'Hopper Gen',badgeStyle:'background:rgba(255,255,255,0.08);color:#fff;border:1px solid var(--border)',uses:['⚡ Генеративный ИИ','🧠 Трейнинг моделей','🔬 Квантовые вычисления']},
-    h100_sxm:{name:'H100 SXM5',spec:'80 ГБ VRAM · 250 ГБ ОЗУ · 32 vCPU',badge:'⚡ Бестселлер AI',badgeStyle:'background:rgba(255,69,58,0.12);color:#ff453a;border:1px solid rgba(255,69,58,0.25)',uses:['🚀 Самый популярный для LLM','🧠 Обучение GPT-класса','⚙️ Сложный глубокий ИИ']},
-    h200:{name:'NVIDIA H200',spec:'141 ГБ VRAM · 320 ГБ ОЗУ · 40 vCPU',badge:'Суперчип',badgeStyle:'background:rgba(191,90,242,0.15);color:#bf5af2;border:1px solid rgba(191,90,242,0.3)',uses:['🧠 Огромные LLM контексты','⚡ Рекордная скорость инференса','🛡️ ИИ государственного уровня']},
-    b200:{name:'Blackwell B200',spec:'192 ГБ VRAM · 512 ГБ ОЗУ · 64 vCPU',badge:'🌌 Новая Эра ИИ',badgeStyle:'background:linear-gradient(135deg, rgba(255,69,58,0.2), rgba(41,151,255,0.2));color:#ff9f0a;border:1px solid #ff9f0a',uses:['🔮 Будущее AGI систем','🧠 Обучение триллионных моделей','⚡ Предел вычислительной техники']}
+    l4:{name:'NVIDIA L4',spec:'24 ГБ VRAM · 50 ГБ ОЗУ · 12 vCPU',badge:'Оптимальный',badgeStyle:'background:rgba(48,209,88,0.12);color:#30d158;border:1px solid rgba(48,209,88,0.2)',uses:['🤖 Инференс моделей','🎨 Обработка изображений','💬 Чат-боты','🔍 Компьютерное зрение']},
+    rtx_a5000:{name:'RTX A5000',spec:'24 ГБ VRAM · 25 ГБ ОЗУ · 9 vCPU',badge:'Бюджетный',badgeStyle:'background:rgba(41,151,255,0.1);color:#2997ff;border:1px solid rgba(41,151,255,0.2)',uses:['🎬 3D-рендеринг','🖥️ CAD/CAM','🎨 Визуализация','📐 Инженерные расчёты']},
+    rtx_3090:{name:'RTX 3090',spec:'24 ГБ VRAM · 125 ГБ ОЗУ · 16 vCPU',badge:'Популярный',badgeStyle:'background:rgba(255,159,10,0.1);color:#ff9f0a;border:1px solid rgba(255,159,10,0.2)',uses:['🧠 Fine-tuning LLM','🎮 Игровые движки','🎬 Рендеринг видео','🔬 ML-эксперименты']},
+    rtx_4090:{name:'RTX 4090',spec:'24 ГБ VRAM · 41 ГБ ОЗУ · 6 vCPU',badge:'🔥 Топ продаж',badgeStyle:'background:rgba(255,159,10,0.12);color:#ff9f0a;border:1px solid rgba(255,159,10,0.25)',uses:['🧠 Fine-tuning до 13B','🎨 Stable Diffusion','🚀 Быстрый инференс','🎬 4K рендеринг']},
+    rtx_5090:{name:'RTX 5090',spec:'32 ГБ VRAM · 35 ГБ ОЗУ · 9 vCPU',badge:'Новинка',badgeStyle:'background:rgba(191,90,242,0.1);color:#bf5af2;border:1px solid rgba(191,90,242,0.2)',uses:['🧠 LLM до 30B','🎨 Генерация изображений','🤖 Мультимодальные модели','⚡ AI-видео в реальном времени']},
+    rtx_6000_ada:{name:'RTX 6000 Ada',spec:'48 ГБ VRAM · 167 ГБ ОЗУ · 10 vCPU',badge:'Pro',badgeStyle:'background:rgba(41,151,255,0.1);color:#64d2ff;border:1px solid rgba(100,210,255,0.2)',uses:['🏗️ BIM / Архитектура','🎬 VFX и анимация','🔬 Научные симуляции','🧬 Медицинская визуализация']},
+    a40:{name:'NVIDIA A40',spec:'48 ГБ VRAM · 50 ГБ ОЗУ · 9 vCPU',badge:'Универсальный',badgeStyle:'background:rgba(48,209,88,0.08);color:#34c759;border:1px solid rgba(52,199,89,0.2)',uses:['🤖 ML-пайплайны','🎨 Генерация контента','📊 Аналитика данных','🔄 Параллельные задачи']},
+    l40:{name:'NVIDIA L40',spec:'48 ГБ VRAM · 94 ГБ ОЗУ · 8 vCPU',badge:'Медиа & AI',badgeStyle:'background:rgba(255,55,95,0.1);color:#ff375f;border:1px solid rgba(255,55,95,0.2)',uses:['🎬 AI-видео генерация','🖼️ Генерация изображений','🔊 Синтез речи','🎭 Deepfake / Avatar']},
+    l40s:{name:'NVIDIA L40S',spec:'48 ГБ VRAM · 94 ГБ ОЗУ · 16 vCPU',badge:'Рекомендуем',badgeStyle:'background:rgba(48,209,88,0.1);color:#30d158;border:1px solid rgba(48,209,88,0.2)',uses:['⚡ Ускоренный инференс','🧠 Обучение нейросетей','🌐 Серверный AI','📡 Обработка потоков данных']},
+    rtx_a6000:{name:'RTX A6000',spec:'48 ГБ VRAM · 50 ГБ ОЗУ · 9 vCPU',badge:'Workstation',badgeStyle:'background:rgba(94,92,230,0.12);color:#5e5ce6;border:1px solid rgba(94,92,230,0.25)',uses:['🎨 3D/VFX студии','🔬 Научный рендеринг','🏎️ Автодизайн','💊 Фармацевтика / молекулы']},
+    rtx_pro_6000:{name:'RTX Pro 6000',spec:'96 ГБ VRAM · 188 ГБ ОЗУ · 16 vCPU',badge:'Creator Pro',badgeStyle:'background:rgba(255,69,58,0.1);color:#ff453a;border:1px solid rgba(255,69,58,0.2)',uses:['🎬 Голливудский рендеринг','🏗️ Digital Twin / BIM','🔬 Медицина / МРТ/КТ AI','🎨 Генеративный дизайн']},
+    a100_pcie:{name:'A100 PCIe',spec:'80 ГБ VRAM · 117 ГБ ОЗУ · 8 vCPU',badge:'AI Datacenter',badgeStyle:'background:rgba(41,151,255,0.1);color:#2997ff;border:1px solid rgba(41,151,255,0.2)',uses:['🧠 Обучение LLM 30–70B','🔬 Научные вычисления HPC','🧬 Геномика и биоинформатика','📈 Финансовые модели']},
+    a100_sxm:{name:'A100 SXM',spec:'80 ГБ VRAM · 125 ГБ ОЗУ · 16 vCPU',badge:'HPC',badgeStyle:'background:rgba(41,151,255,0.12);color:#64d2ff;border:1px solid rgba(100,210,255,0.25)',uses:['🧠 Обучение больших моделей','🔭 Астрофизика / климат','⚛️ Квантовые симуляции','🏭 Промышленный AI']},
+    h100_nvl:{name:'H100 NVL',spec:'94 ГБ VRAM · 94 ГБ ОЗУ · 16 vCPU',badge:'Топ AI',badgeStyle:'background:rgba(48,209,88,0.1);color:#30d158;border:1px solid rgba(48,209,88,0.25)',uses:['🧠 GPT-класс обучение','⚡ Сверхбыстрый инференс','🌐 Мультиузловые кластеры','🔬 Frontier AI исследования']},
+    h100_pcie:{name:'H100 PCIe',spec:'80 ГБ VRAM · 188 ГБ ОЗУ · 16 vCPU',badge:'Enterprise AI',badgeStyle:'background:rgba(48,209,88,0.08);color:#34c759;border:1px solid rgba(52,199,89,0.2)',uses:['🤖 LLM инференс в проде','📊 Корпоративная аналитика','🔐 Приватный AI в контуре','🏦 Банки и финтех']},
+    h100_sxm:{name:'H100 SXM',spec:'80 ГБ VRAM · 125 ГБ ОЗУ · 20 vCPU',badge:'⚡ Мощнейший',badgeStyle:'background:rgba(255,159,10,0.1);color:#ff9f0a;border:1px solid rgba(255,159,10,0.2)',uses:['🧠 Обучение 100B+ моделей','🌐 Распределённое обучение','🔬 AI-исследования мирового уровня','🚀 AGI-пайплайны']},
+    h200:{name:'NVIDIA H200',spec:'141 ГБ VRAM · 276 ГБ ОЗУ · 24 vCPU',badge:'Next-Gen',badgeStyle:'background:rgba(191,90,242,0.1);color:#bf5af2;border:1px solid rgba(191,90,242,0.2)',uses:['🧠 Мультимодальные LLM','🔭 Климатическое моделирование','💊 Drug Discovery AI','🧬 Протеиновые структуры']},
+    b200:{name:'Blackwell B200',spec:'180 ГБ VRAM · 283 ГБ ОЗУ · 28 vCPU',badge:'🚀 Флагман',badgeStyle:'background:rgba(255,69,58,0.12);color:#ff453a;border:1px solid rgba(255,69,58,0.25)',uses:['🌐 Триллион-параметровые модели','🧠 AGI / Foundation Models','⚛️ Квантовые симуляции','🛰️ Государственный HPC']},
   },
   EN: {
-    l4:{name:'NVIDIA L4',spec:'24 GB VRAM · 50 GB RAM · 12 vCPU',badge:'Optimal',badgeStyle:'background:rgba(48,209,88,0.12);color:#30d158;border:1px solid rgba(48,209,88,0.2)',uses:['🤖 Model Inference','🎨 Image Processing','💬 Chatbots']},
-    rtx_a5000:{name:'RTX A5000',spec:'24 GB VRAM · 25 GB RAM · 9 vCPU',badge:'Budget',badgeStyle:'background:rgba(41,151,255,0.1);color:#2997ff;border:1px solid rgba(41,151,255,0.2)',uses:['🎬 3D Rendering','🖥️ CAD/CAM','📐 Engineering Calculations']},
-    rtx_3090:{name:'RTX 3090',spec:'24 GB VRAM · 125 GB RAM · 16 vCPU',badge:'Popular',badgeStyle:'background:rgba(255,159,10,0.1);color:#ff9f0a;border:1px solid rgba(255,159,10,0.2)',uses:['🧠 LLM Fine-tuning','🎬 Video Rendering','🔬 ML Experiments']},
-    rtx_4090:{name:'RTX 4090',spec:'24 GB VRAM · 41 GB RAM · 6 vCPU',badge:'🔥 Top Seller',badgeStyle:'background:rgba(255,159,10,0.12);color:#ff9f0a;border:1px solid rgba(255,159,10,0.25)',uses:['🧠 Fine-tuning up to 13B','🎨 Stable Diffusion','🚀 Fast Inference']},
-    rtx_5090:{name:'RTX 5090',spec:'32 GB VRAM · 35 GB RAM · 9 vCPU',badge:'New',badgeStyle:'background:rgba(191,90,242,0.1);color:#bf5af2;border:1px solid rgba(191,90,242,0.2)',uses:['🧠 LLM up to 30B','🤖 Multimodal Models','⚡ Real-time AI Video']},
-    rtx_6000_ada:{name:'RTX 6000 Ada',spec:'48 GB VRAM · 167 GB RAM · 10 vCPU',badge:'Pro',badgeStyle:'background:rgba(41,151,255,0.1);color:#64d2ff;border:1px solid rgba(100,210,255,0.2)',uses:['🏗️ BIM / Architecture','🎬 VFX & Animation','🔬 Scientific Simulations']},
-    a40:{name:'NVIDIA A40',spec:'48 GB VRAM · 50 GB RAM · 9 vCPU',badge:'Versatile',badgeStyle:'background:rgba(48,209,88,0.08);color:#34c759;border:1px solid rgba(52,199,89,0.2)',uses:['🤖 ML Pipelines','📊 Data Analytics','🔄 Parallel Tasks']},
-    l40:{name:'NVIDIA L40',spec:'48 GB VRAM · 94 GB RAM · 8 vCPU',badge:'Media & AI',badgeStyle:'background:rgba(255,55,95,0.1);color:#ff375f;border:1px solid rgba(255,55,95,0.2)',uses:['🎬 AI Video Generation','🖼️ Image Generation','🔊 Speech Synthesis']},
-    l40s:{name:'NVIDIA L40S',spec:'48 GB VRAM · 94 GB RAM · 16 vCPU',badge:'Recommended',badgeStyle:'background:rgba(48,209,88,0.1);color:#30d158;border:1px solid rgba(48,209,88,0.2)',uses:['⚡ Accelerated Inference','🧠 Neural Network Training','🌐 Server AI']},
-    rtx_a6000:{name:'RTX A6000',spec:'48 GB VRAM · 50 GB RAM · 9 vCPU',badge:'Workstation',badgeStyle:'background:rgba(94,92,230,0.12);color:#5e5ce6;border:1px solid rgba(94,92,230,0.25)',uses:['🎨 3D/VFX Studios','🔬 Scientific Rendering','🏎️ Automotive Design']},
-    a100_pcie:{name:'A100 PCIe',spec:'80 GB VRAM · 125 GB RAM · 16 vCPU',badge:'Data Center',badgeStyle:'background:rgba(255,255,255,0.08);color:#fff;border:1px solid var(--border)',uses:['🧠 LLM Training','🔬 Big Data','🖥️ HPC Clusters']},
-    a100_sxm:{name:'A100 SXM4',spec:'80 GB VRAM · 250 GB RAM · 32 vCPU',badge:'High Perf',badgeStyle:'background:rgba(41,151,255,0.1);color:#2997ff;border:1px solid rgba(41,151,255,0.2)',uses:['⚡ Max Speed','🧠 Model Training','📊 Scientific Analysis']},
-    rtx_pro_6000:{name:'NVIDIA 6000 Ada Pro',spec:'48 GB VRAM · 128 GB RAM · 24 vCPU',badge:'Data Center Pro',badgeStyle:'background:rgba(191,90,242,0.12);color:#bf5af2;border:1px solid rgba(191,90,242,0.2)',uses:['⚡ Cloud HPC','🧠 Heavy AI Inference','📊 Simulations']},
-    h100_nvl:{name:'H100 NVL',spec:'94 GB VRAM · 180 GB RAM · 12 vCPU',badge:'NVL Flagman',badgeStyle:'background:rgba(255,69,58,0.1);color:#ff453a;border:1px solid rgba(255,69,58,0.2)',uses:['🧠 LLM Training','⚡ Ultra Fast AI','🧬 Bioinformatics']},
-    h100_pcie:{name:'H100 PCIe',spec:'80 GB VRAM · 125 GB RAM · 16 vCPU',badge:'Hopper Gen',badgeStyle:'background:rgba(255,255,255,0.08);color:#fff;border:1px solid var(--border)',uses:['⚡ Generative AI','🧠 Model Training','🔬 Quantum Computing']},
-    h100_sxm:{name:'H100 SXM5',spec:'80 GB VRAM · 250 GB RAM · 32 vCPU',badge:'⚡ AI Bestseller',badgeStyle:'background:rgba(255,69,58,0.12);color:#ff453a;border:1px solid rgba(255,69,58,0.25)',uses:['🚀 Most Popular for LLM','🧠 GPT-Class Training','⚙️ Complex Deep AI']},
-    h200:{name:'NVIDIA H200',spec:'141 GB VRAM · 320 GB RAM · 40 vCPU',badge:'Superchip',badgeStyle:'background:rgba(191,90,242,0.15);color:#bf5af2;border:1px solid rgba(191,90,242,0.3)',uses:['🧠 Huge LLM Contexts','⚡ Record Inference Speed','🛡️ Sovereign AI']},
-    b200:{name:'Blackwell B200',spec:'192 GB VRAM · 512 GB RAM · 64 vCPU',badge:'🌌 New AI Era',badgeStyle:'background:linear-gradient(135deg, rgba(255,69,58,0.2), rgba(41,151,255,0.2));color:#ff9f0a;border:1px solid #ff9f0a',uses:['🔮 Future AGI Systems','🧠 Trillion-Parameter Training','⚡ Compute Limit']}
+    l4:{name:'NVIDIA L4',spec:'24 GB VRAM · 50 GB RAM · 12 vCPU',badge:'Best Value',badgeStyle:'background:rgba(48,209,88,0.12);color:#30d158;border:1px solid rgba(48,209,88,0.2)',uses:['🤖 Model Inference','🎨 Image Processing','💬 Chatbots','🔍 Computer Vision']},
+    rtx_a5000:{name:'RTX A5000',spec:'24 GB VRAM · 25 GB RAM · 9 vCPU',badge:'Budget',badgeStyle:'background:rgba(41,151,255,0.1);color:#2997ff;border:1px solid rgba(41,151,255,0.2)',uses:['🎬 3D Rendering','🖥️ CAD/CAM','🎨 Visualization','📐 Engineering Compute']},
+    rtx_3090:{name:'RTX 3090',spec:'24 GB VRAM · 125 GB RAM · 16 vCPU',badge:'Popular',badgeStyle:'background:rgba(255,159,10,0.1);color:#ff9f0a;border:1px solid rgba(255,159,10,0.2)',uses:['🧠 LLM Fine-tuning','🎮 Game Engines','🎬 Video Rendering','🔬 ML Experiments']},
+    rtx_4090:{name:'RTX 4090',spec:'24 GB VRAM · 41 GB RAM · 6 vCPU',badge:'🔥 Best Seller',badgeStyle:'background:rgba(255,159,10,0.12);color:#ff9f0a;border:1px solid rgba(255,159,10,0.25)',uses:['🧠 Fine-tuning up to 13B','🎨 Stable Diffusion','🚀 Fast Inference','🎬 4K Rendering']},
+    rtx_5090:{name:'RTX 5090',spec:'32 GB VRAM · 35 GB RAM · 9 vCPU',badge:'New',badgeStyle:'background:rgba(191,90,242,0.1);color:#bf5af2;border:1px solid rgba(191,90,242,0.2)',uses:['🧠 LLM up to 30B','🎨 Image Generation','🤖 Multimodal Models','⚡ Real-time AI Video']},
+    rtx_6000_ada:{name:'RTX 6000 Ada',spec:'48 GB VRAM · 167 GB RAM · 10 vCPU',badge:'Pro',badgeStyle:'background:rgba(41,151,255,0.1);color:#64d2ff;border:1px solid rgba(100,210,255,0.2)',uses:['🏗️ BIM / Architecture','🎬 VFX & Animation','🔬 Scientific Simulations','🧬 Medical Imaging']},
+    a40:{name:'NVIDIA A40',spec:'48 GB VRAM · 50 GB RAM · 9 vCPU',badge:'Versatile',badgeStyle:'background:rgba(48,209,88,0.08);color:#34c759;border:1px solid rgba(52,199,89,0.2)',uses:['🤖 ML Pipelines','🎨 Content Generation','📊 Data Analytics','🔄 Parallel Workloads']},
+    l40:{name:'NVIDIA L40',spec:'48 GB VRAM · 94 GB RAM · 8 vCPU',badge:'Media & AI',badgeStyle:'background:rgba(255,55,95,0.1);color:#ff375f;border:1px solid rgba(255,55,95,0.2)',uses:['🎬 AI Video Generation','🖼️ Image Synthesis','🔊 Speech Synthesis','🎭 Deepfake / Avatar']},
+    l40s:{name:'NVIDIA L40S',spec:'48 GB VRAM · 94 GB RAM · 16 vCPU',badge:'Recommended',badgeStyle:'background:rgba(48,209,88,0.1);color:#30d158;border:1px solid rgba(48,209,88,0.2)',uses:['⚡ Accelerated Inference','🧠 Neural Net Training','🌐 Server AI','📡 Data Stream Processing']},
+    rtx_a6000:{name:'RTX A6000',spec:'48 GB VRAM · 50 GB RAM · 9 vCPU',badge:'Workstation',badgeStyle:'background:rgba(94,92,230,0.12);color:#5e5ce6;border:1px solid rgba(94,92,230,0.25)',uses:['🎨 3D/VFX Studios','🔬 Scientific Rendering','🏎️ Auto Design','💊 Pharma / Molecules']},
+    rtx_pro_6000:{name:'RTX Pro 6000',spec:'96 GB VRAM · 188 GB RAM · 16 vCPU',badge:'Creator Pro',badgeStyle:'background:rgba(255,69,58,0.1);color:#ff453a;border:1px solid rgba(255,69,58,0.2)',uses:['🎬 Hollywood Rendering','🏗️ Digital Twin / BIM','🔬 Medical AI (MRI/CT)','🎨 Generative Design']},
+    a100_pcie:{name:'A100 PCIe',spec:'80 GB VRAM · 117 GB RAM · 8 vCPU',badge:'AI Datacenter',badgeStyle:'background:rgba(41,151,255,0.1);color:#2997ff;border:1px solid rgba(41,151,255,0.2)',uses:['🧠 Training LLM 30–70B','🔬 HPC Scientific Compute','🧬 Genomics & Bioinformatics','📈 Financial Models']},
+    a100_sxm:{name:'A100 SXM',spec:'80 GB VRAM · 125 GB RAM · 16 vCPU',badge:'HPC',badgeStyle:'background:rgba(41,151,255,0.12);color:#64d2ff;border:1px solid rgba(100,210,255,0.25)',uses:['🧠 Large Model Training','🔭 Astrophysics / Climate','⚛️ Quantum Simulations','🏭 Industrial AI']},
+    h100_nvl:{name:'H100 NVL',spec:'94 GB VRAM · 94 GB RAM · 16 vCPU',badge:'Top AI',badgeStyle:'background:rgba(48,209,88,0.1);color:#30d158;border:1px solid rgba(48,209,88,0.25)',uses:['🧠 GPT-class Training','⚡ Ultra-fast Inference','🌐 Multi-node Clusters','🔬 Frontier AI Research']},
+    h100_pcie:{name:'H100 PCIe',spec:'80 GB VRAM · 188 GB RAM · 16 vCPU',badge:'Enterprise AI',badgeStyle:'background:rgba(48,209,88,0.08);color:#34c759;border:1px solid rgba(52,199,89,0.2)',uses:['🤖 Production LLM Inference','📊 Enterprise Analytics','🔐 Private On-prem AI','🏦 Banking & Fintech']},
+    h100_sxm:{name:'H100 SXM',spec:'80 GB VRAM · 125 GB RAM · 20 vCPU',badge:'⚡ Most Powerful',badgeStyle:'background:rgba(255,159,10,0.1);color:#ff9f0a;border:1px solid rgba(255,159,10,0.2)',uses:['🧠 Training 100B+ Models','🌐 Distributed Training','🔬 World-class AI Research','🚀 AGI Pipelines']},
+    h200:{name:'NVIDIA H200',spec:'141 GB VRAM · 276 GB RAM · 24 vCPU',badge:'Next-Gen',badgeStyle:'background:rgba(191,90,242,0.1);color:#bf5af2;border:1px solid rgba(191,90,242,0.2)',uses:['🧠 Multimodal LLM Training','🔭 Climate Modeling','💊 Drug Discovery AI','🧬 Protein Structures']},
+    b200:{name:'Blackwell B200',spec:'180 GB VRAM · 283 GB RAM · 28 vCPU',badge:'🚀 Flagship',badgeStyle:'background:rgba(255,69,58,0.12);color:#ff453a;border:1px solid rgba(255,69,58,0.25)',uses:['🌐 Trillion-param Training','🧠 AGI / Foundation Models','⚛️ Quantum Simulations','🛰️ Government HPC']},
   }
 };
 
-function toggleTier(header) {
-  header.parentElement.classList.toggle('collapsed');
-}
-
-function selectGpuCard(key) {
-  const oldSelected = document.querySelector('.gpu-card.selected');
-  if (oldSelected) oldSelected.classList.remove('selected');
-
-  const oldExpand = document.querySelector('.gpu-expand.open');
-  if (oldExpand) oldExpand.classList.remove('open');
-
-  selectedGpu = key;
-  const card = document.getElementById(`card-${key}`);
-  card.classList.add('selected');
-
-  const expand = document.getElementById(`expand-${key}`);
-  expand.classList.add('open');
-
-  renderRightPanel();
-}
-
-function setPeriod(period) {
-  currentPeriod = period;
-  document.querySelectorAll('.period-pill').forEach(p => p.classList.remove('active'));
-  document.getElementById(`p-btn-${period}`).classList.add('active');
-  renderRightPanel();
-}
-
-function renderRightPanel() {
-  const emptyState = document.getElementById('emptyState');
-  if (!selectedGpu) {
-    emptyState.style.display = 'block';
-    const existingBox = document.getElementById('dynamicConfigBox');
-    if (existingBox) existingBox.remove();
-    return;
-  }
-
-  emptyState.style.display = 'none';
-  const existingBox = document.getElementById('dynamicConfigBox');
-  if (existingBox) existingBox.remove();
-
-  const gpu = GPUS[lang][selectedGpu];
-  const pData = calcPrice(selectedGpu, currentPeriod);
-
-  const box = document.createElement('div');
-  box.id = 'dynamicConfigBox';
-  box.className = 'tier-group';
-  box.style.background = 'var(--surface)';
-  box.style.border = '1px solid var(--border)';
-  box.style.padding = '20px';
-  box.style.animation = 'fadeUp 0.4s var(--transition) both';
-
-  let savingsHtml = '';
-  if (currentPeriod !== 'day') {
-    savingsHtml = `
-      <div class="price-savings">
-        <div class="price-old">${T[lang].baseLabel} <s>${fmt(pData.full)}</s></div>
-        <div class="price-save">${T[lang].saveLabel} ${fmt(pData.saved)}</div>
-      </div>
-    `;
-  }
-
-  box.innerHTML = `
-    <div style="font-size:15px; font-weight:700; margin-bottom:4px; color:var(--accent)">${gpu.name}</div>
-    <div style="font-size:11px; color:var(--text-secondary); margin-bottom:16px">${gpu.spec}</div>
-    
-    <div class="period-label">${T[lang].periodLabel}</div>
-    <div class="period-row">
-      <button id="p-btn-day" class="period-pill ${currentPeriod==='day'?'active':''}" onclick="setPeriod('day')">${T[lang].pDay}</button>
-      <button id="p-btn-week" class="period-pill ${currentPeriod==='week'?'active':''}" onclick="setPeriod('week')">${T[lang].pWeek}</button>
-      <button id="p-btn-month" class="period-pill ${currentPeriod==='month'?'active':''}" onclick="setPeriod('month')">${T[lang].pMonth}</button>
-    </div>
-
-    <div class="price-box">
-      <div class="price-box-label">${T[lang].costLabel}</div>
-      <div class="price-main">${fmt(pData.final)}</div>
-      ${savingsHtml}
-    </div>
-
-    <button class="launch-btn" onclick="launchInstance()">${T[lang].launchBtn}</button>
-  `;
-
-  const rightPanel = document.querySelector('.right-panel');
-  rightPanel.insertBefore(box, rightPanel.firstChild);
-}
-
-function renderGpuList() {
-  const container = document.getElementById('gpuList');
-  container.innerHTML = '';
-
-  T[lang].tiers.forEach((tier, tIdx) => {
-    const group = document.createElement('div');
-    group.className = 'tier-group';
-    if (tIdx > 1) group.classList.add('collapsed');
-
-    let cardsHtml = '';
-    tier.keys.forEach(key => {
-      const gpu = GPUS[lang][key];
-      const dailyPrice = hourlyUSD[key] * 24;
-      const isSelected = selectedGpu === key;
-
-      let usesHtml = '';
-      gpu.uses.forEach(u => { usesHtml += `<span class="use-chip">${u}</span>`; });
-
-      cardsHtml += `
-        <div id="card-${key}" class="gpu-card ${isSelected?'selected':''}" onclick="selectGpuCard('${key}')">
-          <div class="gpu-card-header">
-            <div class="gpu-status"></div>
-            <div class="gpu-info">
-              <div class="gpu-name-row">
-                <span class="gpu-name">${gpu.name}</span>
-                <span class="gpu-badge" style="${gpu.badgeStyle}">${gpu.badge}</span>
-              </div>
-              <div class="gpu-spec">${gpu.spec}</div>
-            </div>
-            <div class="gpu-price-col">
-              <div class="gpu-price">${fmt(dailyPrice)}</div>
-              <div class="gpu-price-label">${T[lang].rateLabel}</div>
-            </div>
-          </div>
-          <div id="expand-${key}" class="gpu-expand ${isSelected?'open':''}">
-            <div class="gpu-expand-inner">
-              <div class="divider"></div>
-              <div class="period-label" style="margin-bottom:6px">${T[lang].useCasesLabel}</div>
-              <div class="use-cases">${usesHtml}</div>
-            </div>
-          </div>
-        </div>
-      `;
-    });
-
-    group.innerHTML = `
-      <div class="tier-header" onclick="toggleTier(this)">
-        <div class="tier-dot" style="background:${tier.color}"></div>
-        <div class="tier-info">
-          <div class="tier-name">${tier.label}</div>
-          <div class="tier-sub">${tier.sub}</div>
-        </div>
-        <svg class="tier-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-      </div>
-      <div class="tier-cards" style="max-height: 2000px;">
-        ${cardsHtml}
-      </div>
-    `;
-    container.appendChild(group);
-  });
-}
+const TIERS = [
+  {id:'entry', keys:['l4','rtx_a5000','rtx_3090']},
+  {id:'mid', keys:['rtx_4090','rtx_5090','rtx_6000_ada','a40','l40','l40s','rtx_a6000','rtx_pro_6000']},
+  {id:'pro', keys:['a100_pcie','a100_sxm']},
+  {id:'elite', keys:['h100_nvl','h100_pcie','h100_sxm','h200','b200']},
+];
 
 function setLang(l, btn) {
   lang = l;
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-
-  document.getElementById('heroEyebrow').innerText = T[lang].eyebrow;
-  document.getElementById('heroH1').innerHTML = T[lang].h1;
-  document.getElementById('heroP').innerText = T[lang].p;
-  document.getElementById('gpuSectionLabel').innerText = T[lang].gpuLabel;
-  document.getElementById('emptyTitle').innerText = T[lang].emptyTitle;
-  document.getElementById('emptySub').innerHTML = T[lang].emptySub;
-
-  document.getElementById('entBadge').innerText = T[lang].entBadge;
-  document.getElementById('entTitle').innerHTML = T[lang].entTitle;
-  document.getElementById('entDesc').innerText = T[lang].entDesc;
-  document.getElementById('entTerm').innerHTML = '&nbsp;' + T[lang].entTerm;
-  document.getElementById('entNet').innerHTML = '&nbsp;' + T[lang].entNet;
-  document.getElementById('entConfig').innerHTML = '&nbsp;' + T[lang].entConfig;
-  document.getElementById('entBtn').innerText = T[lang].entBtn;
-
-  document.getElementById('sNav1').innerText = T[lang].sNav[0];
-  document.getElementById('sNav2').innerText = T[lang].sNav[1];
-  document.getElementById('sNav3').innerText = T[lang].sNav[2];
-  document.getElementById('sNav4').innerText = T[lang].sNav[3];
-  document.getElementById('sNav5').innerText = T[lang].sNav[4];
-  
-  document.getElementById('navAccountTxt').innerText = T[lang].accountTxt;
-
-  renderGpuList();
-  renderRightPanel();
+  applyTranslations();
+  render();
 }
+
+function applyTranslations() {
+  const t = T[lang];
+  document.getElementById('heroEyebrow').textContent = t.eyebrow;
+  document.getElementById('heroH1').innerHTML = t.h1;
+  document.getElementById('heroP').textContent = t.p;
+  document.getElementById('gpuSectionLabel').textContent = t.gpuLabel;
+  document.getElementById('emptyTitle').textContent = t.emptyTitle;
+  document.getElementById('emptySub').innerHTML = t.emptySub;
+  document.getElementById('entBadge').textContent = t.entBadge;
+  document.getElementById('entTitle').innerHTML = t.entTitle;
+  document.getElementById('entDesc').textContent = t.entDesc;
+  document.getElementById('entTerm').textContent = t.entTerm;
+  document.getElementById('entNet').textContent = t.entNet;
+  document.getElementById('entConfig').textContent = t.entConfig;
+  document.getElementById('entBtn').textContent = t.entBtn;
+  const sNavEls = document.querySelectorAll('[id^="sNav"]');
+  t.sNav.forEach((s,i) => { const el = document.getElementById('sNav'+(i+1)); if(el) el.textContent = s; });
+}
+
+function render() {
+  const t = T[lang];
+  const gpus = GPUS[lang];
+  const tiers = t.tiers;
+  const container = document.getElementById('gpuList');
+  container.innerHTML = '';
+
+  TIERS.forEach((tier, idx) => {
+    const tInfo = tiers[idx];
+    const group = document.createElement('div');
+    group.className = 'tier-group';
+    group.id = 'tier-'+tier.id;
+
+    const cardsHTML = tier.keys.map(key => {
+      const g = gpus[key];
+      if(!g) return '';
+      const period = cardPeriods[key] || 'day';
+      const isSelected = selectedGpu === key;
+      const daily = hourlyUSD[key]*24;
+      const {full, final, saved} = calcPrice(key, period);
+
+      const usesHTML = g.uses.map(u=>`<span class="use-chip">${u}</span>`).join('');
+
+      const savingsClass = period === 'day' ? 'price-savings hidden' : 'price-savings';
+
+      return `<div class="gpu-card ${isSelected ? 'selected' : ''}" id="card-${key}" onclick="selectGpu('${key}')">
+        <div class="gpu-card-header">
+          <div class="gpu-status"></div>
+          <div class="gpu-info">
+            <div class="gpu-name-row">
+              <span class="gpu-name">${g.name}</span>
+              <span class="gpu-badge" style="${g.badgeStyle}">${g.badge}</span>
+            </div>
+            <div class="gpu-spec">${g.spec}</div>
+          </div>
+          <div class="gpu-price-col">
+            <div class="gpu-price">${fmt(daily)}</div>
+            <div class="gpu-price-label">${t.rateLabel}</div>
+          </div>
+        </div>
+        <div class="gpu-expand ${isSelected ? 'open' : ''}" id="expand-${key}">
+          <div class="gpu-expand-inner" onclick="event.stopPropagation()">
+            <div class="divider"></div>
+            <div class="period-label">${t.useCasesLabel}</div>
+            <div class="use-cases">${usesHTML}</div>
+            <div class="period-label">${t.periodLabel}</div>
+            <div class="period-row">
+              <button class="period-pill ${period==='day'?'active':''}" onclick="setPeriod('${key}','day',event)">${t.pDay}</button>
+              <button class="period-pill ${period==='week'?'active':''}" onclick="setPeriod('${key}','week',event)">${t.pWeek}</button>
+              <button class="period-pill ${period==='month'?'active':''}" onclick="setPeriod('${key}','month',event)">${t.pMonth}</button>
+            </div>
+            <div class="price-box">
+              <div class="price-box-label">${t.costLabel}</div>
+              <div class="price-main" id="pMain-${key}">${fmt(final)}</div>
+              <div class="${savingsClass}" id="pSavings-${key}">
+                <span class="price-old">${t.baseLabel} <s id="pOld-${key}">${fmt(full)}</s></span>
+                <span class="price-save" id="pSave-${key}">${t.saveLabel} ${fmt(saved)}</span>
+              </div>
+            </div>
+            <button class="launch-btn" onclick="launchGpu('${key}',event)">${t.launchBtn}</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+
+    group.innerHTML = `
+      <div class="tier-header" onclick="toggleTier('${tier.id}')">
+        <div class="tier-dot" style="background:${tInfo.color}"></div>
+        <div class="tier-info">
+          <div class="tier-name" style="color:${tInfo.color}">${tInfo.label}</div>
+          <div class="tier-sub">${tInfo.sub}</div>
+        </div>
+        <svg class="tier-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </div>
+      <div class="tier-cards">${cardsHTML}</div>
+    `;
+
+    // set max-height for animation
+    const cardCount = tier.keys.length;
+    group.querySelector('.tier-cards').style.maxHeight = (cardCount * 200 + 400) + 'px';
+
+    container.appendChild(group);
+  });
+
+  // empty state visibility
+  document.getElementById('emptyState').style.display = selectedGpu ? 'none' : 'block';
+}
+
+function toggleTier(id) {
+  const g = document.getElementById('tier-'+id);
+  g.classList.toggle('collapsed');
+}
+
+function selectGpu(key) {
+  if (selectedGpu === key) {
+    selectedGpu = null;
+  } else {
+    selectedGpu = key;
+    if (!cardPeriods[key]) cardPeriods[key] = 'day';
+  }
+  render();
+  if (selectedGpu) {
+    setTimeout(() => {
+      const card = document.getElementById('card-'+key);
+      if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 50);
+  }
+}
+
+function setPeriod(key, period, e) {
+  e.stopPropagation();
+  cardPeriods[key] = period;
+  const t = T[lang];
+  const {full, final, saved} = calcPrice(key, period);
+  // update pills
+  ['day','week','month'].forEach(p => {
+    const btn = document.querySelector(`#expand-${key} .period-pill:nth-child(${['day','week','month'].indexOf(p)+1})`);
+    if (btn) btn.className = 'period-pill' + (p===period ? ' active' : '');
+  });
+  const mainEl = document.getElementById('pMain-'+key);
+  if (mainEl) mainEl.textContent = fmt(final);
+  const savEl = document.getElementById('pSavings-'+key);
+  if (savEl) {
+    if (period === 'day') { savEl.classList.add('hidden'); }
+    else {
+      savEl.classList.remove('hidden');
+      document.getElementById('pOld-'+key).textContent = fmt(full);
+      document.getElementById('pSave-'+key).textContent = t.saveLabel + ' ' + fmt(saved);
+    }
+  }
+}
+
+function launchGpu(key, e) {
+  e.stopPropagation();
+  const t = T[lang];
+  const g = GPUS[lang][key];
+  const period = cardPeriods[key] || 'day';
+  const {final} = calcPrice(key, period);
+  const pLabel = {day: lang==='RU'?'1 день':'1 day', week: lang==='RU'?'1 неделя':'1 week', month: lang==='RU'?'1 месяц':'1 month'}[period];
+  const isRU = lang === 'RU';
+  const msg = isRU
+    ? `🖥 On-Demand GPU: ${g.name}\n⏱ Период: ${pLabel}\n💰 Стоимость: ${fmt(final)}`
+    : `🖥 On-Demand GPU: ${g.name}\n⏱ Period: ${pLabel}\n💰 Cost: ${fmt(final)}`;
+  showModal(msg, isRU);
+}
+
+function openEnterpriseModal() {
+  const isRU = lang === 'RU';
+  const msg = isRU
+    ? `💼 [ENTERPRISE]\nЗдравствуйте! Интересует аренда ИИ-кластера Blackwell (B200/B300 x8).\nМин. срок: 3 месяца.\nПрошу связаться для обсуждения условий.`
+    : `💼 [ENTERPRISE]\nHello! Interested in Blackwell AI Cluster rental (B200/B300 x8).\nMin. term: 3 months.\nPlease contact to discuss terms.`;
+  showModal(msg, isRU);
+  const url = `https://t.me/${TG_USERNAME}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
+
+function showModal(msg, isRU) {
+  const t = T[lang];
+  document.getElementById('modalTitle').textContent = t.modalTitle;
+  document.getElementById('modalH3').textContent = t.modalH3;
+  document.getElementById('modalP').textContent = t.modalP;
+  document.getElementById('modalConfig').textContent = msg;
+  const url = `https://t.me/${TG_USERNAME}?text=${encodeURIComponent(msg)}`;
+  document.getElementById('modalLink').href = url;
+  document.getElementById('modalLink').textContent = t.modalBtn;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
 
 function openSidebar() {
   document.getElementById('sidebar').classList.add('show');
@@ -1420,46 +2823,139 @@ function closeSidebar() {
   document.getElementById('sbOverlay').classList.remove('show');
 }
 
-function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
+// init
+applyTranslations();
+render();
 
-function openEnterpriseModal() {
-  closeSidebar();
-  const mTitle = lang === 'RU' ? 'Заявка: AI Кластер' : 'Request: AI Cluster';
-  const mH3 = lang === 'RU' ? 'Связь с отделом продаж' : 'Contact Sales';
-  const mP = lang === 'RU' ? 'Запрос на выделенные кластеры Blackwell' : 'Inquiry for dedicated Blackwell clusters';
-  const mConf = `Project: NODE.CLOUD Enterprise\nCluster: Blackwell x8 Nodes\nNetwork: InfiniBand\nStatus: Requesting Quotation`;
-  
-  document.getElementById('modalTitle').innerText = mTitle;
-  document.getElementById('modalIcon').innerText = '🏢';
-  document.getElementById('modalH3').innerText = mH3;
-  document.getElementById('modalP').innerText = mP;
-  document.getElementById('modalConfig').innerText = mConf;
-  document.getElementById('modalLink').href = `https://t.me/${TG_USERNAME}?text=${encodeURIComponent('Здравствуйте! Меня интересуют Enterprise AI кластеры Blackwell.')}`;
-  document.getElementById('modalLink').innerText = lang === 'RU' ? 'Написать в Telegram →' : 'Message on Telegram →';
-  document.getElementById('modalOverlay').classList.add('show');
+
+/* Override launch to require auth */
+function launchGpu(key, event) {
+  event.stopPropagation();
+  const ud = document.getElementById('userDropdown');
+  ud.classList.add('open');
+  showEmailForm();
+  setUdTab('reg');
+}
+function purchaseService(key, event) { launchGpu(key, event); }
+
+/* ══ DASHBOARD JS ══ */
+
+// ── TIMER ──
+const timers = {
+  timer1: { total: 24*3600, left: 18*3600+24*60+11 },
+  timer2: { total: 24*3600, left: 3*3600+47*60+29 }
+};
+
+function fmtTime(s) {
+  const h = Math.floor(s/3600).toString().padStart(2,'0');
+  const m = Math.floor((s%3600)/60).toString().padStart(2,'0');
+  const sec = (s%60).toString().padStart(2,'0');
+  return `${h}:${m}:${sec}`;
 }
 
-function launchInstance() {
-  if (!selectedGpu) return;
-  const gpu = GPUS[lang][selectedGpu];
-  const pData = calcPrice(selectedGpu, currentPeriod);
-  
-  const textMsg = lang === 'RU' 
-    ? `Привет! Хочу запустить инстанс:\nGPU: ${gpu.name}\nПериод: ${currentPeriod}\nЦена: ${fmt(pData.final)}`
-    : `Hello! I want to deploy an instance:\nGPU: ${gpu.name}\nPeriod: ${currentPeriod}\nCost: ${fmt(pData.final)}`;
+setInterval(() => {
+  for (const [id, t] of Object.entries(timers)) {
+    if (t.left > 0) {
+      t.left--;
+      const el = document.getElementById(id);
+      if (el) el.textContent = fmtTime(t.left);
+      const barId = id.replace('timer','bar');
+      const bar = document.getElementById(barId);
+      if (bar) {
+        const pct = (t.left / t.total * 100).toFixed(1);
+        bar.style.width = pct + '%';
+        const cls = pct > 40 ? 'green' : pct > 15 ? 'orange' : 'red';
+        bar.className = 'timer-bar ' + cls;
+      }
+    }
+  }
+}, 1000);
 
-  document.getElementById('modalTitle').innerText = T[lang].modalTitle;
-  document.getElementById('modalIcon').innerText = '🚀';
-  document.getElementById('modalH3').innerText = T[lang].modalH3;
-  document.getElementById('modalP').innerText = T[lang].modalP;
-  document.getElementById('modalConfig').innerText = `Instance: ${gpu.name}\nPeriod: ${currentPeriod}\nEstimated Cost: ${fmt(pData.final)}`;
-  document.getElementById('modalLink').href = `https://t.me/${TG_USERNAME}?text=${encodeURIComponent(textMsg)}`;
-  document.getElementById('modalLink').innerText = T[lang].modalBtn;
-  document.getElementById('modalOverlay').classList.add('show');
+// ── PAGES ──
+const pages = ['dashboard','notifications','billing','settings','ssh','instances','marketplace','history'];
+function showPage(name) {
+  pages.forEach(p => {
+    const el = document.getElementById('page-'+p);
+    if (el) el.style.display = 'none';
+  });
+  const target = document.getElementById('page-'+name) || document.getElementById('page-dashboard');
+  if (target) target.style.display = 'block';
+
+  const titles = {
+    dashboard:'Дашборд',notifications:'Уведомления',billing:'Баланс и платежи',
+    settings:'Настройки',ssh:'SSH-ключи',instances:'Мои инстансы',
+    marketplace:'GPU Marketplace',history:'История операций'
+  };
+  document.getElementById('topnavTitle').textContent = titles[name] || 'Дашборд';
+
+  document.querySelectorAll('.sb-item').forEach(el => el.classList.remove('active'));
+  const map = {dashboard:0,marketplace:1,instances:2,billing:3,history:4,notifications:5,settings:6,ssh:7};
+  const items = document.querySelectorAll('.sb-item');
+  if (items[map[name]]) items[map[name]].classList.add('active');
 }
 
-// Init
-renderGpuList();
+// ── COPY ──
+function copyText(text, msg) {
+  navigator.clipboard.writeText(text).then(() => toast(msg,'✅')).catch(() => toast(msg,'✅'));
+}
+
+// ── TOAST ──
+function toast(msg, icon) {
+  const t = document.getElementById('toast');
+  const m = document.getElementById('toastMsg');
+  const i = document.getElementById('toastIcon');
+  m.textContent = msg;
+  i.textContent = icon || '✅';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+// ── MODAL ──
+function openModal(id) {
+  document.getElementById(id).classList.add('show');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+}
+document.querySelectorAll('.modal-bg').forEach(bg => {
+  bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('show'); });
+});
+
+// ── TOPUP ──
+function setAmount(v, btn) {
+  document.getElementById('topupAmount').value = v;
+  document.querySelectorAll('.amount-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function selPay(btn) {
+  btn.closest('.modal-body').querySelectorAll('.pay-method').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function doTopup() {
+  const v = parseInt(document.getElementById('topupAmount').value) || 0;
+  if (v < 100) { toast('Минимальная сумма 100 ₽','⚠️'); return; }
+  closeModal('topupModal');
+  toast(`Пополнение ${v.toLocaleString('ru')} ₽ обрабатывается`,'💳');
+}
+
+// ── NOTIF READ ──
+function markRead(el) {
+  el.classList.remove('unread');
+  const dot = el.querySelector('.notif-unread-dot');
+  if (dot) dot.style.opacity = '0';
+}
+
+// INIT
+showPage('dashboard');
+
+
+/* ══ INIT ══ */
+window.addEventListener('load', () => {
+  injectUserBtn();
+  if (typeof changeLanguage === 'function') changeLanguage();
+  // Render GPU list on landing
+  if (typeof render === 'function') render();
+});
 </script>
 </body>
 </html>
