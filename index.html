@@ -1010,7 +1010,52 @@ function setPeriod(key,period,e){
 }
 
 /* ✅ FIX: launchGpu открывает форму регистрации */
-function launchGpu(key,event){event.stopPropagation();document.getElementById('userDropdown').classList.add('open');showEmailForm();setUdTab('reg');}
+function launchGpu(key, event) {
+  event.stopPropagation();
+  if (currentUser) {
+    // Залогинен — сразу запускаем инстанс
+    const period = cardPeriods[key] || 'day';
+    const g = GPUS[lang][key];
+    const {final} = calcPrice(key, period);
+    const periodLabel = {day: lang==='RU'?'1 день':'1 day', week: lang==='RU'?'1 неделя':'1 week', month: lang==='RU'?'1 месяц':'1 month'}[period];
+    // Показываем confirm с деталями заказа
+    showLaunchConfirm(key, g, period, periodLabel, final);
+  } else {
+    // Не залогинен — сохраняем намерение и открываем форму входа
+    pendingLaunch = key;
+    const dd = document.getElementById('userDropdown');
+    const guestPanel = document.getElementById('udGuestPanel');
+    const userPanel = document.getElementById('udUserPanel');
+    guestPanel.style.display = 'block';
+    userPanel.style.display = 'none';
+    dd.classList.add('open');
+    showEmailForm();
+    setUdTab('reg');
+  }
+}
+
+// Запоминаем какой GPU хотели запустить до входа
+let pendingLaunch = null;
+
+function showLaunchConfirm(key, g, period, periodLabel, price) {
+  const isRU = lang === 'RU';
+  const priceStr = fmt(price);
+  // Показываем модальное подтверждение
+  const overlay = document.getElementById('launchConfirmOverlay');
+  document.getElementById('lcGpuName').textContent = g.name;
+  document.getElementById('lcPeriod').textContent = periodLabel;
+  document.getElementById('lcPrice').textContent = priceStr;
+  document.getElementById('lcSpec').textContent = g.spec;
+  document.getElementById('lcConfirmBtn').onclick = () => {
+    closeLaunchConfirm();
+    launchGpuReal(key, period, 'pytorch', g.name.toLowerCase().replace(/\s+/g,'-') + '-' + Date.now());
+  };
+  overlay.classList.add('show');
+}
+
+function closeLaunchConfirm() {
+  document.getElementById('launchConfirmOverlay').classList.remove('show');
+}
 
 function openEnterpriseModal(){
   const isRU=lang==='RU';
@@ -1149,7 +1194,17 @@ async function doUdLogin(){
   const email=document.getElementById('udEmail').value.trim(),pw=document.getElementById('udPw').value;
   if(!email||!pw){showUdErr('Введите email и пароль');return;}
   showToast('Выполняем вход…','🔄');
-  try{const data=await apiFetch('/api/auth/login',{method:'POST',body:JSON.stringify({email,password:pw})});saveSession(data.token,data.user);closeUserDropdown();goPage('pg-dash');showPage('dashboard');showToast('Добро пожаловать, '+(data.user.name||data.user.email)+'!','👋');}
+  try{const data=await apiFetch('/api/auth/login',{method:'POST',body:JSON.stringify({email,password:pw})});saveSession(data.token,data.user);
+    closeUserDropdown();
+    if(pendingLaunch){
+      const pk=pendingLaunch; pendingLaunch=null;
+      showToast('Добро пожаловать! Запускаем GPU...','🚀');
+      const period=cardPeriods[pk]||'day';
+      const g=GPUS[lang][pk];
+      setTimeout(()=>showLaunchConfirm(pk,g,period,{day:lang==='RU'?'1 день':'1 day',week:lang==='RU'?'1 неделя':'1 week',month:lang==='RU'?'1 месяц':'1 month'}[period],calcPrice(pk,period).final),400);
+    } else {
+      goPage('pg-dash');showPage('dashboard');showToast('Добро пожаловать, '+(data.user.name||data.user.email)+'!','👋');
+    }}
   catch(e){showUdErr(e.message==='Invalid email or password'?'Неверный email или пароль':e.message);showToast('Ошибка входа','❌');}
 }
 
@@ -1158,7 +1213,17 @@ async function doUdRegister(){
   if(!name||!email){showUdErr('Заполните имя и email');return;}
   if(pw.length<8){showUdErr('Пароль минимум 8 символов');return;}
   showToast('Создаём аккаунт…','🔄');
-  try{const data=await apiFetch('/api/auth/register',{method:'POST',body:JSON.stringify({email,password:pw,name})});saveSession(data.token,data.user);closeUserDropdown();goPage('pg-dash');showPage('dashboard');showToast('🎁 Аккаунт создан! Бонус 500 ₽ зачислен','🎉');}
+  try{const data=await apiFetch('/api/auth/register',{method:'POST',body:JSON.stringify({email,password:pw,name})});saveSession(data.token,data.user);
+    closeUserDropdown();
+    if(pendingLaunch){
+      const pk=pendingLaunch; pendingLaunch=null;
+      showToast('Аккаунт создан! Запускаем GPU...','🚀');
+      const period=cardPeriods[pk]||'day';
+      const g=GPUS[lang][pk];
+      setTimeout(()=>showLaunchConfirm(pk,g,period,{day:lang==='RU'?'1 день':'1 day',week:lang==='RU'?'1 неделя':'1 week',month:lang==='RU'?'1 месяц':'1 month'}[period],calcPrice(pk,period).final),400);
+    } else {
+      goPage('pg-dash');showPage('dashboard');showToast('🎁 Аккаунт создан! Бонус 500 ₽ зачислен','🎉');
+    }}
   catch(e){showUdErr(e.message==='Email already registered'?'Email уже зарегистрирован':e.message);showToast('Ошибка регистрации','❌');}
 }
 
@@ -1182,5 +1247,43 @@ function tryAutoLogin(){
 }
 tryAutoLogin();
 </script>
+
+<!-- ══ LAUNCH CONFIRM MODAL ══ -->
+<div class="modal-overlay" id="launchConfirmOverlay" style="z-index:600">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-header">
+      <span class="modal-title">Подтверждение запуска</span>
+      <button class="modal-close" onclick="closeLaunchConfirm()">&times;</button>
+    </div>
+    <div class="modal-body" style="padding:22px 20px">
+      <div class="modal-icon" style="background:rgba(48,209,88,.1);border-color:rgba(48,209,88,.15)">🚀</div>
+      <div class="modal-caption">
+        <h3 id="lcGpuName" style="font-size:18px;margin-bottom:6px">GPU Name</h3>
+        <p id="lcSpec" style="font-size:11px;color:rgba(245,245,247,.5)">spec</p>
+      </div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <span style="font-size:11px;color:rgba(245,245,247,.5);font-weight:600;letter-spacing:.04em;text-transform:uppercase">Период аренды</span>
+          <span id="lcPeriod" style="font-size:13px;font-weight:700;color:#f5f5f7">1 день</span>
+        </div>
+        <div style="height:1px;background:rgba(255,255,255,.07);margin-bottom:10px"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:11px;color:rgba(245,245,247,.5);font-weight:600;letter-spacing:.04em;text-transform:uppercase">К оплате</span>
+          <span id="lcPrice" style="font-size:22px;font-weight:900;color:#30d158;font-family:SF Mono,Fira Code,monospace;letter-spacing:-.02em">0 ₽</span>
+        </div>
+      </div>
+      <div style="font-size:10px;color:rgba(245,245,247,.4);text-align:center;margin-bottom:16px;line-height:1.5">
+        💳 Сумма спишется с баланса аккаунта · SSH-доступ через ~2 мин
+      </div>
+      <button id="lcConfirmBtn" class="launch-btn" style="font-size:14px;padding:14px">
+        ⚡ Запустить и оплатить
+      </button>
+      <button onclick="closeLaunchConfirm()" style="width:100%;margin-top:8px;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:transparent;color:rgba(245,245,247,.5);font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">
+        Отмена
+      </button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
