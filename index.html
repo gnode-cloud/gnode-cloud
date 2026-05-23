@@ -781,6 +781,43 @@ main{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:20px 24p
   </div>
 </div>
 </div>
+<!-- ══ LAUNCH CONFIRM MODAL ══ -->
+<div class="modal-overlay" id="launchConfirmOverlay" style="z-index:600">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-header">
+      <span class="modal-title">Подтверждение запуска</span>
+      <button class="modal-close" onclick="closeLaunchConfirm()">&times;</button>
+    </div>
+    <div class="modal-body" style="padding:22px 20px">
+      <div class="modal-icon" style="background:rgba(48,209,88,.1);border-color:rgba(48,209,88,.15)">🚀</div>
+      <div class="modal-caption">
+        <h3 id="lcGpuName" style="font-size:18px;margin-bottom:6px">GPU Name</h3>
+        <p id="lcSpec" style="font-size:11px;color:rgba(245,245,247,.5)">spec</p>
+      </div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <span style="font-size:11px;color:rgba(245,245,247,.5);font-weight:600;letter-spacing:.04em;text-transform:uppercase">Период аренды</span>
+          <span id="lcPeriod" style="font-size:13px;font-weight:700;color:#f5f5f7">1 день</span>
+        </div>
+        <div style="height:1px;background:rgba(255,255,255,.07);margin-bottom:10px"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:11px;color:rgba(245,245,247,.5);font-weight:600;letter-spacing:.04em;text-transform:uppercase">К оплате</span>
+          <span id="lcPrice" style="font-size:22px;font-weight:900;color:#30d158;font-family:SF Mono,Fira Code,monospace;letter-spacing:-.02em">0 ₽</span>
+        </div>
+      </div>
+      <div style="font-size:10px;color:rgba(245,245,247,.4);text-align:center;margin-bottom:16px;line-height:1.5">
+        💳 Сумма спишется с баланса аккаунта · SSH-доступ через ~2 мин
+      </div>
+      <button id="lcConfirmBtn" class="launch-btn" style="font-size:14px;padding:14px">
+        ⚡ Запустить и оплатить
+      </button>
+      <button onclick="closeLaunchConfirm()" style="width:100%;margin-top:8px;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:transparent;color:rgba(245,245,247,.5);font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">
+        Отмена
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ══ SPA ══ */
 function goPage(id){document.querySelectorAll('.spa-page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);closeUserDropdown();}
@@ -1465,9 +1502,198 @@ async function doUdRegister(){
   catch(e){showUdErr(e.message==='Email already registered'?'Email уже зарегистрирован':e.message);showToast('Ошибка регистрации','❌');}
 }
 
-function authGoogle(){closeUserDropdown();showToast('Google OAuth — скоро!','🔵');}
-function authApple(){closeUserDropdown();showToast('Apple ID — скоро!','🍎');}
-function authTelegram(){closeUserDropdown();showToast('Telegram Auth — скоро!','✈️');}
+/* ══ OAUTH ══ */
+
+// ── Google OAuth ──
+// Бэкенд должен: GET /api/auth/google → редирект на accounts.google.com
+// После колбэка: GET /api/auth/google/callback → вернуть {token, user} и закрыть окно
+function authGoogle(){
+  const w = window.open(
+    API_BASE + '/api/auth/google',
+    'google_oauth',
+    'width=500,height=600,left='+((screen.width-500)/2)+',top='+((screen.height-600)/2)
+  );
+  // Слушаем postMessage от popup окна когда OAuth завершится
+  listenOAuthPopup(w);
+}
+
+// ── Apple Sign In ──
+// Бэкенд должен: GET /api/auth/apple → редирект на appleid.apple.com
+function authApple(){
+  const w = window.open(
+    API_BASE + '/api/auth/apple',
+    'apple_oauth',
+    'width=500,height=600,left='+((screen.width-500)/2)+',top='+((screen.height-600)/2)
+  );
+  listenOAuthPopup(w);
+}
+
+// ── Telegram Login Widget ──
+// Самый простой способ — официальный виджет Telegram, не требует сервера для редиректа
+// Бэкенд должен: POST /api/auth/telegram с данными от виджета → вернуть {token, user}
+function authTelegram(){
+  // Показываем модалку с Telegram виджетом
+  showTelegramModal();
+}
+
+// Слушатель postMessage от OAuth popup
+let oauthPopupTimer = null;
+function listenOAuthPopup(popup){
+  if(oauthPopupTimer) clearInterval(oauthPopupTimer);
+  showToast('Ожидаем авторизацию...', '🔄');
+  // Способ 1: popup сам отправляет postMessage после успеха
+  const handler = (e) => {
+    if(e.origin !== API_BASE.replace(/\/api.*$/,'')) return;
+    if(e.data && e.data.token && e.data.user){
+      window.removeEventListener('message', handler);
+      clearInterval(oauthPopupTimer);
+      if(popup && !popup.closed) popup.close();
+      saveSession(e.data.token, e.data.user);
+      closeUserDropdown();
+      if(pendingLaunch){
+        const pk=pendingLaunch; pendingLaunch=null;
+        const period=cardPeriods[pk]||'day';
+        const g=GPUS[lang][pk];
+        setTimeout(()=>showLaunchConfirm(pk,g,period,{day:lang==='RU'?'1 день':'1 day',week:lang==='RU'?'1 неделя':'1 week',month:lang==='RU'?'1 месяц':'1 month'}[period],calcPrice(pk,period).final),400);
+      } else {
+        goPage('pg-dash'); showPage('dashboard');
+        showToast('Добро пожаловать, '+(e.data.user.name||e.data.user.email)+'!','👋');
+      }
+    }
+    if(e.data && e.data.error){
+      window.removeEventListener('message', handler);
+      clearInterval(oauthPopupTimer);
+      showToast('Ошибка авторизации: '+e.data.error, '❌');
+    }
+  };
+  window.addEventListener('message', handler);
+  // Способ 2: проверяем JWT токен в URL если popup редиректит обратно
+  oauthPopupTimer = setInterval(()=>{
+    if(!popup || popup.closed){
+      clearInterval(oauthPopupTimer);
+      window.removeEventListener('message', handler);
+      // Проверить не сохранил ли popup токен в localStorage
+      const newToken = localStorage.getItem('nodecloud_token');
+      if(newToken && newToken !== authToken){
+        const newUser = JSON.parse(localStorage.getItem('nodecloud_user')||'{}');
+        if(newUser.email){ saveSession(newToken, newUser); closeUserDropdown(); goPage('pg-dash'); showPage('dashboard'); }
+      }
+      return;
+    }
+  }, 500);
+}
+
+// ── Telegram Widget Modal ──
+function showTelegramModal(){
+  // Создаём модалку с виджетом
+  let modal = document.getElementById('telegramModal');
+  if(!modal){
+    modal = document.createElement('div');
+    modal.id = 'telegramModal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(12px);z-index:900;display:flex;align-items:center;justify-content:center;padding:20px';
+    modal.innerHTML = `
+      <div style="background:#111;border:1px solid rgba(255,255,255,.1);border-radius:22px;width:100%;max-width:360px;overflow:hidden">
+        <div style="padding:20px 22px 16px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between">
+          <span style="font-size:15px;font-weight:700">Войти через Telegram</span>
+          <button onclick="document.getElementById('telegramModal').remove()" style="width:28px;height:28px;border-radius:7px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:rgba(245,245,247,.6);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif">&times;</button>
+        </div>
+        <div style="padding:28px 22px;text-align:center">
+          <div style="font-size:36px;margin-bottom:12px">✈️</div>
+          <div style="font-size:14px;font-weight:600;color:#f5f5f7;margin-bottom:6px">Telegram авторизация</div>
+          <div style="font-size:12px;color:rgba(245,245,247,.5);margin-bottom:24px">Нажмите кнопку ниже чтобы войти через ваш Telegram аккаунт</div>
+          <div id="tgWidgetContainer" style="display:flex;justify-content:center;margin-bottom:16px"></div>
+          <div style="font-size:10px;color:rgba(245,245,247,.3)">Данные передаются напрямую от Telegram. Мы не получаем пароль.</div>
+        </div>
+      </div>`;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', e=>{ if(e.target===modal) modal.remove(); });
+    // Загружаем официальный Telegram Login Widget
+    // ВАЖНО: замените BOT_USERNAME на username вашего бота
+    loadTelegramWidget('tgWidgetContainer', window.TG_BOT_USERNAME || 'gnodecloudbot');
+  }
+}
+
+function loadTelegramWidget(containerId, botUsername){
+  const container = document.getElementById(containerId);
+  if(!container) return;
+  // Официальный Telegram Login Widget
+  const script = document.createElement('script');
+  script.src = 'https://telegram.org/js/telegram-widget.js?22';
+  script.setAttribute('data-telegram-login', botUsername);
+  script.setAttribute('data-size', 'large');
+  script.setAttribute('data-radius', '10');
+  script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+  script.setAttribute('data-request-access', 'write');
+  script.async = true;
+  container.appendChild(script);
+}
+
+// Колбэк от Telegram виджета
+async function onTelegramAuth(tgUser){
+  document.getElementById('telegramModal')?.remove();
+  showToast('Авторизация через Telegram...', '🔄');
+  try{
+    // Отправляем данные на бэкенд для верификации hash
+    const data = await apiFetch('/api/auth/telegram', {
+      method: 'POST',
+      body: JSON.stringify(tgUser)
+    });
+    saveSession(data.token, data.user);
+    closeUserDropdown();
+    if(pendingLaunch){
+      const pk=pendingLaunch; pendingLaunch=null;
+      const period=cardPeriods[pk]||'day';
+      const g=GPUS[lang][pk];
+      setTimeout(()=>showLaunchConfirm(pk,g,period,{day:'1 день',week:'1 неделя',month:'1 месяц'}[period],calcPrice(pk,period).final),400);
+    } else {
+      goPage('pg-dash'); showPage('dashboard');
+      showToast('Добро пожаловать, '+(data.user.name||data.user.email)+'!','👋');
+    }
+  }catch(e){
+    showToast('Ошибка: '+e.message, '❌');
+  }
+}
+
+/* ══ GPU LAUNCH — реальный запрос к API ══ */
+async function launchGpuReal(gpuKey, period, imageName, instanceName){
+  if(!authToken){
+    showToast('Войдите в аккаунт','⚠️');
+    return;
+  }
+  showToast('Запускаем ' + gpuKey + '...', '🚀');
+  try{
+    const data = await apiFetch('/api/gpu/launch', {
+      method: 'POST',
+      body: JSON.stringify({
+        gpuKey,
+        period,
+        imageName: imageName || 'pytorch',
+        instanceName: instanceName || gpuKey + '-' + Date.now()
+      })
+    });
+    // Успех — переходим в дашборд, начинаем опрашивать статус
+    closeLaunchConfirm();
+    showToast('🚀 GPU запускается! Данные доступа через ~2-3 мин', '⚡');
+    goPage('pg-dash');
+    showPage('dashboard');
+    // Первая загрузка сразу
+    loadDashboard();
+    // Затем ещё раз через 15 и 60 сек — когда появится IP
+    setTimeout(loadDashboard, 15000);
+    setTimeout(loadDashboard, 60000);
+  } catch(e) {
+    closeLaunchConfirm();
+    if(e.message && e.message.toLowerCase().includes('balance')){
+      showToast('Недостаточно баланса — пополните счёт 💳', '⚠️');
+      goPage('pg-dash');
+      showPage('billing');
+    } else if(e.message && e.message.toLowerCase().includes('available')){
+      showToast('GPU временно недоступен — попробуйте другой', '⚠️');
+    } else {
+      showToast('Ошибка запуска: ' + e.message, '❌');
+    }
+  }
+}
 
 async function doTopupReal(){
   if(!authToken){showToast('Войдите в аккаунт','⚠️');return;}
@@ -1496,43 +1722,6 @@ function tryAutoLogin(){
 }
 tryAutoLogin();
 </script>
-
-<!-- ══ LAUNCH CONFIRM MODAL ══ -->
-<div class="modal-overlay" id="launchConfirmOverlay" style="z-index:600">
-  <div class="modal" style="max-width:380px">
-    <div class="modal-header">
-      <span class="modal-title">Подтверждение запуска</span>
-      <button class="modal-close" onclick="closeLaunchConfirm()">&times;</button>
-    </div>
-    <div class="modal-body" style="padding:22px 20px">
-      <div class="modal-icon" style="background:rgba(48,209,88,.1);border-color:rgba(48,209,88,.15)">🚀</div>
-      <div class="modal-caption">
-        <h3 id="lcGpuName" style="font-size:18px;margin-bottom:6px">GPU Name</h3>
-        <p id="lcSpec" style="font-size:11px;color:rgba(245,245,247,.5)">spec</p>
-      </div>
-      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;margin-bottom:16px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-          <span style="font-size:11px;color:rgba(245,245,247,.5);font-weight:600;letter-spacing:.04em;text-transform:uppercase">Период аренды</span>
-          <span id="lcPeriod" style="font-size:13px;font-weight:700;color:#f5f5f7">1 день</span>
-        </div>
-        <div style="height:1px;background:rgba(255,255,255,.07);margin-bottom:10px"></div>
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-size:11px;color:rgba(245,245,247,.5);font-weight:600;letter-spacing:.04em;text-transform:uppercase">К оплате</span>
-          <span id="lcPrice" style="font-size:22px;font-weight:900;color:#30d158;font-family:SF Mono,Fira Code,monospace;letter-spacing:-.02em">0 ₽</span>
-        </div>
-      </div>
-      <div style="font-size:10px;color:rgba(245,245,247,.4);text-align:center;margin-bottom:16px;line-height:1.5">
-        💳 Сумма спишется с баланса аккаунта · SSH-доступ через ~2 мин
-      </div>
-      <button id="lcConfirmBtn" class="launch-btn" style="font-size:14px;padding:14px">
-        ⚡ Запустить и оплатить
-      </button>
-      <button onclick="closeLaunchConfirm()" style="width:100%;margin-top:8px;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:transparent;color:rgba(245,245,247,.5);font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">
-        Отмена
-      </button>
-    </div>
-  </div>
-</div>
 
 </body>
 </html>
