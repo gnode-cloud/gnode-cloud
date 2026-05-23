@@ -349,6 +349,23 @@ main{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:20px 24p
 @media(max-width:640px){#pg-dash .sidebar{display:none}.stats-row{grid-template-columns:1fr 1fr}.page{padding:16px}}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}
 ::selection{background:rgba(41,151,255,.3)}
+
+/* ── LOGGED-IN USER DROPDOWN ── */
+.ud-user-head{display:flex;align-items:center;gap:12px;padding:16px 16px 12px;border-bottom:1px solid rgba(255,255,255,.07)}
+.ud-user-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#2997ff,#5e5ce6);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0}
+.ud-user-name{font-size:14px;font-weight:700;color:#f5f5f7;margin-bottom:2px}
+.ud-user-email{font-size:11px;color:rgba(245,245,247,.4)}
+.ud-balance-row{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:rgba(41,151,255,.07);border-bottom:1px solid rgba(255,255,255,.07)}
+.ud-balance-label{font-size:11px;font-weight:600;color:rgba(245,245,247,.6)}
+.ud-balance-val{font-size:14px;font-weight:800;color:#2997ff;font-variant-numeric:tabular-nums;font-family:'SF Mono','Fira Code',monospace}
+.ud-user-menu{padding:8px}
+.ud-user-item{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:10px;border:none;background:transparent;color:#f5f5f7;font-size:13px;font-weight:500;cursor:pointer;transition:all .18s;font-family:Inter,sans-serif;text-align:left}
+.ud-user-item:hover{background:rgba(255,255,255,.07)}
+.ud-user-item-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0}
+.ud-item-arrow{width:14px;height:14px;color:rgba(245,245,247,.3);margin-left:auto;flex-shrink:0}
+.ud-user-footer{padding:8px}
+.ud-logout-btn{display:flex;align-items:center;gap:8px;width:100%;padding:10px 12px;border-radius:10px;border:none;background:transparent;color:rgba(255,69,58,.8);font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;font-family:Inter,sans-serif}
+.ud-logout-btn:hover{background:rgba(255,69,58,.1);color:#ff453a}
 </style>
 </head>
 <body>
@@ -358,44 +375,99 @@ main{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:20px 24p
 
 <!-- USER DROPDOWN -->
 <div class="user-dropdown" id="userDropdown">
-  <div class="ud-head"><div class="ud-head-title">Войти в NODE.CLOUD</div><div class="ud-head-sub">Выберите способ входа</div></div>
-  <div id="udMethods" class="ud-methods">
-    <button class="ud-method" onclick="authGoogle()">
-      <div class="ud-method-icon" style="background:rgba(255,255,255,.06)"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg></div>
-      <div class="ud-method-text"><div class="ud-method-title">Войти через Google</div><div class="ud-method-sub">Быстрый вход через аккаунт Google</div></div>
-    </button>
-    <button class="ud-method" onclick="authApple()">
-      <div class="ud-method-icon" style="background:rgba(255,255,255,.06)"><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5f5f7"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg></div>
-      <div class="ud-method-text"><div class="ud-method-title">Войти через Apple</div><div class="ud-method-sub">Вход с Apple ID</div></div>
-    </button>
-    <button class="ud-method" onclick="authTelegram()">
-      <div class="ud-method-icon" style="background:rgba(41,151,255,.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="#2997ff"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></div>
-      <div class="ud-method-text"><div class="ud-method-title">Войти через Telegram</div><div class="ud-method-sub">Вход без пароля</div></div>
-    </button>
-    <div class="ud-divider"></div>
-    <button class="ud-method" onclick="showEmailForm()">
-      <div class="ud-method-icon" style="background:rgba(255,255,255,.05)"><svg width="18" height="18" fill="none" stroke="rgba(245,245,247,.7)" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
-      <div class="ud-method-text"><div class="ud-method-title">Email и пароль</div><div class="ud-method-sub">Войти или зарегистрироваться</div></div>
-    </button>
+
+  <!-- ── GUEST PANEL (показывается когда не залогинен) ── -->
+  <div id="udGuestPanel">
+    <div class="ud-head">
+      <div class="ud-head-title">Войти в NODE.CLOUD</div>
+      <div class="ud-head-sub">Выберите способ входа</div>
+    </div>
+    <div id="udMethods" class="ud-methods">
+      <button class="ud-method" onclick="authGoogle()">
+        <div class="ud-method-icon" style="background:rgba(255,255,255,.06)"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg></div>
+        <div class="ud-method-text"><div class="ud-method-title">Войти через Google</div><div class="ud-method-sub">Быстрый вход через аккаунт Google</div></div>
+      </button>
+      <button class="ud-method" onclick="authApple()">
+        <div class="ud-method-icon" style="background:rgba(255,255,255,.06)"><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5f5f7"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg></div>
+        <div class="ud-method-text"><div class="ud-method-title">Войти через Apple</div><div class="ud-method-sub">Вход с Apple ID</div></div>
+      </button>
+      <button class="ud-method" onclick="authTelegram()">
+        <div class="ud-method-icon" style="background:rgba(41,151,255,.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="#2997ff"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></div>
+        <div class="ud-method-text"><div class="ud-method-title">Войти через Telegram</div><div class="ud-method-sub">Вход без пароля</div></div>
+      </button>
+      <div class="ud-divider"></div>
+      <button class="ud-method" onclick="showEmailForm()">
+        <div class="ud-method-icon" style="background:rgba(255,255,255,.05)"><svg width="18" height="18" fill="none" stroke="rgba(245,245,247,.7)" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+        <div class="ud-method-text"><div class="ud-method-title">Email и пароль</div><div class="ud-method-sub">Войти или зарегистрироваться</div></div>
+      </button>
+    </div>
+    <div class="ud-email-form" id="udEmailForm">
+      <div class="ud-tabs">
+        <button class="ud-tab on" id="udTabLogin" onclick="setUdTab('login')">Войти</button>
+        <button class="ud-tab" id="udTabReg" onclick="setUdTab('reg')">Регистрация</button>
+      </div>
+      <div id="udErrMsg" style="font-size:11px;color:#ff453a;margin-bottom:8px;display:none"></div>
+      <div id="udLoginFields">
+        <input class="ud-input" type="email" id="udEmail" placeholder="Email">
+        <input class="ud-input" type="password" id="udPw" placeholder="Пароль" onkeydown="if(event.key==='Enter')doUdLogin()">
+      </div>
+      <div id="udRegFields" style="display:none">
+        <input class="ud-input" type="text" id="udName" placeholder="Имя">
+        <input class="ud-input" type="email" id="udRegEmail" placeholder="Email">
+        <input class="ud-input" type="password" id="udRegPw" placeholder="Пароль (мин. 8 символов)">
+      </div>
+      <button class="ud-submit" id="udSubmitBtn" onclick="doUdLogin()">Войти</button>
+      <button class="ud-back" onclick="hideEmailForm()">← Назад</button>
+    </div>
   </div>
-  <div class="ud-email-form" id="udEmailForm">
-    <div class="ud-tabs">
-      <button class="ud-tab on" id="udTabLogin" onclick="setUdTab('login')">Войти</button>
-      <button class="ud-tab" id="udTabReg" onclick="setUdTab('reg')">Регистрация</button>
+
+  <!-- ── LOGGED-IN PANEL (показывается когда залогинен) ── -->
+  <div id="udUserPanel" style="display:none">
+    <!-- Шапка с аватаром и именем -->
+    <div class="ud-user-head">
+      <div class="ud-user-avatar" id="udUserAvatar">АК</div>
+      <div class="ud-user-info">
+        <div class="ud-user-name" id="udUserName">Пользователь</div>
+        <div class="ud-user-email" id="udUserEmail">email@example.com</div>
+      </div>
     </div>
-    <div id="udErrMsg" style="font-size:11px;color:#ff453a;margin-bottom:8px;display:none"></div>
-    <div id="udLoginFields">
-      <input class="ud-input" type="email" id="udEmail" placeholder="Email">
-      <input class="ud-input" type="password" id="udPw" placeholder="Пароль" onkeydown="if(event.key==='Enter')doUdLogin()">
+    <!-- Баланс -->
+    <div class="ud-balance-row">
+      <div class="ud-balance-label">💰 Баланс</div>
+      <div class="ud-balance-val" id="udBalanceVal">—</div>
     </div>
-    <div id="udRegFields" style="display:none">
-      <input class="ud-input" type="text" id="udName" placeholder="Имя">
-      <input class="ud-input" type="email" id="udRegEmail" placeholder="Email">
-      <input class="ud-input" type="password" id="udRegPw" placeholder="Пароль (мин. 8 символов)">
+    <!-- Меню -->
+    <div class="ud-user-menu">
+      <button class="ud-user-item" onclick="openDash('dashboard')">
+        <span class="ud-user-item-icon">⚡</span>
+        <span>Дашборд</span>
+        <svg class="ud-item-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <button class="ud-user-item" onclick="openDash('instances')">
+        <span class="ud-user-item-icon">🖥️</span>
+        <span>Мои инстансы</span>
+        <svg class="ud-item-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <button class="ud-user-item" onclick="openDash('billing')">
+        <span class="ud-user-item-icon">💳</span>
+        <span>Пополнить баланс</span>
+        <svg class="ud-item-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <button class="ud-user-item" onclick="openDash('settings')">
+        <span class="ud-user-item-icon">⚙️</span>
+        <span>Настройки</span>
+        <svg class="ud-item-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </button>
     </div>
-    <button class="ud-submit" id="udSubmitBtn" onclick="doUdLogin()">Войти</button>
-    <button class="ud-back" onclick="hideEmailForm()">← Назад</button>
+    <div class="ud-divider" style="margin:4px 0"></div>
+    <div class="ud-user-footer">
+      <button class="ud-logout-btn" onclick="logout()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        Выйти из аккаунта
+      </button>
+    </div>
   </div>
+
 </div>
 
 <!-- LANDING SIDEBAR -->
@@ -780,7 +852,33 @@ function cp(text,msg){navigator.clipboard.writeText(text).then(()=>showToast(msg
 function copyText(text,msg){cp(text,msg);}
 
 /* ══ USER DROPDOWN ══ */
-function toggleUserDropdown(){document.getElementById('userDropdown').classList.toggle('open');}
+function toggleUserDropdown(){
+  const dd=document.getElementById('userDropdown');
+  const guestPanel=document.getElementById('udGuestPanel');
+  const userPanel=document.getElementById('udUserPanel');
+  if(currentUser){
+    guestPanel.style.display='none';
+    userPanel.style.display='block';
+    updateDropdownBalance();
+  } else {
+    guestPanel.style.display='block';
+    userPanel.style.display='none';
+    hideEmailForm();
+  }
+  dd.classList.toggle('open');
+}
+function updateDropdownBalance(){
+  if(!authToken)return;
+  apiFetch('/api/billing/balance').then(d=>{
+    const el=document.getElementById('udBalanceVal');
+    if(el)el.textContent=new Intl.NumberFormat('ru-RU').format(d.balance)+' ₽';
+  }).catch(()=>{});
+}
+function openDash(page){
+  closeUserDropdown();
+  goPage('pg-dash');
+  showPage(page);
+}
 function closeUserDropdown(){document.getElementById('userDropdown').classList.remove('open');hideEmailForm();}
 document.addEventListener('click',e=>{if(!e.target.closest('.user-btn-wrap')&&!e.target.closest('#userDropdown'))closeUserDropdown();});
 function showEmailForm(){document.getElementById('udMethods').style.display='none';document.getElementById('udEmailForm').classList.add('show');document.getElementById('udEmail')?.focus();}
@@ -976,6 +1074,15 @@ function saveSession(token,user){authToken=token;currentUser=user;localStorage.s
 
 /* ✅ FIX 11: updateUIAfterLogin обновляет ВСЕ 9 мест с именем пользователя */
 function updateUIAfterLogin(user){
+  // Обновить дропдаун (залогинен-панель)
+  const udUserAvatar=document.getElementById('udUserAvatar');
+  const udUserName_el=document.getElementById('udUserName');
+  const udUserEmail_el=document.getElementById('udUserEmail');
+  const name_=user.name||user.email.split('@')[0];
+  const initials_=name_.substring(0,2).toUpperCase();
+  if(udUserAvatar)udUserAvatar.textContent=initials_;
+  if(udUserName_el)udUserName_el.textContent=name_;
+  if(udUserEmail_el)udUserEmail_el.textContent=user.email;
   const name=user.name||user.email.split('@')[0];
   const initials=name.substring(0,2).toUpperCase();
   // Сайдбар дашборда
@@ -997,7 +1104,24 @@ function updateUIAfterLogin(user){
   loadDashboard();
 }
 
-function logout(){authToken=null;currentUser=null;localStorage.removeItem('nodecloud_token');localStorage.removeItem('nodecloud_user');goPage('pg-landing');showToast('До свидания!','👋');}
+function logout(){
+  authToken=null;currentUser=null;
+  localStorage.removeItem('nodecloud_token');
+  localStorage.removeItem('nodecloud_user');
+  // Reset dropdown to guest state
+  const gp=document.getElementById('udGuestPanel');
+  const up=document.getElementById('udUserPanel');
+  if(gp)gp.style.display='block';
+  if(up)up.style.display='none';
+  // Reset nav button
+  const navBtnTxt=document.getElementById('navBtnTxt');
+  if(navBtnTxt)navBtnTxt.textContent='Войти';
+  const navBtnAvt=document.getElementById('navBtnAvt');
+  if(navBtnAvt)navBtnAvt.textContent='👤';
+  closeUserDropdown();
+  goPage('pg-landing');
+  showToast('До свидания!','👋');
+}
 
 async function loadDashboard(){
   try{const d=await apiFetch('/api/billing/balance');const f=new Intl.NumberFormat('ru-RU').format(d.balance)+' ₽';['sbBalVal','statBal','dashBalVal','billingBalVal'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=f;});}catch(e){console.log('Balance:',e.message);}
