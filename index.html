@@ -598,10 +598,10 @@ main{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:20px 24p
       <div class="sb-logo-icon">G</div><span class="sb-logo-txt">NODE.CLOUD</span>
     </div>
     <div class="sb-user">
-      <div class="sb-avatar" id="sbAvt">АК</div>
+      <div class="sb-avatar" id="sbAvt">?</div>
       <div class="sb-user-info">
-        <div class="sb-user-name" id="sbName">Алексей К.</div>
-        <div class="sb-user-email" id="sbEmail">alex@company.ru</div>
+        <div class="sb-user-name" id="sbName">Загрузка...</div>
+        <div class="sb-user-email" id="sbEmail">—</div>
       </div>
     </div>
     <div class="sb-balance">
@@ -635,7 +635,7 @@ main{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:20px 24p
           <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
           <div class="notif-dot"></div>
         </button>
-        <div id="topAvt" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#2997ff,#5e5ce6);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;cursor:pointer">АК</div>
+        <div id="topAvt" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#2997ff,#5e5ce6);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;cursor:pointer">?</div>
       </div>
     </div>
 
@@ -643,61 +643,17 @@ main{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:20px 24p
     <div id="page-dashboard" class="page">
       <div class="stats-row">
         <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label">Баланс</div><div class="stat-val green" id="statBal">— ₽</div><div class="stat-sub">Загрузка...</div></div>
-        <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-label">Активных GPU</div><div class="stat-val blue">2</div><div class="stat-sub">RTX 4090, H100 SXM</div></div>
-        <div class="stat-card"><div class="stat-icon">🕒</div><div class="stat-label">Часов использовано</div><div class="stat-val" style="color:var(--text)">347</div><div class="stat-sub">За последние 30 дней</div></div>
-        <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-label">Потрачено</div><div class="stat-val orange">48 320 ₽</div><div class="stat-sub">За все время</div></div>
+        <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-label">Активных GPU</div><div class="stat-val blue" id="statActiveGpu">—</div><div class="stat-sub" id="statActiveGpuSub">Загрузка...</div></div>
+        <div class="stat-card"><div class="stat-icon">🕒</div><div class="stat-label">Часов использовано</div><div class="stat-val" id="statHours" style="color:var(--text)">—</div><div class="stat-sub">За последние 30 дней</div></div>
+        <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-label">Потрачено</div><div class="stat-val orange" id="statSpent">— ₽</div><div class="stat-sub">За все время</div></div>
       </div>
       <div class="grid2">
         <div>
-          <div class="sec-title">Активные инстансы <span>2 running</span></div>
-          <div class="card">
-            <div class="instance">
-              <div class="inst-header">
-                <div class="inst-icon">🚀</div>
-                <div class="inst-info"><div class="inst-name">RTX 4090 · prod-inference-01</div><div class="inst-spec">24 ГБ VRAM · 41 ГБ RAM · 6 vCPU · Ubuntu 22.04</div></div>
-                <div class="inst-status"><div class="status-dot running"></div><span class="status-text running">Running</span></div>
-              </div>
-              <div class="timer-row">
-                <div class="timer-left"><div class="timer-label">Осталось времени</div><div class="timer-val" id="timer1">18:24:11</div></div>
-                <div class="timer-bar-wrap"><div class="timer-bar green" id="bar1" style="width:76%"></div></div>
-                <div class="timer-cost"><div class="timer-cost-val">2 760 ₽</div><div class="timer-cost-label">стоимость аренды</div></div>
-              </div>
-              <div class="access-details">
-                <div class="access-row"><span class="access-key">IP адрес</span><span class="access-val">185.246.88.142</span><button class="access-copy" onclick="cp('185.246.88.142','IP скопирован')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button></div>
-                <div class="access-row"><span class="access-key">SSH порт</span><span class="access-val">22041</span><button class="access-copy" onclick="cp('22041','Порт скопирован')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button></div>
-                <div class="access-row"><span class="access-key">SSH команда</span><span class="access-val">ssh -p 22041 root@185.246.88.142</span><button class="access-copy" onclick="cp('ssh -p 22041 root@185.246.88.142','SSH скопирована')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button></div>
-                <div class="access-row"><span class="access-key">Пароль root</span><span class="access-val secret">••••••••••••••••</span><button class="access-copy" onclick="cp('Xk9#mP2@vQ7nR','Пароль скопирован')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button></div>
-                <div class="access-row"><span class="access-key">Jupyter</span><span class="access-val" style="color:var(--blue)">http://185.246.88.142:8888</span><button class="access-copy" onclick="cp('http://185.246.88.142:8888','Ссылка скопирована')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button></div>
-              </div>
-              <div class="inst-actions">
-                <button class="inst-btn primary" onclick="toast('🔗 Подключение установлено','✅')">Подключиться</button>
-                <button class="inst-btn" onclick="toast('⏳ Продление обрабатывается','🕒')">Продлить +1 день</button>
-                <button class="inst-btn danger" onclick="toast('🛑 Инстанс остановлен','⚠️')">Остановить</button>
-              </div>
-            </div>
-            <div class="instance">
-              <div class="inst-header">
-                <div class="inst-icon" style="background:linear-gradient(135deg,rgba(255,159,10,.15),rgba(255,69,58,.08));border-color:rgba(255,159,10,.15)">🧠</div>
-                <div class="inst-info"><div class="inst-name">H100 SXM · llm-training-02</div><div class="inst-spec">80 ГБ VRAM · 125 ГБ RAM · 20 vCPU · PyTorch 2.3</div></div>
-                <div class="inst-status"><div class="status-dot running"></div><span class="status-text running">Running</span></div>
-              </div>
-              <div class="timer-row">
-                <div class="timer-left"><div class="timer-label">Осталось времени</div><div class="timer-val urgent" id="timer2">03:47:29</div></div>
-                <div class="timer-bar-wrap"><div class="timer-bar orange" id="bar2" style="width:16%"></div></div>
-                <div class="timer-cost"><div class="timer-cost-val">12 400 ₽</div><div class="timer-cost-label">стоимость аренды</div></div>
-              </div>
-              <div class="access-details">
-                <div class="access-row"><span class="access-key">IP адрес</span><span class="access-val">91.197.122.77</span><button class="access-copy" onclick="cp('91.197.122.77','IP скопирован')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button></div>
-                <div class="access-row"><span class="access-key">SSH команда</span><span class="access-val">ssh -p 22199 root@91.197.122.77</span><button class="access-copy" onclick="cp('ssh -p 22199 root@91.197.122.77','SSH скопирован')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button></div>
-                <div class="access-row"><span class="access-key">Пароль root</span><span class="access-val secret">••••••••••••••••</span><button class="access-copy" onclick="cp('Nh4kL8pW3mZ','Пароль скопирован')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button></div>
-                <div class="access-row"><span class="access-key">TensorBoard</span><span class="access-val" style="color:var(--orange)">http://91.197.122.77:6006</span><button class="access-copy" onclick="cp('http://91.197.122.77:6006','Ссылка скопирована')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button></div>
-              </div>
-              <div style="padding:8px 0 4px;font-size:10px;font-weight:600;color:var(--orange);display:flex;align-items:center;gap:6px;margin-bottom:8px">⚠️ Инстанс истекает менее чем через 4 часа — продлите аренду</div>
-              <div class="inst-actions">
-                <button class="inst-btn primary" onclick="toast('🔗 Подключение установлено','✅')">Подключиться</button>
-                <button class="inst-btn" style="background:rgba(255,159,10,.1);color:var(--orange);border-color:rgba(255,159,10,.25)" onclick="toast('✅ Продлено на 24 часа','💳')">⚡ Продлить срочно</button>
-                <button class="inst-btn danger" onclick="toast('🛑 Инстанс остановлен','⚠️')">Стоп</button>
-              </div>
+          <div class="sec-title">Активные инстансы <span id="activeCount">—</span></div>
+          <div class="card" id="dashInstances">
+            <div style="padding:32px 20px;text-align:center;color:var(--text3)">
+              <div style="font-size:28px;margin-bottom:10px">⏳</div>
+              <div style="font-size:13px;font-weight:600">Загрузка инстансов...</div>
             </div>
           </div>
         </div>
@@ -706,33 +662,24 @@ main{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:20px 24p
           <div class="balance-card">
             <div class="bc-label">Доступно</div>
             <div class="bc-val" id="dashBalVal">— ₽</div>
-            <div class="bc-sub">Обновлено только что</div>
+            <div class="bc-sub" id="dashBalSub">Загрузка...</div>
             <div class="bc-actions">
               <button class="bc-btn primary" onclick="openModal('topupModal')">+ Пополнить</button>
               <button class="bc-btn secondary" onclick="showPage('history')">История</button>
             </div>
           </div>
-          <div class="sec-title" style="margin-top:22px">Уведомления <span>3 новых</span></div>
-          <div class="card">
-            <div class="notif-item unread" onclick="markRead(this)"><div class="notif-ico" style="background:rgba(255,159,10,.1)">⚠️</div><div class="notif-body"><div class="notif-title">H100 SXM истекает через 4 часа</div><div class="notif-sub">Инстанс llm-training-02 будет остановлен.</div><div class="notif-time">2 минуты назад</div></div><div class="notif-unread-dot"></div></div>
-            <div class="notif-item unread" onclick="markRead(this)"><div class="notif-ico" style="background:rgba(48,209,88,.1)">✅</div><div class="notif-body"><div class="notif-title">RTX 4090 успешно запущен</div><div class="notif-sub">prod-inference-01 готов. IP: 185.246.88.142</div><div class="notif-time">6 часов назад</div></div><div class="notif-unread-dot"></div></div>
-            <div class="notif-item unread" onclick="markRead(this)"><div class="notif-ico" style="background:rgba(41,151,255,.1)">💳</div><div class="notif-body"><div class="notif-title">Баланс пополнен на 10 000 ₽</div><div class="notif-sub">Оплата картой успешно проведена.</div><div class="notif-time">Вчера, 14:32</div></div><div class="notif-unread-dot"></div></div>
-            <div class="notif-item" onclick="markRead(this)"><div class="notif-ico" style="background:rgba(255,69,58,.08)">🛑</div><div class="notif-body"><div class="notif-title">RTX 3090 остановлен по таймеру</div><div class="notif-sub">Аренда завершена. Данные сохранены 48ч.</div><div class="notif-time">2 дня назад</div></div></div>
+          <div class="sec-title" style="margin-top:22px">Уведомления <span id="notifCount"></span></div>
+          <div class="card" id="dashNotifs">
+            <div style="padding:20px;color:var(--text3);font-size:12px;text-align:center">Загрузка...</div>
           </div>
         </div>
-      </div>
+      </div></div>
       <div class="sec-title">Последние операции</div>
       <div class="card" style="margin-bottom:16px">
         <div class="card-head"><span class="card-head-title">История транзакций</span><span class="card-head-action" onclick="showPage('history')">Все операции →</span></div>
         <table class="hist-table">
           <thead><tr><th class="hist-th">Тип</th><th class="hist-th">Описание</th><th class="hist-th">Дата</th><th class="hist-th" style="text-align:right">Сумма</th></tr></thead>
-          <tbody>
-            <tr class="hist-tr"><td class="hist-td"><span class="hist-type spend">Аренда</span></td><td class="hist-td">H100 SXM · 24 ч · llm-training-02</td><td class="hist-td" style="color:var(--text3)">Сегодня</td><td class="hist-td" style="text-align:right"><span class="hist-amount minus">−12 400 ₽</span></td></tr>
-            <tr class="hist-tr"><td class="hist-td"><span class="hist-type topup">Пополнение</span></td><td class="hist-td">Visa •• 4821 · СБП</td><td class="hist-td" style="color:var(--text3)">Вчера</td><td class="hist-td" style="text-align:right"><span class="hist-amount plus">+10 000 ₽</span></td></tr>
-            <tr class="hist-tr"><td class="hist-td"><span class="hist-type spend">Аренда</span></td><td class="hist-td">RTX 4090 · 24 ч · prod-inference-01</td><td class="hist-td" style="color:var(--text3)">20 мая</td><td class="hist-td" style="text-align:right"><span class="hist-amount minus">−2 760 ₽</span></td></tr>
-            <tr class="hist-tr"><td class="hist-td"><span class="hist-type spend">Аренда</span></td><td class="hist-td">RTX 3090 · 7 дней · dev-01</td><td class="hist-td" style="color:var(--text3)">14 мая</td><td class="hist-td" style="text-align:right"><span class="hist-amount minus">−11 802 ₽</span></td></tr>
-            <tr class="hist-tr"><td class="hist-td"><span class="hist-type topup">Пополнение</span></td><td class="hist-td">Visa •• 4821</td><td class="hist-td" style="color:var(--text3)">10 мая</td><td class="hist-td" style="text-align:right"><span class="hist-amount plus">+25 000 ₽</span></td></tr>
-          </tbody>
+          <tbody id="txn-tbody"><tr><td colspan="4" style="padding:20px;text-align:center;color:var(--text3);font-size:12px">Загрузка...</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -743,22 +690,22 @@ main{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:20px 24p
       <div class="sec-title" style="font-size:17px;margin-bottom:20px">Настройки аккаунта</div>
       <div class="card" style="padding:24px;margin-bottom:16px">
         <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)">
-          <div id="settingsAvt" style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#2997ff,#5e5ce6);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff">АК</div>
+          <div id="settingsAvt" style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#2997ff,#5e5ce6);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff">?</div>
           <div>
-            <div id="settingsName" style="font-size:16px;font-weight:700">Алексей Кузнецов</div>
-            <div id="settingsEmail" style="font-size:12px;color:var(--text3);margin-top:3px">alex@company.ru · Участник с 15 мая 2025</div>
+            <div id="settingsName" style="font-size:16px;font-weight:700">—</div>
+            <div id="settingsEmail" style="font-size:12px;color:var(--text3);margin-top:3px">—</div>
           </div>
           <button class="inst-btn primary" style="margin-left:auto;padding:9px 16px" onclick="toast('Фото обновлено','📸')">Изменить фото</button>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-          <div class="modal-row"><div class="modal-label">Имя</div><input class="modal-input" id="settingsInputName" value="Алексей"></div>
+          <div class="modal-row"><div class="modal-label">Имя</div><input class="modal-input" id="settingsInputName" value=""></div>
           <div class="modal-row"><div class="modal-label">Фамилия</div><input class="modal-input" value="Кузнецов"></div>
-          <div class="modal-row"><div class="modal-label">Email</div><input class="modal-input" id="settingsInputEmail" value="alex@company.ru"></div>
+          <div class="modal-row"><div class="modal-label">Email</div><input class="modal-input" id="settingsInputEmail" value=""></div>
           <div class="modal-row"><div class="modal-label">Телефон</div><input class="modal-input" value="+7 999 123-45-67"></div>
           <div class="modal-row"><div class="modal-label">Компания</div><input class="modal-input" value="ООО Технологии"></div>
           <div class="modal-row"><div class="modal-label">Telegram</div><input class="modal-input" value="@alex_dev"></div>
         </div>
-        <button class="inst-btn primary" style="margin-top:16px;padding:12px;width:200px" onclick="toast('Профиль сохранён','✅')">Сохранить изменения</button>
+        <button class="inst-btn primary" style="margin-top:16px;padding:12px;width:200px" onclick="saveProfile()">Сохранить изменения</button>
       </div>
     </div>
 
@@ -766,11 +713,13 @@ main{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:20px 24p
     <div id="page-notifications" class="page" style="display:none">
       <div class="sec-title" style="font-size:17px;margin-bottom:20px">Уведомления</div>
       <div class="card">
-        <div class="card-head"><span class="card-head-title">Все уведомления</span><span class="card-head-action" onclick="toast('✓ Все прочитаны','✅')">Отметить все прочитанными</span></div>
-        <div class="notif-item unread" onclick="markRead(this)"><div class="notif-ico" style="background:rgba(255,159,10,.1)">⚠️</div><div class="notif-body"><div class="notif-title">H100 SXM истекает через 4 часа</div><div class="notif-sub">llm-training-02 будет остановлен.</div><div class="notif-time">2 минуты назад</div></div><div class="notif-unread-dot"></div></div>
-        <div class="notif-item unread" onclick="markRead(this)"><div class="notif-ico" style="background:rgba(48,209,88,.1)">✅</div><div class="notif-body"><div class="notif-title">RTX 4090 успешно запущен</div><div class="notif-sub">prod-inference-01 готов. IP: 185.246.88.142</div><div class="notif-time">6 часов назад</div></div><div class="notif-unread-dot"></div></div>
-        <div class="notif-item unread" onclick="markRead(this)"><div class="notif-ico" style="background:rgba(41,151,255,.1)">💳</div><div class="notif-body"><div class="notif-title">Баланс пополнен на 10 000 ₽</div><div class="notif-sub">Оплата через СБП.</div><div class="notif-time">Вчера, 14:32</div></div><div class="notif-unread-dot"></div></div>
-        <div class="notif-item" onclick="markRead(this)"><div class="notif-ico" style="background:rgba(255,69,58,.08)">🛑</div><div class="notif-body"><div class="notif-title">RTX 3090 остановлен</div><div class="notif-sub">Аренда завершена в 23:59.</div><div class="notif-time">2 дня назад</div></div></div>
+        <div class="card-head">
+          <span class="card-head-title">Все уведомления</span>
+          <span class="card-head-action" onclick="markAllRead()">Отметить все прочитанными</span>
+        </div>
+        <div id="notificationsContainer">
+          <div style="padding:30px;text-align:center;color:var(--text3);font-size:13px">Загрузка...</div>
+        </div>
       </div>
     </div>
 
@@ -818,10 +767,7 @@ main{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:20px 24p
         <div class="card-head"><span class="card-head-title">Все транзакции</span></div>
         <table class="hist-table">
           <thead><tr><th class="hist-th">Тип</th><th class="hist-th">Описание</th><th class="hist-th">Дата</th><th class="hist-th" style="text-align:right">Сумма</th></tr></thead>
-          <tbody id="txn-tbody">
-            <tr class="hist-tr"><td class="hist-td"><span class="hist-type spend">Аренда</span></td><td class="hist-td">H100 SXM · 24 ч</td><td class="hist-td" style="color:var(--text3)">Сегодня</td><td class="hist-td" style="text-align:right"><span class="hist-amount minus">−12 400 ₽</span></td></tr>
-            <tr class="hist-tr"><td class="hist-td"><span class="hist-type topup">Пополнение</span></td><td class="hist-td">Visa •• 4821</td><td class="hist-td" style="color:var(--text3)">Вчера</td><td class="hist-td" style="text-align:right"><span class="hist-amount plus">+10 000 ₽</span></td></tr>
-          </tbody>
+          <tbody id="txn-tbody"><tr><td colspan="4" style="padding:20px;text-align:center;color:var(--text3);font-size:12px">Загрузка...</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -1074,9 +1020,9 @@ function closeSidebar(){document.getElementById('sidebar').classList.remove('sho
 applyTranslations();render();
 
 /* ══ DASHBOARD JS ══ */
-const timers={timer1:{total:24*3600,left:18*3600+24*60+11},timer2:{total:24*3600,left:3*3600+47*60+29}};
+// Таймеры управляются динамически через renderDashInstances()
 function fmtTime(s){return`${Math.floor(s/3600).toString().padStart(2,'0')}:${Math.floor((s%3600)/60).toString().padStart(2,'0')}:${(s%60).toString().padStart(2,'0')}`;}
-setInterval(()=>{for(const[id,t]of Object.entries(timers)){if(t.left>0){t.left--;const el=document.getElementById(id);if(el)el.textContent=fmtTime(t.left);const bar=document.getElementById(id.replace('timer','bar'));if(bar){const pct=(t.left/t.total*100).toFixed(1);bar.style.width=pct+'%';bar.className='timer-bar '+(pct>40?'green':pct>15?'orange':'red');}}}},1000);
+
 
 const pages=['dashboard','notifications','billing','settings','ssh','instances','marketplace','history'];
 function showPage(name){
@@ -1087,6 +1033,10 @@ function showPage(name){
   const tnEl=document.getElementById('topnavTitle');if(tnEl)tnEl.textContent=titles[name]||'Дашборд';
   document.querySelectorAll('.sb-item').forEach(el=>el.classList.remove('active'));
   const map={dashboard:0,marketplace:1,instances:2,billing:3,history:4,notifications:5,settings:6,ssh:7};
+  // Загружать данные при переключении страниц
+  if(name==='notifications') loadNotificationsPage();
+  if(name==='history') loadHistoryPage();
+  if(name==='instances') { renderInstancesPage([]); loadDashboard(); }
   const items=document.querySelectorAll('.sb-item');if(items[map[name]])items[map[name]].classList.add('active');
 }
 
@@ -1115,7 +1065,7 @@ async function apiFetch(path,options={}){
   return data;
 }
 
-function saveSession(token,user){authToken=token;currentUser=user;localStorage.setItem('nodecloud_token',token);localStorage.setItem('nodecloud_user',JSON.stringify(user));updateUIAfterLogin(user);}
+function saveSession(token,user){authToken=token;currentUser=user;localStorage.setItem('nodecloud_token',token);localStorage.setItem('nodecloud_user',JSON.stringify(user));updateUIAfterLogin(user);startDashRefresh();}
 
 /* ✅ FIX 11: updateUIAfterLogin обновляет ВСЕ 9 мест с именем пользователя */
 function updateUIAfterLogin(user){
@@ -1168,10 +1118,236 @@ function logout(){
   showToast('До свидания!','👋');
 }
 
+// Глобальный массив таймеров инстансов (для countdown)
+let instanceTimers = {};
+
 async function loadDashboard(){
-  try{const d=await apiFetch('/api/billing/balance');const f=new Intl.NumberFormat('ru-RU').format(d.balance)+' ₽';['sbBalVal','statBal','dashBalVal','billingBalVal'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=f;});}catch(e){console.log('Balance:',e.message);}
-  try{const inst=await apiFetch('/api/gpu/instances');if(inst.length>0)renderInstances(inst);}catch(e){console.log('Instances:',e.message);}
-  try{const txns=await apiFetch('/api/billing/transactions?limit=5');renderTransactions(txns);}catch(e){console.log('Txns:',e.message);}
+  // БАЛАНС
+  try{
+    const d = await apiFetch('/api/billing/balance');
+    const bal = d.balance || 0;
+    const f = new Intl.NumberFormat('ru-RU').format(bal) + ' ₽';
+    const usd = (bal / 92).toFixed(2);
+    const h100hours = (bal / (11.96 * 92)).toFixed(0);
+    ['sbBalVal','statBal','dashBalVal','billingBalVal'].forEach(id=>{
+      const el=document.getElementById(id); if(el) el.textContent=f;
+    });
+    const sub = document.getElementById('sbBalSub');
+    if(sub) sub.textContent = '≈ $'+usd+' · ~'+h100hours+' ч H100';
+    const dbSub = document.getElementById('dashBalSub');
+    if(dbSub) dbSub.textContent = '≈ $'+usd+' · Обновлено только что';
+  }catch(e){console.log('Balance:',e.message);}
+
+  // ИНСТАНСЫ
+  try{
+    const inst = await apiFetch('/api/gpu/instances');
+    renderDashInstances(inst);
+    renderInstancesPage(inst);
+    // Stats
+    const running = inst.filter(i=>i.status==='running'||i.status==='pending');
+    const el = document.getElementById('statActiveGpu');
+    if(el) el.textContent = running.length;
+    const sub = document.getElementById('statActiveGpuSub');
+    if(sub) sub.textContent = running.length ? running.map(i=>i.gpu_name||i.gpu_key).join(', ').substring(0,30) : 'Нет активных';
+    const cnt = document.getElementById('activeCount');
+    if(cnt) cnt.textContent = running.length + ' running';
+  }catch(e){
+    console.log('Instances:',e.message);
+    renderDashInstances([]);
+  }
+
+  // ТРАНЗАКЦИИ + STATS
+  try{
+    const txns = await apiFetch('/api/billing/transactions');
+    renderTransactions(txns);
+    // Считаем потраченное и часы
+    const spent = txns.filter(t=>t.type==='spend').reduce((s,t)=>s+(t.amount_rub||0),0);
+    const spentEl = document.getElementById('statSpent');
+    if(spentEl) spentEl.textContent = new Intl.NumberFormat('ru-RU').format(spent)+' ₽';
+    // Часы = сумма аренды / средняя ставка ~500р/ч (примерно)
+    const spendItems = txns.filter(t=>t.type==='spend');
+    const totalHours = spendItems.reduce((s,t)=>s+(t.hours||0),0) || Math.round(spent/500);
+    const hoursEl = document.getElementById('statHours');
+    if(hoursEl) hoursEl.textContent = totalHours;
+  }catch(e){console.log('Txns:',e.message);}
+
+  // УВЕДОМЛЕНИЯ в дашборде
+  try{
+    const notifs = await apiFetch('/api/billing/notifications?limit=4');
+    renderDashNotifs(notifs);
+  }catch(e){
+    // Показать пустое состояние
+    const el = document.getElementById('dashNotifs');
+    if(el) el.innerHTML = '<div style="padding:20px;color:var(--text3);font-size:12px;text-align:center">Нет уведомлений</div>';
+  }
+}
+
+// ── Рендер инстансов в дашборде ──
+function renderDashInstances(instances){
+  const c = document.getElementById('dashInstances');
+  if(!c) return;
+  const running = instances.filter(i=>i.status==='running'||i.status==='pending'||i.status==='stopping');
+  if(!running.length){
+    c.innerHTML = `<div style="padding:40px 20px;text-align:center">
+      <div style="font-size:32px;margin-bottom:12px">🖥️</div>
+      <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:6px">Нет активных инстансов</div>
+      <div style="font-size:12px;color:var(--text3)">Запустите GPU на главной странице</div>
+      <button onclick="goPage('pg-landing')" style="margin-top:16px;padding:10px 20px;border-radius:10px;border:none;background:var(--blue);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif">+ Запустить GPU</button>
+    </div>`;
+    return;
+  }
+
+  // Остановить старые таймеры
+  Object.values(instanceTimers).forEach(clearInterval);
+  instanceTimers = {};
+
+  c.innerHTML = running.map(inst => buildInstanceCard(inst)).join('');
+
+  // Запустить таймеры для каждого инстанса
+  running.forEach(inst => {
+    if(inst.seconds_left > 0){
+      instanceTimers['inst_'+inst.id] = setInterval(()=>{
+        const el = document.getElementById('iTimer_'+inst.id);
+        const bar = document.getElementById('iBar_'+inst.id);
+        if(!el){ clearInterval(instanceTimers['inst_'+inst.id]); return; }
+        // Уменьшаем локальный счётчик
+        inst.seconds_left = Math.max(0, inst.seconds_left - 1);
+        el.textContent = fmtTime(inst.seconds_left);
+        if(bar){
+          const total = inst.total_seconds || (24*3600);
+          const pct = (inst.seconds_left/total*100).toFixed(1);
+          bar.style.width = pct+'%';
+          bar.className = 'timer-bar '+(pct>40?'green':pct>15?'orange':'red');
+          el.className = 'timer-val'+(pct<=15?' urgent':'');
+        }
+        if(inst.seconds_left === 0) clearInterval(instanceTimers['inst_'+inst.id]);
+      }, 1000);
+    }
+  });
+}
+
+function buildInstanceCard(inst){
+  const statusClass = inst.status==='running'?'running':inst.status==='pending'?'pending':'stopped';
+  const statusLabel = inst.status==='running'?'Running':inst.status==='pending'?'Pending...':'Stopping';
+  const icon = inst.status==='pending'?'⏳':'🖥️';
+  const total = inst.total_seconds || (24*3600);
+  const left = inst.seconds_left || 0;
+  const pct = (left/total*100).toFixed(1);
+  const barClass = pct>40?'green':pct>15?'orange':'red';
+  const urgent = pct<=15?' urgent':'';
+  const costFmt = new Intl.NumberFormat('ru-RU').format(inst.cost_rub||0)+' ₽';
+  const expiresIn = fmtTime(left);
+
+  let accessHTML = '';
+  if(inst.ip_address){
+    const ssh = inst.ssh_command || ('ssh -p '+(inst.ssh_port||22)+' root@'+inst.ip_address);
+    accessHTML = `
+      <div class="access-details">
+        <div class="access-row">
+          <span class="access-key">IP адрес</span>
+          <span class="access-val">${inst.ip_address}</span>
+          <button class="access-copy" onclick="cp('${inst.ip_address}','IP скопирован')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+        </div>
+        <div class="access-row">
+          <span class="access-key">SSH</span>
+          <span class="access-val">${ssh}</span>
+          <button class="access-copy" onclick="cp('${ssh}','SSH скопирован')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+        </div>
+        ${inst.ssh_password?`<div class="access-row">
+          <span class="access-key">Пароль</span>
+          <span class="access-val secret">••••••••••••</span>
+          <button class="access-copy" onclick="cp('${inst.ssh_password}','Пароль скопирован')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+        </div>`:''}
+        ${inst.jupyter_url?`<div class="access-row">
+          <span class="access-key">Jupyter</span>
+          <span class="access-val" style="color:var(--blue)">${inst.jupyter_url}</span>
+          <button class="access-copy" onclick="cp('${inst.jupyter_url}','Ссылка скопирована')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+        </div>`:''}
+      </div>`;
+  } else {
+    accessHTML = `<div style="padding:10px 14px;margin-bottom:10px;border-radius:9px;background:rgba(255,159,10,.08);border:1px solid rgba(255,159,10,.15);font-size:11px;color:var(--orange)">⏳ Провизионирование сервера (~2-3 мин). Данные доступа появятся автоматически.</div>`;
+  }
+
+  const warningHTML = pct<=15 && left>0 ? `<div style="padding:8px 0 4px;font-size:10px;font-weight:600;color:var(--orange);display:flex;align-items:center;gap:6px;margin-bottom:8px">⚠️ Инстанс истекает менее чем через ${Math.ceil(left/3600)} ч — продлите аренду</div>` : '';
+
+  return `<div class="instance">
+    <div class="inst-header">
+      <div class="inst-icon">${icon}</div>
+      <div class="inst-info">
+        <div class="inst-name">${inst.gpu_name||inst.gpu_key||'GPU'} · ${inst.instance_name||'instance-'+inst.id}</div>
+        <div class="inst-spec">${inst.gpu_spec||inst.image_name||'Ubuntu 22.04'}</div>
+      </div>
+      <div class="inst-status">
+        <div class="status-dot ${statusClass}"></div>
+        <span class="status-text ${statusClass}">${statusLabel}</span>
+      </div>
+    </div>
+    ${left>0?`<div class="timer-row">
+      <div class="timer-left"><div class="timer-label">Осталось</div><div class="timer-val${urgent}" id="iTimer_${inst.id}">${expiresIn}</div></div>
+      <div class="timer-bar-wrap"><div class="timer-bar ${barClass}" id="iBar_${inst.id}" style="width:${pct}%"></div></div>
+      <div class="timer-cost"><div class="timer-cost-val">${costFmt}</div><div class="timer-cost-label">стоимость</div></div>
+    </div>`:''}
+    ${accessHTML}
+    ${warningHTML}
+    <div class="inst-actions">
+      ${inst.ip_address?`<button class="inst-btn primary" onclick="window.open('ssh://root@${inst.ip_address}','_blank');toast('SSH команда скопирована','🔗');cp('${inst.ssh_command||'ssh root@'+inst.ip_address}','SSH скопирован')">Подключиться</button>`:''}
+      <button class="inst-btn" onclick="extendInstance(${inst.id})">Продлить +1 день</button>
+      <button class="inst-btn danger" onclick="stopInstance(${inst.id})">Остановить</button>
+    </div>
+  </div>`;
+}
+
+// ── Рендер инстансов на странице "Мои инстансы" ──
+function renderInstancesPage(instances){
+  const c = document.getElementById('instances-container');
+  if(!c) return;
+  if(!instances.length){
+    c.innerHTML = '<div style="padding:30px;text-align:center;color:var(--text3)">Нет инстансов</div>';
+    return;
+  }
+  c.innerHTML = instances.map(inst => buildInstanceCard(inst)).join('');
+}
+
+// ── Рендер уведомлений в дашборде ──
+function renderDashNotifs(notifs){
+  const c = document.getElementById('dashNotifs');
+  if(!c) return;
+  const unread = notifs.filter(n=>!n.is_read).length;
+  const cnt = document.getElementById('notifCount');
+  if(cnt) cnt.textContent = unread ? unread+' новых' : '';
+  if(!notifs.length){
+    c.innerHTML = '<div style="padding:20px;color:var(--text3);font-size:12px;text-align:center">Нет уведомлений</div>';
+    return;
+  }
+  const icons = {success:'✅', warning:'⚠️', info:'💳', error:'🛑', launch:'🚀'};
+  c.innerHTML = notifs.slice(0,4).map(n=>`
+    <div class="notif-item ${n.is_read?'':'unread'}" onclick="markReadApi(this,${n.id})">
+      <div class="notif-ico" style="background:rgba(41,151,255,.08)">${icons[n.type]||'🔔'}</div>
+      <div class="notif-body">
+        <div class="notif-title">${n.title||''}</div>
+        <div class="notif-sub">${n.body||''}</div>
+        <div class="notif-time">${timeAgo(n.created_at)}</div>
+      </div>
+      ${n.is_read?'':'<div class="notif-unread-dot"></div>'}
+    </div>`).join('');
+}
+
+function timeAgo(ts){
+  const diff = (Date.now() - new Date(ts).getTime()) / 1000;
+  if(diff < 60) return 'Только что';
+  if(diff < 3600) return Math.floor(diff/60)+' мин назад';
+  if(diff < 86400) return Math.floor(diff/3600)+' ч назад';
+  return new Date(ts).toLocaleDateString('ru-RU');
+}
+
+// ── extendInstance ──
+async function extendInstance(id){
+  try{
+    showToast('Продление...','⏳');
+    await apiFetch('/api/gpu/instances/'+id+'/extend',{method:'POST',body:JSON.stringify({period:'day'})});
+    showToast('✅ Продлено на 24ч','✅');
+    loadDashboard();
+  }catch(e){showToast('Ошибка: '+e.message,'❌');}
 }
 
 function renderTransactions(txns){
@@ -1180,14 +1356,76 @@ function renderTransactions(txns){
   tbody.innerHTML=txns.map(t=>`<tr class="hist-tr"><td class="hist-td"><span class="hist-type ${t.type==='topup'?'topup':'spend'}">${tl[t.type]||t.type}</span></td><td class="hist-td">${t.description||'—'}</td><td class="hist-td" style="color:var(--text3)">${new Date(t.created_at).toLocaleDateString('ru-RU')}</td><td class="hist-td" style="text-align:right"><span class="hist-amount ${t.type==='topup'||t.type==='bonus'?'plus':'minus'}">${t.type==='topup'||t.type==='bonus'?'+':'−'}${new Intl.NumberFormat('ru-RU').format(t.amount_rub)} ₽</span></td></tr>`).join('');
 }
 
-function renderInstances(instances){
-  const c=document.getElementById('instances-container');if(!c)return;
-  const running=instances.filter(i=>i.status==='running'||i.status==='pending');
-  if(!running.length){c.innerHTML='<div style="padding:20px;color:var(--text3);font-size:13px">Нет активных инстансов</div>';return;}
-  c.innerHTML=running.map(inst=>`<div class="instance"><div class="inst-header"><div class="inst-icon">🖥️</div><div class="inst-info"><div class="inst-name">${inst.gpu_name||inst.gpu_key} · ${inst.instance_name||'instance'}</div><div class="inst-spec">${inst.image_name||'Ubuntu'}</div></div><div class="inst-status"><div class="status-dot ${inst.status==='running'?'running':'pending'}"></div><span class="status-text ${inst.status==='running'?'running':'pending'}">${inst.status==='running'?'Running':'Pending'}</span></div></div>${inst.ip_address?`<div class="access-details"><div class="access-row"><span class="access-key">IP адрес</span><span class="access-val">${inst.ip_address}</span><button class="access-copy" onclick="cp('${inst.ip_address}','IP скопирован')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>${inst.ssh_command?`<div class="access-row"><span class="access-key">SSH</span><span class="access-val">${inst.ssh_command}</span></div>`:''}</div>`:'<div style="padding:8px 12px;font-size:11px;color:var(--orange)">⏳ Получаем данные (~2 мин)...</div>'}<div class="inst-actions"><button class="inst-btn primary" onclick="toast(\'🔗 Подключение установлено\',\'✅\')">Подключиться</button><button class="inst-btn danger" onclick="stopInstance(${inst.id})">Остановить</button></div></div>`).join('');
-}
+// renderInstances заменён на renderDashInstances + renderInstancesPage
 
 async function stopInstance(id){if(!confirm('Остановить инстанс?'))return;try{showToast('Останавливаем...','⏳');await apiFetch('/api/gpu/instances/'+id,{method:'DELETE'});showToast('🛑 Инстанс остановлен','🛑');loadDashboard();}catch(e){showToast('Ошибка: '+e.message,'❌');}}
+
+/* ══ PAGE DATA LOADERS ══ */
+async function loadNotificationsPage(){
+  const c = document.getElementById('notificationsContainer');
+  if(!c) return;
+  try{
+    const notifs = await apiFetch('/api/billing/notifications');
+    if(!notifs.length){
+      c.innerHTML = '<div style="padding:30px;text-align:center;color:var(--text3)">Уведомлений нет</div>';
+      return;
+    }
+    const icons = {success:'✅',warning:'⚠️',info:'💳',error:'🛑',launch:'🚀'};
+    c.innerHTML = notifs.map(n=>`
+      <div class="notif-item ${n.is_read?'':'unread'}" onclick="markReadApi(this,${n.id})">
+        <div class="notif-ico" style="background:rgba(41,151,255,.08)">${icons[n.type]||'🔔'}</div>
+        <div class="notif-body">
+          <div class="notif-title">${n.title||''}</div>
+          <div class="notif-sub">${n.body||''}</div>
+          <div class="notif-time">${timeAgo(n.created_at)}</div>
+        </div>
+        ${n.is_read?'':'<div class="notif-unread-dot"></div>'}
+      </div>`).join('');
+  }catch(e){
+    c.innerHTML = '<div style="padding:20px;color:var(--text3);font-size:12px">Ошибка загрузки уведомлений</div>';
+  }
+}
+
+async function loadHistoryPage(){
+  const tbody = document.getElementById('txn-tbody');
+  if(!tbody) return;
+  try{
+    const txns = await apiFetch('/api/billing/transactions');
+    renderTransactions(txns);
+    // Также обновить страницу истории полным списком
+    const histBody = document.getElementById('hist-tbody-full');
+    if(histBody) renderTransactionsFull(txns, histBody);
+  }catch(e){ console.log('History:',e.message); }
+}
+
+/* ══ PROFILE ══ */
+async function saveProfile(){
+  const name = document.getElementById('settingsInputName')?.value?.trim();
+  const email = document.getElementById('settingsInputEmail')?.value?.trim();
+  if(!name||!email){toast('Заполните имя и email','⚠️');return;}
+  try{
+    const data = await apiFetch('/api/auth/profile',{method:'PUT',body:JSON.stringify({name,email})});
+    currentUser = {...currentUser, name, email};
+    localStorage.setItem('nodecloud_user', JSON.stringify(currentUser));
+    updateUIAfterLogin(currentUser);
+    toast('Профиль сохранён ✅','✅');
+  }catch(e){
+    // если эндпоинт ещё не готов — обновляем локально
+    currentUser = {...currentUser, name, email};
+    localStorage.setItem('nodecloud_user', JSON.stringify(currentUser));
+    updateUIAfterLogin(currentUser);
+    toast('Сохранено локально','✅');
+  }
+}
+
+async function markAllRead(){
+  try{
+    await apiFetch('/api/billing/notifications/read-all',{method:'PUT'});
+    document.querySelectorAll('.notif-item.unread').forEach(el=>el.classList.remove('unread'));
+    document.querySelectorAll('.notif-unread-dot').forEach(el=>el.style.opacity='0');
+    toast('Все прочитаны','✅');
+  }catch(e){ toast('Все прочитаны','✅'); }
+}
 
 /* ══ AUTH ══ */
 async function doUdLogin(){
@@ -1241,6 +1479,17 @@ async function doTopupReal(){
 }
 
 /* ══ AUTO-LOGIN ══ */
+// Автообновление данных каждые 30 секунд
+let dashRefreshTimer = null;
+function startDashRefresh(){
+  if(dashRefreshTimer) clearInterval(dashRefreshTimer);
+  dashRefreshTimer = setInterval(()=>{
+    if(currentUser && document.getElementById('pg-dash').classList.contains('active')){
+      loadDashboard();
+    }
+  }, 30000);
+}
+
 function tryAutoLogin(){
   const token=localStorage.getItem('nodecloud_token'),userStr=localStorage.getItem('nodecloud_user');
   if(token&&userStr){try{authToken=token;currentUser=JSON.parse(userStr);updateUIAfterLogin(currentUser);apiFetch('/api/auth/me').then(user=>{currentUser=user;updateUIAfterLogin(user);}).catch(()=>logout());}catch(e){logout();}}
