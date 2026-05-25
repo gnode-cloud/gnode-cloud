@@ -619,6 +619,10 @@ main{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:20px 24p
       <a class="sb-item" onclick="showPage('billing')"><span class="sb-item-icon">💳</span>Баланс и платежи</a>
       <a class="sb-item" onclick="showPage('history')"><span class="sb-item-icon">📋</span>История операций</a>
       <div class="sb-nav-section">Аккаунт</div>
+      <a class="sb-item" id="adminMenuItem" onclick="showPage('admin')" style="display:none">
+        <span class="sb-item-icon">👑</span>Админ панель
+        <span class="sb-badge" style="background:rgba(255,159,10,.15);color:var(--orange);border:1px solid rgba(255,159,10,.2)">ADMIN</span>
+      </a>
       <a class="sb-item" onclick="showPage('notifications')"><span class="sb-item-icon">🔔</span>Уведомления<span class="sb-badge">3</span></a>
       <a class="sb-item" onclick="showPage('settings')"><span class="sb-item-icon">⚙️</span>Настройки</a>
       <a class="sb-item" onclick="showPage('ssh')"><span class="sb-item-icon">🔑</span>SSH-ключи</a>
@@ -1069,11 +1073,12 @@ function showPage(name){
   const titles={dashboard:'Дашборд',notifications:'Уведомления',billing:'Баланс и платежи',settings:'Настройки',ssh:'SSH-ключи',instances:'Мои инстансы',marketplace:'GPU Marketplace',history:'История операций'};
   const tnEl=document.getElementById('topnavTitle');if(tnEl)tnEl.textContent=titles[name]||'Дашборд';
   document.querySelectorAll('.sb-item').forEach(el=>el.classList.remove('active'));
-  const map={dashboard:0,marketplace:1,instances:2,billing:3,history:4,notifications:5,settings:6,ssh:7};
+  const map={dashboard:0,marketplace:1,instances:2,billing:3,history:4,notifications:5,settings:6,ssh:7,admin:8};
   // Загружать данные при переключении страниц
   if(name==='notifications') loadNotificationsPage();
   if(name==='history') loadHistoryPage();
   if(name==='instances') { renderInstancesPage([]); loadDashboard(); }
+  if(name==='admin') loadAdminPage();
   const items=document.querySelectorAll('.sb-item');if(items[map[name]])items[map[name]].classList.add('active');
 }
 
@@ -1134,6 +1139,8 @@ function updateUIAfterLogin(user){
   const siName=document.getElementById('settingsInputName');if(siName)siName.value=user.name||'';
   const siEmail=document.getElementById('settingsInputEmail');if(siEmail)siEmail.value=user.email||'';
   loadDashboard();
+  // Показываем admin меню если владелец
+  showAdminMenu();
 }
 
 function logout(){
@@ -1396,6 +1403,204 @@ function renderTransactions(txns){
 // renderInstances заменён на renderDashInstances + renderInstancesPage
 
 async function stopInstance(id){if(!confirm('Остановить инстанс?'))return;try{showToast('Останавливаем...','⏳');await apiFetch('/api/gpu/instances/'+id,{method:'DELETE'});showToast('🛑 Инстанс остановлен','🛑');loadDashboard();}catch(e){showToast('Ошибка: '+e.message,'❌');}}
+
+/* ══ ADMIN PANEL ══ */
+
+// Email владельца — только он видит admin панель
+const ADMIN_EMAIL = ''; // оставь пустым — определяется по id=1 или первому пользователю
+
+function checkAdminAccess(user) {
+  // Админ = пользователь с id=1 (первый зарегистрированный = владелец)
+  return user && (user.id === 1 || user.id === 2); // id 1 и 2 — твои тестовые аккаунты
+}
+
+function showAdminMenu() {
+  const menu = document.getElementById('adminMenuItem');
+  if(menu && currentUser && checkAdminAccess(currentUser)) {
+    menu.style.display = 'flex';
+  }
+}
+
+async function loadAdminPage() {
+  if(!currentUser || !checkAdminAccess(currentUser)) {
+    showPage('dashboard');
+    return;
+  }
+
+  try {
+    // Загружаем все данные параллельно
+    const [users, instances, transactions] = await Promise.all([
+      apiFetch('/api/admin/users'),
+      apiFetch('/api/admin/instances'),
+      apiFetch('/api/admin/transactions')
+    ]);
+
+    renderAdminStats(users, instances, transactions);
+    renderAdminUsers(users);
+    renderAdminInstances(instances);
+    renderAdminTransactions(transactions);
+    renderAdminChart(users);
+  } catch(e) {
+    console.error('Admin load error:', e.message);
+    // Если нет admin endpoints — используем обычные данные
+    loadAdminFallback();
+  }
+}
+
+async function loadAdminFallback() {
+  // Fallback: показываем что можем из обычных endpoints
+  try {
+    const [balance, instances, txns] = await Promise.all([
+      apiFetch('/api/billing/balance'),
+      apiFetch('/api/gpu/instances'),
+      apiFetch('/api/billing/transactions')
+    ]);
+
+    // Stats
+    const statEl = (id, val) => { const e = document.getElementById(id); if(e) e.textContent = val; };
+    statEl('adRevenue', new Intl.NumberFormat('ru-RU').format(
+      txns.filter(t=>t.type==='spend').reduce((s,t)=>s+parseFloat(t.amount_rub),0)
+    ) + ' ₽');
+    statEl('adActiveInst', instances.filter(i=>i.status==='running'||i.status==='pending').length);
+    statEl('adTotalInst', instances.length);
+    statEl('adTopups', new Intl.NumberFormat('ru-RU').format(
+      txns.filter(t=>t.type==='topup').reduce((s,t)=>s+parseFloat(t.amount_rub),0)
+    ) + ' ₽');
+    statEl('adTopupCount', txns.filter(t=>t.type==='topup').length + ' шт');
+
+    // Instances
+    renderAdminInstances(instances);
+    renderAdminTransactions(txns);
+
+    // Users placeholder
+    const ul = document.getElementById('adUsersList');
+    if(ul) ul.innerHTML = '<div style="padding:16px;font-size:12px;color:var(--text3);text-align:center">Добавь /api/admin/users на бэкенд для полной статистики</div>';
+
+    document.getElementById('adTotalUsers').textContent = '—';
+    document.getElementById('adTodayUsers').textContent = 'нужен admin API';
+  } catch(e) {
+    console.error('Admin fallback error:', e.message);
+  }
+}
+
+function renderAdminStats(users, instances, transactions) {
+  const fmt = n => new Intl.NumberFormat('ru-RU').format(n);
+  const today = new Date().toDateString();
+
+  const todayUsers = users.filter(u => new Date(u.created_at).toDateString() === today).length;
+  const activeInst = instances.filter(i => i.status === 'running' || i.status === 'pending').length;
+  const revenue = transactions.filter(t=>t.type==='spend').reduce((s,t)=>s+parseFloat(t.amount_rub),0);
+  const topups  = transactions.filter(t=>t.type==='topup').reduce((s,t)=>s+parseFloat(t.amount_rub),0);
+  const topupCount = transactions.filter(t=>t.type==='topup').length;
+
+  const s = (id, v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
+  s('adTotalUsers', users.length);
+  s('adTodayUsers', `сегодня: +${todayUsers}`);
+  s('adRevenue', fmt(Math.round(revenue)) + ' ₽');
+  s('adRevenueMonth', `месяц: ${fmt(Math.round(revenue))} ₽`);
+  s('adActiveInst', activeInst);
+  s('adTotalInst', `всего запусков: ${instances.length}`);
+  s('adTopups', fmt(Math.round(topups)) + ' ₽');
+  s('adTopupCount', `транзакций: ${topupCount}`);
+  s('adUserCount', users.length + ' чел.');
+}
+
+function renderAdminUsers(users) {
+  const c = document.getElementById('adUsersList');
+  if(!c) return;
+  if(!users.length) { c.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text3)">Нет пользователей</div>'; return; }
+
+  c.innerHTML = users.slice(0,20).map(u => `
+    <div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid var(--border)">
+      <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#2997ff,#5e5ce6);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0">
+        ${(u.name||u.email).substring(0,2).toUpperCase()}
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:600;color:var(--text)">${u.name || '—'}</div>
+        <div style="font-size:10px;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${u.email}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:12px;font-weight:700;color:var(--green)">${new Intl.NumberFormat('ru-RU').format(parseFloat(u.balance||0))} ₽</div>
+        <div style="font-size:9px;color:var(--text3)">${timeAgo(u.created_at)}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderAdminInstances(instances) {
+  const c = document.getElementById('adInstancesList');
+  if(!c) return;
+  const active = instances.filter(i => i.status !== 'stopped');
+  if(!active.length) {
+    c.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text3);font-size:12px">Нет активных инстансов</div>';
+    return;
+  }
+  c.innerHTML = active.map(i => `
+    <div style="display:flex;align-items:center;gap:10px;padding:11px 18px;border-bottom:1px solid var(--border)">
+      <div class="status-dot ${i.status==='running'?'running':'pending'}" style="flex-shrink:0"></div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:600;color:var(--text)">${i.gpu_name||i.gpu_key}</div>
+        <div style="font-size:10px;color:var(--text3)">${i.instance_name||'—'} · user#${i.user_id}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:11px;font-weight:700;color:var(--orange)">${new Intl.NumberFormat('ru-RU').format(parseFloat(i.cost_rub||0))} ₽</div>
+        <div style="font-size:9px;color:var(--text3)">${i.ip_address||'pending...'}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderAdminTransactions(txns) {
+  const c = document.getElementById('adTxnsList');
+  if(!c) return;
+  const filtered = txns.filter(t => t.type !== 'topup_pending').slice(0,10);
+  if(!filtered.length) { c.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text3);font-size:12px">Нет транзакций</div>'; return; }
+
+  c.innerHTML = filtered.map(t => `
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border)">
+      <span style="font-size:14px">${t.type==='topup'?'💳':t.type==='bonus'?'🎁':t.type==='spend'?'⚡':'📋'}</span>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:11px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.description||t.type}</div>
+        <div style="font-size:10px;color:var(--text3)">${timeAgo(t.created_at)} · user#${t.user_id}</div>
+      </div>
+      <span style="font-size:12px;font-weight:700;${t.type==='topup'||t.type==='bonus'?'color:var(--green)':'color:var(--red)'};flex-shrink:0">
+        ${t.type==='topup'||t.type==='bonus'?'+':'−'}${new Intl.NumberFormat('ru-RU').format(parseFloat(t.amount_rub))} ₽
+      </span>
+    </div>`).join('');
+}
+
+function renderAdminChart(users) {
+  const chart = document.getElementById('adChart');
+  const labels = document.getElementById('adChartLabels');
+  if(!chart || !users.length) return;
+
+  // Группируем по дням (последние 14 дней)
+  const days = {};
+  for(let i = 13; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const key = d.toISOString().split('T')[0];
+    days[key] = 0;
+  }
+  users.forEach(u => {
+    const key = new Date(u.created_at).toISOString().split('T')[0];
+    if(days[key] !== undefined) days[key]++;
+  });
+
+  const vals = Object.values(days);
+  const max  = Math.max(...vals, 1);
+  const keys = Object.keys(days);
+
+  chart.innerHTML = vals.map((v, i) => `
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+      <div style="font-size:9px;color:var(--text3);font-weight:600">${v||''}</div>
+      <div style="width:100%;background:${v>0?'var(--blue)':'rgba(255,255,255,.06)'};border-radius:4px;height:${Math.max(4, Math.round(v/max*80))}px;transition:height .3s;min-height:4px"></div>
+    </div>`).join('');
+
+  labels.innerHTML = keys.map((k, i) => {
+    const d = new Date(k);
+    const show = i % 2 === 0;
+    return `<div style="flex:1;font-size:8px;color:var(--text3);text-align:center">${show ? (d.getDate()+'.'+String(d.getMonth()+1).padStart(2,'0')) : ''}</div>`;
+  }).join('');
+}
 
 /* ══ PAGE DATA LOADERS ══ */
 async function loadNotificationsPage(){
@@ -1696,12 +1901,38 @@ async function launchGpuReal(gpuKey, period, imageName, instanceName){
 }
 
 async function doTopupReal(){
-  if(!authToken){showToast('Войдите в аккаунт','⚠️');return;}
-  const v=parseInt(document.getElementById('topupAmount')?.value)||0;
-  if(v<100){showToast('Минимум 100 ₽','⚠️');return;}
-  showToast('Переход к оплате...','💳');
-  try{await apiFetch('/api/billing/topup',{method:'POST',body:JSON.stringify({amount:v,method:'card'})});const om=document.querySelector('.modal-bg.show');if(om)om.classList.remove('show');showToast('✅ Баланс пополнен на '+v.toLocaleString('ru')+' ₽','💰');loadDashboard();}
-  catch(e){showToast('Ошибка: '+e.message,'❌');}
+  if(!authToken){ showToast('Войдите в аккаунт','⚠️'); return; }
+  const v = parseInt(document.getElementById('topupAmount')?.value) || 0;
+  if(v < 100){ showToast('Минимум 100 ₽','⚠️'); return; }
+  showToast('Создаём платёж...','💳');
+  try{
+    const data = await apiFetch('/api/billing/topup/create', {
+      method: 'POST',
+      body: JSON.stringify({ amount: v })
+    });
+    if(data.payment_url){
+      const om = document.querySelector('.modal-bg.show');
+      if(om) om.classList.remove('show');
+      // Открываем страницу оплаты ЮКасса
+      window.open(data.payment_url, '_blank');
+      showToast('Переходим к оплате ЮКасса...','💳');
+      // Проверяем статус каждые 3 сек
+      const timer = setInterval(async () => {
+        try{
+          const s = await apiFetch('/api/billing/topup/check/' + data.payment_id);
+          if(s.paid || s.status === 'succeeded'){
+            clearInterval(timer);
+            showToast('✅ Баланс пополнен на ' + v.toLocaleString('ru') + ' ₽','💰');
+            loadDashboard();
+          } else if(s.status === 'canceled'){
+            clearInterval(timer);
+            showToast('Платёж отменён','❌');
+          }
+        } catch(e){}
+      }, 3000);
+      setTimeout(() => clearInterval(timer), 900000);
+    }
+  } catch(e){ showToast('Ошибка: ' + e.message,'❌'); }
 }
 
 /* ══ AUTO-LOGIN ══ */
@@ -1721,6 +1952,16 @@ function tryAutoLogin(){
   if(token&&userStr){try{authToken=token;currentUser=JSON.parse(userStr);updateUIAfterLogin(currentUser);apiFetch('/api/auth/me').then(user=>{currentUser=user;updateUIAfterLogin(user);}).catch(()=>logout());}catch(e){logout();}}
 }
 tryAutoLogin();
+
+// Обработка возврата после оплаты ЮКасса
+const urlParams = new URLSearchParams(window.location.search);
+if(urlParams.get('payment') === 'success'){
+  history.replaceState({}, '', window.location.pathname);
+  if(authToken){
+    showToast('Проверяем оплату...','💳');
+    setTimeout(()=>{ loadDashboard(); showToast('✅ Баланс обновлён','💰'); }, 2000);
+  }
+}
 </script>
 
 </body>
