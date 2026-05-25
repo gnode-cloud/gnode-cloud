@@ -1410,8 +1410,11 @@ async function stopInstance(id){if(!confirm('Остановить инстанс
 const ADMIN_EMAIL = ''; // оставь пустым — определяется по id=1 или первому пользователю
 
 function checkAdminAccess(user) {
-  // Админ = пользователь с id=1 (первый зарегистрированный = владелец)
-  return user && (user.id === 1 || user.id === 2); // id 1 и 2 — твои тестовые аккаунты
+  if (!user) return false;
+  // Админ = id 1 или твой email
+  const ADMIN_IDS    = [1, 2];
+  const ADMIN_EMAILS = ['mirlan.begaliev@mail.ru'];
+  return ADMIN_IDS.includes(user.id) || ADMIN_EMAILS.includes(user.email);
 }
 
 function showAdminMenu() {
