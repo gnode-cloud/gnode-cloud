@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
 
+# Sitemap location
 Sitemap: https://gnode.cloud/sitemap.xml
+
+# Block dashboard/auth pages from indexing (private pages)
+Disallow: /dashboard
+Disallow: /api/
