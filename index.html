@@ -1984,24 +1984,11 @@ async function doTopupReal(){
     if(data.payment_url){
       const om = document.querySelector('.modal-bg.show');
       if(om) om.classList.remove('show');
-      // Открываем страницу оплаты ЮКасса
+      // Открываем страницу оплаты CryptoCloud
       window.open(data.payment_url, '_blank');
-      showToast('Переходим к оплате ЮКасса...','💳');
-      // Проверяем статус каждые 3 сек
-      const timer = setInterval(async () => {
-        try{
-          const s = await apiFetch('/api/billing/topup/check/' + data.payment_id);
-          if(s.paid || s.status === 'succeeded'){
-            clearInterval(timer);
-            showToast('✅ Баланс пополнен на ' + v.toLocaleString('ru') + ' ₽','💰');
-            loadDashboard();
-          } else if(s.status === 'canceled'){
-            clearInterval(timer);
-            showToast('Платёж отменён','❌');
-          }
-        } catch(e){}
-      }, 3000);
-      setTimeout(() => clearInterval(timer), 900000);
+      showToast('Переходим к оплате криптовалютой...','💳');
+      const om2 = document.querySelector('.modal-bg.show');
+      if(om2) om2.classList.remove('show');
     }
   } catch(e){ showToast('Ошибка: ' + e.message,'❌'); }
 }
@@ -2024,7 +2011,7 @@ function tryAutoLogin(){
 }
 tryAutoLogin();
 
-// Обработка возврата после оплаты ЮКасса
+// Обработка возврата после оплаты CryptoCloud
 const urlParams = new URLSearchParams(window.location.search);
 if(urlParams.get('payment') === 'success'){
   history.replaceState({}, '', window.location.pathname);
