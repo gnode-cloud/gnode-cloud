@@ -816,6 +816,40 @@ main{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:20px 24p
       <div id="instances-container" class="card" style="padding:20px;color:var(--text3);font-size:13px">Загрузка инстансов...</div>
     </div>
 
+    <div id="page-admin" class="page" style="display:none">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+        <div style="font-size:28px">👑</div>
+        <div>
+          <div style="font-size:20px;font-weight:800">Админ панель</div>
+          <div style="font-size:12px;color:var(--text3)">NODE.CLOUD · только для владельца</div>
+        </div>
+        <button onclick="loadAdminPage()" style="margin-left:auto;padding:8px 16px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">🔄 Обновить</button>
+      </div>
+      <div class="stats-row" style="margin-bottom:20px">
+        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-label">Пользователей</div><div class="stat-val blue" id="adTotalUsers">—</div><div class="stat-sub" id="adTodayUsers">загрузка...</div></div>
+        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label">Выручка</div><div class="stat-val green" id="adRevenue">—</div><div class="stat-sub" id="adRevenueMonth">месяц: —</div></div>
+        <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-label">Активных GPU</div><div class="stat-val orange" id="adActiveInst">—</div><div class="stat-sub" id="adTotalInst">всего: —</div></div>
+        <div class="stat-card"><div class="stat-icon">💳</div><div class="stat-label">Пополнений</div><div class="stat-val" id="adTopups" style="color:var(--purple)">—</div><div class="stat-sub" id="adTopupCount">транзакций: —</div></div>
+      </div>
+      <div class="grid2">
+        <div>
+          <div class="sec-title">Пользователи <span id="adUserCount"></span></div>
+          <div class="card" id="adUsersList"><div style="padding:20px;text-align:center;color:var(--text3)">Загрузка...</div></div>
+        </div>
+        <div>
+          <div class="sec-title">Активные инстансы</div>
+          <div class="card" id="adInstancesList"><div style="padding:20px;text-align:center;color:var(--text3)">Загрузка...</div></div>
+          <div class="sec-title" style="margin-top:16px">Последние транзакции</div>
+          <div class="card" id="adTxnsList"><div style="padding:20px;text-align:center;color:var(--text3)">Загрузка...</div></div>
+        </div>
+      </div>
+      <div class="sec-title" style="margin-top:16px">Регистрации по дням (14 дней)</div>
+      <div class="card" style="padding:20px;margin-bottom:20px">
+        <div id="adChart" style="display:flex;align-items:flex-end;gap:6px;height:100px;padding:10px 0"></div>
+        <div id="adChartLabels" style="display:flex;gap:6px;margin-top:8px"></div>
+      </div>
+    </div>
+
   </div>
 </div>
 </div>
