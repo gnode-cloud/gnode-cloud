@@ -1392,7 +1392,35 @@ function showTelegramModal(){let modal=document.getElementById('telegramModal');
 function loadTelegramWidget(containerId,botUsername){const container=document.getElementById(containerId);if(!container)return;const script=document.createElement('script');script.src='https://telegram.org/js/telegram-widget.js?22';script.setAttribute('data-telegram-login',botUsername);script.setAttribute('data-size','large');script.setAttribute('data-radius','10');script.setAttribute('data-onauth','onTelegramAuth(user)');script.setAttribute('data-request-access','write');script.async=true;container.appendChild(script);}
 async function onTelegramAuth(tgUser){document.getElementById('telegramModal')?.remove();showToast('\u0410\u0432\u0442\u043e\u0440\u0438\u0437\u0430\u0446\u0438\u044f \u0447\u0435\u0440\u0435\u0437 Telegram...','\ud83d\udd04');try{const data=await apiFetch('/api/auth/telegram',{method:'POST',body:JSON.stringify(tgUser)});saveSession(data.token,data.user);closeUserDropdown();if(pendingLaunch){const pk=pendingLaunch;pendingLaunch=null;const period=cardPeriods[pk]||'day';const g=GPUS[lang][pk];setTimeout(()=>showLaunchConfirm(pk,g,period,{day:'1 \u0434\u0435\u043d\u044c',week:'1 \u043d\u0435\u0434\u0435\u043b\u044f',month:'1 \u043c\u0435\u0441\u044f\u0446'}[period],calcPrice(pk,period).final),400);}else{goPage('pg-dash');showPage('dashboard');showToast('\u0414\u043e\u0431\u0440\u043e \u043f\u043e\u0436\u0430\u043b\u043e\u0432\u0430\u0442\u044c!','\ud83d\udc4b');}}catch(e){showToast('\u041e\u0448\u0438\u0431\u043a\u0430: '+e.message,'\u274c');}}
 async function launchGpuReal(gpuKey,period,imageName,instanceName){if(!authToken){showToast('\u0412\u043e\u0439\u0434\u0438\u0442\u0435 \u0432 \u0430\u043a\u043a\u0430\u0443\u043d\u0442','\u26a0\ufe0f');return;}showToast('\u0417\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c '+gpuKey+'...','\ud83d\ude80');try{const data=await apiFetch('/api/gpu/launch',{method:'POST',body:JSON.stringify({gpuKey,period,imageName:imageName||'pytorch',instanceName:instanceName||gpuKey+'-'+Date.now()})});closeLaunchConfirm();showToast('\ud83d\ude80 GPU \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u0442\u0441\u044f! \u0414\u0430\u043d\u043d\u044b\u0435 \u0447\u0435\u0440\u0435\u0437 ~2-3 \u043c\u0438\u043d','\u26a1');goPage('pg-dash');showPage('dashboard');loadDashboard();setTimeout(loadDashboard,15000);setTimeout(loadDashboard,60000);}catch(e){closeLaunchConfirm();if(e.message&&e.message.toLowerCase().includes('balance')){showToast('\u041d\u0435\u0434\u043e\u0441\u0442\u0430\u0442\u043e\u0447\u043d\u043e \u0431\u0430\u043b\u0430\u043d\u0441\u0430 \ud83d\udcb3','\u26a0\ufe0f');goPage('pg-dash');showPage('billing');}else if(e.message&&e.message.toLowerCase().includes('available')){showToast('GPU \u0432\u0440\u0435\u043c\u0435\u043d\u043d\u043e \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u0435\u043d','\u26a0\ufe0f');}else{showToast('\u041e\u0448\u0438\u0431\u043a\u0430 \u0437\u0430\u043f\u0443\u0441\u043a\u0430: '+e.message,'\u274c');}}}
-async function doTopupReal(){if(!authToken){showToast('\u0412\u043e\u0439\u0434\u0438\u0442\u0435 \u0432 \u0430\u043a\u043a\u0430\u0443\u043d\u0442','\u26a0\ufe0f');return;}const v=parseInt(document.getElementById('topupAmount')?.value)||0;if(v<100){showToast('\u041c\u0438\u043d\u0438\u043c\u0443\u043c 100 \u20bd','\u26a0\ufe0f');return;}showToast('\u0421\u043e\u0437\u0434\u0430\u0451\u043c \u043f\u043b\u0430\u0442\u0451\u0436...','\ud83d\udcb3');try{const data=await apiFetch('/api/billing/topup/create',{method:'POST',body:JSON.stringify({amount:v})});if(data.payment_url){const om=document.querySelector('.modal-bg.show');if(om)om.classList.remove('show');window.open(data.payment_url,'_blank');showToast('\u041f\u0435\u0440\u0435\u0445\u043e\u0434\u0438\u043c \u043a \u043e\u043f\u043b\u0430\u0442\u0435...','\ud83d\udcb3');}}catch(e){showToast('\u041e\u0448\u0438\u0431\u043a\u0430: '+e.message,'\u274c');}}
+async function doTopupReal(){
+  if(!authToken){showToast('\u0412\u043e\u0439\u0434\u0438\u0442\u0435 \u0432 \u0430\u043a\u043a\u0430\u0443\u043d\u0442','\u26a0\ufe0f');return;}
+  const v=parseInt(document.getElementById('topupAmount')?.value)||0;
+  if(v<100){showToast('\u041c\u0438\u043d\u0438\u043c\u0443\u043c 100 \u20bd','\u26a0\ufe0f');return;}
+  showToast('\u0421\u043e\u0437\u0434\u0430\u0451\u043c \u043f\u043b\u0430\u0442\u0451\u0436...','\ud83d\udcb3');
+  let resp,data,rawText;
+  try{
+    resp=await fetch(API_BASE+'/api/billing/topup/create',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+authToken},body:JSON.stringify({amount:v})});
+  }catch(netErr){
+    showToast('\u0421\u0435\u0442\u044c \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u043d\u0430: '+netErr.message,'\u274c');
+    return;
+  }
+  try{rawText=await resp.text();}catch(e){rawText='';}
+  if(!resp.ok){
+    showToast('\u0421\u0435\u0440\u0432\u0435\u0440 '+resp.status+': '+(rawText||'').slice(0,80),'\u274c');
+    return;
+  }
+  try{data=JSON.parse(rawText);}catch(e){
+    showToast('\u041e\u0442\u0432\u0435\u0442 \u043d\u0435 JSON: '+(rawText||'').slice(0,80),'\u274c');
+    return;
+  }
+  if(data&&data.payment_url){
+    const om=document.querySelector('.modal-bg.show');if(om)om.classList.remove('show');
+    showToast('\u041f\u0435\u0440\u0435\u0445\u043e\u0434\u0438\u043c \u043a \u043e\u043f\u043b\u0430\u0442\u0435...','\ud83d\udcb3');
+    window.location.assign(data.payment_url);
+  }else{
+    showToast('\u0411\u044d\u043a \u043d\u0435 \u0432\u0435\u0440\u043d\u0443\u043b \u0441\u0441\u044b\u043b\u043a\u0443. \u041e\u0442\u0432\u0435\u0442: '+rawText.slice(0,80),'\u274c');
+  }
+}
 let dashRefreshTimer=null;
 function startDashRefresh(){if(dashRefreshTimer)clearInterval(dashRefreshTimer);dashRefreshTimer=setInterval(()=>{if(currentUser&&document.getElementById('pg-dash').classList.contains('active'))loadDashboard();},30000);}
 function tryAutoLogin(){const token=localStorage.getItem('nodecloud_token'),userStr=localStorage.getItem('nodecloud_user');if(token&&userStr){try{authToken=token;currentUser=JSON.parse(userStr);updateUIAfterLogin(currentUser);apiFetch('/api/auth/me').then(user=>{currentUser=user;updateUIAfterLogin(user);}).catch(()=>logout());}catch(e){logout();}}}
