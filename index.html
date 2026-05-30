@@ -1423,7 +1423,7 @@ async function doTopupReal(){
 }
 let dashRefreshTimer=null;
 function startDashRefresh(){if(dashRefreshTimer)clearInterval(dashRefreshTimer);dashRefreshTimer=setInterval(()=>{if(currentUser&&document.getElementById('pg-dash').classList.contains('active'))loadDashboard();},30000);}
-function tryAutoLogin(){const token=localStorage.getItem('nodecloud_token'),userStr=localStorage.getItem('nodecloud_user');if(token&&userStr){try{authToken=token;currentUser=JSON.parse(userStr);updateUIAfterLogin(currentUser);apiFetch('/api/auth/me').then(user=>{currentUser=user;updateUIAfterLogin(user);}).catch(()=>logout());}catch(e){logout();}}}
+function tryAutoLogin(){const token=localStorage.getItem('nodecloud_token'),userStr=localStorage.getItem('nodecloud_user');if(token&&userStr){try{authToken=token;currentUser=JSON.parse(userStr);updateUIAfterLogin(currentUser);apiFetch('/api/auth/me').then(user=>{currentUser=user;updateUIAfterLogin(user);showToast('ID: '+user.id+' \u00b7 admin: '+user.is_admin,'\ud83d\udd11');}).catch(()=>logout());}catch(e){logout();}}}
 function connectInstance(runpodId,ip,sshCmd){if(runpodId&&runpodId!=='undefined'&&runpodId!==''){window.open('https://'+runpodId+'-8888.proxy.runpod.net','_blank');showToast('\u041e\u0442\u043a\u0440\u044b\u0432\u0430\u0435\u043c Jupyter Lab...','\ud83d\ude80');}else if(ip){window.open('http://'+ip+':8888','_blank');}if(sshCmd&&sshCmd!=='undefined')cp(sshCmd,'SSH \u043a\u043e\u043c\u0430\u043d\u0434\u0430 \u0441\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u0430');}
 loadPricing();
 loadAvailability();
