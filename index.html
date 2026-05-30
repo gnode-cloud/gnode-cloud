@@ -384,7 +384,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
 .hist-amount{font-variant-numeric:tabular-nums;font-family:var(--mono);font-weight:600}
 .hist-amount.plus{color:var(--green)}.hist-amount.minus{color:var(--red)}
 @media(max-width:900px){.stats-row{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
-@media(max-width:640px){#pg-dash .sidebar{display:none}.stats-row{grid-template-columns:1fr 1fr}.page{padding:16px}}
+@media(max-width:640px){#pg-dash .sidebar{display:none}.stats-row{grid-template-columns:1fr 1fr}.page{padding:16px}.topnav-logo-text{display:none}.topnav{padding:0 16px}}
 
 /* ════ SIDEBAR (landing slide-out) ════ */
 .sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s}
@@ -889,7 +889,14 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
 
   <div class="main" id="mainArea">
     <div class="topnav">
-      <span class="topnav-title" id="topnavTitle">Дашборд</span>
+      <div style="display:flex;align-items:center;gap:12px;min-width:0">
+        <a onclick="goPage('pg-landing')" title="На главную" style="display:flex;align-items:center;gap:8px;cursor:pointer;text-decoration:none;flex-shrink:0">
+          <div class="sb-logo-icon" style="width:28px;height:28px;font-size:14px">G</div>
+          <span style="font-family:var(--disp);font-size:13px;font-weight:600;letter-spacing:.08em;color:var(--ink)" class="topnav-logo-text">NODE.CLOUD</span>
+        </a>
+        <span style="color:var(--ink-4)">/</span>
+        <span class="topnav-title" id="topnavTitle">Дашборд</span>
+      </div>
       <div class="topnav-right">
         <button class="notif-btn" onclick="showPage('notifications')">
           <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
