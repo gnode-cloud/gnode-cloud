@@ -585,10 +585,19 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
     <button class="sidebar-close" onclick="closeSidebar()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
   </div>
   <nav class="sidebar-nav">
-    <div class="sidebar-item active"><span class="sidebar-icon">⚡</span><span id="sNav1">GPU Marketplace</span></div>
-    <div class="sidebar-item" onclick="openEnterpriseModal()"><span class="sidebar-icon">🏢</span><span id="sNav2">Enterprise Clusters</span></div>
-    <div class="sidebar-item"><span class="sidebar-icon">📖</span><span id="sNav3">Documentation</span></div>
-    <div class="sidebar-item"><span class="sidebar-icon">💬</span><span id="sNav4">Support</span></div>
+    <div class="sidebar-item active" onclick="document.getElementById('marketplace').scrollIntoView({behavior:'smooth'});closeSidebar()"><span class="sidebar-icon">⚡</span><span data-i18n="sb.marketplace">GPU Marketplace</span></div>
+    <div class="sidebar-item" onclick="document.getElementById('marketplace').scrollIntoView({behavior:'smooth'});closeSidebar()"><span class="sidebar-icon">💰</span><span data-i18n="sb.pricing">Цены</span></div>
+    <div class="sidebar-item" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'});closeSidebar()"><span class="sidebar-icon">✨</span><span data-i18n="sb.features">Возможности</span></div>
+    <div class="sidebar-item" onclick="openEnterpriseModal();closeSidebar()"><span class="sidebar-icon">🏢</span><span data-i18n="sb.enterprise">Enterprise-кластеры</span></div>
+    <div class="sidebar-item" onclick="closeSidebar();openInfo('docs')"><span class="sidebar-icon">📖</span><span data-i18n="sb.docs">Документация</span></div>
+    <div class="sidebar-item" onclick="closeSidebar();openInfo('guides')"><span class="sidebar-icon">🎓</span><span data-i18n="sb.guides">Гайды</span></div>
+    <div class="sidebar-item" onclick="closeSidebar();openInfo('blog')"><span class="sidebar-icon">📰</span><span data-i18n="sb.blog">Блог</span></div>
+    <div class="sidebar-item" onclick="closeSidebar();openInfo('about')"><span class="sidebar-icon">🏠</span><span data-i18n="sb.about">О компании</span></div>
+    <div class="sidebar-item" onclick="closeSidebar();openInfo('partners')"><span class="sidebar-icon">🤝</span><span data-i18n="sb.partners">Партнёрам</span></div>
+    <div class="sidebar-item" onclick="closeSidebar();openInfo('status')"><span class="sidebar-icon">🟢</span><span data-i18n="sb.status">Статус систем</span></div>
+    <a class="sidebar-item" href="https://t.me/gnodecloud" target="_blank" rel="noopener" style="text-decoration:none;color:inherit" onclick="closeSidebar()"><span class="sidebar-icon">✈️</span><span data-i18n="sb.telegram">Telegram-канал</span></a>
+    <div class="sidebar-item" onclick="closeSidebar();if(currentUser){goPage('pg-dash');showPage('dashboard')}else{toggleUserDropdown()}"><span class="sidebar-icon">👤</span><span id="sbAccountLabel" data-i18n="sb.login">Войти</span></div>
+    <div class="sidebar-item" onclick="closeSidebar();openEnterpriseModal()"><span class="sidebar-icon">💬</span><span data-i18n="sb.support">Поддержка</span></div>
   </nav>
   <div class="sidebar-footer"><div class="sidebar-version">v4.2 · NODE.CLOUD</div></div>
 </aside>
@@ -627,11 +636,11 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
     <div class="nav-logo-icon">G</div><span class="nav-logo-text">NODE.CLOUD</span>
   </a>
   <div class="nav-center">
-    <a class="nav-cl" href="#marketplace">GPU</a>
-    <a class="nav-cl" href="#features">Платформа</a>
-    <a class="nav-cl" href="#" onclick="document.querySelector('.sidebar-item:nth-child(3)');return true">Документация</a>
-    <a class="nav-cl" href="#marketplace">Цены</a>
-    <a class="nav-cl" href="#" onclick="openEnterpriseModal();return false">Enterprise</a>
+    <a class="nav-cl" href="#marketplace" data-i18n="nav.gpu">GPU</a>
+    <a class="nav-cl" href="#features" data-i18n="nav.platform">Платформа</a>
+    <a class="nav-cl" href="#" onclick="document.querySelector('.sidebar-item:nth-child(3)');return true" data-i18n="nav.docs">Документация</a>
+    <a class="nav-cl" href="#marketplace" data-i18n="nav.pricing">Цены</a>
+    <a class="nav-cl" href="#" onclick="openEnterpriseModal();return false" data-i18n="nav.enterprise">Enterprise</a>
   </div>
   <div class="nav-right" id="landNavRight">
     <div class="lang-pill">
@@ -651,8 +660,8 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
     <h1 id="heroH1">Вычислительная мощь<br><span class="grad">по требованию.</span></h1>
     <p id="heroP">От RTX 4090 до Blackwell B300. Запуск инстанса за 2 минуты, самая лучшая тарификация на рынке.</p>
     <div class="hero-cta">
-      <button class="cbtn pri" onclick="document.getElementById('marketplace').scrollIntoView({behavior:'smooth'})">Запустить GPU →</button>
-      <button class="cbtn ghost" onclick="openEnterpriseModal()">Связаться с отделом продаж</button>
+      <button class="cbtn pri" onclick="document.getElementById('marketplace').scrollIntoView({behavior:'smooth'})" data-i18n="btn.launch_gpu">Запустить GPU →</button>
+      <button class="cbtn ghost" onclick="openEnterpriseModal()" data-i18n="btn.contact_sales">Связаться с отделом продаж</button>
     </div>
     <div class="trust reveal">
       <div class="trust-label" id="trustLabel">Доверяют команды, строящие на GPU</div>
@@ -665,7 +674,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
     <div class="metric"><div class="v g" id="m1v">99.9<small>%</small></div><div class="l" id="m1l">Аптайм инфраструктуры</div></div>
     <div class="metric"><div class="v">&lt;2<small>мин</small></div><div class="l" id="m2l">Время до запуска</div></div>
     <div class="metric"><div class="v">18<small>+</small></div><div class="l" id="m3l">Моделей GPU</div></div>
-    <div class="metric"><div class="v">3744<small>₽/сут</small></div><div class="l" id="m4l">Старт от</div></div>
+    <div class="metric"><div class="v">3744<small data-i18n="unit.rub_day">₽/сут</small></div><div class="l" id="m4l">Старт от</div></div>
   </section>
 
   <!-- MARKETPLACE -->
@@ -709,24 +718,24 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
       <p id="featHp">Всё, что нужно для обучения, инференса и рендеринга — в одном контуре.</p>
     </div>
     <div class="feats">
-      <div class="feat reveal"><div class="ic">⚡</div><h3>Запуск за 2 минуты</h3><p>Готовые образы PyTorch, CUDA и Jupyter. SSH-доступ и публичный IP сразу после провижининга.</p></div>
-      <div class="feat reveal"><div class="ic">🔒</div><h3>Данные в РФ</h3><p>Дата-центры на территории России. Соответствие 152-ФЗ. Изолированные сетевые контуры.</p></div>
-      <div class="feat reveal"><div class="ic">📊</div><h3>Самая лучшая тарификация на рынке</h3><p>Платите ровно за использованное время. Прозрачный биллинг, без скрытых платежей и абонплат.</p></div>
-      <div class="feat reveal"><div class="ic">🌐</div><h3>NVLink / InfiniBand</h3><p>Многоузловые кластеры до 8×B200 с высокоскоростным интерконнектом для распределённого обучения.</p></div>
-      <div class="feat reveal"><div class="ic">🛡️</div><h3>Приоритетная поддержка</h3><p>Выделенные мощности и поддержка 24/7 для команд с продакшн-нагрузками.</p></div>
-      <div class="feat reveal"><div class="ic">🔑</div><h3>API и автоматизация</h3><p>Полноценный REST API, SSH-ключи, программный запуск и остановка инстансов из CI/CD.</p></div>
+      <div class="feat reveal"><div class="ic">⚡</div><h3 data-i18n="feat.deploy.t">Запуск за 2 минуты</h3><p data-i18n="feat.deploy.d">Готовые образы PyTorch, CUDA и Jupyter. SSH-доступ и публичный IP сразу после провижининга.</p></div>
+      <div class="feat reveal"><div class="ic">🔒</div><h3 data-i18n="feat.data.t">Данные в РФ</h3><p data-i18n="feat.data.d">Дата-центры на территории России. Соответствие 152-ФЗ. Изолированные сетевые контуры.</p></div>
+      <div class="feat reveal"><div class="ic">📊</div><h3 data-i18n="feat.bill.t">Самая лучшая тарификация на рынке</h3><p data-i18n="feat.bill.d">Платите ровно за использованное время. Прозрачный биллинг, без скрытых платежей и абонплат.</p></div>
+      <div class="feat reveal"><div class="ic">🌐</div><h3 data-i18n="feat.nvlink.t">NVLink / InfiniBand</h3><p data-i18n="feat.nvlink.d">Многоузловые кластеры до 8×B200 с высокоскоростным интерконнектом для распределённого обучения.</p></div>
+      <div class="feat reveal"><div class="ic">🛡️</div><h3 data-i18n="feat.support.t">Приоритетная поддержка</h3><p data-i18n="feat.support.d">Выделенные мощности и поддержка 24/7 для команд с продакшн-нагрузками.</p></div>
+      <div class="feat reveal"><div class="ic">🔑</div><h3 data-i18n="feat.api.t">API и автоматизация</h3><p data-i18n="feat.api.d">Полноценный REST API, SSH-ключи, программный запуск и остановка инстансов из CI/CD.</p></div>
     </div>
   </section>
 
   <!-- TERMINAL -->
   <section class="term-sec">
     <div class="term-copy reveal">
-      <div class="section-label">Developer-first</div>
-      <h2>От команды до GPU за один шаг</h2>
-      <p>Поднимайте инстанс через интерфейс или API. Никакой настройки драйверов — окружение готово к работе.</p>
-      <div class="tick"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Предустановленные CUDA, cuDNN, PyTorch</div>
-      <div class="tick"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Jupyter Lab из коробки</div>
-      <div class="tick"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Постоянные тома и снапшоты</div>
+      <div class="section-label" data-i18n="dev.kicker">Developer-first</div>
+      <h2 data-i18n="dev.title">От команды до GPU за один шаг</h2>
+      <p data-i18n="dev.desc">Поднимайте инстанс через интерфейс или API. Никакой настройки драйверов — окружение готово к работе.</p>
+      <div class="tick"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span data-i18n="dev.li1">Предустановленные CUDA, cuDNN, PyTorch</span></div>
+      <div class="tick"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span data-i18n="dev.li2">Jupyter Lab из коробки</span></div>
+      <div class="tick"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span data-i18n="dev.li3">Постоянные тома и снапшоты</span></div>
     </div>
     <div class="term reveal">
       <div class="term-bar"><i></i><i></i><i></i><span class="ti">node@cloud — bash</span></div>
@@ -748,8 +757,8 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
     <h2 id="fctaH2">Запустите первый GPU<br>уже сегодня</h2>
     <p id="fctaP">Регистрация за минуту. Доступ к топовым GPU без долгих согласований.</p>
     <div class="hero-cta">
-      <button class="cbtn pri" onclick="toggleUserDropdown()">Создать аккаунт →</button>
-      <button class="cbtn ghost" onclick="openEnterpriseModal()">Связаться с продажами</button>
+      <button class="cbtn pri" onclick="toggleUserDropdown()" data-i18n="btn.create_acc">Создать аккаунт →</button>
+      <button class="cbtn ghost" onclick="openEnterpriseModal()" data-i18n="btn.contact_sales2">Связаться с продажами</button>
     </div>
   </section>
 </main>
@@ -759,40 +768,40 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
   <div class="foot-top">
     <div class="foot-brand">
       <a class="nav-logo" href="#" onclick="goPage('pg-landing');return false"><div class="nav-logo-icon">G</div><span class="nav-logo-text">NODE.CLOUD</span></a>
-      <p>GPU-инфраструктура корпоративного класса. Вычисления для AI, рендеринга и науки — на территории России.</p>
-      <div class="foot-status"><span class="d"></span>Все системы работают</div>
+      <p data-i18n="foot.brand">GPU-инфраструктура корпоративного класса. Вычисления для AI, рендеринга и науки — на территории России.</p>
+      <div class="foot-status"><span class="d"></span><span data-i18n="foot.allok">Все системы работают</span></div>
     </div>
     <div class="foot-col">
-      <h4>Продукт</h4>
+      <h4 data-i18n="foot.product">Продукт</h4>
       <a onclick="document.getElementById('marketplace').scrollIntoView({behavior:'smooth'})">GPU Marketplace</a>
-      <a onclick="openEnterpriseModal()">Enterprise-кластеры</a>
-      <a onclick="document.getElementById('marketplace').scrollIntoView({behavior:'smooth'})">Цены</a>
-      <a onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Возможности</a>
-      <a onclick="openInfo('status')">Статус систем <span class="ext">↗</span></a>
+      <a onclick="openEnterpriseModal()" data-i18n="foot.entclusters">Enterprise-кластеры</a>
+      <a onclick="document.getElementById('marketplace').scrollIntoView({behavior:'smooth'})" data-i18n="foot.prices">Цены</a>
+      <a onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})" data-i18n="foot.features">Возможности</a>
+      <a onclick="openInfo('status')"  data-i18n-html="foot.status_ext">Статус систем <span class="ext">↗</span></a>
     </div>
     <div class="foot-col">
-      <h4>Разработчикам</h4>
-      <a onclick="openInfo('docs')">Документация</a>
-      <a onclick="openInfo('api')">API Reference</a>
-      <a onclick="if(currentUser){openDash('ssh')}else{openInfo('ssh')}">SSH-ключи</a>
-      <a onclick="openInfo('cli')">CLI</a>
-      <a onclick="openInfo('guides')">Гайды</a>
+      <h4 data-i18n="foot.developers">Разработчикам</h4>
+      <a onclick="openInfo('docs')" data-i18n="foot.docs">Документация</a>
+      <a onclick="openInfo('api')" data-i18n="foot.api">API Reference</a>
+      <a onclick="if(currentUser){openDash('ssh')}else{openInfo('ssh')}" data-i18n="foot.ssh">SSH-ключи</a>
+      <a onclick="openInfo('cli')" data-i18n="foot.cli">CLI</a>
+      <a onclick="openInfo('guides')" data-i18n="foot.guides">Гайды</a>
     </div>
     <div class="foot-col">
-      <h4>Компания</h4>
-      <a onclick="openInfo('about')">О нас</a>
-      <a onclick="openInfo('blog')">Блог</a>
-      <a onclick="openInfo('careers')">Карьера</a>
-      <a onclick="openInfo('partners')">Партнёрам</a>
-      <a onclick="openEnterpriseModal()">Контакты</a>
+      <h4 data-i18n="foot.company">Компания</h4>
+      <a onclick="openInfo('about')" data-i18n="foot.about">О нас</a>
+      <a onclick="openInfo('blog')" data-i18n="foot.blog">Блог</a>
+      <a onclick="openInfo('careers')" data-i18n="foot.careers">Карьера</a>
+      <a onclick="openInfo('partners')" data-i18n="foot.partners">Партнёрам</a>
+      <a onclick="openEnterpriseModal()" data-i18n="foot.contacts">Контакты</a>
     </div>
     <div class="foot-col">
-      <h4>Правовое</h4>
-      <a onclick="openInfo('terms')">Условия использования</a>
-      <a onclick="openInfo('privacy')">Конфиденциальность</a>
-      <a onclick="openInfo('security')">Безопасность</a>
-      <a onclick="openInfo('sla')">SLA</a>
-      <a onclick="openInfo('pdn')">Обработка ПДн</a>
+      <h4 data-i18n="foot.legal">Правовое</h4>
+      <a onclick="openInfo('terms')" data-i18n="foot.terms">Условия использования</a>
+      <a onclick="openInfo('privacy')" data-i18n="foot.privacy">Конфиденциальность</a>
+      <a onclick="openInfo('security')" data-i18n="foot.security">Безопасность</a>
+      <a onclick="openInfo('sla')" data-i18n="foot.sla">SLA</a>
+      <a onclick="openInfo('pdn')" data-i18n="foot.pdn">Обработка ПДн</a>
     </div>
   </div>
   <div class="foot-bottom">
@@ -819,10 +828,10 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
 <!-- TOPUP MODAL -->
 <div class="modal-bg" id="topupModal">
   <div class="modal">
-    <div class="modal-hd"><span class="modal-hd-title">Пополнение баланса</span><button class="modal-close" onclick="closeModal('topupModal')">&times;</button></div>
+    <div class="modal-hd"><span class="modal-hd-title" data-i18n="pay.title">Пополнение баланса</span><button class="modal-close" onclick="closeModal('topupModal')">&times;</button></div>
     <div class="modal-body">
       <div class="modal-row">
-        <div class="modal-label">Способ оплаты</div>
+        <div class="modal-label" data-i18n="pay.method">Способ оплаты</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px">
           <button class="pay-method active" onclick="selPay(this)">💳 Карта</button>
           <button class="pay-method" onclick="selPay(this)">🏦 СБП</button>
@@ -831,7 +840,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
         </div>
       </div>
       <div class="modal-row">
-        <div class="modal-label">Сумма пополнения</div>
+        <div class="modal-label" data-i18n="pay.amount">Сумма пополнения</div>
         <div class="topup-amounts" style="margin-bottom:10px">
           <button class="amount-pill" onclick="setAmount(1000,this)">1 000 ₽</button>
           <button class="amount-pill active" onclick="setAmount(5000,this)">5 000 ₽</button>
@@ -842,7 +851,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
         </div>
         <div class="topup-input-row">
           <input class="modal-input" type="number" id="topupAmount" value="5000" placeholder="Введите сумму">
-          <button class="topup-submit" onclick="doTopup()">Оплатить</button>
+          <button class="topup-submit" onclick="doTopup()" data-i18n="pay.submit">Оплатить</button>
         </div>
       </div>
       <div style="font-size:10px;color:var(--text3);line-height:1.5">💡 Средства зачисляются мгновенно. При оплате картой комиссия 0%. НДС включён.</div>
@@ -867,16 +876,16 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
       <div class="sb-balance-val" id="sbBalVal">— ₽</div>
       <div class="sb-balance-sub" id="sbBalSub">Загрузка...</div>
     </div>
-    <button class="sb-top-btn" onclick="openModal('topupModal')">+ Пополнить баланс</button>
+    <button class="sb-top-btn" onclick="openModal('topupModal')"><span data-i18n="common.topup_balance">+ Пополнить баланс</span></button>
     <nav class="sb-nav">
-      <div class="sb-nav-section">Управление</div>
-      <a class="sb-item active" onclick="showPage('dashboard')"><span class="sb-item-icon">⚡</span>Дашборд<span class="sb-badge green">2</span></a>
-      <a class="sb-item" onclick="goPage('pg-landing')"><span class="sb-item-icon">🖥️</span>GPU Marketplace</a>
-      <a class="sb-item" onclick="showPage('instances')"><span class="sb-item-icon">🖧</span>Мои инстансы<span class="sb-badge green">2</span></a>
-      <div class="sb-nav-section">Финансы</div>
-      <a class="sb-item" onclick="showPage('billing')"><span class="sb-item-icon">💳</span>Баланс и платежи</a>
-      <a class="sb-item" onclick="showPage('history')"><span class="sb-item-icon">📋</span>История операций</a>
-      <div class="sb-nav-section">Аккаунт</div>
+      <div class="sb-nav-section" data-i18n="dash.nav.manage">Управление</div>
+      <a class="sb-item active" onclick="showPage('dashboard')"><span class="sb-item-icon">⚡</span><span data-i18n="dash.nav.dashboard">Дашборд</span><span class="sb-badge green">2</span></a>
+      <a class="sb-item" onclick="goPage('pg-landing')"><span class="sb-item-icon">🖥️</span><span data-i18n="dash.nav.marketplace">GPU Marketplace</span></a>
+      <a class="sb-item" onclick="showPage('instances')"><span class="sb-item-icon">🖧</span><span data-i18n="dash.nav.instances">Мои инстансы</span><span class="sb-badge green">2</span></a>
+      <div class="sb-nav-section" data-i18n="dash.nav.finance">Финансы</div>
+      <a class="sb-item" onclick="showPage('billing')"><span class="sb-item-icon">💳</span><span data-i18n="dash.nav.billing">Баланс и платежи</span></a>
+      <a class="sb-item" onclick="showPage('history')"><span class="sb-item-icon">📋</span><span data-i18n="dash.nav.history">История операций</span></a>
+      <div class="sb-nav-section" data-i18n="dash.nav.account">Аккаунт</div>
       <a class="sb-item" id="adminMenuItem" onclick="showPage('admin')" style="display:none">
         <span class="sb-item-icon">👑</span>Админ панель
         <span class="sb-badge" style="background:rgba(255,179,64,.15);color:var(--orange);border:1px solid rgba(255,179,64,.2)">ADMIN</span>
@@ -910,14 +919,14 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
     <!-- DASHBOARD PAGE -->
     <div id="page-dashboard" class="page">
       <div class="stats-row">
-        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label">Баланс</div><div class="stat-val green" id="statBal">— ₽</div><div class="stat-sub">Загрузка...</div></div>
-        <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-label">Активных GPU</div><div class="stat-val blue" id="statActiveGpu">—</div><div class="stat-sub" id="statActiveGpuSub">Загрузка...</div></div>
-        <div class="stat-card"><div class="stat-icon">🕒</div><div class="stat-label">Часов использовано</div><div class="stat-val" id="statHours" style="color:var(--text)">—</div><div class="stat-sub">За последние 30 дней</div></div>
-        <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-label">Потрачено</div><div class="stat-val orange" id="statSpent">— ₽</div><div class="stat-sub">За все время</div></div>
+        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label" data-i18n="st.balance">Баланс</div><div class="stat-val green" id="statBal">— ₽</div><div class="stat-sub">Загрузка...</div></div>
+        <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-label" data-i18n="st.active_gpu">Активных GPU</div><div class="stat-val blue" id="statActiveGpu">—</div><div class="stat-sub" id="statActiveGpuSub">Загрузка...</div></div>
+        <div class="stat-card"><div class="stat-icon">🕒</div><div class="stat-label" data-i18n="st.hours">Часов использовано</div><div class="stat-val" id="statHours" style="color:var(--text)">—</div><div class="stat-sub" data-i18n="st.hours_sub">За последние 30 дней</div></div>
+        <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-label" data-i18n="st.spent">Потрачено</div><div class="stat-val orange" id="statSpent">— ₽</div><div class="stat-sub" data-i18n="st.spent_sub">За все время</div></div>
       </div>
       <div class="grid2">
         <div>
-          <div class="sec-title">Активные инстансы <span id="activeCount">—</span></div>
+          <div class="sec-title"><span data-i18n="st.active_inst">Активные инстансы</span> <span id="activeCount">—</span></div>
           <div class="card" id="dashInstances">
             <div style="padding:32px 20px;text-align:center;color:var(--text3)">
               <div style="font-size:28px;margin-bottom:10px">⏳</div>
@@ -928,7 +937,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
         <div>
           <div class="sec-title">Баланс</div>
           <div class="balance-card">
-            <div class="bc-label">Доступно</div>
+            <div class="bc-label" data-i18n="st.available">Доступно</div>
             <div class="bc-val" id="dashBalVal">— ₽</div>
             <div class="bc-sub" id="dashBalSub">Загрузка...</div>
             <div class="bc-actions">
@@ -1058,7 +1067,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
       <div class="stats-row" style="margin-bottom:20px">
         <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-label">Пользователей</div><div class="stat-val blue" id="adTotalUsers">—</div><div class="stat-sub" id="adTodayUsers">загрузка...</div></div>
         <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label">Выручка</div><div class="stat-val green" id="adRevenue">—</div><div class="stat-sub" id="adRevenueMonth">месяц: —</div></div>
-        <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-label">Активных GPU</div><div class="stat-val orange" id="adActiveInst">—</div><div class="stat-sub" id="adTotalInst">всего: —</div></div>
+        <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-label" data-i18n="st.active_gpu">Активных GPU</div><div class="stat-val orange" id="adActiveInst">—</div><div class="stat-sub" id="adTotalInst">всего: —</div></div>
         <div class="stat-card"><div class="stat-icon">💳</div><div class="stat-label">Пополнений</div><div class="stat-val" id="adTopups" style="color:var(--purple)">—</div><div class="stat-sub" id="adTopupCount">транзакций: —</div></div>
       </div>
       <div class="grid2">
@@ -1136,7 +1145,7 @@ function showEmailForm(){document.getElementById('udMethods').style.display='non
 function hideEmailForm(){document.getElementById('udMethods').style.display='flex';document.getElementById('udEmailForm').classList.remove('show');document.getElementById('udErrMsg').style.display='none';}
 function setUdTab(tab){document.getElementById('udTabLogin').classList.toggle('on',tab==='login');document.getElementById('udTabReg').classList.toggle('on',tab==='reg');document.getElementById('udLoginFields').style.display=tab==='login'?'block':'none';document.getElementById('udRegFields').style.display=tab==='reg'?'block':'none';document.getElementById('udSubmitBtn').textContent=tab==='login'?'\u0412\u043e\u0439\u0442\u0438':'\u0421\u043e\u0437\u0434\u0430\u0442\u044c \u0430\u043a\u043a\u0430\u0443\u043d\u0442';document.getElementById('udSubmitBtn').onclick=tab==='login'?doUdLogin:doUdRegister;document.getElementById('udErrMsg').style.display='none';}
 function showUdErr(msg){const e=document.getElementById('udErrMsg');e.textContent=msg;e.style.display='block';}
-function injectUserBtn(){const navRight=document.getElementById('landNavRight');if(!navRight)return;const wrap=document.createElement('div');wrap.className='user-btn-wrap';wrap.innerHTML='<button class="user-btn" onclick="toggleUserDropdown()"><div class="user-btn-avatar" id="navBtnAvt">G</div><span id="navBtnTxt">\u0412\u043e\u0439\u0442\u0438</span><svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>';wrap.appendChild(document.getElementById('userDropdown'));navRight.appendChild(wrap);}
+function injectUserBtn(){const navRight=document.getElementById('landNavRight');if(!navRight)return;const wrap=document.createElement('div');wrap.className='user-btn-wrap';wrap.innerHTML='<button class="user-btn" onclick="toggleUserDropdown()"><div class="user-btn-avatar" id="navBtnAvt">G</div><span id="navBtnTxt" data-i18n="btn.login">\u0412\u043e\u0439\u0442\u0438</span><svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>';wrap.appendChild(document.getElementById('userDropdown'));navRight.appendChild(wrap);}
 const TG_USERNAME='gnodecloud';
 let lang='RU',selectedGpu=null,cardPeriods={};
 let rubRate=100;
@@ -1158,7 +1167,110 @@ const TIERS=[{id:'entry',keys:['l4','a40','rtx_3090']},{id:'mid',keys:['rtx_a600
 function setLang(l,btn){lang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');applyTranslations();render();}
 function setTxt(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
 function setHtml(id,v){const e=document.getElementById(id);if(e)e.innerHTML=v;}
+
+/* ══ СИСТЕМА ПЕРЕВОДОВ data-i18n ══
+   Как добавить новый язык: добавить ключ в I18N (напр. 'DE':{...}) с теми же ключами.
+   Как пометить элемент: <span data-i18n="ключ">текст</span> — текст подставится из словаря.
+   Для placeholder: data-i18n-placeholder="ключ". Для html: data-i18n-html="ключ". */
+const I18N = {
+  RU: {
+    'nav.gpu':'GPU','nav.platform':'Платформа','nav.docs':'Документация','nav.pricing':'Цены','nav.enterprise':'Enterprise',
+    'nav.login':'Войти',
+    'feat.deploy.t':'Запуск за 2 минуты','feat.deploy.d':'Готовые образы PyTorch, CUDA и Jupyter. SSH-доступ и публичный IP сразу после провижининга.',
+    'feat.data.t':'Данные в РФ','feat.data.d':'Дата-центры на территории России. Соответствие 152-ФЗ. Изолированные сетевые контуры.',
+    'feat.bill.t':'Самая лучшая тарификация на рынке','feat.bill.d':'Платите ровно за использованное время. Прозрачный биллинг, без скрытых платежей и абонплат.',
+    'feat.nvlink.t':'NVLink / InfiniBand','feat.nvlink.d':'Многоузловые кластеры до 8×B200 с высокоскоростным интерконнектом для распределённого обучения.',
+    'feat.support.t':'Приоритетная поддержка','feat.support.d':'Выделенные мощности и поддержка 24/7 для команд с продакшн-нагрузками.',
+    'feat.api.t':'API и автоматизация','feat.api.d':'Полноценный REST API, SSH-ключи, программный запуск и остановка инстансов из CI/CD.',
+    'foot.tagline':'GPU-инфраструктура для AI и ML. Запуск за минуты, оплата за реальное время.',
+    'foot.brand':'GPU-инфраструктура корпоративного класса. Вычисления для AI, рендеринга и науки — на территории России.',
+    'foot.allok':'Все системы работают',
+    'foot.gpumarket':'GPU Marketplace','foot.entclusters':'Enterprise-кластеры','foot.prices':'Цены','foot.features':'Возможности','foot.developers':'Разработчикам',
+    'foot.product':'Продукт','foot.company':'Компания','foot.legal':'Правовое',
+    'foot.docs':'Документация','foot.api':'API Reference','foot.ssh':'SSH-ключи','foot.cli':'CLI','foot.guides':'Гайды','foot.status':'Статус систем','foot.status_ext':'Статус систем <span class="ext">↗</span>',
+    'foot.about':'О нас','foot.blog':'Блог','foot.careers':'Карьера','foot.partners':'Партнёрам','foot.contacts':'Контакты',
+    'foot.terms':'Условия использования','foot.privacy':'Конфиденциальность','foot.security':'Безопасность','foot.sla':'SLA','foot.pdn':'Обработка ПДн',
+    'dash.nav.manage':'Управление','common.topup_balance':'+ Пополнить баланс','dash.nav.main':'Главная','dash.nav.dashboard':'Дашборд','dash.nav.notifications':'Уведомления','dash.nav.marketplace':'Маркетплейс','dash.nav.instances':'Мои инстансы',
+    'dash.nav.finance':'Финансы','dash.nav.billing':'Баланс и платежи','dash.nav.history':'История операций',
+    'dash.nav.account':'Аккаунт','dash.nav.settings':'Настройки','dash.nav.ssh':'SSH-ключи','dash.nav.admin':'Админ панель',
+    'common.topup':'Пополнить','common.history':'История','common.connect':'Подключиться','common.extend':'Продлить +1 день','common.stop':'Остановить',
+    'btn.launch_gpu':'Запустить GPU →','btn.contact_sales':'Связаться с отделом продаж','btn.create_acc':'Создать аккаунт →','btn.contact_sales2':'Связаться с продажами','btn.login':'Войти',
+    'unit.rub_day':'₽/сут',
+    'dev.kicker':'DEVELOPER-FIRST','dev.title':'От команды до GPU за один шаг','dev.desc':'Поднимайте инстанс через интерфейс или API. Никакой настройки драйверов — окружение готово к работе.',
+    'dev.li1':'Предустановленные CUDA, cuDNN, PyTorch','dev.li2':'Jupyter Lab из коробки','dev.li3':'Постоянные тома и снапшоты',
+    'sb.marketplace':'GPU Marketplace','sb.enterprise':'Enterprise-кластеры','sb.pricing':'Цены','sb.features':'Возможности','sb.docs':'Документация','sb.guides':'Гайды','sb.blog':'Блог','sb.about':'О компании','sb.partners':'Партнёрам','sb.status':'Статус систем','sb.telegram':'Telegram-канал','sb.account':'Личный кабинет','sb.login':'Войти','sb.support':'Поддержка',
+    'st.balance':'Баланс','st.active_gpu':'Активных GPU','st.hours':'Часов использовано','st.hours_sub':'За последние 30 дней','st.spent':'Потрачено','st.spent_sub':'За все время',
+    'st.active_inst':'Активные инстансы','st.available':'Доступно','st.loading':'Загрузка...',
+    'pay.title':'Пополнение баланса','pay.method':'Способ оплаты','pay.amount':'Сумма пополнения','pay.submit':'Оплатить',
+    'inst.left':'Осталось','inst.cost':'стоимость','inst.jpwd':'Пароль Jupyter','inst.provision':'Провизионирование сервера (~2-3 мин). Данные доступа появятся автоматически.',
+    'inst.copied_ip':'IP скопирован','inst.copied_ssh':'SSH скопирован','inst.copied_link':'Ссылка скопирована','inst.copied_pwd':'Пароль скопирован',
+    'tx.topup':'Пополнение','tx.spend':'Аренда','tx.bonus':'Бонус',
+    'toast.stop_confirm':'Остановить инстанс?','toast.stopping':'Останавливаем...','toast.stopped':'Инстанс остановлен',
+    'toast.error':'Ошибка','toast.bad_cmd':'Не понял команду','toast.bad_sum':'Неверная сумма',
+    'toast.balance':'Баланс','toast.blocked':'Заблокирован','toast.unblocked':'Разблокирован',
+    'toast.block_confirm':'Заблокировать пользователя? Он не сможет войти.',
+    'toast.extending':'Продлеваем аренду...','toast.extended':'Аренда продлена на 1 день',
+    'common.logout':'Выйти'
+  },
+  EN: {
+    'nav.gpu':'GPU','nav.platform':'Platform','nav.docs':'Docs','nav.pricing':'Pricing','nav.enterprise':'Enterprise',
+    'nav.login':'Sign in',
+    'feat.deploy.t':'Deploy in 2 minutes','feat.deploy.d':'Ready-made PyTorch, CUDA and Jupyter images. SSH access and public IP right after provisioning.',
+    'feat.data.t':'Data in Russia','feat.data.d':'Data centers located in Russia. 152-FZ compliance. Isolated network perimeters.',
+    'feat.bill.t':'Best billing on the market','feat.bill.d':'Pay only for the time you use. Transparent billing, no hidden fees or subscriptions.',
+    'feat.nvlink.t':'NVLink / InfiniBand','feat.nvlink.d':'Multi-node clusters up to 8×B200 with high-speed interconnect for distributed training.',
+    'feat.support.t':'Priority support','feat.support.d':'Dedicated capacity and 24/7 support for teams with production workloads.',
+    'feat.api.t':'API & automation','feat.api.d':'Full REST API, SSH keys, programmatic launch and stop of instances from CI/CD.',
+    'foot.tagline':'GPU infrastructure for AI and ML. Launch in minutes, pay for real usage.',
+    'foot.brand':'Enterprise-grade GPU infrastructure. Compute for AI, rendering and science — hosted in Russia.',
+    'foot.allok':'All systems operational',
+    'foot.gpumarket':'GPU Marketplace','foot.entclusters':'Enterprise clusters','foot.prices':'Pricing','foot.features':'Features','foot.developers':'Developers',
+    'foot.product':'Product','foot.company':'Company','foot.legal':'Legal',
+    'foot.docs':'Documentation','foot.api':'API Reference','foot.ssh':'SSH keys','foot.cli':'CLI','foot.guides':'Guides','foot.status':'System status','foot.status_ext':'System status <span class="ext">↗</span>',
+    'foot.about':'About','foot.blog':'Blog','foot.careers':'Careers','foot.partners':'Partners','foot.contacts':'Contacts',
+    'foot.terms':'Terms of Service','foot.privacy':'Privacy','foot.security':'Security','foot.sla':'SLA','foot.pdn':'Data processing',
+    'dash.nav.manage':'Management','common.topup_balance':'+ Top up balance','dash.nav.main':'Home','dash.nav.dashboard':'Dashboard','dash.nav.notifications':'Notifications','dash.nav.marketplace':'Marketplace','dash.nav.instances':'My instances',
+    'dash.nav.finance':'Finance','dash.nav.billing':'Balance & payments','dash.nav.history':'Transaction history',
+    'dash.nav.account':'Account','dash.nav.settings':'Settings','dash.nav.ssh':'SSH keys','dash.nav.admin':'Admin panel',
+    'common.topup':'Top up','common.history':'History','common.connect':'Connect','common.extend':'Extend +1 day','common.stop':'Stop',
+    'btn.launch_gpu':'Launch GPU →','btn.contact_sales':'Contact sales','btn.create_acc':'Create account →','btn.contact_sales2':'Contact sales','btn.login':'Sign in',
+    'unit.rub_day':'₽/day',
+    'dev.kicker':'DEVELOPER-FIRST','dev.title':'From team to GPU in one step','dev.desc':'Spin up an instance via UI or API. No driver setup — the environment is ready to go.',
+    'dev.li1':'Preinstalled CUDA, cuDNN, PyTorch','dev.li2':'Jupyter Lab out of the box','dev.li3':'Persistent volumes and snapshots',
+    'sb.marketplace':'GPU Marketplace','sb.enterprise':'Enterprise clusters','sb.pricing':'Pricing','sb.features':'Features','sb.docs':'Documentation','sb.guides':'Guides','sb.blog':'Blog','sb.about':'About','sb.partners':'Partners','sb.status':'System status','sb.telegram':'Telegram channel','sb.account':'Dashboard','sb.login':'Sign in','sb.support':'Support',
+    'st.balance':'Balance','st.active_gpu':'Active GPUs','st.hours':'Hours used','st.hours_sub':'Last 30 days','st.spent':'Spent','st.spent_sub':'All time',
+    'st.active_inst':'Active instances','st.available':'Available','st.loading':'Loading...',
+    'pay.title':'Top up balance','pay.method':'Payment method','pay.amount':'Top-up amount','pay.submit':'Pay',
+    'inst.left':'Remaining','inst.cost':'cost','inst.jpwd':'Jupyter password','inst.provision':'Provisioning server (~2-3 min). Access details will appear automatically.',
+    'inst.copied_ip':'IP copied','inst.copied_ssh':'SSH copied','inst.copied_link':'Link copied','inst.copied_pwd':'Password copied',
+    'tx.topup':'Top-up','tx.spend':'Rental','tx.bonus':'Bonus',
+    'toast.stop_confirm':'Stop instance?','toast.stopping':'Stopping...','toast.stopped':'Instance stopped',
+    'toast.error':'Error','toast.bad_cmd':'Command not recognized','toast.bad_sum':'Invalid amount',
+    'toast.balance':'Balance','toast.blocked':'Blocked','toast.unblocked':'Unblocked',
+    'toast.block_confirm':'Block this user? They will not be able to sign in.',
+    'toast.extending':'Extending rental...','toast.extended':'Rental extended by 1 day',
+    'common.logout':'Sign out'
+  }
+};
+function applyI18n(){
+  const dict=I18N[lang]||I18N.RU;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(dict[k]!=null) el.textContent=dict[k];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{
+    const k=el.getAttribute('data-i18n-html');
+    if(dict[k]!=null) el.innerHTML=dict[k];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+    const k=el.getAttribute('data-i18n-placeholder');
+    if(dict[k]!=null) el.placeholder=dict[k];
+  });
+}
+function i18n(key){return (I18N[lang]&&I18N[lang][key])||(I18N.RU[key])||key;}
+
 function applyTranslations(){
+  applyI18n();
   const t=T[lang];
   setHtml('heroEyebrow',t.eyebrow+' <span class="tag">RU REGION</span>');
   setHtml('heroH1',t.h1);
@@ -1171,7 +1283,6 @@ function applyTranslations(){
   setTxt('entDesc',t.entDesc);
   setTxt('entTerm',t.entTerm);setTxt('entNet',t.entNet);setTxt('entConfig',t.entConfig);
   setTxt('entBtn',t.entBtn);
-  t.sNav.forEach((s,i)=>setTxt('sNav'+(i+1),s));
   if(lang==='EN'){
     setTxt('gpuKicker','GPU Marketplace');setTxt('gpuH2','Choose your configuration');setTxt('gpuHp','On-demand access to any GPU class. Flexible billing, instant deploy.');
     setTxt('featKicker','Platform');setTxt('featH2','Built for serious workloads');setTxt('featHp','Everything you need for training, inference and rendering \u2014 in one place.');
@@ -1335,7 +1446,7 @@ function closeSidebar(){document.getElementById('sidebar').classList.remove('sho
 applyTranslations();render();
 function fmtTime(s){return`${Math.floor(s/3600).toString().padStart(2,'0')}:${Math.floor((s%3600)/60).toString().padStart(2,'0')}:${(s%60).toString().padStart(2,'0')}`;}
 const pages=['dashboard','notifications','billing','settings','ssh','instances','marketplace','history'];
-function showPage(name){pages.forEach(p=>{const el=document.getElementById('page-'+p);if(el)el.style.display='none';});const adminEl=document.getElementById('page-admin');if(adminEl)adminEl.style.display='none';const target=document.getElementById('page-'+name)||document.getElementById('page-dashboard');if(target)target.style.display='block';const titles={dashboard:'\u0414\u0430\u0448\u0431\u043e\u0440\u0434',notifications:'\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f',billing:'\u0411\u0430\u043b\u0430\u043d\u0441 \u0438 \u043f\u043b\u0430\u0442\u0435\u0436\u0438',settings:'\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438',ssh:'SSH-\u043a\u043b\u044e\u0447\u0438',instances:'\u041c\u043e\u0438 \u0438\u043d\u0441\u0442\u0430\u043d\u0441\u044b',marketplace:'GPU Marketplace',history:'\u0418\u0441\u0442\u043e\u0440\u0438\u044f \u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0439',admin:'\u0410\u0434\u043c\u0438\u043d \u043f\u0430\u043d\u0435\u043b\u044c'};const tnEl=document.getElementById('topnavTitle');if(tnEl)tnEl.textContent=titles[name]||'\u0414\u0430\u0448\u0431\u043e\u0440\u0434';document.querySelectorAll('.sb-item').forEach(el=>el.classList.remove('active'));const map={dashboard:0,marketplace:1,instances:2,billing:3,history:4,notifications:5,settings:6,ssh:7,admin:8};if(name==='notifications')loadNotificationsPage();if(name==='history')loadHistoryPage();if(name==='instances'){renderInstancesPage([]);loadDashboard();}if(name==='admin')loadAdminPage();const items=document.querySelectorAll('.sb-item');if(items[map[name]])items[map[name]].classList.add('active');}
+function showPage(name){pages.forEach(p=>{const el=document.getElementById('page-'+p);if(el)el.style.display='none';});const adminEl=document.getElementById('page-admin');if(adminEl)adminEl.style.display='none';const target=document.getElementById('page-'+name)||document.getElementById('page-dashboard');if(target)target.style.display='block';const titles={dashboard:i18n('dash.nav.dashboard'),notifications:i18n('dash.nav.notifications'),billing:i18n('dash.nav.billing'),settings:i18n('dash.nav.settings'),ssh:i18n('dash.nav.ssh'),instances:i18n('dash.nav.instances'),marketplace:i18n('dash.nav.marketplace'),history:i18n('dash.nav.history'),admin:i18n('dash.nav.admin')};const tnEl=document.getElementById('topnavTitle');if(tnEl)tnEl.textContent=titles[name]||'\u0414\u0430\u0448\u0431\u043e\u0440\u0434';document.querySelectorAll('.sb-item').forEach(el=>el.classList.remove('active'));const map={dashboard:0,marketplace:1,instances:2,billing:3,history:4,notifications:5,settings:6,ssh:7,admin:8};if(name==='notifications')loadNotificationsPage();if(name==='history')loadHistoryPage();if(name==='instances'){renderInstancesPage([]);loadDashboard();}if(name==='admin')loadAdminPage();const items=document.querySelectorAll('.sb-item');if(items[map[name]])items[map[name]].classList.add('active');}
 function openModal(id){document.getElementById(id).classList.add('show');}
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 document.querySelectorAll('.modal-bg').forEach(bg=>bg.addEventListener('click',e=>{if(e.target===bg)bg.classList.remove('show');}));
@@ -1349,8 +1460,8 @@ const API_BASE='https://gnode-cloud-backend-production.up.railway.app';
 let currentUser=null,authToken=localStorage.getItem('nodecloud_token')||null;
 async function apiFetch(path,options={}){const headers={'Content-Type':'application/json',...(options.headers||{})};if(authToken)headers['Authorization']='Bearer '+authToken;const res=await fetch(API_BASE+path,{...options,headers});const data=await res.json();if(!res.ok)throw new Error(data.error||'\u041e\u0448\u0438\u0431\u043a\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0430');return data;}
 function saveSession(token,user){authToken=token;currentUser=user;localStorage.setItem('nodecloud_token',token);localStorage.setItem('nodecloud_user',JSON.stringify(user));updateUIAfterLogin(user);startDashRefresh();}
-function updateUIAfterLogin(user){const name_=user.name||user.email.split('@')[0];const initials=name_.substring(0,2).toUpperCase();setTxt('udUserAvatar',initials);setTxt('udUserName',name_);setTxt('udUserEmail',user.email);setTxt('sbAvt',initials);setTxt('sbName',name_);setTxt('sbEmail',user.email);setTxt('topAvt',initials);setTxt('navBtnTxt',name_);setTxt('navBtnAvt',initials);setTxt('settingsAvt',initials);setTxt('settingsName',name_);setTxt('settingsEmail',user.email+' \u00b7 \u0423\u0447\u0430\u0441\u0442\u043d\u0438\u043a');const siName=document.getElementById('settingsInputName');if(siName)siName.value=user.name||'';const siEmail=document.getElementById('settingsInputEmail');if(siEmail)siEmail.value=user.email||'';loadDashboard();showAdminMenu();}
-function logout(){authToken=null;currentUser=null;localStorage.removeItem('nodecloud_token');localStorage.removeItem('nodecloud_user');const gp=document.getElementById('udGuestPanel');const up=document.getElementById('udUserPanel');if(gp)gp.style.display='block';if(up)up.style.display='none';setTxt('navBtnTxt','\u0412\u043e\u0439\u0442\u0438');setTxt('navBtnAvt','G');closeUserDropdown();goPage('pg-landing');showToast('\u0414\u043e \u0441\u0432\u0438\u0434\u0430\u043d\u0438\u044f!','\ud83d\udc4b');}
+function updateUIAfterLogin(user){const name_=user.name||user.email.split('@')[0];const initials=name_.substring(0,2).toUpperCase();setTxt('udUserAvatar',initials);setTxt('udUserName',name_);setTxt('udUserEmail',user.email);setTxt('sbAvt',initials);setTxt('sbName',name_);setTxt('sbEmail',user.email);setTxt('topAvt',initials);setTxt('navBtnTxt',name_);(function(){var b=document.getElementById('navBtnTxt');if(b)b.removeAttribute('data-i18n');})();(function(){var a=document.getElementById('sbAccountLabel');if(a){a.setAttribute('data-i18n','sb.account');a.textContent=i18n('sb.account');}})();setTxt('navBtnAvt',initials);setTxt('settingsAvt',initials);setTxt('settingsName',name_);setTxt('settingsEmail',user.email+' \u00b7 \u0423\u0447\u0430\u0441\u0442\u043d\u0438\u043a');const siName=document.getElementById('settingsInputName');if(siName)siName.value=user.name||'';const siEmail=document.getElementById('settingsInputEmail');if(siEmail)siEmail.value=user.email||'';loadDashboard();showAdminMenu();}
+function logout(){authToken=null;currentUser=null;localStorage.removeItem('nodecloud_token');localStorage.removeItem('nodecloud_user');const gp=document.getElementById('udGuestPanel');const up=document.getElementById('udUserPanel');if(gp)gp.style.display='block';if(up)up.style.display='none';(function(){var b=document.getElementById('navBtnTxt');if(b){b.setAttribute('data-i18n','btn.login');b.textContent=i18n('btn.login');}})();(function(){var a=document.getElementById('sbAccountLabel');if(a){a.setAttribute('data-i18n','sb.login');a.textContent=i18n('sb.login');}})();setTxt('navBtnAvt','G');closeUserDropdown();goPage('pg-landing');showToast('\u0414\u043e \u0441\u0432\u0438\u0434\u0430\u043d\u0438\u044f!','\ud83d\udc4b');}
 let instanceTimers={};
 async function loadPricing(){try{const p=await apiFetch('/api/gpu/pricing');if(p&&p.rubRate)rubRate=p.rubRate;if(p&&p.hourly)Object.assign(hourlyUSD,p.hourly);render();}catch(e){console.warn('pricing fallback',e.message);}}
 async function loadAvailability(){try{gpuAvail=await apiFetch('/api/gpu/availability');document.querySelectorAll('.gpu-card').forEach(card=>{const key=card.id.replace('card-','');const raw=gpuAvail[key];const dot=card.querySelector('.gpu-status');const badge=card.querySelector('#avail-'+key);let count=null,st='unknown';if(typeof raw==='number'){count=raw;st=raw>3?'high':raw>0?'low':'none';}else if(raw&&typeof raw==='object'){count=(raw.count!=null?raw.count:raw.available);st=raw.status||(count>3?'high':count>0?'low':'none');}else if(typeof raw==='string'){st=raw;}let col='rgba(255,255,255,.14)',txt='',tcol='var(--ink-3)';if(st==='high'){col='var(--green)';tcol='var(--green)';txt=count!=null?('\u25cf '+count+' \u0441\u0432\u043e\u0431\u043e\u0434\u043d\u043e'):'\u25cf \u0412 \u043d\u0430\u043b\u0438\u0447\u0438\u0438';}else if(st==='low'){col='var(--orange)';tcol='var(--orange)';txt=count!=null?('\u25cf '+count+' \u0441\u0432\u043e\u0431\u043e\u0434\u043d\u043e'):'\u25cf \u041c\u0430\u043b\u043e';}else if(st==='none'){col='var(--red)';tcol='var(--red)';txt='\u25cf \u041d\u0435\u0442 \u0432 \u043d\u0430\u043b\u0438\u0447\u0438\u0438';}if(dot&&!card.classList.contains('selected'))dot.style.background=col;if(badge){badge.textContent=txt;badge.style.color=tcol;}});}catch(e){}}
@@ -1361,22 +1472,22 @@ async function loadDashboard(){
   try{const notifs=await apiFetch('/api/billing/notifications?limit=4');renderDashNotifs(notifs);}catch(e){const el=document.getElementById('dashNotifs');if(el)el.innerHTML='<div style="padding:20px;color:var(--text3);font-size:12px;text-align:center">\u041d\u0435\u0442 \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u0439</div>';}
 }
 function renderDashInstances(instances){const c=document.getElementById('dashInstances');if(!c)return;const running=instances.filter(i=>i.status==='running'||i.status==='pending'||i.status==='stopping');if(!running.length){c.innerHTML=`<div style="padding:40px 20px;text-align:center"><div style="font-size:32px;margin-bottom:12px">\ud83d\udda5\ufe0f</div><div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:6px">\u041d\u0435\u0442 \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0438\u043d\u0441\u0442\u0430\u043d\u0441\u043e\u0432</div><div style="font-size:12px;color:var(--text3)">\u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u0435 GPU \u043d\u0430 \u0433\u043b\u0430\u0432\u043d\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435</div><button onclick="goPage('pg-landing')" style="margin-top:16px;padding:10px 20px;border-radius:10px;border:1px solid rgba(118,179,255,.35);background:linear-gradient(180deg,rgba(118,179,255,.18),rgba(94,139,255,.1));color:#dceaff;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--body)">+ \u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u044c GPU</button></div>`;return;}Object.values(instanceTimers).forEach(clearInterval);instanceTimers={};c.innerHTML=running.map(inst=>buildInstanceCard(inst)).join('');running.forEach(inst=>{if(inst.seconds_left>0){instanceTimers['inst_'+inst.id]=setInterval(()=>{const el=document.getElementById('iTimer_'+inst.id);const bar=document.getElementById('iBar_'+inst.id);if(!el){clearInterval(instanceTimers['inst_'+inst.id]);return;}inst.seconds_left=Math.max(0,inst.seconds_left-1);el.textContent=fmtTime(inst.seconds_left);if(bar){const total=inst.total_seconds||(24*3600);const pct=(inst.seconds_left/total*100).toFixed(1);bar.style.width=pct+'%';bar.className='timer-bar '+(pct>40?'green':pct>15?'orange':'red');el.className='timer-val'+(pct<=15?' urgent':'');}if(inst.seconds_left===0)clearInterval(instanceTimers['inst_'+inst.id]);},1000);}});}
-function buildInstanceCard(inst){const statusClass=inst.status==='running'?'running':inst.status==='pending'?'pending':'stopped';const statusLabel=inst.status==='running'?'Running':inst.status==='pending'?'Pending...':'Stopping';const icon=inst.status==='pending'?'\u23f3':'\ud83d\udda5\ufe0f';const total=inst.total_seconds||(24*3600);const left=inst.seconds_left||0;const pct=(left/total*100).toFixed(1);const barClass=pct>40?'green':pct>15?'orange':'red';const urgent=pct<=15?' urgent':'';const costFmt=new Intl.NumberFormat('ru-RU').format(inst.cost_rub||0)+' \u20bd';const expiresIn=fmtTime(left);let accessHTML='';if(inst.ip_address){const ssh=inst.ssh_command||('ssh -p '+(inst.ssh_port||22)+' root@'+inst.ip_address);accessHTML=`<div class="access-details"><div class="access-row"><span class="access-key">IP \u0430\u0434\u0440\u0435\u0441</span><span class="access-val">${esc(inst.ip_address)}</span><button class="access-copy" onclick="cp('${inst.ip_address}','IP \u0441\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div><div class="access-row"><span class="access-key">SSH</span><span class="access-val">${esc(ssh)}</span><button class="access-copy" onclick="cp('${ssh}','SSH \u0441\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>${inst.jupyter_url?`<div class="access-row"><span class="access-key">Jupyter</span><span class="access-val" style="color:var(--blue)">${esc(inst.jupyter_url)}</span><button class="access-copy" onclick="cp('${inst.jupyter_url}','\u0421\u0441\u044b\u043b\u043a\u0430 \u0441\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u0430')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>`:''}${inst.jupyter_password?`<div class="access-row"><span class="access-key">Пароль Jupyter</span><span class="access-val" style="color:var(--green);font-family:var(--mono)">${esc(inst.jupyter_password)}</span><button class="access-copy" onclick="cp('${inst.jupyter_password}','Пароль скопирован')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>`:''}</div>`;}else{accessHTML=`<div style="padding:10px 14px;margin-bottom:10px;border-radius:9px;background:rgba(255,179,64,.08);border:1px solid rgba(255,179,64,.15);font-size:11px;color:var(--orange)">\u23f3 \u041f\u0440\u043e\u0432\u0438\u0437\u0438\u043e\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435 \u0441\u0435\u0440\u0432\u0435\u0440\u0430 (~2-3 \u043c\u0438\u043d). \u0414\u0430\u043d\u043d\u044b\u0435 \u0434\u043e\u0441\u0442\u0443\u043f\u0430 \u043f\u043e\u044f\u0432\u044f\u0442\u0441\u044f \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438.</div>`;}const warningHTML=pct<=15&&left>0?`<div style="padding:8px 0 4px;font-size:10px;font-weight:600;color:var(--orange);display:flex;align-items:center;gap:6px;margin-bottom:8px">\u26a0\ufe0f \u0418\u043d\u0441\u0442\u0430\u043d\u0441 \u0438\u0441\u0442\u0435\u043a\u0430\u0435\u0442 \u043c\u0435\u043d\u0435\u0435 \u0447\u0435\u043c \u0447\u0435\u0440\u0435\u0437 ${Math.ceil(left/3600)} \u0447 \u2014 \u043f\u0440\u043e\u0434\u043b\u0438\u0442\u0435 \u0430\u0440\u0435\u043d\u0434\u0443</div>`:'';return`<div class="instance"><div class="inst-header"><div class="inst-icon">${icon}</div><div class="inst-info"><div class="inst-name">${esc(inst.gpu_name||inst.gpu_key||'GPU')} \u00b7 ${esc(inst.instance_name||('instance-'+inst.id))}</div><div class="inst-spec">${esc(inst.gpu_spec||inst.image_name||'Ubuntu 22.04')}</div></div><div class="inst-status"><div class="status-dot ${statusClass}"></div><span class="status-text ${statusClass}">${statusLabel}</span></div></div>${left>0?`<div class="timer-row"><div class="timer-left"><div class="timer-label">\u041e\u0441\u0442\u0430\u043b\u043e\u0441\u044c</div><div class="timer-val${urgent}" id="iTimer_${inst.id}">${expiresIn}</div></div><div class="timer-bar-wrap"><div class="timer-bar ${barClass}" id="iBar_${inst.id}" style="width:${pct}%"></div></div><div class="timer-cost"><div class="timer-cost-val">${costFmt}</div><div class="timer-cost-label">\u0441\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c</div></div></div>`:''}${accessHTML}${warningHTML}<div class="inst-actions">${inst.ip_address?`<button class="inst-btn primary" onclick="connectInstance('${inst.runpod_pod_id||''}','${inst.ip_address||''}','${inst.ssh_command||''}')">\u041f\u043e\u0434\u043a\u043b\u044e\u0447\u0438\u0442\u044c\u0441\u044f</button>`:''}<button class="inst-btn" onclick="extendInstance(${inst.id})">\u041f\u0440\u043e\u0434\u043b\u0438\u0442\u044c +1 \u0434\u0435\u043d\u044c</button><button class="inst-btn danger" onclick="stopInstance(${inst.id})">\u041e\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c</button></div></div>`;}
+function buildInstanceCard(inst){const statusClass=inst.status==='running'?'running':inst.status==='pending'?'pending':'stopped';const statusLabel=inst.status==='running'?'Running':inst.status==='pending'?'Pending...':'Stopping';const icon=inst.status==='pending'?'\u23f3':'\ud83d\udda5\ufe0f';const total=inst.total_seconds||(24*3600);const left=inst.seconds_left||0;const pct=(left/total*100).toFixed(1);const barClass=pct>40?'green':pct>15?'orange':'red';const urgent=pct<=15?' urgent':'';const costFmt=new Intl.NumberFormat('ru-RU').format(inst.cost_rub||0)+' \u20bd';const expiresIn=fmtTime(left);let accessHTML='';if(inst.ip_address){const ssh=inst.ssh_command||('ssh -p '+(inst.ssh_port||22)+' root@'+inst.ip_address);accessHTML=`<div class="access-details"><div class="access-row"><span class="access-key">IP \u0430\u0434\u0440\u0435\u0441</span><span class="access-val">${esc(inst.ip_address)}</span><button class="access-copy" onclick="cp('${inst.ip_address}','IP \u0441\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div><div class="access-row"><span class="access-key">SSH</span><span class="access-val">${esc(ssh)}</span><button class="access-copy" onclick="cp('${ssh}','SSH \u0441\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>${inst.jupyter_url?`<div class="access-row"><span class="access-key">Jupyter</span><span class="access-val" style="color:var(--blue)">${esc(inst.jupyter_url)}</span><button class="access-copy" onclick="cp('${inst.jupyter_url}','\u0421\u0441\u044b\u043b\u043a\u0430 \u0441\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u0430')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>`:''}${inst.jupyter_password?`<div class="access-row"><span class="access-key">${i18n('inst.jpwd')}</span><span class="access-val" style="color:var(--green);font-family:var(--mono)">${esc(inst.jupyter_password)}</span><button class="access-copy" onclick="cp('${inst.jupyter_password}',i18n('inst.copied_pwd'))"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>`:''}</div>`;}else{accessHTML=`<div style="padding:10px 14px;margin-bottom:10px;border-radius:9px;background:rgba(255,179,64,.08);border:1px solid rgba(255,179,64,.15);font-size:11px;color:var(--orange)">\u23f3 \u041f\u0440\u043e\u0432\u0438\u0437\u0438\u043e\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435 \u0441\u0435\u0440\u0432\u0435\u0440\u0430 (~2-3 \u043c\u0438\u043d). \u0414\u0430\u043d\u043d\u044b\u0435 \u0434\u043e\u0441\u0442\u0443\u043f\u0430 \u043f\u043e\u044f\u0432\u044f\u0442\u0441\u044f \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438.</div>`;}const warningHTML=pct<=15&&left>0?`<div style="padding:8px 0 4px;font-size:10px;font-weight:600;color:var(--orange);display:flex;align-items:center;gap:6px;margin-bottom:8px">\u26a0\ufe0f \u0418\u043d\u0441\u0442\u0430\u043d\u0441 \u0438\u0441\u0442\u0435\u043a\u0430\u0435\u0442 \u043c\u0435\u043d\u0435\u0435 \u0447\u0435\u043c \u0447\u0435\u0440\u0435\u0437 ${Math.ceil(left/3600)} \u0447 \u2014 \u043f\u0440\u043e\u0434\u043b\u0438\u0442\u0435 \u0430\u0440\u0435\u043d\u0434\u0443</div>`:'';return`<div class="instance"><div class="inst-header"><div class="inst-icon">${icon}</div><div class="inst-info"><div class="inst-name">${esc(inst.gpu_name||inst.gpu_key||'GPU')} \u00b7 ${esc(inst.instance_name||('instance-'+inst.id))}</div><div class="inst-spec">${esc(inst.gpu_spec||inst.image_name||'Ubuntu 22.04')}</div></div><div class="inst-status"><div class="status-dot ${statusClass}"></div><span class="status-text ${statusClass}">${statusLabel}</span></div></div>${left>0?`<div class="timer-row"><div class="timer-left"><div class="timer-label">${i18n('inst.left')}</div><div class="timer-val${urgent}" id="iTimer_${inst.id}">${expiresIn}</div></div><div class="timer-bar-wrap"><div class="timer-bar ${barClass}" id="iBar_${inst.id}" style="width:${pct}%"></div></div><div class="timer-cost"><div class="timer-cost-val">${costFmt}</div><div class="timer-cost-label">${i18n('inst.cost')}</div></div></div>`:''}${accessHTML}${warningHTML}<div class="inst-actions">${inst.ip_address?`<button class="inst-btn primary" onclick="connectInstance('${inst.runpod_pod_id||''}','${inst.ip_address||''}','${inst.ssh_command||''}')">${i18n('common.connect')}</button>`:''}<button class="inst-btn" onclick="extendInstance(${inst.id})">${i18n('common.extend')}</button><button class="inst-btn danger" onclick="stopInstance(${inst.id})">${i18n('common.stop')}</button></div></div>`;}
 function renderInstancesPage(instances){const c=document.getElementById('instances-container');if(!c)return;if(!instances.length){c.innerHTML='<div style="padding:30px;text-align:center;color:var(--text3)">\u041d\u0435\u0442 \u0438\u043d\u0441\u0442\u0430\u043d\u0441\u043e\u0432</div>';return;}c.innerHTML=instances.map(inst=>buildInstanceCard(inst)).join('');}
 function renderDashNotifs(notifs){const c=document.getElementById('dashNotifs');if(!c)return;const unread=notifs.filter(n=>!n.is_read).length;const cnt=document.getElementById('notifCount');if(cnt)cnt.textContent=unread?unread+' \u043d\u043e\u0432\u044b\u0445':'';if(!notifs.length){c.innerHTML='<div style="padding:20px;color:var(--text3);font-size:12px;text-align:center">\u041d\u0435\u0442 \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u0439</div>';return;}const icons={success:'\u2705',warning:'\u26a0\ufe0f',info:'\ud83d\udcb3',error:'\ud83d\uded1',launch:'\ud83d\ude80'};c.innerHTML=notifs.slice(0,4).map(n=>`<div class="notif-item ${n.is_read?'':'unread'}" onclick="markReadApi(this,${n.id})"><div class="notif-ico" style="background:rgba(94,139,255,.08)">${icons[n.type]||'\ud83d\udd14'}</div><div class="notif-body"><div class="notif-title">${esc(n.title)}</div><div class="notif-sub">${esc(n.body)}</div><div class="notif-time">${timeAgo(n.created_at)}</div></div>${n.is_read?'':'<div class="notif-unread-dot"></div>'}</div>`).join('');}
 function timeAgo(ts){const diff=(Date.now()-new Date(ts).getTime())/1000;if(diff<60)return '\u0422\u043e\u043b\u044c\u043a\u043e \u0447\u0442\u043e';if(diff<3600)return Math.floor(diff/60)+' \u043c\u0438\u043d \u043d\u0430\u0437\u0430\u0434';if(diff<86400)return Math.floor(diff/3600)+' \u0447 \u043d\u0430\u0437\u0430\u0434';return new Date(ts).toLocaleDateString('ru-RU');}
 async function extendInstance(id){try{showToast('\u041f\u0440\u043e\u0434\u043b\u0435\u043d\u0438\u0435...','\u23f3');await apiFetch('/api/gpu/instances/'+id+'/extend',{method:'POST',body:JSON.stringify({period:'day'})});showToast('\u2705 \u041f\u0440\u043e\u0434\u043b\u0435\u043d\u043e \u043d\u0430 24\u0447','\u2705');loadDashboard();}catch(e){showToast('\u041e\u0448\u0438\u0431\u043a\u0430: '+e.message,'\u274c');}}
-function renderTransactions(txns){const tbody=document.getElementById('txn-tbody');if(!tbody||!txns.length)return;const tl={topup:'\u041f\u043e\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0435',spend:'\u0410\u0440\u0435\u043d\u0434\u0430',bonus:'\u0411\u043e\u043d\u0443\u0441'};tbody.innerHTML=txns.map(t=>`<tr class="hist-tr"><td class="hist-td"><span class="hist-type ${t.type==='topup'?'topup':'spend'}">${tl[t.type]||t.type}</span></td><td class="hist-td">${esc(t.description||'\u2014')}</td><td class="hist-td" style="color:var(--text3)">${new Date(t.created_at).toLocaleDateString('ru-RU')}</td><td class="hist-td" style="text-align:right"><span class="hist-amount ${t.type==='topup'||t.type==='bonus'?'plus':'minus'}">${t.type==='topup'||t.type==='bonus'?'+':'\u2212'}${new Intl.NumberFormat('ru-RU').format(t.amount_rub)} \u20bd</span></td></tr>`).join('');}
-async function stopInstance(id){if(!confirm('\u041e\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c \u0438\u043d\u0441\u0442\u0430\u043d\u0441?'))return;try{showToast('\u041e\u0441\u0442\u0430\u043d\u0430\u0432\u043b\u0438\u0432\u0430\u0435\u043c...','\u23f3');await apiFetch('/api/gpu/instances/'+id,{method:'DELETE'});showToast('\ud83d\uded1 \u0418\u043d\u0441\u0442\u0430\u043d\u0441 \u043e\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d','\ud83d\uded1');loadDashboard();}catch(e){showToast('\u041e\u0448\u0438\u0431\u043a\u0430: '+e.message,'\u274c');}}
+function renderTransactions(txns){const tbody=document.getElementById('txn-tbody');if(!tbody||!txns.length)return;const tl={topup:i18n('tx.topup'),spend:i18n('tx.spend'),bonus:i18n('tx.bonus')};tbody.innerHTML=txns.map(t=>`<tr class="hist-tr"><td class="hist-td"><span class="hist-type ${t.type==='topup'?'topup':'spend'}">${tl[t.type]||t.type}</span></td><td class="hist-td">${esc(t.description||'\u2014')}</td><td class="hist-td" style="color:var(--text3)">${new Date(t.created_at).toLocaleDateString(lang==='EN'?'en-US':'ru-RU')}</td><td class="hist-td" style="text-align:right"><span class="hist-amount ${t.type==='topup'||t.type==='bonus'?'plus':'minus'}">${t.type==='topup'||t.type==='bonus'?'+':'\u2212'}${new Intl.NumberFormat('ru-RU').format(t.amount_rub)} \u20bd</span></td></tr>`).join('');}
+async function stopInstance(id){if(!confirm(i18n('toast.stop_confirm')))return;try{showToast(i18n('toast.stopping'),'\u23f3');await apiFetch('/api/gpu/instances/'+id,{method:'DELETE'});showToast('🛑 '+i18n('toast.stopped'),'\ud83d\uded1');loadDashboard();}catch(e){showToast('\u041e\u0448\u0438\u0431\u043a\u0430: '+e.message,'\u274c');}}
 function checkAdminAccess(user){return !!(user&&user.is_admin===true);}
 function showAdminMenu(){const ok=currentUser&&checkAdminAccess(currentUser);const menu=document.getElementById('adminMenuItem');if(menu&&ok)menu.style.display='flex';const top=document.getElementById('adminMenuItemTop');if(top&&ok)top.style.display='flex';}
 async function loadAdminPage(){if(!currentUser||!checkAdminAccess(currentUser)){showPage('dashboard');return;}try{const [users,instances,transactions]=await Promise.all([apiFetch('/api/admin/users'),apiFetch('/api/admin/instances'),apiFetch('/api/admin/transactions')]);renderAdminStats(users,instances,transactions);renderAdminUsers(users);renderAdminInstances(instances);renderAdminTransactions(transactions);renderAdminChart(users);}catch(e){console.error('Admin load error:',e.message);loadAdminFallback();}}
 async function loadAdminFallback(){try{const [balance,instances,txns]=await Promise.all([apiFetch('/api/billing/balance'),apiFetch('/api/gpu/instances'),apiFetch('/api/billing/transactions')]);const statEl=(id,val)=>{const e=document.getElementById(id);if(e)e.textContent=val;};statEl('adRevenue',new Intl.NumberFormat('ru-RU').format(txns.filter(t=>t.type==='spend').reduce((s,t)=>s+parseFloat(t.amount_rub),0))+' \u20bd');statEl('adActiveInst',instances.filter(i=>i.status==='running'||i.status==='pending').length);statEl('adTotalInst',instances.length);statEl('adTopups',new Intl.NumberFormat('ru-RU').format(txns.filter(t=>t.type==='topup').reduce((s,t)=>s+parseFloat(t.amount_rub),0))+' \u20bd');statEl('adTopupCount',txns.filter(t=>t.type==='topup').length+' \u0448\u0442');renderAdminInstances(instances);renderAdminTransactions(txns);const ul=document.getElementById('adUsersList');if(ul)ul.innerHTML='<div style="padding:16px;font-size:12px;color:var(--text3);text-align:center">\u0414\u043e\u0431\u0430\u0432\u044c /api/admin/users \u043d\u0430 \u0431\u044d\u043a\u0435\u043d\u0434</div>';document.getElementById('adTotalUsers').textContent='\u2014';document.getElementById('adTodayUsers').textContent='\u043d\u0443\u0436\u0435\u043d admin API';}catch(e){console.error('Admin fallback error:',e.message);}}
 function renderAdminStats(users,instances,transactions){const f=n=>new Intl.NumberFormat('ru-RU').format(n);const today=new Date().toDateString();const todayUsers=users.filter(u=>new Date(u.created_at).toDateString()===today).length;const activeInst=instances.filter(i=>i.status==='running'||i.status==='pending').length;const revenue=transactions.filter(t=>t.type==='spend').reduce((s,t)=>s+parseFloat(t.amount_rub),0);const topups=transactions.filter(t=>t.type==='topup').reduce((s,t)=>s+parseFloat(t.amount_rub),0);const topupCount=transactions.filter(t=>t.type==='topup').length;const s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};s('adTotalUsers',users.length);s('adTodayUsers',`\u0441\u0435\u0433\u043e\u0434\u043d\u044f: +${todayUsers}`);s('adRevenue',f(Math.round(revenue))+' \u20bd');s('adRevenueMonth',`\u043c\u0435\u0441\u044f\u0446: ${f(Math.round(revenue))} \u20bd`);s('adActiveInst',activeInst);s('adTotalInst',`\u0432\u0441\u0435\u0433\u043e \u0437\u0430\u043f\u0443\u0441\u043a\u043e\u0432: ${instances.length}`);s('adTopups',f(Math.round(topups))+' \u20bd');s('adTopupCount',`\u0442\u0440\u0430\u043d\u0437\u0430\u043a\u0446\u0438\u0439: ${topupCount}`);s('adUserCount',users.length+' \u0447\u0435\u043b.');}
 function renderAdminUsers(users){const c=document.getElementById('adUsersList');if(!c)return;if(!users.length){c.innerHTML='<div style="padding:20px;text-align:center;color:var(--text3)">Нет пользователей</div>';return;}c.innerHTML=users.slice(0,50).map(u=>{const blocked=u.is_blocked===true;const init=esc((u.name||u.email).substring(0,2).toUpperCase());const bal=new Intl.NumberFormat('ru-RU').format(parseFloat(u.balance||0));return`<div style="padding:11px 18px;border-bottom:1px solid var(--border)"><div style="display:flex;align-items:center;gap:12px"><div style="width:32px;height:32px;border-radius:50%;background:${blocked?'rgba(255,90,90,.25)':'linear-gradient(135deg,#5e8bff,#3ddc84)'};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0">${init}</div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600;color:var(--text)">${esc(u.name||'—')} ${blocked?'<span style=\"color:var(--red);font-size:9px;font-weight:700\">🚫 БЛОК</span>':''}</div><div style="font-size:10px;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(u.email)} · ID ${u.id}</div></div><div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:700;color:var(--green)">${bal} ₽</div><div style="font-size:9px;color:var(--text3)">${timeAgo(u.created_at)}</div></div></div><div style="display:flex;gap:6px;margin-top:8px"><button onclick="adminBalance(${u.id},'${esc(u.name||u.email)}')" style="flex:1;padding:6px;border-radius:7px;border:1px solid rgba(118,179,255,.3);background:rgba(118,179,255,.08);color:#9cc4ff;font-size:10px;font-weight:600;cursor:pointer;font-family:var(--body)">💰 Баланс</button>${blocked?`<button onclick="adminUnblock(${u.id})" style="flex:1;padding:6px;border-radius:7px;border:1px solid rgba(61,220,132,.3);background:rgba(61,220,132,.08);color:var(--green);font-size:10px;font-weight:600;cursor:pointer;font-family:var(--body)">✅ Разблок</button>`:`<button onclick="adminBlock(${u.id},'${esc(u.name||u.email)}')" style="flex:1;padding:6px;border-radius:7px;border:1px solid rgba(255,90,90,.3);background:rgba(255,90,90,.08);color:var(--red);font-size:10px;font-weight:600;cursor:pointer;font-family:var(--body)">🚫 Блок</button>`}</div></div>`;}).join('');}
-async function adminBalance(userId,name){const action=prompt('Управление балансом: '+name+'\n\nВведите: пополнить СУММА  /  списать СУММА  /  обнулить\nНапример: пополнить 1000');if(!action)return;const parts=action.trim().toLowerCase().split(/\s+/);let body;if(parts[0]==='обнулить'){body={action:'set',amount:0};}else if(parts[0]==='пополнить'){body={action:'add',amount:parseFloat(parts[1])};}else if(parts[0]==='списать'){body={action:'subtract',amount:parseFloat(parts[1])};}else{showToast('Не понял команду','⚠️');return;}if(body.action!=='set'&&(isNaN(body.amount)||body.amount<0)){showToast('Неверная сумма','⚠️');return;}try{const r=await apiFetch('/api/admin/users/'+userId+'/balance',{method:'POST',body:JSON.stringify(body)});showToast('✅ Баланс: '+new Intl.NumberFormat('ru-RU').format(r.new_balance)+' ₽','💰');loadAdminPage();}catch(e){showToast('Ошибка: '+e.message,'❌');}}
-async function adminBlock(userId,name){if(!confirm('Заблокировать '+name+'? Пользователь не сможет войти.'))return;try{await apiFetch('/api/admin/users/'+userId+'/block',{method:'POST'});showToast('🚫 Заблокирован','✅');loadAdminPage();}catch(e){showToast('Ошибка: '+e.message,'❌');}}
-async function adminUnblock(userId){try{await apiFetch('/api/admin/users/'+userId+'/unblock',{method:'POST'});showToast('✅ Разблокирован','✅');loadAdminPage();}catch(e){showToast('Ошибка: '+e.message,'❌');}}
+async function adminBalance(userId,name){const action=prompt('Управление балансом: '+name+'\n\nВведите: пополнить СУММА  /  списать СУММА  /  обнулить\nНапример: пополнить 1000');if(!action)return;const parts=action.trim().toLowerCase().split(/\s+/);let body;if(parts[0]==='обнулить'){body={action:'set',amount:0};}else if(parts[0]==='пополнить'){body={action:'add',amount:parseFloat(parts[1])};}else if(parts[0]==='списать'){body={action:'subtract',amount:parseFloat(parts[1])};}else{showToast(i18n('toast.bad_cmd'),'⚠️');return;}if(body.action!=='set'&&(isNaN(body.amount)||body.amount<0)){showToast(i18n('toast.bad_sum'),'⚠️');return;}try{const r=await apiFetch('/api/admin/users/'+userId+'/balance',{method:'POST',body:JSON.stringify(body)});showToast('✅ '+i18n('toast.balance')+': '+new Intl.NumberFormat(lang==='EN'?'en-US':'ru-RU').format(r.new_balance)+' ₽','💰');loadAdminPage();}catch(e){showToast(i18n('toast.error')+': '+e.message,'❌');}}
+async function adminBlock(userId,name){if(!confirm(i18n('toast.block_confirm')))return;try{await apiFetch('/api/admin/users/'+userId+'/block',{method:'POST'});showToast('🚫 '+i18n('toast.blocked'),'✅');loadAdminPage();}catch(e){showToast(i18n('toast.error')+': '+e.message,'❌');}}
+async function adminUnblock(userId){try{await apiFetch('/api/admin/users/'+userId+'/unblock',{method:'POST'});showToast('✅ '+i18n('toast.unblocked'),'✅');loadAdminPage();}catch(e){showToast(i18n('toast.error')+': '+e.message,'❌');}}
 function renderAdminInstances(instances){const c=document.getElementById('adInstancesList');if(!c)return;const active=instances.filter(i=>i.status!=='stopped');if(!active.length){c.innerHTML='<div style="padding:20px;text-align:center;color:var(--text3);font-size:12px">\u041d\u0435\u0442 \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0438\u043d\u0441\u0442\u0430\u043d\u0441\u043e\u0432</div>';return;}c.innerHTML=active.map(i=>`<div style="display:flex;align-items:center;gap:10px;padding:11px 18px;border-bottom:1px solid var(--border)"><div class="status-dot ${i.status==='running'?'running':'pending'}" style="flex-shrink:0"></div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600;color:var(--text)">${esc(i.gpu_name||i.gpu_key)}</div><div style="font-size:10px;color:var(--text3)">${esc(i.instance_name||'\u2014')} \u00b7 user#${i.user_id}</div></div><div style="text-align:right;flex-shrink:0"><div style="font-size:11px;font-weight:700;color:var(--orange)">${new Intl.NumberFormat('ru-RU').format(parseFloat(i.cost_rub||0))} \u20bd</div><div style="font-size:9px;color:var(--text3)">${esc(i.ip_address||'pending...')}</div></div></div>`).join('');}
 function renderAdminTransactions(txns){const c=document.getElementById('adTxnsList');if(!c)return;const filtered=txns.filter(t=>t.type!=='topup_pending').slice(0,10);if(!filtered.length){c.innerHTML='<div style="padding:20px;text-align:center;color:var(--text3);font-size:12px">\u041d\u0435\u0442 \u0442\u0440\u0430\u043d\u0437\u0430\u043a\u0446\u0438\u0439</div>';return;}c.innerHTML=filtered.map(t=>`<div style="display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border)"><span style="font-size:14px">${t.type==='topup'?'\ud83d\udcb3':t.type==='bonus'?'\ud83c\udf81':t.type==='spend'?'\u26a1':'\ud83d\udccb'}</span><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(t.description||t.type)}</div><div style="font-size:10px;color:var(--text3)">${timeAgo(t.created_at)} \u00b7 user#${t.user_id}</div></div><span style="font-size:12px;font-weight:700;${t.type==='topup'||t.type==='bonus'?'color:var(--green)':'color:var(--red)'};flex-shrink:0">${t.type==='topup'||t.type==='bonus'?'+':'\u2212'}${new Intl.NumberFormat('ru-RU').format(parseFloat(t.amount_rub))} \u20bd</span></div>`).join('');}
 function renderAdminChart(users){const chart=document.getElementById('adChart');const labels=document.getElementById('adChartLabels');if(!chart||!users.length)return;const days={};for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const key=d.toISOString().split('T')[0];days[key]=0;}users.forEach(u=>{const key=new Date(u.created_at).toISOString().split('T')[0];if(days[key]!==undefined)days[key]++;});const vals=Object.values(days);const max=Math.max(...vals,1);const keys=Object.keys(days);chart.innerHTML=vals.map((v,i)=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="font-size:9px;color:var(--text3);font-weight:600">${v||''}</div><div style="width:100%;background:${v>0?'var(--blue)':'rgba(255,255,255,.06)'};border-radius:4px;height:${Math.max(4,Math.round(v/max*80))}px;transition:height .3s;min-height:4px"></div></div>`).join('');labels.innerHTML=keys.map((k,i)=>{const d=new Date(k);const show=i%2===0;return`<div style="flex:1;font-size:8px;color:var(--text3);text-align:center">${show?(d.getDate()+'.'+String(d.getMonth()+1).padStart(2,'0')):''}</div>`;}).join('');}
