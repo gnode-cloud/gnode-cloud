@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
-  <!-- Главная страница -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://gnode.cloud/</loc>
-    <lastmod>2025-05-26</lastmod>
+    <lastmod>2026-05-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://gnode.cloud/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://gnode.cloud/"/>
   </url>
-
 </urlset>
