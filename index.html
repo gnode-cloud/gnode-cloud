@@ -6,11 +6,11 @@
 <title>NODE.CLOUD — GPU Cloud Infrastructure</title>
 
 
-<meta name="description" content="NODE.CLOUD — аренда GPU в России. RTX 4090, H100 SXM, Blackwell B300 — запуск инстанса за 2 минуты. Гибкая система оплаты, лучшая тарификация на рынке. Готовые образы PyTorch и Jupyter.">
+<meta name="description" content="NODE.CLOUD — аренда GPU с оплатой рублём: карта РФ, СБП, крипто. RTX 4090, H100, Blackwell B300 из глобальных дата-центров. Запуск за пару минут, поддержка на русском в Telegram.">
 <meta name="keywords" content="аренда GPU, GPU облако, RTX 4090 аренда, H100 аренда, облачные вычисления, GPU сервер Россия, машинное обучение, нейронные сети GPU">
 <meta name="robots" content="index, follow">
-<meta property="og:title" content="NODE.CLOUD — Аренда GPU в России | RTX 4090, H100, B300">
-<meta property="og:description" content="GPU облако в России. Запуск инстанса за 2 минуты. Гибкая система оплаты, лучшая тарификация на рынке. RTX 4090, H100, Blackwell B300.">
+<meta property="og:title" content="NODE.CLOUD — Аренда GPU с оплатой рублём | RTX 4090, H100, B300">
+<meta property="og:description" content="Аренда GPU с оплатой рублём — карта РФ, СБП, крипто. RTX 4090, H100, Blackwell B300 из глобальных дата-центров. Поддержка на русском.">
 <meta property="og:url" content="https://gnode.cloud">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://gnode.cloud/og-image.png">
@@ -18,7 +18,7 @@
 <link rel="canonical" href="https://gnode.cloud">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   /* ── new design tokens ── */
@@ -28,9 +28,9 @@
   --ink:#f4f5f6; --ink-2:rgba(244,245,246,0.62); --ink-3:rgba(244,245,246,0.38); --ink-4:rgba(244,245,246,0.22);
   --acc:#76b3ff; --acc-2:#5e8bff;
   --green:#3ddc84; --green-soft:rgba(61,220,132,0.12);
-  --mono:'JetBrains Mono',ui-monospace,monospace;
-  --disp:'Familjen Grotesk',-apple-system,BlinkMacSystemFont,sans-serif;
-  --body:'Inter Tight',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --disp:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  --body:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,sans-serif;
   --r:cubic-bezier(.22,1,.36,1);
   --transition:cubic-bezier(.22,1,.36,1);
 
@@ -46,203 +46,209 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--body);background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.5;}
+body:has(#pg-landing.active)::after{display:none}
+body:has(#pg-landing.active){background:#f4f6f8}
 body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.32;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");}
 
-/* ════ CANVAS BG + GLOW ════ */
-#fxCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
-.glow{position:fixed;z-index:0;pointer-events:none;border-radius:50%;filter:blur(120px)}
-.glow.a{width:680px;height:680px;top:-300px;left:50%;transform:translateX(-50%);background:radial-gradient(circle,rgba(94,139,255,.10),transparent 68%)}
-.glow.b{width:440px;height:440px;bottom:-180px;right:-140px;background:radial-gradient(circle,rgba(61,220,132,.055),transparent 70%)}
-
-/* ════ NAV ════ */
-nav{position:sticky;top:0;z-index:100;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 max(24px,4vw);background:rgba(8,9,10,.72);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border-bottom:1px solid var(--line)}
-.nav-logo{display:flex;align-items:center;gap:11px;text-decoration:none;cursor:pointer}
-.nav-logo-icon{width:30px;height:30px;border-radius:9px;position:relative;background:linear-gradient(150deg,#1a1c1f,#0c0d0f);border:1px solid var(--line-2);display:grid;place-items:center;overflow:hidden;font-family:var(--disp);font-weight:700;font-size:15px;color:#fff}
-.nav-logo-icon::before{content:'';position:absolute;inset:0;background:linear-gradient(150deg,rgba(118,179,255,.22),transparent 60%)}
-.nav-logo-icon span,.nav-logo-icon{}
-.nav-logo-text{font-family:var(--disp);font-weight:600;font-size:15px;letter-spacing:.13em;color:var(--ink)}
-.nav-center{display:flex;gap:4px;position:absolute;left:50%;transform:translateX(-50%)}
-@media(max-width:980px){.nav-center{display:none}}
-.nav-cl{padding:7px 13px;border-radius:8px;font-size:13.5px;font-weight:500;color:var(--ink-2);text-decoration:none;transition:.18s var(--r);cursor:pointer}
-.nav-cl:hover{color:var(--ink);background:var(--panel-2)}
-.nav-right{display:flex;align-items:center;gap:9px}
-.lang-pill{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:3px;gap:2px}
-.lang-btn{padding:4px 10px;border-radius:6px;font-family:var(--mono);font-size:11px;font-weight:500;border:none;background:transparent;color:var(--ink-3);cursor:pointer;transition:all .2s var(--r);letter-spacing:.02em}
-.lang-btn.active{background:var(--panel-2);color:var(--ink)}
-.menu-btn{width:36px;height:36px;border-radius:9px;border:1px solid var(--line);background:var(--panel);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-2);transition:all .2s var(--r)}
-.menu-btn:hover{background:var(--panel-2);color:var(--ink);border-color:var(--line-2)}
-.menu-btn svg{width:16px;height:16px}
-
-/* ════ HERO ════ */
-main{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:0 max(24px,4vw) 0}
-.hero{padding:96px 0 64px;text-align:center;animation:fadeUp .6s var(--r)}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:9px;padding:6px 8px 6px 14px;border-radius:30px;background:var(--panel);border:1px solid var(--line);font-size:12.5px;font-weight:500;color:var(--ink-2);margin-bottom:32px;text-transform:none;letter-spacing:0}
-.hero-eyebrow::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);animation:bp 2.4s ease-in-out infinite}
-.hero-eyebrow .tag{font-family:var(--mono);font-size:10.5px;color:var(--green);background:var(--green-soft);border:1px solid rgba(61,220,132,.2);padding:2px 8px;border-radius:20px;font-weight:600}
-@keyframes bp{0%,100%{opacity:1}50%{opacity:.4}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero h1{font-family:var(--disp);font-weight:600;font-size:clamp(40px,6.2vw,74px);line-height:1.03;letter-spacing:-.035em;margin-bottom:22px;color:var(--ink);background:none;-webkit-text-fill-color:currentColor}
-.hero h1 .grad{background:linear-gradient(120deg,#fff 30%,#7fa9ff 78%,#3ddc84 112%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{font-size:clamp(16px,2vw,18.5px);font-weight:400;color:var(--ink-2);line-height:1.55;max-width:560px;margin:0 auto}
-.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:36px}
-.hero-cta .cbtn{padding:14px 26px;border-radius:11px;font-family:var(--body);font-size:15px;font-weight:600;cursor:pointer;transition:.22s var(--r);border:1px solid transparent}
-.cbtn.pri{border-color:rgba(118,179,255,.35);background:linear-gradient(180deg,rgba(118,179,255,.16),rgba(94,139,255,.08));color:#dceaff}
-.cbtn.pri:hover{border-color:rgba(118,179,255,.6);box-shadow:0 0 0 1px rgba(118,179,255,.2),0 8px 30px -8px rgba(94,139,255,.45);transform:translateY(-1px)}
-.cbtn.ghost{border-color:var(--line-2);background:transparent;color:var(--ink);display:inline-flex;align-items:center;gap:8px}
-.cbtn.ghost:hover{background:var(--panel-2);border-color:rgba(255,255,255,.2)}
-.cbtn.ghost code{font-family:var(--mono);font-size:12.5px;color:var(--acc)}
-
-/* trust strip */
-.trust{margin-top:60px;padding-top:32px;border-top:1px solid var(--line)}
-.trust-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-4);margin-bottom:20px}
-.trust-row{display:flex;gap:46px;justify-content:center;align-items:center;flex-wrap:wrap;opacity:.5}
-.trust-row span{font-family:var(--disp);font-weight:600;font-size:16px;letter-spacing:.03em;color:var(--ink-2)}
-
-/* ════ SECTION LABEL ════ */
-.section-label{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--acc);margin-bottom:14px}
-
-/* ════ GPU MARKETPLACE LAYOUT ════ */
-.mkt-head{text-align:center;max-width:620px;margin:80px auto 44px}
-.mkt-head .section-label{margin-bottom:14px}
-.mkt-head h2{font-family:var(--disp);font-weight:600;font-size:clamp(28px,4vw,40px);letter-spacing:-.03em;line-height:1.08;margin-bottom:12px}
-.mkt-head p{color:var(--ink-2);font-size:16px}
-.layout{display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start;margin-bottom:40px}
-@media(max-width:880px){.layout{grid-template-columns:1fr}}
-
-/* tier groups */
-.tier-group{margin-bottom:12px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);background:var(--panel);transition:border-color .25s var(--r)}
-.tier-group:hover{border-color:var(--line-2)}
-.tier-header{padding:15px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);cursor:pointer;user-select:none;transition:background .2s}
-.tier-header:hover{background:var(--panel-2)}
-.tier-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;box-shadow:0 0 8px currentColor}
-.tier-info{flex:1;min-width:0}
-.tier-name{font-family:var(--disp);font-size:13px;font-weight:600;letter-spacing:.01em}
-.tier-sub{font-size:10.5px;color:var(--ink-3);margin-top:2px}
-.tier-chevron{width:16px;height:16px;color:var(--ink-3);transition:transform .25s var(--r)}
-.tier-group.collapsed .tier-chevron{transform:rotate(-90deg)}
-.tier-cards{padding:8px;display:flex;flex-direction:column;gap:5px;overflow:hidden;transition:max-height .35s var(--r),opacity .25s ease,padding .25s}
-.tier-group.collapsed .tier-cards{max-height:0!important;opacity:0;padding-top:0;padding-bottom:0}
-
-/* gpu card */
-.gpu-card{border-radius:var(--radius-md);border:1px solid var(--line);background:transparent;cursor:pointer;transition:all .22s var(--r);overflow:hidden}
-.gpu-card:hover{background:var(--panel-2);border-color:var(--line-2)}
-.gpu-card.selected{border-color:rgba(118,179,255,.5);background:rgba(94,139,255,.06)}
-.gpu-card-header{padding:13px 15px;display:flex;align-items:center;gap:12px}
-.gpu-status{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.14);flex-shrink:0;transition:all .3s}
-.gpu-card.selected .gpu-status{background:var(--green);box-shadow:0 0 8px rgba(61,220,132,.7)}
-.gpu-info{flex:1;min-width:0}
-.gpu-name-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.gpu-name{font-family:var(--disp);font-size:13.5px;font-weight:600;color:var(--ink);white-space:nowrap}
-.gpu-card.selected .gpu-name{color:var(--acc)}
-.gpu-badge{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.04em;padding:2px 7px;border-radius:20px;white-space:nowrap}
-.gpu-spec{font-family:var(--mono);font-size:10px;color:var(--ink-3);margin-top:3px;font-weight:400;letter-spacing:.01em}
-.gpu-price-col{text-align:right;flex-shrink:0}
-.gpu-price{font-family:var(--mono);font-size:13.5px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--green)}
-.gpu-price-label{font-size:9px;color:var(--ink-4);font-weight:500;margin-top:2px}
-.gpu-expand{overflow:hidden;max-height:0;opacity:0;transition:max-height .38s var(--r),opacity .22s ease}
-.gpu-expand.open{max-height:600px;opacity:1}
-.gpu-expand-inner{padding:0 15px 15px}
-.divider{height:1px;background:var(--line);margin-bottom:14px}
-.use-cases{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
-.use-chip{font-size:10.5px;font-weight:500;padding:4px 10px;border-radius:20px;border:1px solid var(--line);color:var(--ink-2);background:var(--panel)}
-.period-label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:9px}
-.period-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:14px}
-.period-pill{padding:8px 4px;border-radius:var(--radius-sm);border:1px solid var(--line);background:transparent;color:var(--ink-3);font-size:11px;font-weight:500;cursor:pointer;transition:all .18s var(--r);text-align:center}
-.period-pill:hover{border-color:var(--line-2);color:var(--ink-2)}
-.period-pill.active{background:linear-gradient(180deg,rgba(118,179,255,.18),rgba(94,139,255,.1));border-color:rgba(118,179,255,.4);color:#dceaff}
-.price-box{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:15px 16px;margin-bottom:12px}
-.price-box-label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:7px}
-.price-main{font-family:var(--disp);font-size:28px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--green);letter-spacing:-.02em}
-.price-savings{margin-top:9px;padding-top:9px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
-.price-savings.hidden{display:none}
-.price-old{font-family:var(--mono);font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
-.price-old s{color:var(--red);opacity:.7}
-.price-save{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--green);font-variant-numeric:tabular-nums}
-.launch-btn{width:100%;padding:13px;border-radius:var(--radius-md);border:1px solid rgba(118,179,255,.35);background:linear-gradient(180deg,rgba(118,179,255,.18),rgba(94,139,255,.1));color:#dceaff;font-family:var(--body);font-size:13.5px;font-weight:600;cursor:pointer;transition:all .2s var(--r);position:relative;overflow:hidden}
-.launch-btn:hover{border-color:rgba(118,179,255,.6);box-shadow:0 8px 24px -8px rgba(94,139,255,.5);transform:translateY(-1px)}
-.launch-btn:active{transform:scale(.98)}
-
-/* right panel */
-.right-panel{position:sticky;top:80px;display:flex;flex-direction:column;gap:16px}
-.empty-state{border:1px solid var(--line);border-radius:var(--radius-xl);background:var(--panel);padding:40px 24px;text-align:center}
-.empty-icon{font-size:32px;margin-bottom:12px;opacity:.7}
-.empty-title{font-family:var(--disp);font-size:15px;font-weight:600;color:var(--ink-2);margin-bottom:6px}
-.empty-sub{font-size:12px;color:var(--ink-3);line-height:1.5}
-.enterprise-card{border-radius:var(--radius-xl);border:1px solid var(--line-2);background:linear-gradient(165deg,rgba(94,139,255,.07),rgba(13,14,16,.4));padding:24px;position:relative;overflow:hidden}
-.enterprise-card::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle at top right,rgba(118,179,255,.12),transparent 70%);pointer-events:none}
-.ent-badge{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);background:rgba(94,139,255,.1);border:1px solid rgba(94,139,255,.2);padding:3px 10px;border-radius:20px;margin-bottom:14px}
-.ent-title{font-family:var(--disp);font-size:19px;font-weight:600;letter-spacing:-.02em;margin-bottom:9px;line-height:1.15}
-.ent-desc{font-size:12.5px;color:var(--ink-2);line-height:1.6;margin-bottom:16px}
-.ent-specs{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
-.ent-spec-row{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink-2)}
-.ent-spec-row::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--acc);flex-shrink:0}
-.ent-spec-val{font-weight:600;color:var(--ink)}
-.ent-btn{width:100%;padding:13px;border-radius:var(--radius-md);border:1px solid rgba(118,179,255,.35);background:linear-gradient(180deg,rgba(118,179,255,.18),rgba(94,139,255,.1));color:#dceaff;font-family:var(--body);font-size:13.5px;font-weight:600;cursor:pointer;transition:all .2s var(--r)}
-.ent-btn:hover{border-color:rgba(118,179,255,.6);box-shadow:0 8px 24px -8px rgba(94,139,255,.5);transform:translateY(-1px)}
-
-/* ════ LANDING EXTRA SECTIONS ════ */
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin:24px 0 88px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
-@media(max-width:760px){.metrics{grid-template-columns:1fr 1fr}}
-.metric{background:var(--bg-elev);padding:28px 24px}
-.metric .v{font-family:var(--disp);font-weight:600;font-size:32px;letter-spacing:-.03em;line-height:1}
-.metric .v small{font-family:var(--mono);font-size:16px;color:var(--ink-3);font-weight:500}
-.metric .v.g{color:var(--green)}
-.metric .l{margin-top:9px;font-size:12.5px;color:var(--ink-3)}
-.shead{max-width:620px;margin:0 auto 48px;text-align:center}
-.shead h2{font-family:var(--disp);font-weight:600;font-size:clamp(28px,4vw,42px);letter-spacing:-.03em;line-height:1.08;margin-bottom:14px}
-.shead p{color:var(--ink-2);font-size:16px}
-.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:100px}
-@media(max-width:900px){.feats{grid-template-columns:1fr}}
-.feat{background:linear-gradient(180deg,var(--panel-2),transparent);border:1px solid var(--line);border-radius:16px;padding:26px;transition:.3s var(--r);position:relative;overflow:hidden}
-.feat:hover{border-color:var(--line-2);transform:translateY(-3px)}
-.feat::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(118,179,255,.5),transparent);opacity:0;transition:.3s}
-.feat:hover::before{opacity:1}
-.feat .ic{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;font-size:19px;background:var(--panel-2);border:1px solid var(--line);margin-bottom:18px}
-.feat h3{font-family:var(--disp);font-weight:600;font-size:18px;letter-spacing:-.01em;margin-bottom:8px}
-.feat p{font-size:14px;color:var(--ink-2);line-height:1.6}
-.term-sec{margin-bottom:100px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
-@media(max-width:900px){.term-sec{grid-template-columns:1fr;gap:32px}}
-.term-copy h2{font-family:var(--disp);font-weight:600;font-size:clamp(26px,3.4vw,38px);letter-spacing:-.03em;line-height:1.1;margin-bottom:16px}
-.term-copy>p{color:var(--ink-2);font-size:15.5px;line-height:1.65;margin-bottom:24px}
-.tick{display:flex;gap:11px;align-items:flex-start;margin-bottom:13px;font-size:14.5px;color:var(--ink-2)}
-.tick svg{width:18px;height:18px;flex-shrink:0;margin-top:1px;color:var(--green)}
-.term{background:#0a0b0d;border:1px solid var(--line-2);border-radius:14px;overflow:hidden;box-shadow:0 40px 80px -30px rgba(0,0,0,.8)}
-.term-bar{display:flex;align-items:center;gap:7px;padding:13px 16px;border-bottom:1px solid var(--line)}
-.term-bar i{width:11px;height:11px;border-radius:50%;background:#2a2c30}
-.term-bar .ti{margin-left:10px;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
-.term-body{padding:20px;font-family:var(--mono);font-size:12.5px;line-height:1.85}
-.term-body .p{color:var(--green)}.term-body .c{color:#dceaff}.term-body .m{color:var(--ink-3)}.term-body .o{color:var(--ink-2)}.term-body .h{color:var(--acc)}
-.fcta{text-align:center;padding:88px 30px;margin-bottom:90px;border-radius:24px;position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(94,139,255,.08),rgba(13,14,16,.4));border:1px solid var(--line-2)}
-.fcta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(118,179,255,.14),transparent 60%)}
-.fcta h2{position:relative;font-family:var(--disp);font-weight:600;font-size:clamp(30px,4.5vw,48px);letter-spacing:-.03em;line-height:1.06;margin-bottom:16px}
-.fcta p{position:relative;color:var(--ink-2);font-size:17px;margin-bottom:32px;max-width:480px;margin-inline:auto}
-.fcta .hero-cta{margin-top:0;position:relative}
-.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--r),transform .7s var(--r)}
-.reveal.in{opacity:1;transform:none}
-
-/* ════ FOOTER ════ */
-footer{position:relative;z-index:2;border-top:1px solid var(--line);background:var(--bg-elev)}
-.foot-top{max-width:1180px;margin:0 auto;padding:64px max(24px,4vw) 48px;display:grid;grid-template-columns:1.6fr repeat(4,1fr);gap:40px}
-@media(max-width:900px){.foot-top{grid-template-columns:1fr 1fr;gap:36px 24px}}
-.foot-brand .nav-logo{margin-bottom:18px}
-.foot-brand p{font-size:13.5px;color:var(--ink-3);line-height:1.6;max-width:280px;margin-bottom:22px}
-.foot-status{display:inline-flex;align-items:center;gap:9px;padding:7px 13px;border-radius:30px;background:var(--green-soft);border:1px solid rgba(61,220,132,.2);font-size:12px;color:var(--green);font-weight:500}
-.foot-status .d{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:bp 2.4s infinite}
-.foot-col h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-4);margin-bottom:18px}
-.foot-col a{display:block;font-size:13.5px;color:var(--ink-2);text-decoration:none;margin-bottom:12px;transition:.18s;width:fit-content;cursor:pointer}
-.foot-col a:hover{color:var(--ink)}
-.foot-col a .ext{font-size:10px;color:var(--ink-4);margin-left:5px}
-.foot-bottom{border-top:1px solid var(--line)}
-.foot-bottom-in{max-width:1180px;margin:0 auto;padding:24px max(24px,4vw);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
-.foot-legal{display:flex;gap:24px;flex-wrap:wrap}
-.foot-legal a{font-size:12.5px;color:var(--ink-3);text-decoration:none;transition:.18s;cursor:pointer}
-.foot-legal a:hover{color:var(--ink-2)}
-.foot-copy{font-size:12.5px;color:var(--ink-4);font-family:var(--mono)}
-.foot-social{display:flex;gap:8px}
-.foot-social a{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);display:grid;place-items:center;color:var(--ink-3);transition:.2s var(--r)}
-.foot-social a:hover{color:var(--ink);border-color:var(--line-2);background:var(--panel-2)}
-.foot-social svg{width:16px;height:16px}
+/* ════ LIGHT CORPORATE LANDING (scoped to #pg-landing) ════ */
+#pg-landing{
+  --bg:#f4f6f8; --bg-elev:#ffffff; --card:#ffffff;
+  --line:#e3e8ee; --line-2:#d2d9e2;
+  --ink:#0b1f33; --ink-2:#4a5b6e; --ink-3:#74849a; --ink-4:#9aa8ba;
+  --acc:#0b5fff; --acc-2:#0848cc; --acc-soft:#eaf1ff;
+  --green:#0a8f4e; --green-soft:#e6f6ee;
+  position:relative;z-index:1;background:var(--bg);color:var(--ink);
+}
+#pg-landing *{box-sizing:border-box}
+#pg-landing nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 max(24px,4vw);background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+#pg-landing .nav-logo{display:flex;align-items:center;gap:11px;text-decoration:none;cursor:pointer}
+#pg-landing .nav-logo-icon{width:30px;height:30px;border-radius:7px;background:var(--acc);border:none;display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:15px;color:#fff;overflow:hidden}
+#pg-landing .nav-logo-icon::before{display:none}
+#pg-landing .nav-logo-text{font-family:var(--disp);font-weight:600;font-size:15px;letter-spacing:.1em;color:var(--ink)}
+#pg-landing .nav-center{display:flex;gap:2px;position:absolute;left:50%;transform:translateX(-50%)}
+@media(max-width:980px){#pg-landing .nav-center{display:none}}
+#pg-landing .nav-cl{padding:8px 14px;border-radius:7px;font-size:14px;font-weight:500;color:var(--ink-2);text-decoration:none;transition:color .15s,background .15s;cursor:pointer}
+#pg-landing .nav-cl:hover{color:var(--acc);background:var(--acc-soft)}
+#pg-landing .nav-right{display:flex;align-items:center;gap:10px}
+#pg-landing .lang-pill{display:flex;background:#fff;border:1px solid var(--line);border-radius:8px;padding:3px;gap:2px}
+#pg-landing .lang-btn{padding:4px 10px;border-radius:5px;font-family:var(--mono);font-size:11px;font-weight:600;border:none;background:transparent;color:var(--ink-3);cursor:pointer;transition:.15s;letter-spacing:.02em}
+#pg-landing .lang-btn.active{background:var(--acc);color:#fff}
+#pg-landing .menu-btn{width:38px;height:38px;border-radius:8px;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-2);transition:.15s}
+#pg-landing .menu-btn:hover{border-color:var(--line-2);background:#f4f6f8}
+#pg-landing .menu-btn svg{width:16px;height:16px}
+#pg-landing .user-btn{display:flex;align-items:center;gap:8px;padding:7px 14px 7px 8px;border-radius:8px;border:1px solid var(--line-2);background:#fff;color:var(--ink);font-family:var(--body);font-size:14px;font-weight:500;cursor:pointer;transition:.15s}
+#pg-landing .user-btn:hover{border-color:var(--acc);color:var(--acc)}
+#pg-landing .user-btn-avatar{width:24px;height:24px;border-radius:6px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+#pg-landing main{position:relative;z-index:2;max-width:1140px;margin:0 auto;padding:0 max(24px,4vw)}
+#pg-landing .hero{padding:84px 0 64px;text-align:center;animation:none}
+#pg-landing .hero-eyebrow{display:inline-flex;align-items:center;gap:9px;padding:6px 8px 6px 14px;border-radius:6px;background:var(--acc-soft);border:1px solid #cfe0ff;font-size:12.5px;font-weight:600;color:var(--acc);margin-bottom:30px;letter-spacing:.01em}
+#pg-landing .hero-eyebrow::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;animation:none;box-shadow:none}
+#pg-landing .hero-eyebrow .tag{font-family:var(--mono);font-size:10.5px;color:var(--acc);background:#fff;border:1px solid #cfe0ff;padding:2px 8px;border-radius:5px;font-weight:600}
+#pg-landing .hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(38px,5.6vw,66px);line-height:1.06;letter-spacing:-.025em;margin-bottom:22px;color:var(--ink);-webkit-text-fill-color:currentColor}
+#pg-landing .hero h1 .grad{color:var(--acc);-webkit-text-fill-color:var(--acc);background:none}
+#pg-landing .hero p{font-size:clamp(16px,1.7vw,19px);font-weight:400;color:var(--ink-2);line-height:1.6;max-width:600px;margin:0 auto}
+#pg-landing .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+#pg-landing .hero-cta .cbtn{padding:14px 28px;border-radius:8px;font-family:var(--body);font-size:15px;font-weight:600;cursor:pointer;transition:.15s;border:1px solid transparent}
+#pg-landing .cbtn.pri{background:var(--acc);color:#fff;border-color:var(--acc);box-shadow:0 1px 2px rgba(11,95,255,.2)}
+#pg-landing .cbtn.pri:hover{background:var(--acc-2);box-shadow:0 4px 14px rgba(11,95,255,.28)}
+#pg-landing .cbtn.ghost{background:#fff;border-color:var(--line-2);color:var(--ink);display:inline-flex;align-items:center;gap:8px}
+#pg-landing .cbtn.ghost:hover{border-color:var(--acc);color:var(--acc)}
+#pg-landing .cbtn.ghost code{font-family:var(--mono);font-size:12.5px;color:var(--acc)}
+#pg-landing .trust{margin-top:56px;padding-top:32px;border-top:1px solid var(--line);opacity:1;transform:none}
+#pg-landing .trust-label{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-4);margin-bottom:20px}
+#pg-landing .trust-row{display:flex;gap:46px;justify-content:center;align-items:center;flex-wrap:wrap;opacity:.65}
+#pg-landing .trust-row span{font-family:var(--disp);font-weight:600;font-size:16px;letter-spacing:.02em;color:var(--ink-3)}
+#pg-landing .section-label{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--acc);margin-bottom:14px}
+#pg-landing .mkt-head{text-align:center;max-width:640px;margin:84px auto 44px}
+#pg-landing .mkt-head h2{font-family:var(--disp);font-weight:700;font-size:clamp(28px,3.6vw,40px);letter-spacing:-.02em;line-height:1.12;margin-bottom:12px;color:var(--ink)}
+#pg-landing .mkt-head p{color:var(--ink-2);font-size:16px}
+#pg-landing .layout{display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start;margin-bottom:40px}
+@media(max-width:880px){#pg-landing .layout{grid-template-columns:1fr}}
+#pg-landing .tier-group{margin-bottom:12px;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--card);transition:border-color .15s,box-shadow .15s}
+#pg-landing .tier-group:hover{box-shadow:0 2px 10px rgba(11,31,51,.05)}
+#pg-landing .tier-header{padding:15px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);cursor:pointer;user-select:none;transition:background .15s;background:#fbfcfd}
+#pg-landing .tier-header:hover{background:#f4f6f8}
+#pg-landing .tier-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;box-shadow:none}
+#pg-landing .tier-info{flex:1;min-width:0}
+#pg-landing .tier-name{font-family:var(--disp);font-size:13px;font-weight:700;letter-spacing:0}
+#pg-landing .tier-sub{font-size:10.5px;color:var(--ink-3);margin-top:2px}
+#pg-landing .tier-chevron{width:16px;height:16px;color:var(--ink-3);transition:transform .25s}
+#pg-landing .tier-group.collapsed .tier-chevron{transform:rotate(-90deg)}
+#pg-landing .tier-cards{padding:8px;display:flex;flex-direction:column;gap:5px;overflow:hidden;transition:max-height .3s,opacity .2s,padding .2s}
+#pg-landing .tier-group.collapsed .tier-cards{max-height:0!important;opacity:0;padding-top:0;padding-bottom:0}
+#pg-landing .gpu-card{border-radius:9px;border:1px solid var(--line);background:#fff;cursor:pointer;transition:border-color .15s,background .15s;overflow:hidden}
+#pg-landing .gpu-card:hover{border-color:var(--line-2);background:#fbfcfd}
+#pg-landing .gpu-card.selected{border-color:var(--acc);background:var(--acc-soft)}
+#pg-landing .gpu-card-header{padding:13px 15px;display:flex;align-items:center;gap:12px}
+#pg-landing .gpu-status{width:7px;height:7px;border-radius:50%;background:#c8d2de;flex-shrink:0;transition:.2s}
+#pg-landing .gpu-card.selected .gpu-status{background:var(--green);box-shadow:none}
+#pg-landing .gpu-info{flex:1;min-width:0}
+#pg-landing .gpu-name-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#pg-landing .gpu-name{font-family:var(--disp);font-size:13.5px;font-weight:600;color:var(--ink);white-space:nowrap}
+#pg-landing .gpu-card.selected .gpu-name{color:var(--acc)}
+#pg-landing .gpu-badge{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.03em;padding:2px 7px;border-radius:5px;white-space:nowrap}
+#pg-landing .gpu-spec{font-family:var(--mono);font-size:10px;color:var(--ink-3);margin-top:3px;font-weight:400}
+#pg-landing .gpu-price-col{text-align:right;flex-shrink:0}
+#pg-landing .gpu-price{font-family:var(--mono);font-size:13.5px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink)}
+#pg-landing .gpu-price-label{font-size:9px;color:var(--ink-4);font-weight:500;margin-top:2px}
+#pg-landing .gpu-expand{overflow:hidden;max-height:0;opacity:0;transition:max-height .3s,opacity .2s}
+#pg-landing .gpu-expand.open{max-height:600px;opacity:1}
+#pg-landing .gpu-expand-inner{padding:0 15px 15px}
+#pg-landing .divider{height:1px;background:var(--line);margin-bottom:14px}
+#pg-landing .use-cases{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+#pg-landing .use-chip{font-size:10.5px;font-weight:500;padding:4px 10px;border-radius:5px;border:1px solid var(--line);color:var(--ink-2);background:#fbfcfd}
+#pg-landing .period-label{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:9px}
+#pg-landing .period-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:14px}
+#pg-landing .period-pill{padding:8px 4px;border-radius:7px;border:1px solid var(--line);background:#fff;color:var(--ink-3);font-size:11px;font-weight:600;cursor:pointer;transition:.15s;text-align:center}
+#pg-landing .period-pill:hover{border-color:var(--line-2);color:var(--ink-2)}
+#pg-landing .period-pill.active{background:var(--acc);border-color:var(--acc);color:#fff}
+#pg-landing .price-box{background:#fbfcfd;border:1px solid var(--line);border-radius:9px;padding:15px 16px;margin-bottom:12px}
+#pg-landing .price-box-label{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:7px}
+#pg-landing .price-main{font-family:var(--disp);font-size:28px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink);letter-spacing:-.02em}
+#pg-landing .price-savings{margin-top:9px;padding-top:9px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+#pg-landing .price-savings.hidden{display:none}
+#pg-landing .price-old{font-family:var(--mono);font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+#pg-landing .price-old s{color:#c0392b;opacity:.8}
+#pg-landing .price-save{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--green);font-variant-numeric:tabular-nums}
+#pg-landing .launch-btn{width:100%;padding:13px;border-radius:8px;border:1px solid var(--acc);background:var(--acc);color:#fff;font-family:var(--body);font-size:13.5px;font-weight:600;cursor:pointer;transition:.15s}
+#pg-landing .launch-btn:hover{background:var(--acc-2);box-shadow:0 4px 14px rgba(11,95,255,.25)}
+#pg-landing .right-panel{position:sticky;top:84px;display:flex;flex-direction:column;gap:16px}
+#pg-landing .empty-state{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:40px 24px;text-align:center}
+#pg-landing .empty-icon{font-size:30px;margin-bottom:12px;opacity:.5;color:var(--ink-3)}
+#pg-landing .empty-title{font-family:var(--disp);font-size:15px;font-weight:600;color:var(--ink-2);margin-bottom:6px}
+#pg-landing .empty-sub{font-size:12px;color:var(--ink-3);line-height:1.5}
+#pg-landing .enterprise-card{border-radius:12px;border:1px solid var(--line);background:linear-gradient(170deg,#0b1f33,#13314f);color:#fff;padding:24px;position:relative;overflow:hidden}
+#pg-landing .enterprise-card::before{display:none}
+#pg-landing .ent-badge{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9fc4ff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);padding:3px 10px;border-radius:5px;margin-bottom:14px}
+#pg-landing .ent-title{font-family:var(--disp);font-size:19px;font-weight:700;letter-spacing:-.01em;margin-bottom:9px;line-height:1.2;color:#fff}
+#pg-landing .ent-desc{font-size:12.5px;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:16px}
+#pg-landing .ent-specs{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+#pg-landing .ent-spec-row{display:flex;align-items:center;gap:8px;font-size:11.5px;color:rgba(255,255,255,.75)}
+#pg-landing .ent-spec-row::before{content:'';width:3px;height:3px;border-radius:50%;background:#9fc4ff;flex-shrink:0}
+#pg-landing .ent-spec-val{font-weight:600;color:#fff}
+#pg-landing .ent-btn{width:100%;padding:13px;border-radius:8px;border:none;background:#fff;color:#0b1f33;font-family:var(--body);font-size:13.5px;font-weight:600;cursor:pointer;transition:.15s}
+#pg-landing .ent-btn:hover{background:#eaf1ff;color:var(--acc)}
+#pg-landing .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0 84px}
+@media(max-width:760px){#pg-landing .metrics{grid-template-columns:1fr 1fr}}
+#pg-landing .metric{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px 24px}
+#pg-landing .metric .v{font-family:var(--disp);font-weight:700;font-size:32px;letter-spacing:-.02em;line-height:1;color:var(--ink)}
+#pg-landing .metric .v small{font-family:var(--mono);font-size:16px;color:var(--ink-3);font-weight:500}
+#pg-landing .metric .v.g{color:var(--acc)}
+#pg-landing .metric .l{margin-top:9px;font-size:12.5px;color:var(--ink-3)}
+#pg-landing .shead{max-width:640px;margin:0 auto 48px;text-align:center}
+#pg-landing .shead h2{font-family:var(--disp);font-weight:700;font-size:clamp(28px,3.6vw,40px);letter-spacing:-.02em;line-height:1.12;margin-bottom:14px;color:var(--ink)}
+#pg-landing .shead p{color:var(--ink-2);font-size:16px}
+#pg-landing .feats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:96px}
+@media(max-width:900px){#pg-landing .feats{grid-template-columns:1fr}}
+#pg-landing .feat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px;transition:border-color .15s,box-shadow .15s;position:relative;overflow:hidden}
+#pg-landing .feat:hover{border-color:var(--line-2);box-shadow:0 4px 16px rgba(11,31,51,.06)}
+#pg-landing .feat::before{display:none}
+#pg-landing .feat .ic{width:44px;height:44px;border-radius:9px;display:grid;place-items:center;font-family:var(--mono);font-size:17px;font-weight:600;color:var(--acc);background:var(--acc-soft);border:1px solid #d8e6ff;margin-bottom:18px}
+#pg-landing .feat h3{font-family:var(--disp);font-weight:700;font-size:18px;letter-spacing:-.01em;margin-bottom:8px;color:var(--ink)}
+#pg-landing .feat p{font-size:14px;color:var(--ink-2);line-height:1.6}
+#pg-landing .term-sec{margin-bottom:96px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+@media(max-width:900px){#pg-landing .term-sec{grid-template-columns:1fr;gap:32px}}
+#pg-landing .term-copy h2{font-family:var(--disp);font-weight:700;font-size:clamp(26px,3vw,36px);letter-spacing:-.02em;line-height:1.15;margin-bottom:16px;color:var(--ink)}
+#pg-landing .term-copy>p{color:var(--ink-2);font-size:15.5px;line-height:1.65;margin-bottom:24px}
+#pg-landing .tick{display:flex;gap:11px;align-items:flex-start;margin-bottom:13px;font-size:14.5px;color:var(--ink-2)}
+#pg-landing .tick svg{width:18px;height:18px;flex-shrink:0;margin-top:1px;color:var(--green)}
+#pg-landing .term{background:#0b1f33;border:1px solid #13314f;border-radius:12px;overflow:hidden;box-shadow:0 20px 50px -20px rgba(11,31,51,.4)}
+#pg-landing .term-bar{display:flex;align-items:center;gap:7px;padding:13px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+#pg-landing .term-bar i{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.18)}
+#pg-landing .term-bar .ti{margin-left:10px;font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.4)}
+#pg-landing .term-body{padding:20px;font-family:var(--mono);font-size:12.5px;line-height:1.85}
+#pg-landing .term-body .p{color:#4ade80}#pg-landing .term-body .c{color:#cfe0ff}#pg-landing .term-body .m{color:rgba(255,255,255,.45)}#pg-landing .term-body .o{color:rgba(255,255,255,.7)}#pg-landing .term-body .h{color:#7fb0ff}
+#pg-landing .fcta{text-align:center;padding:80px 30px;margin-bottom:84px;border-radius:16px;position:relative;overflow:hidden;background:linear-gradient(160deg,#0b1f33,#0b5fff);border:none}
+#pg-landing .fcta::before{display:none}
+#pg-landing .fcta h2{position:relative;font-family:var(--disp);font-weight:700;font-size:clamp(28px,4vw,44px);letter-spacing:-.02em;line-height:1.1;margin-bottom:16px;color:#fff}
+#pg-landing .fcta p{position:relative;color:rgba(255,255,255,.8);font-size:17px;margin-bottom:32px;max-width:480px;margin-inline:auto}
+#pg-landing .fcta .hero-cta{margin-top:0;position:relative}
+#pg-landing .fcta .cbtn.pri{background:#fff;color:var(--acc);border-color:#fff}
+#pg-landing .fcta .cbtn.pri:hover{background:#eaf1ff}
+#pg-landing .fcta .cbtn.ghost{background:transparent;border-color:rgba(255,255,255,.4);color:#fff}
+#pg-landing .fcta .cbtn.ghost:hover{border-color:#fff;background:rgba(255,255,255,.1);color:#fff}
+#pg-landing .reveal{opacity:1;transform:none;transition:none}
+#pg-landing footer{position:relative;z-index:2;border-top:1px solid var(--line);background:#fff}
+#pg-landing .foot-top{max-width:1140px;margin:0 auto;padding:60px max(24px,4vw) 44px;display:grid;grid-template-columns:1.6fr repeat(4,1fr);gap:40px}
+@media(max-width:900px){#pg-landing .foot-top{grid-template-columns:1fr 1fr;gap:34px 24px}}
+#pg-landing .foot-brand .nav-logo{margin-bottom:18px}
+#pg-landing .foot-brand p{font-size:13.5px;color:var(--ink-3);line-height:1.6;max-width:280px;margin-bottom:20px}
+#pg-landing .foot-status{display:inline-flex;align-items:center;gap:9px;padding:7px 13px;border-radius:6px;background:var(--green-soft);border:1px solid #c5e8d4;font-size:12px;color:var(--green);font-weight:600}
+#pg-landing .foot-status .d{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:none;animation:none}
+#pg-landing .foot-col h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-4);margin-bottom:18px}
+#pg-landing .foot-col a{display:block;font-size:13.5px;color:var(--ink-2);text-decoration:none;margin-bottom:12px;transition:color .15s;width:fit-content;cursor:pointer}
+#pg-landing .foot-col a:hover{color:var(--acc)}
+#pg-landing .foot-col a .ext{font-size:10px;color:var(--ink-4);margin-left:5px}
+#pg-landing .foot-bottom{border-top:1px solid var(--line)}
+#pg-landing .foot-bottom-in{max-width:1140px;margin:0 auto;padding:22px max(24px,4vw);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+#pg-landing .foot-legal{display:flex;gap:24px;flex-wrap:wrap}
+#pg-landing .foot-legal a{font-size:12.5px;color:var(--ink-3);text-decoration:none;transition:.15s;cursor:pointer}
+#pg-landing .foot-legal a:hover{color:var(--acc)}
+#pg-landing .foot-copy{font-size:12.5px;color:var(--ink-4);font-family:var(--mono)}
+#pg-landing .foot-social{display:flex;gap:8px}
+#pg-landing .foot-social a{width:34px;height:34px;border-radius:7px;border:1px solid var(--line);display:grid;place-items:center;color:var(--ink-3);transition:.15s}
+#pg-landing .foot-social a:hover{color:var(--acc);border-color:var(--acc);background:var(--acc-soft)}
+#pg-landing .foot-social svg{width:16px;height:16px}
+#pg-landing .user-dropdown{background:#fff;border:1px solid var(--line-2);box-shadow:0 20px 50px rgba(11,31,51,.15)}
+#pg-landing .ud-head-title,#pg-landing .ud-user-name{color:var(--ink)}
+#pg-landing .ud-head-sub,#pg-landing .ud-user-email{color:var(--ink-3)}
+#pg-landing .ud-method{border-color:var(--line);color:var(--ink)}
+#pg-landing .ud-method:hover{background:#f4f6f8;border-color:var(--line-2)}
+#pg-landing .ud-method-title{color:var(--ink)}
+#pg-landing .ud-method-sub{color:var(--ink-3)}
+#pg-landing .ud-method-icon{background:#f4f6f8!important}
+#pg-landing .ud-divider{background:var(--line)}
+#pg-landing .ud-head,#pg-landing .ud-email-form,#pg-landing .ud-user-head,#pg-landing .ud-balance-row{border-color:var(--line)}
+#pg-landing .ud-input{background:#f4f6f8;border-color:var(--line);color:var(--ink)}
+#pg-landing .ud-input::placeholder{color:var(--ink-4)}
+#pg-landing .ud-tabs{background:#f4f6f8}
+#pg-landing .ud-tab{color:var(--ink-3)}
+#pg-landing .ud-tab.on{background:var(--acc);color:#fff}
+#pg-landing .ud-submit{background:var(--acc);border-color:var(--acc)}
+#pg-landing .ud-balance-row{background:var(--acc-soft)}
+#pg-landing .ud-balance-val{color:var(--acc)}
+#pg-landing .ud-user-item{color:var(--ink)}
+#pg-landing .ud-user-item:hover{background:#f4f6f8}
 
 /* ════ DASHBOARD (legacy classes, new palette via aliases) ════ */
 #pg-dash{position:relative;z-index:1}
@@ -494,7 +500,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
 
 </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Organization","name":"NODE.CLOUD","alternateName":"gnode.cloud","url":"https://gnode.cloud","logo":"https://gnode.cloud/logo.svg","image":"https://gnode.cloud/og-image.png","description":"Аренда GPU в России. RTX 4090, H100 SXM, Blackwell B300 — запуск инстанса за 2 минуты, лучшая тарификация на рынке.","sameAs":["https://t.me/gnodecloud"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","url":"https://t.me/gnodecloud"}}
+{"@context":"https://schema.org","@type":"Organization","name":"NODE.CLOUD","alternateName":"gnode.cloud","url":"https://gnode.cloud","logo":"https://gnode.cloud/logo.svg","image":"https://gnode.cloud/og-image.png","description":"Аренда GPU с оплатой рублём (карта РФ, СБП, крипто). RTX 4090, H100, Blackwell B300 из глобальных дата-центров. Поддержка на русском.","sameAs":["https://t.me/gnodecloud"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","url":"https://t.me/gnodecloud"}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","name":"NODE.CLOUD","url":"https://gnode.cloud"}
@@ -503,9 +509,6 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
 </head>
 <body>
 
-<canvas id="fxCanvas"></canvas>
-<div class="glow a"></div>
-<div class="glow b"></div>
 
 <!-- GLOBAL TOAST -->
 <div id="globalToast"><span id="gToastIco">✅</span><span id="gToastMsg">Готово</span></div>
@@ -660,25 +663,21 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
 <main>
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-eyebrow" id="heroEyebrow">GPU-инфраструктура для AI <span class="tag">RU REGION</span></div>
-    <h1 id="heroH1">Вычислительная мощь<br><span class="grad">по требованию.</span></h1>
-    <p id="heroP">От RTX 4090 до Blackwell B300. Запуск инстанса за 2 минуты, самая лучшая тарификация на рынке.</p>
+    <div class="hero-eyebrow" id="heroEyebrow">Аренда GPU с оплатой рублём <span class="tag">RU SUPPORT</span></div>
+    <h1 id="heroH1">GPU для ML и рендеринга —<br><span class="grad">оплата рублём.</span></h1>
+    <p id="heroP">От RTX 4090 до Blackwell B300 из глобальных дата-центров. Оплата картой РФ, СБП или криптой. Поддержка на русском в Telegram.</p>
     <div class="hero-cta">
       <button class="cbtn pri" onclick="document.getElementById('marketplace').scrollIntoView({behavior:'smooth'})" data-i18n="btn.launch_gpu">Запустить GPU →</button>
       <button class="cbtn ghost" onclick="openEnterpriseModal()" data-i18n="btn.contact_sales">Связаться с отделом продаж</button>
-    </div>
-    <div class="trust reveal">
-      <div class="trust-label" id="trustLabel">Доверяют команды, строящие на GPU</div>
-      <div class="trust-row"><span>AI Labs</span><span>NeuroStack</span><span>Vision&nbsp;Co</span><span>DataForge</span><span>Synapse</span></div>
     </div>
   </section>
 
   <!-- METRICS -->
   <section class="metrics reveal">
-    <div class="metric"><div class="v g" id="m1v">99.9<small>%</small></div><div class="l" id="m1l">Аптайм инфраструктуры</div></div>
-    <div class="metric"><div class="v">&lt;2<small>мин</small></div><div class="l" id="m2l">Время до запуска</div></div>
-    <div class="metric"><div class="v">18<small>+</small></div><div class="l" id="m3l">Моделей GPU</div></div>
-    <div class="metric"><div class="v">3744<small data-i18n="unit.rub_day">₽/сут</small></div><div class="l" id="m4l">Старт от</div></div>
+    <div class="metric"><div class="v g" id="m1v">~2<small>мин</small></div><div class="l" id="m1l">От оплаты до SSH-доступа</div></div>
+    <div class="metric"><div class="v">₽<small></small></div><div class="l" id="m2l">Карта РФ · СБП · крипто</div></div>
+    <div class="metric"><div class="v">20<small>+</small></div><div class="l" id="m3l">Моделей GPU в каталоге</div></div>
+    <div class="metric"><div class="v">RU<small></small></div><div class="l" id="m4l">Поддержка в Telegram</div></div>
   </section>
 
   <!-- MARKETPLACE -->
@@ -718,16 +717,16 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
   <section id="features">
     <div class="shead reveal">
       <div class="section-label" id="featKicker">Платформа</div>
-      <h2 id="featH2">Создано для серьёзных нагрузок</h2>
-      <p id="featHp">Всё, что нужно для обучения, инференса и рендеринга — в одном контуре.</p>
+      <h2 id="featH2">Что вы получаете</h2>
+      <p id="featHp">Доступ к зарубежным GPU без зарубежной карты и VPN.</p>
     </div>
     <div class="feats">
-      <div class="feat reveal"><div class="ic">⚡</div><h3 data-i18n="feat.deploy.t">Запуск за 2 минуты</h3><p data-i18n="feat.deploy.d">Готовые образы PyTorch, CUDA и Jupyter. SSH-доступ и публичный IP сразу после провижининга.</p></div>
-      <div class="feat reveal"><div class="ic">🔒</div><h3 data-i18n="feat.data.t">Данные в РФ</h3><p data-i18n="feat.data.d">Дата-центры на территории России. Соответствие 152-ФЗ. Изолированные сетевые контуры.</p></div>
-      <div class="feat reveal"><div class="ic">📊</div><h3 data-i18n="feat.bill.t">Самая лучшая тарификация на рынке</h3><p data-i18n="feat.bill.d">Платите ровно за использованное время. Прозрачный биллинг, без скрытых платежей и абонплат.</p></div>
-      <div class="feat reveal"><div class="ic">🌐</div><h3 data-i18n="feat.nvlink.t">NVLink / InfiniBand</h3><p data-i18n="feat.nvlink.d">Многоузловые кластеры до 8×B200 с высокоскоростным интерконнектом для распределённого обучения.</p></div>
-      <div class="feat reveal"><div class="ic">🛡️</div><h3 data-i18n="feat.support.t">Приоритетная поддержка</h3><p data-i18n="feat.support.d">Выделенные мощности и поддержка 24/7 для команд с продакшн-нагрузками.</p></div>
-      <div class="feat reveal"><div class="ic">🔑</div><h3 data-i18n="feat.api.t">API и автоматизация</h3><p data-i18n="feat.api.d">Полноценный REST API, SSH-ключи, программный запуск и остановка инстансов из CI/CD.</p></div>
+      <div class="feat reveal"><div class="ic">₽</div><h3 data-i18n="feat.pay.t">Оплата рублём</h3><p data-i18n="feat.pay.d">Карта российского банка, СБП или криптовалюта. Без зарубежных карт, VPN и валютных конвертаций.</p></div>
+      <div class="feat reveal"><div class="ic">RU</div><h3 data-i18n="feat.support.t">Поддержка на русском</h3><p data-i18n="feat.support.d">Отвечаем в Telegram по существу. Помогаем с запуском, образами и настройкой окружения.</p></div>
+      <div class="feat reveal"><div class="ic">‹›</div><h3 data-i18n="feat.deploy.t">Запуск за пару минут</h3><p data-i18n="feat.deploy.d">Готовые образы PyTorch, CUDA и Jupyter. SSH-доступ и публичный IP сразу после старта инстанса.</p></div>
+      <div class="feat reveal"><div class="ic">∑</div><h3 data-i18n="feat.bill.t">Прозрачный биллинг</h3><p data-i18n="feat.bill.d">Платите за фактическое время работы. Баланс пополняется заранее, неизрасходованное остаётся на счёте.</p></div>
+      <div class="feat reveal"><div class="ic">⌗</div><h3 data-i18n="feat.gpu.t">От RTX 4090 до B300</h3><p data-i18n="feat.gpu.d">20+ моделей GPU в каталоге: от бюджетных до H100, H200 и Blackwell для крупных задач.</p></div>
+      <div class="feat reveal"><div class="ic">{ }</div><h3 data-i18n="feat.api.t">API и SSH-ключи</h3><p data-i18n="feat.api.d">REST API для запуска и остановки инстансов из скриптов и CI. Привязка собственных SSH-ключей.</p></div>
     </div>
   </section>
 
@@ -748,7 +747,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
         <div class="m">→ provisioning instance...</div>
         <div class="o">→ image: <span class="h">pytorch-2.4-cuda12</span></div>
         <div class="o">→ vram: 80GB · vcpu: 20 · ram: 125GB</div>
-        <div class="m">→ allocating in <span class="h">ru-central-1</span></div>
+        <div class="m">→ allocating gpu node...</div>
         <div style="color:var(--green)">✓ ready in 1m 48s</div>
         <div class="o">ssh root@<span class="h">185.12.44.91</span> -p 22</div>
         <div><span class="p">$</span> <span style="color:var(--ink-4)">▍</span></div>
@@ -759,7 +758,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
   <!-- FINAL CTA -->
   <section class="fcta reveal">
     <h2 id="fctaH2">Запустите первый GPU<br>уже сегодня</h2>
-    <p id="fctaP">Регистрация за минуту. Доступ к топовым GPU без долгих согласований.</p>
+    <p id="fctaP">Регистрация за минуту. Пополните баланс рублями и запустите GPU — без зарубежных карт и VPN.</p>
     <div class="hero-cta">
       <button class="cbtn pri" onclick="toggleUserDropdown()" data-i18n="btn.create_acc">Создать аккаунт →</button>
       <button class="cbtn ghost" onclick="openEnterpriseModal()" data-i18n="btn.contact_sales2">Связаться с продажами</button>
@@ -772,7 +771,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);background:v
   <div class="foot-top">
     <div class="foot-brand">
       <a class="nav-logo" href="#" onclick="goPage('pg-landing');return false"><div class="nav-logo-icon">G</div><span class="nav-logo-text">NODE.CLOUD</span></a>
-      <p data-i18n="foot.brand">GPU-инфраструктура корпоративного класса. Вычисления для AI, рендеринга и науки — на территории России.</p>
+      <p data-i18n="foot.brand">Аренда GPU из глобальных дата-центров с оплатой рублём и поддержкой на русском. Для ML, инференса и рендеринга.</p>
       <div class="foot-status"><span class="d"></span><span data-i18n="foot.allok">Все системы работают</span></div>
     </div>
     <div class="foot-col">
@@ -1170,8 +1169,8 @@ const discounts={day:0,week:0.05,month:0.10};
 function fmt(usd){const v=lang==='RU'?usd*rubRate:usd;const s=new Intl.NumberFormat('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}).format(v);return lang==='RU'?s+' \u20bd':'$'+s;}
 function calcPrice(key,period){const daily=hourlyUSD[key]*24;const full=daily*periodDays[period];const final=full*(1-discounts[period]);return{full,final,saved:full-final};}
 const T={
-  RU:{eyebrow:'GPU-\u0438\u043d\u0444\u0440\u0430\u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 \u0434\u043b\u044f AI',h1:'\u0412\u044b\u0447\u0438\u0441\u043b\u0438\u0442\u0435\u043b\u044c\u043d\u0430\u044f \u043c\u043e\u0449\u044c<br><span class="grad">\u043f\u043e \u0442\u0440\u0435\u0431\u043e\u0432\u0430\u043d\u0438\u044e.</span>',p:'\u041e\u0442 RTX 4090 \u0434\u043e Blackwell B300. \u0417\u0430\u043f\u0443\u0441\u043a \u0438\u043d\u0441\u0442\u0430\u043d\u0441\u0430 \u0437\u0430 2 \u043c\u0438\u043d\u0443\u0442\u044b, \u0441\u0430\u043c\u0430\u044f \u043b\u0443\u0447\u0448\u0430\u044f \u0442\u0430\u0440\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u044f \u043d\u0430 \u0440\u044b\u043d\u043a\u0435.',gpuLabel:'\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0435 GPU \u2014 On-Demand',emptyTitle:'\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 GPU',emptySub:'\u041d\u0430\u0436\u043c\u0438\u0442\u0435 \u043d\u0430 \u043a\u0430\u0440\u0442\u043e\u0447\u043a\u0443 \u0441\u043b\u0435\u0432\u0430,<br>\u0447\u0442\u043e\u0431\u044b \u043d\u0430\u0441\u0442\u0440\u043e\u0438\u0442\u044c \u0430\u0440\u0435\u043d\u0434\u0443',rateLabel:'\u0441\u0443\u0442\u043a\u0438',useCasesLabel:'\u041f\u0440\u0438\u043c\u0435\u043d\u0435\u043d\u0438\u0435',periodLabel:'\u041f\u0435\u0440\u0438\u043e\u0434 \u0430\u0440\u0435\u043d\u0434\u044b',pDay:'1 \u0434\u0435\u043d\u044c',pWeek:'\u041d\u0435\u0434\u0435\u043b\u044f \u22125%',pMonth:'\u041c\u0435\u0441\u044f\u0446 \u221210%',costLabel:'\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c',baseLabel:'\u0411\u0430\u0437\u043e\u0432\u0430\u044f \u0446\u0435\u043d\u0430:',saveLabel:'\u042d\u043a\u043e\u043d\u043e\u043c\u0438\u044f:',launchBtn:'\u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u044c GPU-\u0438\u043d\u0441\u0442\u0430\u043d\u0441',entBadge:'Enterprise',entTitle:'Blackwell x8<br>AI \u041a\u043b\u0430\u0441\u0442\u0435\u0440\u044b',entDesc:'\u0414\u043b\u044f \u043c\u0430\u0441\u0448\u0442\u0430\u0431\u043d\u043e\u0433\u043e \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u044f LLM. 8\u00d7 B200 / B300 \u043e\u0431\u044a\u0435\u0434\u0438\u043d\u0435\u043d\u044b \u0447\u0435\u0440\u0435\u0437 NVLink \u0441 InfiniBand-\u0441\u0435\u0442\u044c\u044e.',entTerm:' 3 \u043c\u0435\u0441\u044f\u0446\u0430',entNet:' InfiniBand / NVLink',entConfig:' Custom',entBtn:'\u0421\u0432\u044f\u0437\u0430\u0442\u044c\u0441\u044f \u0441 \u043e\u0442\u0434\u0435\u043b\u043e\u043c \u043f\u0440\u043e\u0434\u0430\u0436',modalTitle:'\u0417\u0430\u044f\u0432\u043a\u0430 \u0441\u0444\u043e\u0440\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0430',modalH3:'\u041f\u0435\u0440\u0435\u0445\u043e\u0434 \u0432 Telegram',modalP:'\u041a\u043e\u043d\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044f \u043f\u0435\u0440\u0435\u0434\u0430\u043d\u0430 \u043c\u0435\u043d\u0435\u0434\u0436\u0435\u0440\u0443',modalBtn:'\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u0434\u0438\u0430\u043b\u043e\u0433 \u2192',sNav:['GPU Marketplace','Enterprise \u041a\u043b\u0430\u0441\u0442\u0435\u0440\u044b','\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044f','\u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430'],tiers:[{label:'\u041d\u0430\u0447\u0430\u043b\u044c\u043d\u044b\u0439 \u0443\u0440\u043e\u0432\u0435\u043d\u044c',sub:'\u0418\u043d\u0444\u0435\u0440\u0435\u043d\u0441, \u0440\u0435\u043d\u0434\u0435\u0440\u0438\u043d\u0433, \u0441\u0442\u0430\u0440\u0442 \u0432 AI',color:'#3ddc84'},{label:'\u0421\u0440\u0435\u0434\u043d\u0438\u0439 \u043a\u043b\u0430\u0441\u0441',sub:'Fine-tuning, \u0433\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u044f, \u043f\u0440\u043e\u0444\u0435\u0441\u0441\u0438\u043e\u043d\u0430\u043b\u044c\u043d\u044b\u0439 \u0440\u0435\u043d\u0434\u0435\u0440',color:'#76b3ff'},{label:'\u041f\u0440\u043e\u0444\u0435\u0441\u0441\u0438\u043e\u043d\u0430\u043b\u044c\u043d\u044b\u0439 AI',sub:'\u041e\u0431\u0443\u0447\u0435\u043d\u0438\u0435 \u0431\u043e\u043b\u044c\u0448\u0438\u0445 \u043c\u043e\u0434\u0435\u043b\u0435\u0439, HPC, datacenter',color:'#9d7bff'},{label:'\u26a1 \u042d\u043b\u0438\u0442\u0430 \u2014 Hopper / Blackwell',sub:'\u0422\u043e\u043f\u043e\u0432\u044b\u0435 LLM, AGI, \u0433\u043e\u0441\u0443\u0434\u0430\u0440\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0439 HPC',color:'#ff5d57'}]},
-  EN:{eyebrow:'GPU infrastructure for AI',h1:'Compute power,<br><span class="grad">on demand.</span>',p:'From RTX 4090 to Blackwell B300 \u2014 deploy in 2 minutes. Best billing rates on the market.',gpuLabel:'Available GPUs \u2014 On-Demand',emptyTitle:'Select a GPU',emptySub:'Click a card on the left<br>to configure your rental',rateLabel:'/day',useCasesLabel:'Use cases',periodLabel:'Rental period',pDay:'1 day',pWeek:'Week \u22125%',pMonth:'Month \u221210%',costLabel:'Cost',baseLabel:'Base price:',saveLabel:'Savings:',launchBtn:'Deploy GPU Instance',entBadge:'Enterprise',entTitle:'Blackwell x8<br>AI Clusters',entDesc:'For large-scale LLM training. 8\u00d7 B200 / B300 connected via NVLink with InfiniBand.',entTerm:' 3 months',entNet:' InfiniBand / NVLink',entConfig:' Custom',entBtn:'Contact Sales',modalTitle:'Order created',modalH3:'Opening Telegram',modalP:'Config sent to manager',modalBtn:'Open chat \u2192',sNav:['GPU Marketplace','Enterprise Clusters','Documentation','Support'],tiers:[{label:'Entry Level',sub:'Inference, rendering, AI starter',color:'#3ddc84'},{label:'Mid-Range',sub:'Fine-tuning, generation, professional rendering',color:'#76b3ff'},{label:'Professional AI',sub:'Large model training, HPC, datacenter',color:'#9d7bff'},{label:'\u26a1 Elite \u2014 Hopper / Blackwell',sub:'Top-tier LLMs, AGI, government HPC',color:'#ff5d57'}]}
+  RU:{eyebrow:'\u0410\u0440\u0435\u043d\u0434\u0430 GPU \u0441 \u043e\u043f\u043b\u0430\u0442\u043e\u0439 \u0440\u0443\u0431\u043b\u0451\u043c',h1:'GPU \u0434\u043b\u044f ML \u0438 \u0440\u0435\u043d\u0434\u0435\u0440\u0438\u043d\u0433\u0430 \u2014<br><span class="grad">\u043e\u043f\u043b\u0430\u0442\u0430 \u0440\u0443\u0431\u043b\u0451\u043c.</span>',p:'\u041e\u0442 RTX 4090 \u0434\u043e Blackwell B300 \u0438\u0437 \u0433\u043b\u043e\u0431\u0430\u043b\u044c\u043d\u044b\u0445 \u0434\u0430\u0442\u0430-\u0446\u0435\u043d\u0442\u0440\u043e\u0432. \u041e\u043f\u043b\u0430\u0442\u0430 \u043a\u0430\u0440\u0442\u043e\u0439 \u0420\u0424, \u0421\u0411\u041f \u0438\u043b\u0438 \u043a\u0440\u0438\u043f\u0442\u043e\u0439. \u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430 \u043d\u0430 \u0440\u0443\u0441\u0441\u043a\u043e\u043c \u0432 Telegram.',gpuLabel:'\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0435 GPU \u2014 On-Demand',emptyTitle:'\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 GPU',emptySub:'\u041d\u0430\u0436\u043c\u0438\u0442\u0435 \u043d\u0430 \u043a\u0430\u0440\u0442\u043e\u0447\u043a\u0443 \u0441\u043b\u0435\u0432\u0430,<br>\u0447\u0442\u043e\u0431\u044b \u043d\u0430\u0441\u0442\u0440\u043e\u0438\u0442\u044c \u0430\u0440\u0435\u043d\u0434\u0443',rateLabel:'\u0441\u0443\u0442\u043a\u0438',useCasesLabel:'\u041f\u0440\u0438\u043c\u0435\u043d\u0435\u043d\u0438\u0435',periodLabel:'\u041f\u0435\u0440\u0438\u043e\u0434 \u0430\u0440\u0435\u043d\u0434\u044b',pDay:'1 \u0434\u0435\u043d\u044c',pWeek:'\u041d\u0435\u0434\u0435\u043b\u044f \u22125%',pMonth:'\u041c\u0435\u0441\u044f\u0446 \u221210%',costLabel:'\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c',baseLabel:'\u0411\u0430\u0437\u043e\u0432\u0430\u044f \u0446\u0435\u043d\u0430:',saveLabel:'\u042d\u043a\u043e\u043d\u043e\u043c\u0438\u044f:',launchBtn:'\u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u044c GPU-\u0438\u043d\u0441\u0442\u0430\u043d\u0441',entBadge:'Enterprise',entTitle:'Blackwell x8<br>AI \u041a\u043b\u0430\u0441\u0442\u0435\u0440\u044b',entDesc:'\u0414\u043b\u044f \u043c\u0430\u0441\u0448\u0442\u0430\u0431\u043d\u043e\u0433\u043e \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u044f LLM. 8\u00d7 B200 / B300 \u043e\u0431\u044a\u0435\u0434\u0438\u043d\u0435\u043d\u044b \u0447\u0435\u0440\u0435\u0437 NVLink \u0441 InfiniBand-\u0441\u0435\u0442\u044c\u044e.',entTerm:' 3 \u043c\u0435\u0441\u044f\u0446\u0430',entNet:' InfiniBand / NVLink',entConfig:' Custom',entBtn:'\u0421\u0432\u044f\u0437\u0430\u0442\u044c\u0441\u044f \u0441 \u043e\u0442\u0434\u0435\u043b\u043e\u043c \u043f\u0440\u043e\u0434\u0430\u0436',modalTitle:'\u0417\u0430\u044f\u0432\u043a\u0430 \u0441\u0444\u043e\u0440\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0430',modalH3:'\u041f\u0435\u0440\u0435\u0445\u043e\u0434 \u0432 Telegram',modalP:'\u041a\u043e\u043d\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044f \u043f\u0435\u0440\u0435\u0434\u0430\u043d\u0430 \u043c\u0435\u043d\u0435\u0434\u0436\u0435\u0440\u0443',modalBtn:'\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u0434\u0438\u0430\u043b\u043e\u0433 \u2192',sNav:['GPU Marketplace','Enterprise \u041a\u043b\u0430\u0441\u0442\u0435\u0440\u044b','\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044f','\u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430'],tiers:[{label:'\u041d\u0430\u0447\u0430\u043b\u044c\u043d\u044b\u0439 \u0443\u0440\u043e\u0432\u0435\u043d\u044c',sub:'\u0418\u043d\u0444\u0435\u0440\u0435\u043d\u0441, \u0440\u0435\u043d\u0434\u0435\u0440\u0438\u043d\u0433, \u0441\u0442\u0430\u0440\u0442 \u0432 AI',color:'#3ddc84'},{label:'\u0421\u0440\u0435\u0434\u043d\u0438\u0439 \u043a\u043b\u0430\u0441\u0441',sub:'Fine-tuning, \u0433\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u044f, \u043f\u0440\u043e\u0444\u0435\u0441\u0441\u0438\u043e\u043d\u0430\u043b\u044c\u043d\u044b\u0439 \u0440\u0435\u043d\u0434\u0435\u0440',color:'#76b3ff'},{label:'\u041f\u0440\u043e\u0444\u0435\u0441\u0441\u0438\u043e\u043d\u0430\u043b\u044c\u043d\u044b\u0439 AI',sub:'\u041e\u0431\u0443\u0447\u0435\u043d\u0438\u0435 \u0431\u043e\u043b\u044c\u0448\u0438\u0445 \u043c\u043e\u0434\u0435\u043b\u0435\u0439, HPC, datacenter',color:'#9d7bff'},{label:'\u26a1 \u042d\u043b\u0438\u0442\u0430 \u2014 Hopper / Blackwell',sub:'\u0422\u043e\u043f\u043e\u0432\u044b\u0435 LLM, AGI, \u0433\u043e\u0441\u0443\u0434\u0430\u0440\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0439 HPC',color:'#ff5d57'}]},
+  EN:{eyebrow:'GPU rental with rouble payments',h1:'GPU for ML and rendering \u2014<br><span class="grad">pay in roubles.</span>',p:'RTX 4090 to Blackwell B300 from global data centers. Pay by Russian card, SBP or crypto. Support in Russian on Telegram.',gpuLabel:'Available GPUs \u2014 On-Demand',emptyTitle:'Select a GPU',emptySub:'Click a card on the left<br>to configure your rental',rateLabel:'/day',useCasesLabel:'Use cases',periodLabel:'Rental period',pDay:'1 day',pWeek:'Week \u22125%',pMonth:'Month \u221210%',costLabel:'Cost',baseLabel:'Base price:',saveLabel:'Savings:',launchBtn:'Deploy GPU Instance',entBadge:'Enterprise',entTitle:'Blackwell x8<br>AI Clusters',entDesc:'For large-scale LLM training. 8\u00d7 B200 / B300 connected via NVLink with InfiniBand.',entTerm:' 3 months',entNet:' InfiniBand / NVLink',entConfig:' Custom',entBtn:'Contact Sales',modalTitle:'Order created',modalH3:'Opening Telegram',modalP:'Config sent to manager',modalBtn:'Open chat \u2192',sNav:['GPU Marketplace','Enterprise Clusters','Documentation','Support'],tiers:[{label:'Entry Level',sub:'Inference, rendering, AI starter',color:'#3ddc84'},{label:'Mid-Range',sub:'Fine-tuning, generation, professional rendering',color:'#76b3ff'},{label:'Professional AI',sub:'Large model training, HPC, datacenter',color:'#9d7bff'},{label:'\u26a1 Elite \u2014 Hopper / Blackwell',sub:'Top-tier LLMs, AGI, government HPC',color:'#ff5d57'}]}
 };
 const GPUS={
   RU:{l4:{name:'NVIDIA L4',spec:'24 ГБ VRAM · 50 ГБ ОЗУ · 12 vCPU',badge:'Оптимальный',badgeStyle:'background:rgba(61,220,132,0.12);color:#3ddc84;border:1px solid rgba(61,220,132,0.2)',uses:['🤖 Инференс','🎨 Изображения','💬 Чат-боты','🔍 CV']},a40:{name:'NVIDIA A40',spec:'48 ГБ VRAM · 50 ГБ ОЗУ · 9 vCPU',badge:'Универсальный',badgeStyle:'background:rgba(61,220,132,0.08);color:#3ddc84;border:1px solid rgba(61,220,132,0.2)',uses:['🤖 ML-пайплайны','🎨 Генерация','📊 Аналитика']},rtx_3090:{name:'RTX 3090',spec:'24 ГБ VRAM · 125 ГБ ОЗУ · 16 vCPU',badge:'Популярный',badgeStyle:'background:rgba(255,179,64,0.1);color:#ffb340;border:1px solid rgba(255,179,64,0.2)',uses:['🧠 Fine-tuning','🎮 Движки','🔬 ML']},rtx_a6000:{name:'RTX A6000',spec:'48 ГБ VRAM · 50 ГБ ОЗУ · 9 vCPU',badge:'Workstation',badgeStyle:'background:rgba(157,123,255,0.12);color:#9d7bff;border:1px solid rgba(157,123,255,0.25)',uses:['🎨 3D/VFX','🔬 Рендеринг','💊 Фарма']},rtx_4090:{name:'RTX 4090',spec:'24 ГБ VRAM · 41 ГБ ОЗУ · 6 vCPU',badge:'🔥 Топ продаж',badgeStyle:'background:rgba(255,179,64,0.12);color:#ffb340;border:1px solid rgba(255,179,64,0.25)',uses:['🧠 Fine-tuning','🎨 Stable Diffusion','🎬 4K']},rtx_6000_ada:{name:'RTX 6000 Ada',spec:'48 ГБ VRAM · 167 ГБ ОЗУ · 10 vCPU',badge:'Pro',badgeStyle:'background:rgba(118,179,255,0.1);color:#76b3ff;border:1px solid rgba(118,179,255,0.2)',uses:['🏗️ BIM','🎬 VFX','🔬 Симуляции']},l40:{name:'NVIDIA L40',spec:'48 ГБ VRAM · 94 ГБ ОЗУ · 8 vCPU',badge:'Медиа & AI',badgeStyle:'background:rgba(255,93,87,0.1);color:#ff5d57;border:1px solid rgba(255,93,87,0.2)',uses:['🎬 AI-видео','🖼️ Изображения','🔊 Речь']},l40s:{name:'NVIDIA L40S',spec:'48 ГБ VRAM · 94 ГБ ОЗУ · 16 vCPU',badge:'Рекомендуем',badgeStyle:'background:rgba(61,220,132,0.1);color:#3ddc84;border:1px solid rgba(61,220,132,0.2)',uses:['⚡ Инференс','🧠 Обучение','🌐 Серверный AI']},rtx_5090:{name:'RTX 5090',spec:'32 ГБ VRAM · 93 ГБ ОЗУ · 16 vCPU',badge:'Новинка',badgeStyle:'background:rgba(157,123,255,0.1);color:#9d7bff;border:1px solid rgba(157,123,255,0.2)',uses:['🧠 LLM 30B','🎨 Генерация','⚡ AI-видео']},a100_pcie:{name:'A100 PCIe',spec:'80 ГБ VRAM · 117 ГБ ОЗУ · 8 vCPU',badge:'AI Datacenter',badgeStyle:'background:rgba(118,179,255,0.1);color:#76b3ff;border:1px solid rgba(118,179,255,0.2)',uses:['🧠 LLM 30-70B','🔬 HPC','🧬 Геномика']},a100_sxm:{name:'A100 SXM',spec:'80 ГБ VRAM · 250 ГБ ОЗУ · 16 vCPU',badge:'HPC',badgeStyle:'background:rgba(118,179,255,0.12);color:#76b3ff;border:1px solid rgba(118,179,255,0.25)',uses:['🧠 Большие модели','🔭 Наука','🏭 AI']},rtx_pro_6000_wk:{name:'RTX PRO 6000 WK',spec:'96 ГБ VRAM · 188 ГБ ОЗУ · 16 vCPU',badge:'Creator Pro',badgeStyle:'background:rgba(255,93,87,0.1);color:#ff5d57;border:1px solid rgba(255,93,87,0.2)',uses:['🎬 Рендеринг','🏗️ Digital Twin','🎨 Дизайн']},rtx_pro_6000:{name:'RTX PRO 6000',spec:'96 ГБ VRAM · 188 ГБ ОЗУ · 16 vCPU',badge:'Server Pro',badgeStyle:'background:rgba(255,93,87,0.1);color:#ff5d57;border:1px solid rgba(255,93,87,0.2)',uses:['🤖 Инференс','🧠 Обучение','🔐 Приватный AI']},mi300x:{name:'AMD MI300X',spec:'192 ГБ VRAM · 283 ГБ ОЗУ · 24 vCPU',badge:'AMD 192GB',badgeStyle:'background:rgba(255,93,87,0.1);color:#ff5d57;border:1px solid rgba(255,93,87,0.2)',uses:['🧠 Огромные модели','🔬 HPC','⚡ Инференс']},h100_pcie:{name:'H100 PCIe',spec:'80 ГБ VRAM · 188 ГБ ОЗУ · 16 vCPU',badge:'Enterprise AI',badgeStyle:'background:rgba(61,220,132,0.08);color:#3ddc84;border:1px solid rgba(61,220,132,0.2)',uses:['🤖 LLM в проде','🏦 Финтех','🔐 Приватный AI']},h100_nvl:{name:'H100 NVL',spec:'94 ГБ VRAM · 251 ГБ ОЗУ · 18 vCPU',badge:'Топ AI',badgeStyle:'background:rgba(61,220,132,0.1);color:#3ddc84;border:1px solid rgba(61,220,132,0.25)',uses:['🧠 GPT-класс','⚡ Инференс','🔬 Frontier']},h100_sxm:{name:'H100 SXM',spec:'80 ГБ VRAM · 125 ГБ ОЗУ · 20 vCPU',badge:'⚡ Мощнейший',badgeStyle:'background:rgba(255,179,64,0.1);color:#ffb340;border:1px solid rgba(255,179,64,0.2)',uses:['🧠 100B+ модели','🌐 Распределённое','🚀 AGI']},h200_nvl:{name:'H200 NVL',spec:'143 ГБ VRAM · 251 ГБ ОЗУ · 24 vCPU',badge:'Next-Gen',badgeStyle:'background:rgba(157,123,255,0.1);color:#9d7bff;border:1px solid rgba(157,123,255,0.2)',uses:['🧠 Мультимодал','🔭 Климат','💊 Drug AI']},h200_sxm:{name:'H200 SXM',spec:'141 ГБ VRAM · 251 ГБ ОЗУ · 24 vCPU',badge:'Next-Gen',badgeStyle:'background:rgba(157,123,255,0.1);color:#9d7bff;border:1px solid rgba(157,123,255,0.2)',uses:['🧠 Мультимодал','🔭 Климат','🧬 Протеины']},b200:{name:'Blackwell B200',spec:'180 ГБ VRAM · 283 ГБ ОЗУ · 28 vCPU',badge:'🚀 Флагман',badgeStyle:'background:rgba(255,93,87,0.12);color:#ff5d57;border:1px solid rgba(255,93,87,0.25)',uses:['🌐 Триллион-парам','🧠 AGI','🛰️ HPC']},b300:{name:'Blackwell B300',spec:'288 ГБ VRAM · 251 ГБ ОЗУ · 32 vCPU',badge:'🚀 B300 288GB',badgeStyle:'background:rgba(255,93,87,0.12);color:#ff5d57;border:1px solid rgba(255,93,87,0.25)',uses:['🌐 Foundation Models','🧠 AGI','🛰️ Госсектор']}},
@@ -1190,14 +1189,14 @@ const I18N = {
   RU: {
     'nav.gpu':'GPU','nav.platform':'Платформа','nav.docs':'Документация','nav.pricing':'Цены','nav.enterprise':'Enterprise',
     'nav.login':'Войти',
-    'feat.deploy.t':'Запуск за 2 минуты','feat.deploy.d':'Готовые образы PyTorch, CUDA и Jupyter. SSH-доступ и публичный IP сразу после провижининга.',
-    'feat.data.t':'Данные в РФ','feat.data.d':'Дата-центры на территории России. Соответствие 152-ФЗ. Изолированные сетевые контуры.',
-    'feat.bill.t':'Самая лучшая тарификация на рынке','feat.bill.d':'Платите ровно за использованное время. Прозрачный биллинг, без скрытых платежей и абонплат.',
-    'feat.nvlink.t':'NVLink / InfiniBand','feat.nvlink.d':'Многоузловые кластеры до 8×B200 с высокоскоростным интерконнектом для распределённого обучения.',
-    'feat.support.t':'Приоритетная поддержка','feat.support.d':'Выделенные мощности и поддержка 24/7 для команд с продакшн-нагрузками.',
-    'feat.api.t':'API и автоматизация','feat.api.d':'Полноценный REST API, SSH-ключи, программный запуск и остановка инстансов из CI/CD.',
+    'feat.pay.t':'Оплата рублём','feat.pay.d':'Карта российского банка, СБП или криптовалюта. Без зарубежных карт, VPN и валютных конвертаций.',
+    'feat.support.t':'Поддержка на русском','feat.support.d':'Отвечаем в Telegram по существу. Помогаем с запуском, образами и настройкой окружения.',
+    'feat.deploy.t':'Запуск за пару минут','feat.deploy.d':'Готовые образы PyTorch, CUDA и Jupyter. SSH-доступ и публичный IP сразу после старта инстанса.',
+    'feat.bill.t':'Прозрачный биллинг','feat.bill.d':'Платите за фактическое время работы. Баланс пополняется заранее, неизрасходованное остаётся на счёте.',
+    'feat.gpu.t':'От RTX 4090 до B300','feat.gpu.d':'20+ моделей GPU в каталоге: от бюджетных до H100, H200 и Blackwell для крупных задач.',
+    'feat.api.t':'API и SSH-ключи','feat.api.d':'REST API для запуска и остановки инстансов из скриптов и CI. Привязка собственных SSH-ключей.',
     'foot.tagline':'GPU-инфраструктура для AI и ML. Запуск за минуты, оплата за реальное время.',
-    'foot.brand':'GPU-инфраструктура корпоративного класса. Вычисления для AI, рендеринга и науки — на территории России.',
+    'foot.brand':'Аренда GPU из глобальных дата-центров с оплатой рублём и поддержкой на русском. Для ML, инференса и рендеринга.',
     'foot.allok':'Все системы работают',
     'foot.gpumarket':'GPU Marketplace','foot.entclusters':'Enterprise-кластеры','foot.prices':'Цены','foot.features':'Возможности','foot.developers':'Разработчикам',
     'foot.product':'Продукт','foot.company':'Компания','foot.legal':'Правовое',
@@ -1231,14 +1230,14 @@ const I18N = {
   EN: {
     'nav.gpu':'GPU','nav.platform':'Platform','nav.docs':'Docs','nav.pricing':'Pricing','nav.enterprise':'Enterprise',
     'nav.login':'Sign in',
-    'feat.deploy.t':'Deploy in 2 minutes','feat.deploy.d':'Ready-made PyTorch, CUDA and Jupyter images. SSH access and public IP right after provisioning.',
-    'feat.data.t':'Data in Russia','feat.data.d':'Data centers located in Russia. 152-FZ compliance. Isolated network perimeters.',
-    'feat.bill.t':'Best billing on the market','feat.bill.d':'Pay only for the time you use. Transparent billing, no hidden fees or subscriptions.',
-    'feat.nvlink.t':'NVLink / InfiniBand','feat.nvlink.d':'Multi-node clusters up to 8×B200 with high-speed interconnect for distributed training.',
-    'feat.support.t':'Priority support','feat.support.d':'Dedicated capacity and 24/7 support for teams with production workloads.',
-    'feat.api.t':'API & automation','feat.api.d':'Full REST API, SSH keys, programmatic launch and stop of instances from CI/CD.',
+    'feat.pay.t':'Pay in roubles','feat.pay.d':'Russian bank card, SBP or crypto. No foreign cards, VPN or currency conversion.',
+    'feat.support.t':'Support in Russian','feat.support.d':'We answer to the point in Telegram. Help with launch, images and environment setup.',
+    'feat.deploy.t':'Deploy in minutes','feat.deploy.d':'Ready-made PyTorch, CUDA and Jupyter images. SSH access and public IP right after the instance starts.',
+    'feat.bill.t':'Transparent billing','feat.bill.d':'Pay for actual runtime. Prepay your balance, unused funds stay on your account.',
+    'feat.gpu.t':'From RTX 4090 to B300','feat.gpu.d':'20+ GPU models in the catalog: from budget cards to H100, H200 and Blackwell for large jobs.',
+    'feat.api.t':'API & SSH keys','feat.api.d':'REST API to launch and stop instances from scripts and CI. Bring your own SSH keys.',
     'foot.tagline':'GPU infrastructure for AI and ML. Launch in minutes, pay for real usage.',
-    'foot.brand':'Enterprise-grade GPU infrastructure. Compute for AI, rendering and science — hosted in Russia.',
+    'foot.brand':'GPU rental from global data centers with rouble payments and Russian-language support. For ML, inference and rendering.',
     'foot.allok':'All systems operational',
     'foot.gpumarket':'GPU Marketplace','foot.entclusters':'Enterprise clusters','foot.prices':'Pricing','foot.features':'Features','foot.developers':'Developers',
     'foot.product':'Product','foot.company':'Company','foot.legal':'Legal',
@@ -1290,7 +1289,7 @@ function i18n(key){return (I18N[lang]&&I18N[lang][key])||(I18N.RU[key])||key;}
 function applyTranslations(){
   applyI18n();
   const t=T[lang];
-  setHtml('heroEyebrow',t.eyebrow+' <span class="tag">RU REGION</span>');
+  setHtml('heroEyebrow',t.eyebrow+' <span class="tag">RU SUPPORT</span>');
   setHtml('heroH1',t.h1);
   setTxt('heroP',t.p);
   setTxt('gpuSectionLabel',t.gpuLabel);
@@ -1303,14 +1302,14 @@ function applyTranslations(){
   setTxt('entBtn',t.entBtn);
   if(lang==='EN'){
     setTxt('gpuKicker','GPU Marketplace');setTxt('gpuH2','Choose your configuration');setTxt('gpuHp','On-demand access to any GPU class. Flexible billing, instant deploy.');
-    setTxt('featKicker','Platform');setTxt('featH2','Built for serious workloads');setTxt('featHp','Everything you need for training, inference and rendering \u2014 in one place.');
-    setTxt('trustLabel','Trusted by teams building on GPU');setTxt('m1l','Infrastructure uptime');setTxt('m2l','Time to deploy');setTxt('m3l','GPU models');setTxt('m4l','Starting from');
-    setHtml('fctaH2','Launch your first GPU<br>today');setTxt('fctaP','Sign up in a minute. Access top-tier GPUs without lengthy approvals.');
+    setTxt('featKicker','Platform');setTxt('featH2','What you get');setTxt('featHp','Access to foreign GPUs without a foreign card or VPN.');
+    setTxt('m1l','From payment to SSH');setTxt('m2l','Card RF \u00b7 SBP \u00b7 crypto');setTxt('m3l','GPU models in catalog');setTxt('m4l','Support on Telegram');
+    setHtml('fctaH2','Launch your first GPU<br>today');setTxt('fctaP','Sign up in a minute. Top up in roubles and launch a GPU \u2014 no foreign cards or VPN.');
   } else {
     setTxt('gpuKicker','GPU Marketplace');setTxt('gpuH2','\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u0432\u043e\u044e \u043a\u043e\u043d\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044e');setTxt('gpuHp','On-Demand \u0434\u043e\u0441\u0442\u0443\u043f \u043a GPU \u043b\u044e\u0431\u043e\u0433\u043e \u043a\u043b\u0430\u0441\u0441\u0430. \u0413\u0438\u0431\u043a\u0430\u044f \u0441\u0438\u0441\u0442\u0435\u043c\u0430 \u043e\u043f\u043b\u0430\u0442\u044b, \u043c\u0433\u043d\u043e\u0432\u0435\u043d\u043d\u044b\u0439 \u0437\u0430\u043f\u0443\u0441\u043a.');
-    setTxt('featKicker','\u041f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430');setTxt('featH2','\u0421\u043e\u0437\u0434\u0430\u043d\u043e \u0434\u043b\u044f \u0441\u0435\u0440\u044c\u0451\u0437\u043d\u044b\u0445 \u043d\u0430\u0433\u0440\u0443\u0437\u043e\u043a');setTxt('featHp','\u0412\u0441\u0451, \u0447\u0442\u043e \u043d\u0443\u0436\u043d\u043e \u0434\u043b\u044f \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u044f, \u0438\u043d\u0444\u0435\u0440\u0435\u043d\u0441\u0430 \u0438 \u0440\u0435\u043d\u0434\u0435\u0440\u0438\u043d\u0433\u0430 \u2014 \u0432 \u043e\u0434\u043d\u043e\u043c \u043a\u043e\u043d\u0442\u0443\u0440\u0435.');
-    setTxt('trustLabel','\u0414\u043e\u0432\u0435\u0440\u044f\u044e\u0442 \u043a\u043e\u043c\u0430\u043d\u0434\u044b, \u0441\u0442\u0440\u043e\u044f\u0449\u0438\u0435 \u043d\u0430 GPU');setTxt('m1l','\u0410\u043f\u0442\u0430\u0439\u043c \u0438\u043d\u0444\u0440\u0430\u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u044b');setTxt('m2l','\u0412\u0440\u0435\u043c\u044f \u0434\u043e \u0437\u0430\u043f\u0443\u0441\u043a\u0430');setTxt('m3l','\u041c\u043e\u0434\u0435\u043b\u0435\u0439 GPU');setTxt('m4l','\u0421\u0442\u0430\u0440\u0442 \u043e\u0442');
-    setHtml('fctaH2','\u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u0435 \u043f\u0435\u0440\u0432\u044b\u0439 GPU<br>\u0443\u0436\u0435 \u0441\u0435\u0433\u043e\u0434\u043d\u044f');setTxt('fctaP','\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044f \u0437\u0430 \u043c\u0438\u043d\u0443\u0442\u0443. \u0414\u043e\u0441\u0442\u0443\u043f \u043a \u0442\u043e\u043f\u043e\u0432\u044b\u043c GPU \u0431\u0435\u0437 \u0434\u043e\u043b\u0433\u0438\u0445 \u0441\u043e\u0433\u043b\u0430\u0441\u043e\u0432\u0430\u043d\u0438\u0439.');
+    setTxt('featKicker','\u041f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430');setTxt('featH2','\u0427\u0442\u043e \u0432\u044b \u043f\u043e\u043b\u0443\u0447\u0430\u0435\u0442\u0435');setTxt('featHp','\u0414\u043e\u0441\u0442\u0443\u043f \u043a \u0437\u0430\u0440\u0443\u0431\u0435\u0436\u043d\u044b\u043c GPU \u0431\u0435\u0437 \u0437\u0430\u0440\u0443\u0431\u0435\u0436\u043d\u043e\u0439 \u043a\u0430\u0440\u0442\u044b \u0438 VPN.');
+    setTxt('m1l','\u041e\u0442 \u043e\u043f\u043b\u0430\u0442\u044b \u0434\u043e SSH');setTxt('m2l','\u041a\u0430\u0440\u0442\u0430 \u0420\u0424 \u00b7 \u0421\u0411\u041f \u00b7 \u043a\u0440\u0438\u043f\u0442\u043e');setTxt('m3l','\u041c\u043e\u0434\u0435\u043b\u0435\u0439 GPU \u0432 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0435');setTxt('m4l','\u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430 \u0432 Telegram');
+    setHtml('fctaH2','\u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u0435 \u043f\u0435\u0440\u0432\u044b\u0439 GPU<br>\u0443\u0436\u0435 \u0441\u0435\u0433\u043e\u0434\u043d\u044f');setTxt('fctaP','\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044f \u0437\u0430 \u043c\u0438\u043d\u0443\u0442\u0443. \u041f\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435 \u0431\u0430\u043b\u0430\u043d\u0441 \u0440\u0443\u0431\u043b\u044f\u043c\u0438 \u0438 \u0437\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u0435 GPU \u2014 \u0431\u0435\u0437 \u0437\u0430\u0440\u0443\u0431\u0435\u0436\u043d\u044b\u0445 \u043a\u0430\u0440\u0442 \u0438 VPN.');
   }
 }
 function render(){
@@ -1389,7 +1388,7 @@ const INFO_PAGES={
   blog:{t:'Блог',h:`
     <p>Здесь мы делимся тем, что узнаём, пока строим GPU-облако: бенчмарки железа, разборы кейсов обучения моделей, заметки об инфраструктуре и индустрии AI в СНГ.</p>
     <h4>Скоро в блоге</h4>
-    <p>• Сравнение H100 vs H200 vs B200 на реальных задачах<br>• Сколько стоит обучить свою LLM<br>• Как мы держим аптайм 99.9%</p>
+    <p>• Сравнение H100 vs H200 vs B200 на реальных задачах<br>• Сколько стоит обучить свою LLM<br>• Как выбрать GPU под вашу модель</p>
     <p style="color:var(--ink-3);font-size:12px;margin-top:18px">Первые материалы уже готовятся. Анонсы — в нашем Telegram.</p>`},
   careers:{t:'Карьера',h:`
     <p>Мы растём и ищем людей, которым интересно строить инфраструктуру, меняющую рынок. У нас плоская структура, реальное влияние на продукт и никакой корпоративной волокиты.</p>
@@ -1404,18 +1403,18 @@ const INFO_PAGES={
   terms:{t:'Условия использования',h:`
     <p>Используя сервис NODE.CLOUD, вы соглашаетесь с настоящими условиями.</p>
     <h4>Сервис</h4>
-    <p>Мы предоставляем доступ к вычислительным GPU-ресурсам по модели аренды с почасовой оплатой. Ресурсы предоставляются «как есть», мы стремимся к максимальной доступности и заявляем целевой аптайм 99.9%.</p>
+    <p>Мы предоставляем доступ к вычислительным GPU-ресурсам по модели аренды с почасовой оплатой. Ресурсы предоставляются «как есть»; мы стремимся к высокой доступности и оперативно реагируем на сбои.</p>
     <h4>Обязанности пользователя</h4>
     <p>Вы обязуетесь не использовать ресурсы для противоправной деятельности, майнинга в нарушение правил, рассылки спама, атак и иных действий, нарушающих законодательство РФ и стран присутствия.</p>
     <h4>Оплата</h4>
     <p>Списание происходит за фактическое время использования. Неизрасходованный баланс остаётся на счёте. Возвраты регулируются отдельной политикой.</p>
     <p style="color:var(--ink-3);font-size:12px;margin-top:18px">Полная редакция документа предоставляется по запросу. Вопросы — в Telegram.</p>`},
   privacy:{t:'Конфиденциальность',h:`
-    <p>Мы уважаем вашу приватность и обрабатываем персональные данные в соответствии с 152-ФЗ.</p>
+    <p>Мы уважаем вашу приватность и обрабатываем только те данные, которые необходимы для работы сервиса.</p>
     <h4>Какие данные собираем</h4>
     <p>Email, имя и платёжную информацию — исключительно для предоставления сервиса. Мы не продаём и не передаём ваши данные третьим лицам в рекламных целях.</p>
     <h4>Где хранятся данные</h4>
-    <p>Данные обрабатываются и хранятся на серверах на территории Российской Федерации.</p>
+    <p>Мы храним минимум данных: email, имя и историю операций. Платёжные данные обрабатываются на стороне платёжного провайдера.</p>
     <h4>Ваши права</h4>
     <p>Вы можете запросить доступ к своим данным, их исправление или удаление в любой момент.</p>
     <p style="color:var(--ink-3);font-size:12px;margin-top:18px">Запрос по данным — через Telegram или email поддержки.</p>`},
@@ -1424,23 +1423,23 @@ const INFO_PAGES={
     <h4>Меры защиты</h4>
     <p>• Изолированные сетевые контуры для инстансов<br>• Пароли хранятся в виде криптографических хэшей (bcrypt)<br>• Шифрование трафика по TLS<br>• Доступ к инстансам по SSH-ключам</p>
     <h4>Инфраструктура</h4>
-    <p>Дата-центры на территории РФ с физической и сетевой защитой. Регулярное обновление и мониторинг систем.</p>
+    <p>Вычислительные мощности размещены в дата-центрах наших провайдеров с физической и сетевой защитой. Регулярный мониторинг систем.</p>
     <p style="color:var(--ink-3);font-size:12px;margin-top:18px">Нашли уязвимость? Сообщите нам в Telegram — мы ценим ответственное раскрытие.</p>`},
   sla:{t:'SLA',h:`
-    <p>Мы стремимся к высокой надёжности и заявляем целевой уровень доступности сервиса.</p>
-    <h4>Целевой аптайм</h4>
-    <p>99.9% доступности инфраструктуры в расчёте на месяц, исключая плановые работы, о которых мы предупреждаем заранее.</p>
+    <p>Мы стремимся к высокой надёжности и стабильности сервиса.</p>
+    <h4>Доступность</h4>
+    <p>Мы стремимся к высокой доступности сервиса и оперативно реагируем на инциденты. О плановых работах предупреждаем заранее в Telegram-канале.</p>
     <h4>Поддержка</h4>
     <p>Приоритетная поддержка для команд с продакшн-нагрузками. Реагирование на критические инциденты в кратчайшие сроки.</p>
     <p style="color:var(--ink-3);font-size:12px;margin-top:18px">Индивидуальные условия SLA для Enterprise — обсудим в Telegram.</p>`},
   pdn:{t:'Обработка персональных данных',h:`
-    <p>Обработка персональных данных ведётся в строгом соответствии с Федеральным законом №152-ФЗ «О персональных данных».</p>
+    <p>Мы обрабатываем персональные данные в объёме, необходимом для оказания услуг, и не передаём их третьим лицам в рекламных целях.</p>
     <h4>Цели обработки</h4>
     <p>Регистрация и идентификация пользователя, предоставление доступа к сервису, проведение платежей, информирование о работе сервиса.</p>
     <h4>Согласие</h4>
     <p>Регистрируясь, вы даёте согласие на обработку своих персональных данных в указанных целях. Согласие может быть отозвано по запросу.</p>
     <h4>Хранение</h4>
-    <p>Данные хранятся на серверах в РФ в течение срока, необходимого для оказания услуг и предусмотренного законодательством.</p>
+    <p>Данные хранятся в течение срока, необходимого для оказания услуг. Вы можете запросить их удаление в любой момент.</p>
     <p style="color:var(--ink-3);font-size:12px;margin-top:18px">Запросы по обработке ПДн — через Telegram или email поддержки.</p>`},
   cookies:{t:'Cookies',h:`
     <p>Сайт использует минимально необходимые cookies и локальное хранилище.</p>
@@ -1452,7 +1451,7 @@ const INFO_PAGES={
     <h4 style="color:var(--green)">● Все системы работают</h4>
     <p>API, биллинг, провижининг инстансов и веб-кабинет функционируют в штатном режиме.</p>
     <h4>Аптайм</h4>
-    <p>Целевой показатель — 99.9% в месяц. О плановых работах мы сообщаем заранее в Telegram-канале.</p>`}
+    <p>Мы работаем над максимальной стабильностью сервиса. О плановых работах сообщаем заранее в Telegram-канале.</p>`}
 };
 function openInfo(key){const p=INFO_PAGES[key];if(!p)return;document.getElementById('infoTitle').textContent=p.t;document.getElementById('infoBody').innerHTML='<div class="info-content" style="font-size:13.5px;line-height:1.65;color:var(--ink-2)">'+p.h+'</div>';document.getElementById('infoOverlay').classList.add('show');}
 function closeInfo(){document.getElementById('infoOverlay').classList.remove('show');}
@@ -1579,16 +1578,7 @@ setInterval(loadAvailability,60000);
 tryAutoLogin();
 const urlParams=new URLSearchParams(window.location.search);
 if(urlParams.get('payment')==='success'){history.replaceState({},'',window.location.pathname);if(authToken){showToast('\u041f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043e\u043f\u043b\u0430\u0442\u0443...','\ud83d\udcb3');setTimeout(()=>{loadDashboard();showToast('\u2705 \u0411\u0430\u043b\u0430\u043d\u0441 \u043e\u0431\u043d\u043e\u0432\u043b\u0451\u043d','\ud83d\udcb0');},2000);}}
-(function(){
-  const c=document.getElementById('fxCanvas');if(!c)return;const x=c.getContext('2d');
-  let W,H,dpr,nodes=[],pulses=[],t=0;
-  const COL='118,179,255',GRN='61,220,132';
-  function size(){dpr=Math.min(devicePixelRatio||1,2);W=c.width=innerWidth*dpr;H=c.height=innerHeight*dpr;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';build();}
-  function build(){nodes=[];const gap=120*dpr;const cols=Math.ceil(W/gap)+1,rows=Math.ceil(H/gap)+1;for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){nodes.push({bx:i*gap,by:j*gap,x:i*gap,y:j*gap,ph:Math.random()*Math.PI*2});}}
-  function spawn(){if(pulses.length>14)return;const a=nodes[(Math.random()*nodes.length)|0];if(!a)return;const dir=Math.random()<.5?'h':'v';pulses.push({x:a.bx,y:a.by,dir,len:0,max:(2+Math.random()*4)*120*dpr,sp:(.6+Math.random()*1.1)*dpr,grn:Math.random()<.22});}
-  function loop(){x.clearRect(0,0,W,H);t+=.006;const gap=120*dpr;for(const n of nodes){const fl=(Math.sin(t*2+n.ph)+1)/2;n.x=n.bx+Math.sin(t+n.ph)*2*dpr;n.y=n.by+Math.cos(t*.8+n.ph)*2*dpr;x.beginPath();x.arc(n.x,n.y,1.1*dpr,0,7);x.fillStyle='rgba('+COL+','+(0.05+fl*0.12)+')';x.fill();}x.lineWidth=dpr*.5;x.strokeStyle='rgba('+COL+',0.022)';for(const n of nodes){x.beginPath();x.moveTo(n.x,n.y);x.lineTo(n.x+gap,n.y);x.moveTo(n.x,n.y);x.lineTo(n.x,n.y+gap);x.stroke();}if(Math.random()<.08)spawn();for(let i=pulses.length-1;i>=0;i--){const p=pulses[i];p.len+=p.sp*2;const col=p.grn?GRN:COL;const x1=p.x,y1=p.y;let x2=x1,y2=y1;if(p.dir==='h')x2=x1+Math.min(p.len,p.max);else y2=y1+Math.min(p.len,p.max);const g=x.createLinearGradient(x1,y1,x2,y2);g.addColorStop(0,'rgba('+col+',0)');g.addColorStop(.85,'rgba('+col+',0.4)');g.addColorStop(1,'rgba('+col+',0.65)');x.strokeStyle=g;x.lineWidth=dpr*1.4;x.beginPath();x.moveTo(x1,y1);x.lineTo(x2,y2);x.stroke();x.beginPath();x.arc(x2,y2,1.8*dpr,0,7);x.fillStyle='rgba('+col+',.85)';x.fill();if(p.len>p.max+260*dpr)pulses.splice(i,1);}requestAnimationFrame(loop);}
-  addEventListener('resize',size);size();loop();
-})();
+/* canvas-фон удалён (светлая тема) */
 const io=new IntersectionObserver((e)=>e.forEach(o=>{if(o.isIntersecting){o.target.classList.add('in');io.unobserve(o.target);}}),{threshold:.1});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </script>
