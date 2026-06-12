@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,12 +43,112 @@
   --red:#ff5d57; --orange:#ffb340; --purple:#9d7bff; --yellow:#ffd60a;
   --radius-sm:10px; --radius-md:14px; --radius-lg:18px; --radius-xl:24px;
 }
+
+/* ── СВЕТЛАЯ ТЕМА: переопределяет токены для всего сайта (дашборд + лендинг) ── */
+html[data-theme="light"]{
+  --bg:#f4f6f8; --bg-elev:#ffffff; --bg2:#ffffff; --bg3:#fbfcfd;
+  --panel:#ffffff; --panel-2:#f4f6f8;
+  --line:#e3e8ee; --line-2:#d2d9e2;
+  --ink:#0b1f33; --ink-2:#4a5b6e; --ink-3:#74849a; --ink-4:#9aa8ba;
+  --acc:#0b5fff; --acc-2:#0848cc;
+  --green:#0a8f4e; --green-soft:#e6f6ee;
+  --surface:#ffffff; --surface-hover:#f4f6f8; --surface2:#f4f6f8;
+  --border:#e3e8ee; --border-hover:#d2d9e2; --border2:#d2d9e2;
+  --text-primary:#0b1f33; --text-secondary:#4a5b6e; --text-tertiary:#74849a;
+  --text:#0b1f33; --text2:#4a5b6e; --text3:#74849a;
+  --accent:#0b5fff; --blue:#0b5fff;
+  --red:#d92d20; --orange:#b54708; --purple:#6938ef; --yellow:#b54708;
+}
+
+/* ── СВЕТЛАЯ ТЕМА: фиксы хардкод-тёмных мест дашборда ── */
+html[data-theme="light"] #pg-dash .sidebar{background:rgba(255,255,255,.85);border-right:1px solid var(--line)}
+html[data-theme="light"] #pg-dash::after{display:none}
+html[data-theme="light"] .sb-logo-icon,html[data-theme="light"] #pg-landing .nav-logo-icon{background:var(--acc);border:none;color:#fff}
+html[data-theme="light"] .topnav{background:rgba(255,255,255,.6);border-bottom:1px solid var(--line)}
+html[data-theme="light"] .ud-tab.on{background:var(--acc);color:#fff}
+html[data-theme="light"] .term{background:#0b1f33;border-color:#13314f}
+html[data-theme="light"] .sb-item:hover{background:#f0f3f7}
+html[data-theme="light"] .sb-item.active{background:var(--acc-soft,#eaf1ff);color:var(--acc);border-color:#cfe0ff}
+html[data-theme="light"] .instance:hover,html[data-theme="light"] .hist-tr:hover .hist-td,html[data-theme="light"] .notif-item:hover{background:#f7f9fb}
+html[data-theme="light"] .notif-item.unread{background:#eaf1ff}
+html[data-theme="light"] .modal-bg .modal,html[data-theme="light"] .modal-overlay .modal{background:#fff;border-color:var(--line-2)}
+html[data-theme="light"] .topup-input,html[data-theme="light"] .modal-input{background:#f4f6f8;border-color:var(--line);color:var(--ink)}
+/* ── СВЕТЛАЯ ТЕМА: дропдаун входа (вынесен из #pg-landing) + бургер-меню ── */
+html[data-theme="light"] .user-dropdown{background:#fff;border-color:var(--line-2);box-shadow:0 20px 50px rgba(11,31,51,.15)}
+html[data-theme="light"] .ud-head-title,html[data-theme="light"] .ud-user-name,html[data-theme="light"] .ud-method-title,html[data-theme="light"] .ud-user-item{color:var(--ink)}
+html[data-theme="light"] .ud-head-sub,html[data-theme="light"] .ud-head-sub,html[data-theme="light"] .ud-user-email,html[data-theme="light"] .ud-method-sub{color:var(--ink-3)}
+html[data-theme="light"] .ud-method{border-color:var(--line);color:var(--ink);background:#fff}
+html[data-theme="light"] .ud-method:hover{background:#f4f6f8;border-color:var(--line-2)}
+html[data-theme="light"] .ud-method-icon{background:#f4f6f8!important}
+html[data-theme="light"] .ud-divider,html[data-theme="light"] .ud-head,html[data-theme="light"] .ud-email-form,html[data-theme="light"] .ud-user-head,html[data-theme="light"] .ud-balance-row{border-color:var(--line)}
+html[data-theme="light"] .ud-divider{background:var(--line)}
+html[data-theme="light"] .ud-input{background:#f4f6f8;border-color:var(--line);color:var(--ink)}
+html[data-theme="light"] .ud-input::placeholder{color:var(--ink-4)}
+html[data-theme="light"] .ud-tabs{background:#f0f3f7}
+html[data-theme="light"] .ud-tab{color:var(--ink-3)}
+html[data-theme="light"] .ud-tab.on{background:var(--acc);color:#fff}
+html[data-theme="light"] .ud-balance-row{background:#eaf1ff}
+html[data-theme="light"] .ud-balance-val{color:var(--acc)}
+html[data-theme="light"] .ud-user-item:hover{background:#f4f6f8}
+html[data-theme="light"] .ud-submit{background:var(--acc);border-color:var(--acc);color:#fff}
+
+html[data-theme="light"] .sidebar{background:rgba(255,255,255,.97);border-right:1px solid var(--line)}
+html[data-theme="light"] .sidebar-header{border-bottom:1px solid var(--line)}
+html[data-theme="light"] .sidebar-close{background:#f4f6f8;border-color:var(--line);color:var(--ink-2)}
+html[data-theme="light"] .sidebar-footer{border-top:1px solid var(--line)}
+html[data-theme="light"] .sidebar .nav-logo-text{color:var(--ink)}
+html[data-theme="light"] .sidebar-overlay{background:rgba(11,31,51,.25)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+/* ── THEME TOGGLE BUTTON ── */
+.theme-btn{width:36px;height:36px;border-radius:999px;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-2);transition:all .2s var(--r);flex-shrink:0}
+.theme-btn:hover{color:var(--ink);border-color:var(--line-2)}
+.theme-btn svg{width:16px;height:16px}
+.theme-btn .th-moon{display:none}
+.theme-btn .th-sun{display:block}
+html[data-theme="dark"] .theme-btn .th-sun{display:none}
+html[data-theme="dark"] .theme-btn .th-moon{display:block}
+#pg-landing .theme-btn{border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.5);backdrop-filter:blur(12px);border-radius:999px;color:var(--ink-2)}
+#pg-landing .theme-btn:hover{border-color:var(--line-2);background:#f4f6f8;color:var(--acc)}
+html[data-theme="dark"] #pg-landing .theme-btn{background:rgba(255,255,255,.02);color:var(--ink-2)}
 html{scroll-behavior:smooth}
 body{font-family:var(--body);background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.5;}
-body:has(#pg-landing.active)::after{display:none}
-body:has(#pg-landing.active){background:#f4f6f8}
+/* светлая тема: убираем тёмное зерно по всему сайту */
+html[data-theme="light"] body::after{display:none}
+html[data-theme="light"] body{background:#f4f6f8}
+html[data-theme="light"] #pg-dash::after{display:none}
 body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.32;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");}
+
+/* ── ТЁМНАЯ ТЕМА для лендинга: переопределяет переменные #pg-landing ── */
+html[data-theme="dark"] #pg-landing{
+  --bg:#08090a; --bg-elev:#0d0e10; --card:#0d0e10;
+  --line:rgba(255,255,255,0.08); --line-2:rgba(255,255,255,0.14);
+  --ink:#f4f5f6; --ink-2:rgba(244,245,246,0.62); --ink-3:rgba(244,245,246,0.40); --ink-4:rgba(244,245,246,0.24);
+  --acc:#76b3ff; --acc-2:#5e8bff; --acc-soft:rgba(94,139,255,0.10);
+  --green:#3ddc84; --green-soft:rgba(61,220,132,0.12);
+  background:#08090a;
+}
+html[data-theme="dark"] #pg-landing nav{background:rgba(8,9,10,.45);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border-bottom-color:rgba(255,255,255,.08)}
+html[data-theme="dark"] #pg-landing .nav-center{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);box-shadow:0 4px 16px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08)}
+html[data-theme="dark"] #pg-landing .nav-cl:hover{background:rgba(255,255,255,.1);color:#fff;box-shadow:none}
+html[data-theme="dark"] #pg-landing .lang-pill,html[data-theme="dark"] #pg-landing .menu-btn,html[data-theme="dark"] #pg-landing .theme-btn{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1)}
+html[data-theme="dark"] #pg-landing .nav-logo-icon{background:linear-gradient(150deg,#1a1c1f,#0c0d0f);border:1px solid rgba(255,255,255,.14);color:#fff}
+html[data-theme="dark"] #pg-landing .lang-pill,html[data-theme="dark"] #pg-landing .menu-btn,html[data-theme="dark"] #pg-landing .cbtn.ghost,html[data-theme="dark"] #pg-landing .gpu-card,html[data-theme="dark"] #pg-landing .period-pill,html[data-theme="dark"] #pg-landing .tier-header{background:rgba(255,255,255,.02)}
+html[data-theme="dark"] #pg-landing .hero-eyebrow{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.08)}
+html[data-theme="dark"] #pg-landing .hero-eyebrow .tag{background:rgba(61,220,132,.12);border-color:rgba(61,220,132,.2);color:#3ddc84}
+html[data-theme="dark"] #pg-landing .metric,html[data-theme="dark"] #pg-landing .feat,html[data-theme="dark"] #pg-landing .tier-group,html[data-theme="dark"] #pg-landing .empty-state{background:#0d0e10}
+html[data-theme="dark"] #pg-landing .feat .ic,html[data-theme="dark"] #pg-landing .hero-eyebrow .tag{background:rgba(94,139,255,.1)}
+html[data-theme="dark"] #pg-landing footer{background:#0d0e10}
+html[data-theme="dark"] #pg-landing .foot-status{background:rgba(61,220,132,.12);border-color:rgba(61,220,132,.2)}
+/* ── ТЁМНАЯ ТЕМА: дропдаун входа + бургер на лендинге ── */
+html[data-theme="dark"] #pg-landing .user-dropdown{background:#0d0e10;border-color:rgba(255,255,255,.14)}
+html[data-theme="dark"] #pg-landing .ud-head-title,html[data-theme="dark"] #pg-landing .ud-user-name,html[data-theme="dark"] #pg-landing .ud-method-title,html[data-theme="dark"] #pg-landing .ud-user-item{color:#f4f5f6}
+html[data-theme="dark"] #pg-landing .ud-head-sub,html[data-theme="dark"] #pg-landing .ud-user-email,html[data-theme="dark"] #pg-landing .ud-method-sub{color:rgba(244,245,246,.5)}
+html[data-theme="dark"] #pg-landing .ud-method{background:rgba(255,255,255,.02);border-color:rgba(255,255,255,.08);color:#f4f5f6}
+html[data-theme="dark"] #pg-landing .ud-method:hover{background:rgba(255,255,255,.06)}
+html[data-theme="dark"] #pg-landing .ud-method-icon{background:rgba(255,255,255,.06)!important}
+html[data-theme="dark"] #pg-landing .ud-input{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);color:#f4f5f6}
+html[data-theme="dark"] #pg-landing .ud-tabs{background:rgba(255,255,255,.04)}
+html[data-theme="dark"] #pg-landing .ud-balance-row{background:rgba(94,139,255,.1)}
 
 /* ════ LIGHT CORPORATE LANDING (scoped to #pg-landing) ════ */
 #pg-landing{
@@ -60,24 +160,24 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
   position:relative;z-index:1;background:var(--bg);color:var(--ink);
 }
 #pg-landing *{box-sizing:border-box}
-#pg-landing nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 max(24px,4vw);background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+#pg-landing nav{position:sticky;top:0;z-index:100;height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 max(20px,4vw);background:rgba(255,255,255,.55);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid rgba(255,255,255,.4);box-shadow:0 1px 0 rgba(11,31,51,.04)}
 #pg-landing .nav-logo{display:flex;align-items:center;gap:11px;text-decoration:none;cursor:pointer}
 #pg-landing .nav-logo-icon{width:30px;height:30px;border-radius:7px;background:var(--acc);border:none;display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:15px;color:#fff;overflow:hidden}
 #pg-landing .nav-logo-icon::before{display:none}
 #pg-landing .nav-logo-text{font-family:var(--disp);font-weight:600;font-size:15px;letter-spacing:.1em;color:var(--ink)}
-#pg-landing .nav-center{display:flex;gap:2px;position:absolute;left:50%;transform:translateX(-50%)}
+#pg-landing .nav-center{display:flex;gap:3px;position:absolute;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.45);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:5px;box-shadow:0 4px 16px rgba(11,31,51,.06),inset 0 1px 0 rgba(255,255,255,.5)}
 @media(max-width:980px){#pg-landing .nav-center{display:none}}
-#pg-landing .nav-cl{padding:8px 14px;border-radius:7px;font-size:14px;font-weight:500;color:var(--ink-2);text-decoration:none;transition:color .15s,background .15s;cursor:pointer}
-#pg-landing .nav-cl:hover{color:var(--acc);background:var(--acc-soft)}
+#pg-landing .nav-cl{padding:8px 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--ink-2);text-decoration:none;transition:all .18s var(--r);cursor:pointer}
+#pg-landing .nav-cl:hover{color:var(--ink);background:rgba(255,255,255,.7);box-shadow:0 1px 4px rgba(11,31,51,.08)}
 #pg-landing .nav-right{display:flex;align-items:center;gap:10px}
-#pg-landing .lang-pill{display:flex;background:#fff;border:1px solid var(--line);border-radius:8px;padding:3px;gap:2px}
-#pg-landing .lang-btn{padding:4px 10px;border-radius:5px;font-family:var(--mono);font-size:11px;font-weight:600;border:none;background:transparent;color:var(--ink-3);cursor:pointer;transition:.15s;letter-spacing:.02em}
+#pg-landing .lang-pill{display:flex;background:rgba(255,255,255,.5);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:3px;gap:2px}
+#pg-landing .lang-btn{padding:4px 11px;border-radius:999px;font-family:var(--mono);font-size:11px;font-weight:600;border:none;background:transparent;color:var(--ink-3);cursor:pointer;transition:.15s;letter-spacing:.02em}
 #pg-landing .lang-btn.active{background:var(--acc);color:#fff}
-#pg-landing .menu-btn{width:38px;height:38px;border-radius:8px;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-2);transition:.15s}
+#pg-landing .menu-btn{width:38px;height:38px;border-radius:999px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.5);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-2);transition:.15s}
 #pg-landing .menu-btn:hover{border-color:var(--line-2);background:#f4f6f8}
 #pg-landing .menu-btn svg{width:16px;height:16px}
-#pg-landing .user-btn{display:flex;align-items:center;gap:8px;padding:7px 14px 7px 8px;border-radius:8px;border:1px solid var(--line-2);background:#fff;color:var(--ink);font-family:var(--body);font-size:14px;font-weight:500;cursor:pointer;transition:.15s}
-#pg-landing .user-btn:hover{border-color:var(--acc);color:var(--acc)}
+#pg-landing .user-btn{display:flex;align-items:center;gap:8px;padding:7px 14px 7px 8px;border-radius:999px;border:1px solid var(--line-2);background:var(--panel);backdrop-filter:blur(12px);color:var(--ink);font-family:var(--body);font-size:14px;font-weight:500;cursor:pointer;transition:.15s}
+#pg-landing .user-btn:hover{border-color:var(--acc);color:var(--acc);background:var(--panel-2)}
 #pg-landing .user-btn-avatar{width:24px;height:24px;border-radius:6px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
 #pg-landing main{position:relative;z-index:2;max-width:1140px;margin:0 auto;padding:0 max(24px,4vw)}
 #pg-landing .hero{padding:84px 0 64px;text-align:center;animation:none}
@@ -88,6 +188,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 #pg-landing .hero h1 .grad{color:var(--acc);-webkit-text-fill-color:var(--acc);background:none}
 #pg-landing .hero p{font-size:clamp(16px,1.7vw,19px);font-weight:400;color:var(--ink-2);line-height:1.6;max-width:600px;margin:0 auto}
 #pg-landing .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+#pg-landing .hero-pay{margin-top:18px;font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.01em}
 #pg-landing .hero-cta .cbtn{padding:14px 28px;border-radius:8px;font-family:var(--body);font-size:15px;font-weight:600;cursor:pointer;transition:.15s;border:1px solid transparent}
 #pg-landing .cbtn.pri{background:var(--acc);color:#fff;border-color:var(--acc);box-shadow:0 1px 2px rgba(11,95,255,.2)}
 #pg-landing .cbtn.pri:hover{background:var(--acc-2);box-shadow:0 4px 14px rgba(11,95,255,.28)}
@@ -168,13 +269,15 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 #pg-landing .ent-spec-val{font-weight:600;color:#fff}
 #pg-landing .ent-btn{width:100%;padding:13px;border-radius:8px;border:none;background:#fff;color:#0b1f33;font-family:var(--body);font-size:13.5px;font-weight:600;cursor:pointer;transition:.15s}
 #pg-landing .ent-btn:hover{background:#eaf1ff;color:var(--acc)}
-#pg-landing .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0 84px}
-@media(max-width:760px){#pg-landing .metrics{grid-template-columns:1fr 1fr}}
-#pg-landing .metric{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px 24px}
-#pg-landing .metric .v{font-family:var(--disp);font-weight:700;font-size:32px;letter-spacing:-.02em;line-height:1;color:var(--ink)}
+#pg-landing .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:32px 0 88px}
+@media(max-width:760px){#pg-landing .metrics{grid-template-columns:1fr 1fr;gap:28px 0}}
+#pg-landing .metric{background:none;border:none;border-radius:0;padding:6px 28px;position:relative;text-align:center}
+#pg-landing .metric+.metric::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:1px;height:46px;background:var(--line)}
+@media(max-width:760px){#pg-landing .metric+.metric::before{display:none}#pg-landing .metric{padding:6px 16px}}
+#pg-landing .metric .v{font-family:var(--disp);font-weight:700;font-size:38px;letter-spacing:-.02em;line-height:1;color:var(--ink)}
 #pg-landing .metric .v small{font-family:var(--mono);font-size:16px;color:var(--ink-3);font-weight:500}
 #pg-landing .metric .v.g{color:var(--acc)}
-#pg-landing .metric .l{margin-top:9px;font-size:12.5px;color:var(--ink-3)}
+#pg-landing .metric .l{margin-top:11px;font-size:12.5px;color:var(--ink-3);line-height:1.4}
 #pg-landing .shead{max-width:640px;margin:0 auto 48px;text-align:center}
 #pg-landing .shead h2{font-family:var(--disp);font-weight:700;font-size:clamp(28px,3.6vw,40px);letter-spacing:-.02em;line-height:1.12;margin-bottom:14px;color:var(--ink)}
 #pg-landing .shead p{color:var(--ink-2);font-size:16px}
@@ -186,6 +289,23 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 #pg-landing .feat .ic{width:44px;height:44px;border-radius:9px;display:grid;place-items:center;font-family:var(--mono);font-size:17px;font-weight:600;color:var(--acc);background:var(--acc-soft);border:1px solid #d8e6ff;margin-bottom:18px}
 #pg-landing .feat h3{font-family:var(--disp);font-weight:700;font-size:18px;letter-spacing:-.01em;margin-bottom:8px;color:var(--ink)}
 #pg-landing .feat p{font-size:14px;color:var(--ink-2);line-height:1.6}
+#pg-landing .hiw-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px}
+@media(max-width:900px){#pg-landing .hiw-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){
+  #pg-landing .hiw-grid{grid-template-columns:1fr;gap:4px;padding:8px}
+  #pg-landing .hiw-step{display:grid;grid-template-columns:auto 1fr;gap:0 14px;align-items:start;padding:14px 12px}
+  #pg-landing .hiw-num{width:26px;height:26px;border-radius:7px;font-size:13px;margin-bottom:0;grid-row:1/3}
+  #pg-landing .hiw-step h3{font-size:15px;margin-bottom:3px;align-self:center}
+  #pg-landing .hiw-step p{font-size:13px;grid-column:2}
+}
+#pg-landing .hiw-step{background:none;border:none;border-radius:0;padding:20px;position:relative}
+#pg-landing .hiw-num{width:34px;height:34px;border-radius:8px;background:var(--acc);color:#fff;font-family:var(--disp);font-weight:700;font-size:16px;display:grid;place-items:center;margin-bottom:16px}
+#pg-landing .hiw-step h3{font-family:var(--disp);font-weight:700;font-size:16px;letter-spacing:-.01em;margin-bottom:8px;color:var(--ink)}
+#pg-landing .hiw-step p{font-size:13.5px;color:var(--ink-2);line-height:1.6}
+#pg-landing .hiw-note{background:var(--acc-soft);border:1px solid #cfe0ff;border-radius:10px;padding:16px 18px;font-size:13px;color:var(--ink-2);line-height:1.55;margin-bottom:96px}
+html[data-theme="dark"] #pg-landing .hiw-grid{background:#0d0e10}
+html[data-theme="dark"] #pg-landing .hiw-step{background:none}
+html[data-theme="dark"] #pg-landing .hiw-note{background:rgba(94,139,255,.08);border-color:rgba(94,139,255,.2);color:var(--ink-2)}
 #pg-landing .term-sec{margin-bottom:96px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
 @media(max-width:900px){#pg-landing .term-sec{grid-template-columns:1fr;gap:32px}}
 #pg-landing .term-copy h2{font-family:var(--disp);font-weight:700;font-size:clamp(26px,3vw,36px);letter-spacing:-.02em;line-height:1.15;margin-bottom:16px;color:var(--ink)}
@@ -229,7 +349,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 #pg-landing .foot-social a{width:34px;height:34px;border-radius:7px;border:1px solid var(--line);display:grid;place-items:center;color:var(--ink-3);transition:.15s}
 #pg-landing .foot-social a:hover{color:var(--acc);border-color:var(--acc);background:var(--acc-soft)}
 #pg-landing .foot-social svg{width:16px;height:16px}
-#pg-landing .user-dropdown{background:#fff;border:1px solid var(--line-2);box-shadow:0 20px 50px rgba(11,31,51,.15)}
+#pg-landing .user-dropdown{background:var(--bg-elev);border:1px solid var(--line-2);box-shadow:0 20px 50px rgba(11,31,51,.15)}
 #pg-landing .ud-head-title,#pg-landing .ud-user-name{color:var(--ink)}
 #pg-landing .ud-head-sub,#pg-landing .ud-user-email{color:var(--ink-3)}
 #pg-landing .ud-method{border-color:var(--line);color:var(--ink)}
@@ -280,10 +400,11 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 .sb-footer{padding:14px;border-top:1px solid var(--line)}
 .sb-footer-text{font-family:var(--mono);font-size:10px;color:var(--ink-4);text-align:center}
 .main{flex:1;overflow-y:auto;min-width:0}
-.topnav{position:sticky;top:0;z-index:50;height:56px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,9,10,.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
+.topnav{position:sticky;top:0;z-index:50;height:58px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,9,10,.5);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--line)}
+html[data-theme="light"] .topnav{background:rgba(255,255,255,.55)}
 .topnav-title{font-family:var(--disp);font-size:15px;font-weight:600;letter-spacing:-.01em}
 .topnav-right{display:flex;align-items:center;gap:10px}
-.notif-btn{position:relative;width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--panel);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-2);transition:all .2s}
+.notif-btn{position:relative;width:36px;height:36px;border-radius:999px;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-2);transition:all .2s}
 .notif-btn:hover{background:var(--panel-2);color:var(--ink);border-color:var(--line-2)}
 .notif-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid var(--bg)}
 .page{padding:28px;max-width:1100px;margin:0 auto}
@@ -650,6 +771,10 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
     <a class="nav-cl" href="#" onclick="openEnterpriseModal();return false" data-i18n="nav.enterprise">Enterprise</a>
   </div>
   <div class="nav-right" id="landNavRight">
+    <button class="theme-btn" onclick="toggleTheme()" aria-label="Тема" title="Тема">
+      <svg class="th-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      <svg class="th-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
     <div class="lang-pill">
       <button class="lang-btn active" onclick="setLang('RU',this)">RU</button>
       <button class="lang-btn" onclick="setLang('EN',this)">EN</button>
@@ -663,21 +788,55 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 <main>
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-eyebrow" id="heroEyebrow">Аренда GPU с оплатой рублём <span class="tag">RU SUPPORT</span></div>
-    <h1 id="heroH1">GPU для ML и рендеринга —<br><span class="grad">оплата рублём.</span></h1>
-    <p id="heroP">От RTX 4090 до Blackwell B300 из глобальных дата-центров. Оплата картой РФ, СБП или криптой. Поддержка на русском в Telegram.</p>
+    <h1 id="heroH1">GPU, готовый к работе.<br><span class="grad">Без настройки.</span></h1>
+    <p id="heroP">PyTorch, CUDA и Jupyter уже установлены. Выбираете видеокарту — и через пару минут вы в SSH, можно сразу запускать обучение или рендер. Ничего не нужно настраивать.</p>
     <div class="hero-cta">
       <button class="cbtn pri" onclick="document.getElementById('marketplace').scrollIntoView({behavior:'smooth'})" data-i18n="btn.launch_gpu">Запустить GPU →</button>
       <button class="cbtn ghost" onclick="openEnterpriseModal()" data-i18n="btn.contact_sales">Связаться с отделом продаж</button>
     </div>
+    <div class="hero-pay" id="heroPay">Оплата рублём · карта РФ, СБП или крипта · поддержка на русском</div>
   </section>
 
   <!-- METRICS -->
   <section class="metrics reveal">
-    <div class="metric"><div class="v g" id="m1v">~2<small>мин</small></div><div class="l" id="m1l">От оплаты до SSH-доступа</div></div>
-    <div class="metric"><div class="v">₽<small></small></div><div class="l" id="m2l">Карта РФ · СБП · крипто</div></div>
-    <div class="metric"><div class="v">20<small>+</small></div><div class="l" id="m3l">Моделей GPU в каталоге</div></div>
-    <div class="metric"><div class="v">RU<small></small></div><div class="l" id="m4l">Поддержка в Telegram</div></div>
+    <div class="metric"><div class="v g" id="m1v">0<small></small></div><div class="l" id="m1l">Настройки окружения</div></div>
+    <div class="metric"><div class="v">~2<small>мин</small></div><div class="l" id="m2l">От запуска до SSH</div></div>
+    <div class="metric"><div class="v">CUDA<small></small></div><div class="l" id="m3l">PyTorch и Jupyter из коробки</div></div>
+    <div class="metric"><div class="v">20<small>+</small></div><div class="l" id="m4l">Моделей GPU в каталоге</div></div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="howitworks">
+    <div class="shead reveal" style="margin-bottom:40px">
+      <div class="section-label" id="hiwKicker">Как это работает</div>
+      <h2 id="hiwH2">От регистрации до GPU — 4 шага</h2>
+      <p id="hiwP">Если вы впервые арендуете GPU — вот весь путь. Занимает несколько минут.</p>
+    </div>
+    <div class="hiw-grid">
+      <div class="hiw-step reveal">
+        <div class="hiw-num">1</div>
+        <h3 id="hiw1t">Регистрация</h3>
+        <p id="hiw1d">Создайте аккаунт по email или войдите через Telegram. Это бесплатно и занимает минуту.</p>
+      </div>
+      <div class="hiw-step reveal">
+        <div class="hiw-num">2</div>
+        <h3 id="hiw2t">Пополнение баланса</h3>
+        <p id="hiw2d">Пополните счёт рублями — картой РФ, через СБП или криптой. Деньги ложатся на баланс, с него оплачивается аренда.</p>
+      </div>
+      <div class="hiw-step reveal">
+        <div class="hiw-num">3</div>
+        <h3 id="hiw3t">Выбор GPU и периода</h3>
+        <p id="hiw3d">Выберите видеокарту под задачу и срок аренды — день, неделю или месяц. Стоимость показывается сразу, сумма списывается с баланса при запуске.</p>
+      </div>
+      <div class="hiw-step reveal">
+        <div class="hiw-num">4</div>
+        <h3 id="hiw4t">Подключение к серверу</h3>
+        <p id="hiw4d">Через пару минут получите IP, SSH-доступ и ссылку на Jupyter. Окружение с CUDA и PyTorch уже готово — можно сразу запускать обучение или рендер.</p>
+      </div>
+    </div>
+    <div class="hiw-note reveal" id="hiwNote">
+      Отсчёт аренды начинается сразу после запуска инстанса и идёт непрерывно. При досрочной остановке оплаченный период не возвращается — учитывайте это при выборе срока.
+    </div>
   </section>
 
   <!-- MARKETPLACE -->
@@ -724,7 +883,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
       <div class="feat reveal"><div class="ic">₽</div><h3 data-i18n="feat.pay.t">Оплата рублём</h3><p data-i18n="feat.pay.d">Карта российского банка, СБП или криптовалюта. Без зарубежных карт, VPN и валютных конвертаций.</p></div>
       <div class="feat reveal"><div class="ic">RU</div><h3 data-i18n="feat.support.t">Поддержка на русском</h3><p data-i18n="feat.support.d">Отвечаем в Telegram по существу. Помогаем с запуском, образами и настройкой окружения.</p></div>
       <div class="feat reveal"><div class="ic">‹›</div><h3 data-i18n="feat.deploy.t">Запуск за пару минут</h3><p data-i18n="feat.deploy.d">Готовые образы PyTorch, CUDA и Jupyter. SSH-доступ и публичный IP сразу после старта инстанса.</p></div>
-      <div class="feat reveal"><div class="ic">∑</div><h3 data-i18n="feat.bill.t">Прозрачный биллинг</h3><p data-i18n="feat.bill.d">Платите за фактическое время работы. Баланс пополняется заранее, неизрасходованное остаётся на счёте.</p></div>
+      <div class="feat reveal"><div class="ic">∑</div><h3 data-i18n="feat.bill.t">Понятная цена</h3><p data-i18n="feat.bill.d">Выбираете период — день, неделю или месяц — и платите фиксированную сумму вперёд. Никаких скрытых доплат и абонентской платы.</p></div>
       <div class="feat reveal"><div class="ic">⌗</div><h3 data-i18n="feat.gpu.t">От RTX 4090 до B300</h3><p data-i18n="feat.gpu.d">20+ моделей GPU в каталоге: от бюджетных до H100, H200 и Blackwell для крупных задач.</p></div>
       <div class="feat reveal"><div class="ic">{ }</div><h3 data-i18n="feat.api.t">API и SSH-ключи</h3><p data-i18n="feat.api.d">REST API для запуска и остановки инстансов из скриптов и CI. Привязка собственных SSH-ключей.</p></div>
     </div>
@@ -911,6 +1070,10 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
         <span class="topnav-title" id="topnavTitle">Дашборд</span>
       </div>
       <div class="topnav-right">
+        <button class="theme-btn" onclick="toggleTheme()" aria-label="Тема" title="Тема">
+          <svg class="th-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg class="th-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
         <button class="notif-btn" onclick="showPage('notifications')">
           <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
           <div class="notif-dot"></div>
@@ -1143,6 +1306,9 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
   </div>
 </div>
 <script>
+function applyTheme(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('nodecloud_theme',t);}catch(e){}}
+function toggleTheme(){const cur=document.documentElement.getAttribute('data-theme')||'light';applyTheme(cur==='light'?'dark':'light');}
+(function(){let t='light';try{t=localStorage.getItem('nodecloud_theme')||'light';}catch(e){}document.documentElement.setAttribute('data-theme',t);})();
 function goPage(id){document.querySelectorAll('.spa-page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);closeUserDropdown();}
 function showToast(msg,ico){document.getElementById('gToastMsg').textContent=msg;document.getElementById('gToastIco').textContent=ico||'\u2705';const t=document.getElementById('globalToast');t.classList.add('show');clearTimeout(t._tid);t._tid=setTimeout(()=>t.classList.remove('show'),2600);}
 function toast(msg,icon){showToast(msg,icon);}
@@ -1169,8 +1335,8 @@ const discounts={day:0,week:0.05,month:0.10};
 function fmt(usd){const v=lang==='RU'?usd*rubRate:usd;const s=new Intl.NumberFormat('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}).format(v);return lang==='RU'?s+' \u20bd':'$'+s;}
 function calcPrice(key,period){const daily=hourlyUSD[key]*24;const full=daily*periodDays[period];const final=full*(1-discounts[period]);return{full,final,saved:full-final};}
 const T={
-  RU:{eyebrow:'\u0410\u0440\u0435\u043d\u0434\u0430 GPU \u0441 \u043e\u043f\u043b\u0430\u0442\u043e\u0439 \u0440\u0443\u0431\u043b\u0451\u043c',h1:'GPU \u0434\u043b\u044f ML \u0438 \u0440\u0435\u043d\u0434\u0435\u0440\u0438\u043d\u0433\u0430 \u2014<br><span class="grad">\u043e\u043f\u043b\u0430\u0442\u0430 \u0440\u0443\u0431\u043b\u0451\u043c.</span>',p:'\u041e\u0442 RTX 4090 \u0434\u043e Blackwell B300 \u0438\u0437 \u0433\u043b\u043e\u0431\u0430\u043b\u044c\u043d\u044b\u0445 \u0434\u0430\u0442\u0430-\u0446\u0435\u043d\u0442\u0440\u043e\u0432. \u041e\u043f\u043b\u0430\u0442\u0430 \u043a\u0430\u0440\u0442\u043e\u0439 \u0420\u0424, \u0421\u0411\u041f \u0438\u043b\u0438 \u043a\u0440\u0438\u043f\u0442\u043e\u0439. \u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430 \u043d\u0430 \u0440\u0443\u0441\u0441\u043a\u043e\u043c \u0432 Telegram.',gpuLabel:'\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0435 GPU \u2014 On-Demand',emptyTitle:'\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 GPU',emptySub:'\u041d\u0430\u0436\u043c\u0438\u0442\u0435 \u043d\u0430 \u043a\u0430\u0440\u0442\u043e\u0447\u043a\u0443 \u0441\u043b\u0435\u0432\u0430,<br>\u0447\u0442\u043e\u0431\u044b \u043d\u0430\u0441\u0442\u0440\u043e\u0438\u0442\u044c \u0430\u0440\u0435\u043d\u0434\u0443',rateLabel:'\u0441\u0443\u0442\u043a\u0438',useCasesLabel:'\u041f\u0440\u0438\u043c\u0435\u043d\u0435\u043d\u0438\u0435',periodLabel:'\u041f\u0435\u0440\u0438\u043e\u0434 \u0430\u0440\u0435\u043d\u0434\u044b',pDay:'1 \u0434\u0435\u043d\u044c',pWeek:'\u041d\u0435\u0434\u0435\u043b\u044f \u22125%',pMonth:'\u041c\u0435\u0441\u044f\u0446 \u221210%',costLabel:'\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c',baseLabel:'\u0411\u0430\u0437\u043e\u0432\u0430\u044f \u0446\u0435\u043d\u0430:',saveLabel:'\u042d\u043a\u043e\u043d\u043e\u043c\u0438\u044f:',launchBtn:'\u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u044c GPU-\u0438\u043d\u0441\u0442\u0430\u043d\u0441',entBadge:'Enterprise',entTitle:'Blackwell x8<br>AI \u041a\u043b\u0430\u0441\u0442\u0435\u0440\u044b',entDesc:'\u0414\u043b\u044f \u043c\u0430\u0441\u0448\u0442\u0430\u0431\u043d\u043e\u0433\u043e \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u044f LLM. 8\u00d7 B200 / B300 \u043e\u0431\u044a\u0435\u0434\u0438\u043d\u0435\u043d\u044b \u0447\u0435\u0440\u0435\u0437 NVLink \u0441 InfiniBand-\u0441\u0435\u0442\u044c\u044e.',entTerm:' 3 \u043c\u0435\u0441\u044f\u0446\u0430',entNet:' InfiniBand / NVLink',entConfig:' Custom',entBtn:'\u0421\u0432\u044f\u0437\u0430\u0442\u044c\u0441\u044f \u0441 \u043e\u0442\u0434\u0435\u043b\u043e\u043c \u043f\u0440\u043e\u0434\u0430\u0436',modalTitle:'\u0417\u0430\u044f\u0432\u043a\u0430 \u0441\u0444\u043e\u0440\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0430',modalH3:'\u041f\u0435\u0440\u0435\u0445\u043e\u0434 \u0432 Telegram',modalP:'\u041a\u043e\u043d\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044f \u043f\u0435\u0440\u0435\u0434\u0430\u043d\u0430 \u043c\u0435\u043d\u0435\u0434\u0436\u0435\u0440\u0443',modalBtn:'\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u0434\u0438\u0430\u043b\u043e\u0433 \u2192',sNav:['GPU Marketplace','Enterprise \u041a\u043b\u0430\u0441\u0442\u0435\u0440\u044b','\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044f','\u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430'],tiers:[{label:'\u041d\u0430\u0447\u0430\u043b\u044c\u043d\u044b\u0439 \u0443\u0440\u043e\u0432\u0435\u043d\u044c',sub:'\u0418\u043d\u0444\u0435\u0440\u0435\u043d\u0441, \u0440\u0435\u043d\u0434\u0435\u0440\u0438\u043d\u0433, \u0441\u0442\u0430\u0440\u0442 \u0432 AI',color:'#3ddc84'},{label:'\u0421\u0440\u0435\u0434\u043d\u0438\u0439 \u043a\u043b\u0430\u0441\u0441',sub:'Fine-tuning, \u0433\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u044f, \u043f\u0440\u043e\u0444\u0435\u0441\u0441\u0438\u043e\u043d\u0430\u043b\u044c\u043d\u044b\u0439 \u0440\u0435\u043d\u0434\u0435\u0440',color:'#76b3ff'},{label:'\u041f\u0440\u043e\u0444\u0435\u0441\u0441\u0438\u043e\u043d\u0430\u043b\u044c\u043d\u044b\u0439 AI',sub:'\u041e\u0431\u0443\u0447\u0435\u043d\u0438\u0435 \u0431\u043e\u043b\u044c\u0448\u0438\u0445 \u043c\u043e\u0434\u0435\u043b\u0435\u0439, HPC, datacenter',color:'#9d7bff'},{label:'\u26a1 \u042d\u043b\u0438\u0442\u0430 \u2014 Hopper / Blackwell',sub:'\u0422\u043e\u043f\u043e\u0432\u044b\u0435 LLM, AGI, \u0433\u043e\u0441\u0443\u0434\u0430\u0440\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0439 HPC',color:'#ff5d57'}]},
-  EN:{eyebrow:'GPU rental with rouble payments',h1:'GPU for ML and rendering \u2014<br><span class="grad">pay in roubles.</span>',p:'RTX 4090 to Blackwell B300 from global data centers. Pay by Russian card, SBP or crypto. Support in Russian on Telegram.',gpuLabel:'Available GPUs \u2014 On-Demand',emptyTitle:'Select a GPU',emptySub:'Click a card on the left<br>to configure your rental',rateLabel:'/day',useCasesLabel:'Use cases',periodLabel:'Rental period',pDay:'1 day',pWeek:'Week \u22125%',pMonth:'Month \u221210%',costLabel:'Cost',baseLabel:'Base price:',saveLabel:'Savings:',launchBtn:'Deploy GPU Instance',entBadge:'Enterprise',entTitle:'Blackwell x8<br>AI Clusters',entDesc:'For large-scale LLM training. 8\u00d7 B200 / B300 connected via NVLink with InfiniBand.',entTerm:' 3 months',entNet:' InfiniBand / NVLink',entConfig:' Custom',entBtn:'Contact Sales',modalTitle:'Order created',modalH3:'Opening Telegram',modalP:'Config sent to manager',modalBtn:'Open chat \u2192',sNav:['GPU Marketplace','Enterprise Clusters','Documentation','Support'],tiers:[{label:'Entry Level',sub:'Inference, rendering, AI starter',color:'#3ddc84'},{label:'Mid-Range',sub:'Fine-tuning, generation, professional rendering',color:'#76b3ff'},{label:'Professional AI',sub:'Large model training, HPC, datacenter',color:'#9d7bff'},{label:'\u26a1 Elite \u2014 Hopper / Blackwell',sub:'Top-tier LLMs, AGI, government HPC',color:'#ff5d57'}]}
+  RU:{eyebrow:'\u0410\u0440\u0435\u043d\u0434\u0430 GPU \u0441 \u043e\u043f\u043b\u0430\u0442\u043e\u0439 \u0440\u0443\u0431\u043b\u0451\u043c',h1:'GPU, \u0433\u043e\u0442\u043e\u0432\u044b\u0439 \u043a \u0440\u0430\u0431\u043e\u0442\u0435.<br><span class="grad">\u0411\u0435\u0437 \u043d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438.</span>',p:'PyTorch, CUDA \u0438 Jupyter \u0443\u0436\u0435 \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d\u044b. \u0412\u044b\u0431\u0438\u0440\u0430\u0435\u0442\u0435 \u0432\u0438\u0434\u0435\u043e\u043a\u0430\u0440\u0442\u0443 \u2014 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043f\u0430\u0440\u0443 \u043c\u0438\u043d\u0443\u0442 \u0432\u044b \u0432 SSH, \u043c\u043e\u0436\u043d\u043e \u0441\u0440\u0430\u0437\u0443 \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0442\u044c \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u0435 \u0438\u043b\u0438 \u0440\u0435\u043d\u0434\u0435\u0440.',gpuLabel:'\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0435 GPU \u2014 On-Demand',emptyTitle:'\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 GPU',emptySub:'\u041d\u0430\u0436\u043c\u0438\u0442\u0435 \u043d\u0430 \u043a\u0430\u0440\u0442\u043e\u0447\u043a\u0443 \u0441\u043b\u0435\u0432\u0430,<br>\u0447\u0442\u043e\u0431\u044b \u043d\u0430\u0441\u0442\u0440\u043e\u0438\u0442\u044c \u0430\u0440\u0435\u043d\u0434\u0443',rateLabel:'\u0441\u0443\u0442\u043a\u0438',useCasesLabel:'\u041f\u0440\u0438\u043c\u0435\u043d\u0435\u043d\u0438\u0435',periodLabel:'\u041f\u0435\u0440\u0438\u043e\u0434 \u0430\u0440\u0435\u043d\u0434\u044b',pDay:'1 \u0434\u0435\u043d\u044c',pWeek:'\u041d\u0435\u0434\u0435\u043b\u044f \u22125%',pMonth:'\u041c\u0435\u0441\u044f\u0446 \u221210%',costLabel:'\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c',baseLabel:'\u0411\u0430\u0437\u043e\u0432\u0430\u044f \u0446\u0435\u043d\u0430:',saveLabel:'\u042d\u043a\u043e\u043d\u043e\u043c\u0438\u044f:',launchBtn:'\u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u044c GPU-\u0438\u043d\u0441\u0442\u0430\u043d\u0441',entBadge:'Enterprise',entTitle:'Blackwell x8<br>AI \u041a\u043b\u0430\u0441\u0442\u0435\u0440\u044b',entDesc:'\u0414\u043b\u044f \u043c\u0430\u0441\u0448\u0442\u0430\u0431\u043d\u043e\u0433\u043e \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u044f LLM. 8\u00d7 B200 / B300 \u043e\u0431\u044a\u0435\u0434\u0438\u043d\u0435\u043d\u044b \u0447\u0435\u0440\u0435\u0437 NVLink \u0441 InfiniBand-\u0441\u0435\u0442\u044c\u044e.',entTerm:' 3 \u043c\u0435\u0441\u044f\u0446\u0430',entNet:' InfiniBand / NVLink',entConfig:' Custom',entBtn:'\u0421\u0432\u044f\u0437\u0430\u0442\u044c\u0441\u044f \u0441 \u043e\u0442\u0434\u0435\u043b\u043e\u043c \u043f\u0440\u043e\u0434\u0430\u0436',modalTitle:'\u0417\u0430\u044f\u0432\u043a\u0430 \u0441\u0444\u043e\u0440\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0430',modalH3:'\u041f\u0435\u0440\u0435\u0445\u043e\u0434 \u0432 Telegram',modalP:'\u041a\u043e\u043d\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044f \u043f\u0435\u0440\u0435\u0434\u0430\u043d\u0430 \u043c\u0435\u043d\u0435\u0434\u0436\u0435\u0440\u0443',modalBtn:'\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u0434\u0438\u0430\u043b\u043e\u0433 \u2192',sNav:['GPU Marketplace','Enterprise \u041a\u043b\u0430\u0441\u0442\u0435\u0440\u044b','\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044f','\u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430'],tiers:[{label:'\u041d\u0430\u0447\u0430\u043b\u044c\u043d\u044b\u0439 \u0443\u0440\u043e\u0432\u0435\u043d\u044c',sub:'\u0418\u043d\u0444\u0435\u0440\u0435\u043d\u0441, \u0440\u0435\u043d\u0434\u0435\u0440\u0438\u043d\u0433, \u0441\u0442\u0430\u0440\u0442 \u0432 AI',color:'#3ddc84'},{label:'\u0421\u0440\u0435\u0434\u043d\u0438\u0439 \u043a\u043b\u0430\u0441\u0441',sub:'Fine-tuning, \u0433\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u044f, \u043f\u0440\u043e\u0444\u0435\u0441\u0441\u0438\u043e\u043d\u0430\u043b\u044c\u043d\u044b\u0439 \u0440\u0435\u043d\u0434\u0435\u0440',color:'#76b3ff'},{label:'\u041f\u0440\u043e\u0444\u0435\u0441\u0441\u0438\u043e\u043d\u0430\u043b\u044c\u043d\u044b\u0439 AI',sub:'\u041e\u0431\u0443\u0447\u0435\u043d\u0438\u0435 \u0431\u043e\u043b\u044c\u0448\u0438\u0445 \u043c\u043e\u0434\u0435\u043b\u0435\u0439, HPC, datacenter',color:'#9d7bff'},{label:'\u26a1 \u042d\u043b\u0438\u0442\u0430 \u2014 Hopper / Blackwell',sub:'\u0422\u043e\u043f\u043e\u0432\u044b\u0435 LLM, AGI, \u0433\u043e\u0441\u0443\u0434\u0430\u0440\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0439 HPC',color:'#ff5d57'}]},
+  EN:{eyebrow:'GPU rental',h1:'A GPU that just works.<br><span class="grad">No setup.</span>',p:'PyTorch, CUDA and Jupyter are preinstalled. Pick a card and in a couple of minutes you are in SSH, ready to train or render. Nothing to configure.',gpuLabel:'Available GPUs \u2014 On-Demand',emptyTitle:'Select a GPU',emptySub:'Click a card on the left<br>to configure your rental',rateLabel:'/day',useCasesLabel:'Use cases',periodLabel:'Rental period',pDay:'1 day',pWeek:'Week \u22125%',pMonth:'Month \u221210%',costLabel:'Cost',baseLabel:'Base price:',saveLabel:'Savings:',launchBtn:'Deploy GPU Instance',entBadge:'Enterprise',entTitle:'Blackwell x8<br>AI Clusters',entDesc:'For large-scale LLM training. 8\u00d7 B200 / B300 connected via NVLink with InfiniBand.',entTerm:' 3 months',entNet:' InfiniBand / NVLink',entConfig:' Custom',entBtn:'Contact Sales',modalTitle:'Order created',modalH3:'Opening Telegram',modalP:'Config sent to manager',modalBtn:'Open chat \u2192',sNav:['GPU Marketplace','Enterprise Clusters','Documentation','Support'],tiers:[{label:'Entry Level',sub:'Inference, rendering, AI starter',color:'#3ddc84'},{label:'Mid-Range',sub:'Fine-tuning, generation, professional rendering',color:'#76b3ff'},{label:'Professional AI',sub:'Large model training, HPC, datacenter',color:'#9d7bff'},{label:'\u26a1 Elite \u2014 Hopper / Blackwell',sub:'Top-tier LLMs, AGI, government HPC',color:'#ff5d57'}]}
 };
 const GPUS={
   RU:{l4:{name:'NVIDIA L4',spec:'24 ГБ VRAM · 50 ГБ ОЗУ · 12 vCPU',badge:'Оптимальный',badgeStyle:'background:rgba(61,220,132,0.12);color:#3ddc84;border:1px solid rgba(61,220,132,0.2)',uses:['🤖 Инференс','🎨 Изображения','💬 Чат-боты','🔍 CV']},a40:{name:'NVIDIA A40',spec:'48 ГБ VRAM · 50 ГБ ОЗУ · 9 vCPU',badge:'Универсальный',badgeStyle:'background:rgba(61,220,132,0.08);color:#3ddc84;border:1px solid rgba(61,220,132,0.2)',uses:['🤖 ML-пайплайны','🎨 Генерация','📊 Аналитика']},rtx_3090:{name:'RTX 3090',spec:'24 ГБ VRAM · 125 ГБ ОЗУ · 16 vCPU',badge:'Популярный',badgeStyle:'background:rgba(255,179,64,0.1);color:#ffb340;border:1px solid rgba(255,179,64,0.2)',uses:['🧠 Fine-tuning','🎮 Движки','🔬 ML']},rtx_a6000:{name:'RTX A6000',spec:'48 ГБ VRAM · 50 ГБ ОЗУ · 9 vCPU',badge:'Workstation',badgeStyle:'background:rgba(157,123,255,0.12);color:#9d7bff;border:1px solid rgba(157,123,255,0.25)',uses:['🎨 3D/VFX','🔬 Рендеринг','💊 Фарма']},rtx_4090:{name:'RTX 4090',spec:'24 ГБ VRAM · 41 ГБ ОЗУ · 6 vCPU',badge:'🔥 Топ продаж',badgeStyle:'background:rgba(255,179,64,0.12);color:#ffb340;border:1px solid rgba(255,179,64,0.25)',uses:['🧠 Fine-tuning','🎨 Stable Diffusion','🎬 4K']},rtx_6000_ada:{name:'RTX 6000 Ada',spec:'48 ГБ VRAM · 167 ГБ ОЗУ · 10 vCPU',badge:'Pro',badgeStyle:'background:rgba(118,179,255,0.1);color:#76b3ff;border:1px solid rgba(118,179,255,0.2)',uses:['🏗️ BIM','🎬 VFX','🔬 Симуляции']},l40:{name:'NVIDIA L40',spec:'48 ГБ VRAM · 94 ГБ ОЗУ · 8 vCPU',badge:'Медиа & AI',badgeStyle:'background:rgba(255,93,87,0.1);color:#ff5d57;border:1px solid rgba(255,93,87,0.2)',uses:['🎬 AI-видео','🖼️ Изображения','🔊 Речь']},l40s:{name:'NVIDIA L40S',spec:'48 ГБ VRAM · 94 ГБ ОЗУ · 16 vCPU',badge:'Рекомендуем',badgeStyle:'background:rgba(61,220,132,0.1);color:#3ddc84;border:1px solid rgba(61,220,132,0.2)',uses:['⚡ Инференс','🧠 Обучение','🌐 Серверный AI']},rtx_5090:{name:'RTX 5090',spec:'32 ГБ VRAM · 93 ГБ ОЗУ · 16 vCPU',badge:'Новинка',badgeStyle:'background:rgba(157,123,255,0.1);color:#9d7bff;border:1px solid rgba(157,123,255,0.2)',uses:['🧠 LLM 30B','🎨 Генерация','⚡ AI-видео']},a100_pcie:{name:'A100 PCIe',spec:'80 ГБ VRAM · 117 ГБ ОЗУ · 8 vCPU',badge:'AI Datacenter',badgeStyle:'background:rgba(118,179,255,0.1);color:#76b3ff;border:1px solid rgba(118,179,255,0.2)',uses:['🧠 LLM 30-70B','🔬 HPC','🧬 Геномика']},a100_sxm:{name:'A100 SXM',spec:'80 ГБ VRAM · 250 ГБ ОЗУ · 16 vCPU',badge:'HPC',badgeStyle:'background:rgba(118,179,255,0.12);color:#76b3ff;border:1px solid rgba(118,179,255,0.25)',uses:['🧠 Большие модели','🔭 Наука','🏭 AI']},rtx_pro_6000_wk:{name:'RTX PRO 6000 WK',spec:'96 ГБ VRAM · 188 ГБ ОЗУ · 16 vCPU',badge:'Creator Pro',badgeStyle:'background:rgba(255,93,87,0.1);color:#ff5d57;border:1px solid rgba(255,93,87,0.2)',uses:['🎬 Рендеринг','🏗️ Digital Twin','🎨 Дизайн']},rtx_pro_6000:{name:'RTX PRO 6000',spec:'96 ГБ VRAM · 188 ГБ ОЗУ · 16 vCPU',badge:'Server Pro',badgeStyle:'background:rgba(255,93,87,0.1);color:#ff5d57;border:1px solid rgba(255,93,87,0.2)',uses:['🤖 Инференс','🧠 Обучение','🔐 Приватный AI']},mi300x:{name:'AMD MI300X',spec:'192 ГБ VRAM · 283 ГБ ОЗУ · 24 vCPU',badge:'AMD 192GB',badgeStyle:'background:rgba(255,93,87,0.1);color:#ff5d57;border:1px solid rgba(255,93,87,0.2)',uses:['🧠 Огромные модели','🔬 HPC','⚡ Инференс']},h100_pcie:{name:'H100 PCIe',spec:'80 ГБ VRAM · 188 ГБ ОЗУ · 16 vCPU',badge:'Enterprise AI',badgeStyle:'background:rgba(61,220,132,0.08);color:#3ddc84;border:1px solid rgba(61,220,132,0.2)',uses:['🤖 LLM в проде','🏦 Финтех','🔐 Приватный AI']},h100_nvl:{name:'H100 NVL',spec:'94 ГБ VRAM · 251 ГБ ОЗУ · 18 vCPU',badge:'Топ AI',badgeStyle:'background:rgba(61,220,132,0.1);color:#3ddc84;border:1px solid rgba(61,220,132,0.25)',uses:['🧠 GPT-класс','⚡ Инференс','🔬 Frontier']},h100_sxm:{name:'H100 SXM',spec:'80 ГБ VRAM · 125 ГБ ОЗУ · 20 vCPU',badge:'⚡ Мощнейший',badgeStyle:'background:rgba(255,179,64,0.1);color:#ffb340;border:1px solid rgba(255,179,64,0.2)',uses:['🧠 100B+ модели','🌐 Распределённое','🚀 AGI']},h200_nvl:{name:'H200 NVL',spec:'143 ГБ VRAM · 251 ГБ ОЗУ · 24 vCPU',badge:'Next-Gen',badgeStyle:'background:rgba(157,123,255,0.1);color:#9d7bff;border:1px solid rgba(157,123,255,0.2)',uses:['🧠 Мультимодал','🔭 Климат','💊 Drug AI']},h200_sxm:{name:'H200 SXM',spec:'141 ГБ VRAM · 251 ГБ ОЗУ · 24 vCPU',badge:'Next-Gen',badgeStyle:'background:rgba(157,123,255,0.1);color:#9d7bff;border:1px solid rgba(157,123,255,0.2)',uses:['🧠 Мультимодал','🔭 Климат','🧬 Протеины']},b200:{name:'Blackwell B200',spec:'180 ГБ VRAM · 283 ГБ ОЗУ · 28 vCPU',badge:'🚀 Флагман',badgeStyle:'background:rgba(255,93,87,0.12);color:#ff5d57;border:1px solid rgba(255,93,87,0.25)',uses:['🌐 Триллион-парам','🧠 AGI','🛰️ HPC']},b300:{name:'Blackwell B300',spec:'288 ГБ VRAM · 251 ГБ ОЗУ · 32 vCPU',badge:'🚀 B300 288GB',badgeStyle:'background:rgba(255,93,87,0.12);color:#ff5d57;border:1px solid rgba(255,93,87,0.25)',uses:['🌐 Foundation Models','🧠 AGI','🛰️ Госсектор']}},
@@ -1192,7 +1358,7 @@ const I18N = {
     'feat.pay.t':'Оплата рублём','feat.pay.d':'Карта российского банка, СБП или криптовалюта. Без зарубежных карт, VPN и валютных конвертаций.',
     'feat.support.t':'Поддержка на русском','feat.support.d':'Отвечаем в Telegram по существу. Помогаем с запуском, образами и настройкой окружения.',
     'feat.deploy.t':'Запуск за пару минут','feat.deploy.d':'Готовые образы PyTorch, CUDA и Jupyter. SSH-доступ и публичный IP сразу после старта инстанса.',
-    'feat.bill.t':'Прозрачный биллинг','feat.bill.d':'Платите за фактическое время работы. Баланс пополняется заранее, неизрасходованное остаётся на счёте.',
+    'feat.bill.t':'Понятная цена','feat.bill.d':'Выбираете период — день, неделю или месяц — и платите фиксированную сумму вперёд. Никаких скрытых доплат и абонентской платы.',
     'feat.gpu.t':'От RTX 4090 до B300','feat.gpu.d':'20+ моделей GPU в каталоге: от бюджетных до H100, H200 и Blackwell для крупных задач.',
     'feat.api.t':'API и SSH-ключи','feat.api.d':'REST API для запуска и остановки инстансов из скриптов и CI. Привязка собственных SSH-ключей.',
     'foot.tagline':'GPU-инфраструктура для AI и ML. Запуск за минуты, оплата за реальное время.',
@@ -1233,7 +1399,7 @@ const I18N = {
     'feat.pay.t':'Pay in roubles','feat.pay.d':'Russian bank card, SBP or crypto. No foreign cards, VPN or currency conversion.',
     'feat.support.t':'Support in Russian','feat.support.d':'We answer to the point in Telegram. Help with launch, images and environment setup.',
     'feat.deploy.t':'Deploy in minutes','feat.deploy.d':'Ready-made PyTorch, CUDA and Jupyter images. SSH access and public IP right after the instance starts.',
-    'feat.bill.t':'Transparent billing','feat.bill.d':'Pay for actual runtime. Prepay your balance, unused funds stay on your account.',
+    'feat.bill.t':'Clear pricing','feat.bill.d':'Pick a period — day, week or month — and pay a fixed amount upfront. No hidden charges or subscription fees.',
     'feat.gpu.t':'From RTX 4090 to B300','feat.gpu.d':'20+ GPU models in the catalog: from budget cards to H100, H200 and Blackwell for large jobs.',
     'feat.api.t':'API & SSH keys','feat.api.d':'REST API to launch and stop instances from scripts and CI. Bring your own SSH keys.',
     'foot.tagline':'GPU infrastructure for AI and ML. Launch in minutes, pay for real usage.',
@@ -1289,7 +1455,6 @@ function i18n(key){return (I18N[lang]&&I18N[lang][key])||(I18N.RU[key])||key;}
 function applyTranslations(){
   applyI18n();
   const t=T[lang];
-  setHtml('heroEyebrow',t.eyebrow+' <span class="tag">RU SUPPORT</span>');
   setHtml('heroH1',t.h1);
   setTxt('heroP',t.p);
   setTxt('gpuSectionLabel',t.gpuLabel);
@@ -1302,14 +1467,21 @@ function applyTranslations(){
   setTxt('entBtn',t.entBtn);
   if(lang==='EN'){
     setTxt('gpuKicker','GPU Marketplace');setTxt('gpuH2','Choose your configuration');setTxt('gpuHp','On-demand access to any GPU class. Flexible billing, instant deploy.');
-    setTxt('featKicker','Platform');setTxt('featH2','What you get');setTxt('featHp','Access to foreign GPUs without a foreign card or VPN.');
-    setTxt('m1l','From payment to SSH');setTxt('m2l','Card RF \u00b7 SBP \u00b7 crypto');setTxt('m3l','GPU models in catalog');setTxt('m4l','Support on Telegram');
+    setTxt('featKicker','Platform');setTxt('featH2','Nothing to set up');setTxt('featHp','The environment is ready. You focus on your model, not on drivers.');
+    setTxt('m1l','Environment setup');setTxt('m2l','From launch to SSH');setTxt('m3l','PyTorch & Jupyter out of the box');setTxt('m4l','GPU models in catalog');var hp=document.getElementById('heroPay');if(hp)hp.textContent='Pay in roubles \u00b7 Russian card, SBP or crypto \u00b7 support in Russian';
     setHtml('fctaH2','Launch your first GPU<br>today');setTxt('fctaP','Sign up in a minute. Top up in roubles and launch a GPU \u2014 no foreign cards or VPN.');
+    setTxt('hiwKicker','How it works');setTxt('hiwH2','From sign-up to GPU \u2014 4 steps');setTxt('hiwP','New to renting GPUs? Here is the whole path. Takes a few minutes.');
+    setTxt('hiw1t','Sign up');setTxt('hiw1d','Create an account with email or sign in via Telegram. Free, takes a minute.');
+    setTxt('hiw2t','Top up balance');setTxt('hiw2d','Add funds in roubles \u2014 Russian card, SBP or crypto. The balance is used to pay for rentals.');
+    setTxt('hiw3t','Pick GPU and period');setTxt('hiw3d','Choose a GPU for your task and a rental term \u2014 day, week or month. The price is shown upfront and charged at launch.');
+    setTxt('hiw4t','Connect to the server');setTxt('hiw4d','In a couple of minutes you get an IP, SSH access and a Jupyter link. CUDA and PyTorch are preinstalled.');
+    setTxt('hiwNote','Billing starts the moment the instance launches and runs continuously. If you stop early, the paid period is not refunded \u2014 keep this in mind when choosing the term.');
   } else {
     setTxt('gpuKicker','GPU Marketplace');setTxt('gpuH2','\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u0432\u043e\u044e \u043a\u043e\u043d\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044e');setTxt('gpuHp','On-Demand \u0434\u043e\u0441\u0442\u0443\u043f \u043a GPU \u043b\u044e\u0431\u043e\u0433\u043e \u043a\u043b\u0430\u0441\u0441\u0430. \u0413\u0438\u0431\u043a\u0430\u044f \u0441\u0438\u0441\u0442\u0435\u043c\u0430 \u043e\u043f\u043b\u0430\u0442\u044b, \u043c\u0433\u043d\u043e\u0432\u0435\u043d\u043d\u044b\u0439 \u0437\u0430\u043f\u0443\u0441\u043a.');
-    setTxt('featKicker','\u041f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430');setTxt('featH2','\u0427\u0442\u043e \u0432\u044b \u043f\u043e\u043b\u0443\u0447\u0430\u0435\u0442\u0435');setTxt('featHp','\u0414\u043e\u0441\u0442\u0443\u043f \u043a \u0437\u0430\u0440\u0443\u0431\u0435\u0436\u043d\u044b\u043c GPU \u0431\u0435\u0437 \u0437\u0430\u0440\u0443\u0431\u0435\u0436\u043d\u043e\u0439 \u043a\u0430\u0440\u0442\u044b \u0438 VPN.');
-    setTxt('m1l','\u041e\u0442 \u043e\u043f\u043b\u0430\u0442\u044b \u0434\u043e SSH');setTxt('m2l','\u041a\u0430\u0440\u0442\u0430 \u0420\u0424 \u00b7 \u0421\u0411\u041f \u00b7 \u043a\u0440\u0438\u043f\u0442\u043e');setTxt('m3l','\u041c\u043e\u0434\u0435\u043b\u0435\u0439 GPU \u0432 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0435');setTxt('m4l','\u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430 \u0432 Telegram');
+    setTxt('featKicker','\u041f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430');setTxt('featH2','\u041d\u0438\u0447\u0435\u0433\u043e \u043d\u0435 \u043d\u0443\u0436\u043d\u043e \u043d\u0430\u0441\u0442\u0440\u0430\u0438\u0432\u0430\u0442\u044c');setTxt('featHp','\u041e\u043a\u0440\u0443\u0436\u0435\u043d\u0438\u0435 \u0443\u0436\u0435 \u0433\u043e\u0442\u043e\u0432\u043e. \u0412\u044b \u0437\u0430\u043d\u0438\u043c\u0430\u0435\u0442\u0435\u0441\u044c \u043c\u043e\u0434\u0435\u043b\u044c\u044e, \u0430 \u043d\u0435 \u0434\u0440\u0430\u0439\u0432\u0435\u0440\u0430\u043c\u0438.');
+    setTxt('m1l','\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u043e\u043a\u0440\u0443\u0436\u0435\u043d\u0438\u044f');setTxt('m2l','\u041e\u0442 \u0437\u0430\u043f\u0443\u0441\u043a\u0430 \u0434\u043e SSH');setTxt('m3l','PyTorch \u0438 Jupyter \u0438\u0437 \u043a\u043e\u0440\u043e\u0431\u043a\u0438');setTxt('m4l','\u041c\u043e\u0434\u0435\u043b\u0435\u0439 GPU \u0432 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0435');var hpr=document.getElementById('heroPay');if(hpr)hpr.textContent='\u041e\u043f\u043b\u0430\u0442\u0430 \u0440\u0443\u0431\u043b\u0451\u043c \u00b7 \u043a\u0430\u0440\u0442\u0430 \u0420\u0424, \u0421\u0411\u041f \u0438\u043b\u0438 \u043a\u0440\u0438\u043f\u0442\u0430 \u00b7 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430 \u043d\u0430 \u0440\u0443\u0441\u0441\u043a\u043e\u043c';
     setHtml('fctaH2','\u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u0435 \u043f\u0435\u0440\u0432\u044b\u0439 GPU<br>\u0443\u0436\u0435 \u0441\u0435\u0433\u043e\u0434\u043d\u044f');setTxt('fctaP','\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044f \u0437\u0430 \u043c\u0438\u043d\u0443\u0442\u0443. \u041f\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435 \u0431\u0430\u043b\u0430\u043d\u0441 \u0440\u0443\u0431\u043b\u044f\u043c\u0438 \u0438 \u0437\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u0435 GPU \u2014 \u0431\u0435\u0437 \u0437\u0430\u0440\u0443\u0431\u0435\u0436\u043d\u044b\u0445 \u043a\u0430\u0440\u0442 \u0438 VPN.');
+    setTxt('hiwKicker','\u041a\u0430\u043a \u044d\u0442\u043e \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442');setTxt('hiwH2','\u041e\u0442 \u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u0438 \u0434\u043e GPU \u2014 4 \u0448\u0430\u0433\u0430');setTxt('hiwP','\u0415\u0441\u043b\u0438 \u0432\u044b \u0432\u043f\u0435\u0440\u0432\u044b\u0435 \u0430\u0440\u0435\u043d\u0434\u0443\u0435\u0442\u0435 GPU \u2014 \u0432\u043e\u0442 \u0432\u0435\u0441\u044c \u043f\u0443\u0442\u044c. \u0417\u0430\u043d\u0438\u043c\u0430\u0435\u0442 \u043d\u0435\u0441\u043a\u043e\u043b\u044c\u043a\u043e \u043c\u0438\u043d\u0443\u0442.');
   }
 }
 function render(){
@@ -1381,7 +1553,7 @@ const INFO_PAGES={
   about:{t:'О нас',h:`
     <p>NODE.CLOUD — молодая технологическая компания, которая задаёт стандарт аренды GPU на рынке СНГ. Мы строим инфраструктуру, какой сами хотели бы пользоваться: быстрый запуск, честные цены и поддержка, которая отвечает по делу.</p>
     <h4>Зачем мы это делаем</h4>
-    <p>Доступ к топовым GPU долго оставался дорогим и неудобным. Мы убираем барьеры: от RTX 4090 до Blackwell B200 — в пару кликов, с почасовой оплатой и данными внутри РФ.</p>
+    <p>Доступ к топовым GPU долго оставался неудобным для пользователей из РФ: нужна зарубежная карта, VPN, оплата в валюте. Мы убираем эти барьеры — от RTX 4090 до Blackwell в пару кликов, с оплатой рублём.</p>
     <h4>Наш подход</h4>
     <p>Прозрачность вместо мелкого шрифта, скорость вместо бюрократии, инженерная культура вместо обещаний. Мы небольшие и этим гордимся — каждый клиент для нас заметен, а решения принимаются быстро.</p>
     <p style="color:var(--ink-3);font-size:12px;margin-top:18px">Мы только начинаем, но цель амбициозна — стать GPU-облаком №1 в регионе.</p>`},
@@ -1403,11 +1575,11 @@ const INFO_PAGES={
   terms:{t:'Условия использования',h:`
     <p>Используя сервис NODE.CLOUD, вы соглашаетесь с настоящими условиями.</p>
     <h4>Сервис</h4>
-    <p>Мы предоставляем доступ к вычислительным GPU-ресурсам по модели аренды с почасовой оплатой. Ресурсы предоставляются «как есть»; мы стремимся к высокой доступности и оперативно реагируем на сбои.</p>
+    <p>Мы предоставляем доступ к вычислительным GPU-ресурсам по модели аренды на выбранный период (день, неделя, месяц) с оплатой вперёд. Ресурсы предоставляются «как есть»; мы стремимся к высокой доступности и оперативно реагируем на сбои.</p>
     <h4>Обязанности пользователя</h4>
     <p>Вы обязуетесь не использовать ресурсы для противоправной деятельности, майнинга в нарушение правил, рассылки спама, атак и иных действий, нарушающих законодательство РФ и стран присутствия.</p>
     <h4>Оплата</h4>
-    <p>Списание происходит за фактическое время использования. Неизрасходованный баланс остаётся на счёте. Возвраты регулируются отдельной политикой.</p>
+    <p>Оплата аренды списывается с баланса в момент запуска инстанса за весь выбранный период. Аренда действует непрерывно с момента запуска; при досрочной остановке оплаченный период не пересчитывается. Неизрасходованный баланс (средства, не вложенные в аренду) остаётся на счёте.</p>
     <p style="color:var(--ink-3);font-size:12px;margin-top:18px">Полная редакция документа предоставляется по запросу. Вопросы — в Telegram.</p>`},
   privacy:{t:'Конфиденциальность',h:`
     <p>Мы уважаем вашу приватность и обрабатываем только те данные, которые необходимы для работы сервиса.</p>
