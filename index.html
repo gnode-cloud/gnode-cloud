@@ -303,6 +303,12 @@ html[data-theme="dark"] #pg-landing .ud-balance-row{background:rgba(94,139,255,.
 #pg-landing .hiw-step h3{font-family:var(--disp);font-weight:700;font-size:16px;letter-spacing:-.01em;margin-bottom:8px;color:var(--ink)}
 #pg-landing .hiw-step p{font-size:13.5px;color:var(--ink-2);line-height:1.6}
 #pg-landing .hiw-note{background:var(--acc-soft);border:1px solid #cfe0ff;border-radius:10px;padding:16px 18px;font-size:13px;color:var(--ink-2);line-height:1.55;margin-bottom:96px}
+#pg-landing #mission{margin-bottom:96px}
+#pg-landing .mission-box{background:linear-gradient(150deg,#0b1f33,#0b5fff);border-radius:20px;padding:56px max(28px,5%);text-align:center;max-width:960px;margin:0 auto;position:relative;overflow:hidden}
+#pg-landing .mission-box .section-label{margin-bottom:18px}
+#pg-landing .mission-box h2{font-family:var(--disp);font-weight:700;font-size:clamp(26px,3.4vw,40px);letter-spacing:-.02em;line-height:1.12;margin-bottom:18px;color:#fff;max-width:720px;margin-inline:auto}
+#pg-landing .mission-box p{font-size:clamp(15px,1.6vw,17px);line-height:1.65;color:rgba(255,255,255,.82);max-width:680px;margin:0 auto}
+@media(max-width:560px){#pg-landing .mission-box{padding:40px 22px}}
 html[data-theme="dark"] #pg-landing .hiw-grid{background:#0d0e10}
 html[data-theme="dark"] #pg-landing .hiw-step{background:none}
 html[data-theme="dark"] #pg-landing .hiw-note{background:rgba(94,139,255,.08);border-color:rgba(94,139,255,.2);color:var(--ink-2)}
@@ -839,6 +845,15 @@ html[data-theme="light"] .topnav{background:rgba(255,255,255,.55)}
     </div>
   </section>
 
+  <!-- MISSION -->
+  <section id="mission">
+    <div class="mission-box reveal">
+      <div class="section-label" id="missionKicker" style="color:rgba(255,255,255,.7)">Миссия</div>
+      <h2 id="missionH2">Топовые GPU — для каждого, кто строит.</h2>
+      <p id="missionP">Доступ к вычислениям уровня дата-центров слишком долго был привилегией тех, у кого есть бюджет на своё железо. Мы убираем этот барьер — даём одинаковый доступ к топовым видеокартам и студенту с первым проектом, и команде, которой нужно расти. Минимум действий, максимум мощности.</p>
+    </div>
+  </section>
+
   <!-- MARKETPLACE -->
   <section id="marketplace">
     <div class="mkt-head">
@@ -995,28 +1010,44 @@ html[data-theme="light"] .topnav{background:rgba(255,255,255,.55)}
       <div class="modal-row">
         <div class="modal-label" data-i18n="pay.method">Способ оплаты</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px">
-          <button class="pay-method active" onclick="selPay(this)">💳 Карта</button>
-          <button class="pay-method" onclick="selPay(this)">🏦 СБП</button>
-          <button class="pay-method" onclick="selPay(this)">₿ Крипто</button>
-          <button class="pay-method" onclick="selPay(this)">🧾 Счёт</button>
+          <button class="pay-method active" id="payMethodCrypto" onclick="selPayMethod('crypto',this)">₿ Криптовалюта</button>
+          <button class="pay-method" id="payMethodTransfer" onclick="selPayMethod('transfer',this)">💸 Перевод (₽)</button>
         </div>
       </div>
-      <div class="modal-row">
-        <div class="modal-label" data-i18n="pay.amount">Сумма пополнения</div>
-        <div class="topup-amounts" style="margin-bottom:10px">
-          <button class="amount-pill" onclick="setAmount(1000,this)">1 000 ₽</button>
-          <button class="amount-pill active" onclick="setAmount(5000,this)">5 000 ₽</button>
-          <button class="amount-pill" onclick="setAmount(10000,this)">10 000 ₽</button>
-          <button class="amount-pill" onclick="setAmount(25000,this)">25 000 ₽</button>
-          <button class="amount-pill" onclick="setAmount(50000,this)">50 000 ₽</button>
-          <button class="amount-pill" onclick="setAmount(100000,this)">100 000 ₽</button>
+
+      <div id="payCryptoBlock">
+        <div class="modal-row">
+          <div class="modal-label" data-i18n="pay.amount">Сумма пополнения</div>
+          <div class="topup-amounts" style="margin-bottom:10px">
+            <button class="amount-pill" onclick="setAmount(1000,this)">1 000 ₽</button>
+            <button class="amount-pill active" onclick="setAmount(5000,this)">5 000 ₽</button>
+            <button class="amount-pill" onclick="setAmount(10000,this)">10 000 ₽</button>
+            <button class="amount-pill" onclick="setAmount(25000,this)">25 000 ₽</button>
+            <button class="amount-pill" onclick="setAmount(50000,this)">50 000 ₽</button>
+            <button class="amount-pill" onclick="setAmount(100000,this)">100 000 ₽</button>
+          </div>
+          <div class="topup-input-row">
+            <input class="modal-input" type="number" id="topupAmount" value="5000" placeholder="Введите сумму">
+            <button class="topup-submit" onclick="doTopup()" data-i18n="pay.submit">Оплатить</button>
+          </div>
         </div>
-        <div class="topup-input-row">
-          <input class="modal-input" type="number" id="topupAmount" value="5000" placeholder="Введите сумму">
-          <button class="topup-submit" onclick="doTopup()" data-i18n="pay.submit">Оплатить</button>
-        </div>
+        <div style="font-size:10px;color:var(--text3);line-height:1.5">💡 Оплата криптовалютой — средства зачисляются автоматически после подтверждения сети.</div>
       </div>
-      <div style="font-size:10px;color:var(--text3);line-height:1.5">💡 Средства зачисляются мгновенно. При оплате картой комиссия 0%. НДС включён.</div>
+
+      <div id="payTransferBlock" style="display:none">
+        <div style="background:rgba(255,179,64,.08);border:1px solid rgba(255,179,64,.2);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:11.5px;line-height:1.55;color:var(--text2)">
+          <div style="font-weight:700;color:var(--orange);margin-bottom:5px">⏳ Временная мера</div>
+          Мы зарубежная платформа, поэтому прямая оплата картой РФ временно недоступна. Сейчас принимаем оплату рублёвым переводом на счёт Optima Bank через системы Astrasend, Omnypay или Золотая Корона. Работаем над прямой оплатой картой.
+        </div>
+        <div class="modal-label" style="margin-bottom:8px">Как пополнить переводом</div>
+        <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:14px">
+          <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:20px;height:20px;border-radius:50%;background:rgba(94,139,255,.15);color:var(--accent);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:12px;color:var(--text2);line-height:1.5">Напишите нам в Telegram — пришлём реквизиты для перевода и сумму к оплате.</div></div>
+          <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:20px;height:20px;border-radius:50%;background:rgba(94,139,255,.15);color:var(--accent);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:12px;color:var(--text2);line-height:1.5">Отправьте перевод через Astrasend, Omnypay или Золотую Корону из приложения вашего банка.</div></div>
+          <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:20px;height:20px;border-radius:50%;background:rgba(94,139,255,.15);color:var(--accent);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:12px;color:var(--text2);line-height:1.5">Пришлите подтверждение — зачислим баланс после получения перевода.</div></div>
+        </div>
+        <a class="topup-submit" id="payTransferTgBtn" href="https://t.me/gnodecloud" target="_blank" rel="noopener" style="display:block;text-align:center;text-decoration:none;padding:13px">Написать в Telegram →</a>
+        <div style="font-size:10px;color:var(--text3);line-height:1.5;margin-top:10px">Поможем на каждом шаге. Не все карты РФ подходят для переводов — подскажем рабочий способ в Telegram.</div>
+      </div>
     </div>
   </div>
 </div>
@@ -1476,12 +1507,13 @@ function applyTranslations(){
     setTxt('hiw3t','Pick GPU and period');setTxt('hiw3d','Choose a GPU for your task and a rental term \u2014 day, week or month. The price is shown upfront and charged at launch.');
     setTxt('hiw4t','Connect to the server');setTxt('hiw4d','In a couple of minutes you get an IP, SSH access and a Jupyter link. CUDA and PyTorch are preinstalled.');
     setTxt('hiwNote','Billing starts the moment the instance launches and runs continuously. If you stop early, the paid period is not refunded \u2014 keep this in mind when choosing the term.');
+    setTxt('missionKicker','Mission');setTxt('missionH2','Top-tier GPUs \u2014 for everyone who builds.');setTxt('missionP','Data-center-grade compute has long been a privilege of those with a budget for their own hardware. We remove that barrier \u2014 giving the same access to top GPUs to a student on their first project and to a team that needs to scale. Minimum effort, maximum power.');
   } else {
     setTxt('gpuKicker','GPU Marketplace');setTxt('gpuH2','\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u0432\u043e\u044e \u043a\u043e\u043d\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044e');setTxt('gpuHp','On-Demand \u0434\u043e\u0441\u0442\u0443\u043f \u043a GPU \u043b\u044e\u0431\u043e\u0433\u043e \u043a\u043b\u0430\u0441\u0441\u0430. \u0413\u0438\u0431\u043a\u0430\u044f \u0441\u0438\u0441\u0442\u0435\u043c\u0430 \u043e\u043f\u043b\u0430\u0442\u044b, \u043c\u0433\u043d\u043e\u0432\u0435\u043d\u043d\u044b\u0439 \u0437\u0430\u043f\u0443\u0441\u043a.');
     setTxt('featKicker','\u041f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430');setTxt('featH2','\u041d\u0438\u0447\u0435\u0433\u043e \u043d\u0435 \u043d\u0443\u0436\u043d\u043e \u043d\u0430\u0441\u0442\u0440\u0430\u0438\u0432\u0430\u0442\u044c');setTxt('featHp','\u041e\u043a\u0440\u0443\u0436\u0435\u043d\u0438\u0435 \u0443\u0436\u0435 \u0433\u043e\u0442\u043e\u0432\u043e. \u0412\u044b \u0437\u0430\u043d\u0438\u043c\u0430\u0435\u0442\u0435\u0441\u044c \u043c\u043e\u0434\u0435\u043b\u044c\u044e, \u0430 \u043d\u0435 \u0434\u0440\u0430\u0439\u0432\u0435\u0440\u0430\u043c\u0438.');
     setTxt('m1l','\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u043e\u043a\u0440\u0443\u0436\u0435\u043d\u0438\u044f');setTxt('m2l','\u041e\u0442 \u0437\u0430\u043f\u0443\u0441\u043a\u0430 \u0434\u043e SSH');setTxt('m3l','PyTorch \u0438 Jupyter \u0438\u0437 \u043a\u043e\u0440\u043e\u0431\u043a\u0438');setTxt('m4l','\u041c\u043e\u0434\u0435\u043b\u0435\u0439 GPU \u0432 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0435');var hpr=document.getElementById('heroPay');if(hpr)hpr.textContent='\u041e\u043f\u043b\u0430\u0442\u0430 \u0440\u0443\u0431\u043b\u0451\u043c \u00b7 \u043a\u0430\u0440\u0442\u0430 \u0420\u0424, \u0421\u0411\u041f \u0438\u043b\u0438 \u043a\u0440\u0438\u043f\u0442\u0430 \u00b7 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430 \u043d\u0430 \u0440\u0443\u0441\u0441\u043a\u043e\u043c';
     setHtml('fctaH2','\u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u0435 \u043f\u0435\u0440\u0432\u044b\u0439 GPU<br>\u0443\u0436\u0435 \u0441\u0435\u0433\u043e\u0434\u043d\u044f');setTxt('fctaP','\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044f \u0437\u0430 \u043c\u0438\u043d\u0443\u0442\u0443. \u041f\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435 \u0431\u0430\u043b\u0430\u043d\u0441 \u0440\u0443\u0431\u043b\u044f\u043c\u0438 \u0438 \u0437\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u0435 GPU \u2014 \u0431\u0435\u0437 \u0437\u0430\u0440\u0443\u0431\u0435\u0436\u043d\u044b\u0445 \u043a\u0430\u0440\u0442 \u0438 VPN.');
-    setTxt('hiwKicker','\u041a\u0430\u043a \u044d\u0442\u043e \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442');setTxt('hiwH2','\u041e\u0442 \u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u0438 \u0434\u043e GPU \u2014 4 \u0448\u0430\u0433\u0430');setTxt('hiwP','\u0415\u0441\u043b\u0438 \u0432\u044b \u0432\u043f\u0435\u0440\u0432\u044b\u0435 \u0430\u0440\u0435\u043d\u0434\u0443\u0435\u0442\u0435 GPU \u2014 \u0432\u043e\u0442 \u0432\u0435\u0441\u044c \u043f\u0443\u0442\u044c. \u0417\u0430\u043d\u0438\u043c\u0430\u0435\u0442 \u043d\u0435\u0441\u043a\u043e\u043b\u044c\u043a\u043e \u043c\u0438\u043d\u0443\u0442.');
+    setTxt('hiwKicker','\u041a\u0430\u043a \u044d\u0442\u043e \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442');setTxt('hiwH2','\u041e\u0442 \u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u0438 \u0434\u043e GPU \u2014 4 \u0448\u0430\u0433\u0430');setTxt('hiwP','\u0415\u0441\u043b\u0438 \u0432\u044b \u0432\u043f\u0435\u0440\u0432\u044b\u0435 \u0430\u0440\u0435\u043d\u0434\u0443\u0435\u0442\u0435 GPU \u2014 \u0432\u043e\u0442 \u0432\u0435\u0441\u044c \u043f\u0443\u0442\u044c. \u0417\u0430\u043d\u0438\u043c\u0430\u0435\u0442 \u043d\u0435\u0441\u043a\u043e\u043b\u044c\u043a\u043e \u043c\u0438\u043d\u0443\u0442.');setTxt('missionKicker','\u041c\u0438\u0441\u0441\u0438\u044f');setTxt('missionH2','\u0422\u043e\u043f\u043e\u0432\u044b\u0435 GPU \u2014 \u0434\u043b\u044f \u043a\u0430\u0436\u0434\u043e\u0433\u043e, \u043a\u0442\u043e \u0441\u0442\u0440\u043e\u0438\u0442.');setTxt('missionP','\u0414\u043e\u0441\u0442\u0443\u043f \u043a \u0432\u044b\u0447\u0438\u0441\u043b\u0435\u043d\u0438\u044f\u043c \u0443\u0440\u043e\u0432\u043d\u044f \u0434\u0430\u0442\u0430-\u0446\u0435\u043d\u0442\u0440\u043e\u0432 \u0441\u043b\u0438\u0448\u043a\u043e\u043c \u0434\u043e\u043b\u0433\u043e \u0431\u044b\u043b \u043f\u0440\u0438\u0432\u0438\u043b\u0435\u0433\u0438\u0435\u0439 \u0442\u0435\u0445, \u0443 \u043a\u043e\u0433\u043e \u0435\u0441\u0442\u044c \u0431\u044e\u0434\u0436\u0435\u0442 \u043d\u0430 \u0441\u0432\u043e\u0451 \u0436\u0435\u043b\u0435\u0437\u043e. \u041c\u044b \u0443\u0431\u0438\u0440\u0430\u0435\u043c \u044d\u0442\u043e\u0442 \u0431\u0430\u0440\u044c\u0435\u0440 \u2014 \u0434\u0430\u0451\u043c \u043e\u0434\u0438\u043d\u0430\u043a\u043e\u0432\u044b\u0439 \u0434\u043e\u0441\u0442\u0443\u043f \u043a \u0442\u043e\u043f\u043e\u0432\u044b\u043c \u0432\u0438\u0434\u0435\u043e\u043a\u0430\u0440\u0442\u0430\u043c \u0438 \u0441\u0442\u0443\u0434\u0435\u043d\u0442\u0443 \u0441 \u043f\u0435\u0440\u0432\u044b\u043c \u043f\u0440\u043e\u0435\u043a\u0442\u043e\u043c, \u0438 \u043a\u043e\u043c\u0430\u043d\u0434\u0435, \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u043d\u0443\u0436\u043d\u043e \u0440\u0430\u0441\u0442\u0438. \u041c\u0438\u043d\u0438\u043c\u0443\u043c \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439, \u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c \u043c\u043e\u0449\u043d\u043e\u0441\u0442\u0438.');
   }
 }
 function render(){
@@ -1640,7 +1672,23 @@ function openModal(id){document.getElementById(id).classList.add('show');}
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 document.querySelectorAll('.modal-bg').forEach(bg=>bg.addEventListener('click',e=>{if(e.target===bg)bg.classList.remove('show');}));
 function setAmount(v,btn){document.getElementById('topupAmount').value=v;document.querySelectorAll('.amount-pill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
-function selPay(btn){btn.closest('.modal-body').querySelectorAll('.pay-method').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function selPayMethod(method,btn){
+  document.querySelectorAll('#topupModal .pay-method').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const cryptoB=document.getElementById('payCryptoBlock');
+  const transferB=document.getElementById('payTransferBlock');
+  if(method==='transfer'){
+    if(cryptoB)cryptoB.style.display='none';
+    if(transferB)transferB.style.display='block';
+    const amt=parseInt(document.getElementById('topupAmount')?.value)||0;
+    const msg='💸 [ОПЛАТА ПЕРЕВОДОМ]\nЗдравствуйте! Хочу пополнить баланс NODE.CLOUD переводом'+(amt?(' на '+amt+' ₽'):'')+'.\nПришлите, пожалуйста, реквизиты (Astrasend / Omnypay / Золотая Корона).';
+    const tgBtn=document.getElementById('payTransferTgBtn');
+    if(tgBtn)tgBtn.href='https://t.me/'+TG_USERNAME+'?text='+encodeURIComponent(msg);
+  }else{
+    if(cryptoB)cryptoB.style.display='block';
+    if(transferB)transferB.style.display='none';
+  }
+}
 function doTopup(){doTopupReal();}
 function markRead(el){el.classList.remove('unread');const d=el.querySelector('.notif-unread-dot');if(d)d.style.opacity='0';}
 showPage('dashboard');
