@@ -633,6 +633,341 @@ html[data-theme="light"] .topnav{background:rgba(255,255,255,.55)}
 ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
 ::selection{background:rgba(118,179,255,.3)}
 
+/* ============================================================
+   NODE.CLOUD — RETRO 2000s THEME OVERRIDE
+   ------------------------------------------------------------
+   КАК ПРИМЕНИТЬ:
+   1. Открой свой index.html в GitHub (редактор файла).
+   2. Найди (Ctrl+F / поиск в редакторе) эту строку — она почти
+      в самом конце CSS, прямо перед закрывающим style-тегом:
+
+          ::selection{background:rgba(118,179,255,.3)}
+
+   3. Вставь весь этот файл целиком СРАЗУ ПОСЛЕ этой строки
+      (перед закрывающим style-тегом).
+   4. Сохрани / закоммить.
+
+   Ничего больше менять не нужно — ни JS, ни HTML, ни остальной
+   CSS не удаляется. Этот блок только ДОБАВЛЯЕТ правила, которые
+   перекрывают старые за счёт порядка в каскаде. Если что-то не
+   понравится — просто удали этот блок целиком, и сайт вернётся
+   ровно в текущее состояние. Никакого all:unset тут нет, поэтому
+   layout/flex/JS не должны пострадать.
+   ============================================================ */
+
+/* ---- 1. ГЛОБАЛЬНЫЙ СБРОС: убираем скругления, блюр, мягкие тени, зерно ---- */
+*{
+  border-radius:0 !important;
+  box-shadow:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  text-shadow:none !important;
+}
+body::after,#pg-dash::after{display:none !important;} /* убираем шумовую текстуру (грейн) — это как раз тот "AI-tell" */
+
+/* ---- 2. ШРИФТЫ + БАЗОВЫЕ ТОКЕНЫ ---- */
+:root{
+  --disp:Verdana,Arial,Helvetica,sans-serif;
+  --body:Verdana,Arial,Helvetica,sans-serif;
+  --mono:'Courier New',Courier,monospace;
+  --radius-sm:0px;--radius-md:0px;--radius-lg:0px;--radius-xl:0px;
+}
+
+/* ---- 3. ПАЛИТРА (light theme — управляет дашбордом) ---- */
+html[data-theme="light"]{
+  --bg:#e7ebef;
+  --bg-elev:#ffffff;
+  --bg2:#ffffff;
+  --bg3:#f3f5f7;
+  --panel:#ffffff;
+  --panel-2:#eef1f4;
+  --line:#9aa6b2;
+  --line-2:#6e7c8a;
+  --ink:#1a1a1a;
+  --ink-2:#3a3a3a;
+  --ink-3:#5c5c5c;
+  --ink-4:#7d7d7d;
+  --acc:#2c4a6e;
+  --acc-2:#1c3550;
+  --green:#1e7a42;
+  --green-soft:#dcf0e3;
+  --surface:var(--panel);--surface-hover:var(--panel-2);--surface2:var(--panel-2);
+  --border:var(--line);--border-hover:var(--line-2);--border2:var(--line-2);
+  --text-primary:var(--ink);--text-secondary:var(--ink-2);--text-tertiary:var(--ink-3);
+  --text:var(--ink);--text2:var(--ink-2);--text3:var(--ink-3);
+  --accent:var(--acc);--blue:var(--acc);--red:#b3392b;--orange:#a3680a;--purple:#5c5687;--yellow:#a3680a;
+}
+
+/* ---- 4. ПАЛИТРА (область лендинга) ---- */
+#pg-landing{
+  --bg:#e7ebef;--bg-elev:#ffffff;--card:#ffffff;
+  --line:#9aa6b2;--line-2:#6e7c8a;
+  --ink:#1a1a1a;--ink-2:#3a3a3a;--ink-3:#5c5c5c;--ink-4:#7d7d7d;
+  --acc:#2c4a6e;--acc-2:#1c3550;--acc-soft:#dfe7ee;
+  --green:#1e7a42;--green-soft:#dcf0e3;
+}
+html[data-theme="dark"] #pg-landing{
+  --bg:#1c2530;--bg-elev:#242f3d;--card:#242f3d;
+  --line:#3d4c5c;--line-2:#536679;
+  --ink:#e8edf2;--ink-2:#b7c2cc;--ink-3:#889099;--ink-4:#5e6770;
+  --acc:#7d97b3;--acc-2:#5c7a99;--acc-soft:#2c3e50;
+  --green:#4fae74;--green-soft:#1e3a2a;
+}
+
+/* ---- 5. СКРОЛЛБАР — классический серый, не тонкий модный ---- */
+::-webkit-scrollbar{width:14px;height:14px}
+::-webkit-scrollbar-track{background:#e0e0e0}
+::-webkit-scrollbar-thumb{background:#b0b8c2;border:1px solid #8a98a8}
+::-webkit-scrollbar-thumb:hover{background:#94a2b0}
+
+/* ---- 6. ШАПКА ЛЕНДИНГА — градиентная синяя полоса как у старых корпоративных сайтов ---- */
+#pg-landing nav{
+  background:linear-gradient(to bottom,#8aa2bd,#3f5872) !important;
+  border-bottom:1px solid #1c2c3c !important;
+}
+#pg-landing .nav-logo-icon{background:#ffcc00 !important;color:#1a1a1a !important;border:1px solid #8a6d00 !important;}
+#pg-landing .nav-logo-text{color:#ffffff !important;}
+#pg-landing .nav-cl{color:#e2eaf2 !important;}
+#pg-landing .nav-cl:hover{color:#ffffff !important;background:rgba(255,255,255,.15) !important;}
+#pg-landing .nav-center{background:rgba(255,255,255,.12) !important;border:1px solid rgba(255,255,255,.3) !important;}
+#pg-landing .lang-pill,#pg-landing .menu-btn,#pg-landing .theme-btn{background:rgba(255,255,255,.12) !important;border:1px solid rgba(255,255,255,.35) !important;color:#fff !important;}
+#pg-landing .lang-btn{color:#dbe6f2 !important;}
+#pg-landing .lang-btn.active{background:#ffcc00 !important;color:#1a1a1a !important;}
+#pg-landing .user-btn{background:#ffffff !important;border:1px solid #6e7c8a !important;color:#1a1a1a !important;}
+
+/* ---- 7. БОКОВОЕ МЕНЮ ДАШБОРДА + ВЕРХНЯЯ ПАНЕЛЬ ---- */
+#pg-dash .sidebar{background:#2e4258 !important;border-right:1px solid #1c2c3c !important;}
+.sb-logo-txt,.sb-user-name{color:#ffffff !important;}
+.sb-user-email{color:#aebfd0 !important;}
+.sb-item{color:#cfdce8 !important;}
+.sb-item:hover{background:rgba(255,255,255,.1) !important;color:#fff !important;}
+.sb-item.active{background:rgba(255,204,0,.18) !important;color:#ffcc00 !important;border:1px solid rgba(255,204,0,.35) !important;}
+.sb-nav-section{color:#7e93a8 !important;}
+.sb-balance{background:rgba(255,255,255,.08) !important;border:1px solid rgba(255,255,255,.22) !important;}
+.sb-balance-label{color:#ffcc00 !important;}
+.sb-balance-val{color:#fff !important;}
+.sb-balance-sub{color:#aebfd0 !important;}
+.sb-footer{border-top:1px solid rgba(255,255,255,.15) !important;}
+.sb-footer-text{color:#6e84a0 !important;}
+html[data-theme="light"] .topnav{background:#eef2f6 !important;border-bottom:1px solid #9aa6b2 !important;}
+
+/* ---- 8. "ДЕНЕЖНЫЕ" КНОПКИ — жёлтые, единственный яркий акцент на странице ---- */
+#pg-landing .cbtn.pri,
+#pg-landing .fcta .cbtn.pri,
+#pg-landing .launch-btn,
+#pg-landing .ent-btn,
+.topup-submit,
+.sb-top-btn,
+.bc-btn.primary,
+#pg-landing .modal-btn{
+  background:linear-gradient(to bottom,#fff3b0,#ffcc00) !important;
+  border:1px solid #8a6d00 !important;
+  color:#3a2c00 !important;
+  font-weight:700 !important;
+  box-shadow:2px 2px 0 rgba(0,0,0,.22) !important;
+}
+#pg-landing .cbtn.pri:hover,
+#pg-landing .fcta .cbtn.pri:hover,
+#pg-landing .launch-btn:hover,
+#pg-landing .ent-btn:hover,
+.topup-submit:hover,
+.sb-top-btn:hover,
+.bc-btn.primary:hover,
+#pg-landing .modal-btn:hover{
+  background:linear-gradient(to bottom,#ffe680,#ffc515) !important;
+  color:#3a2c00 !important;
+}
+#pg-landing .cbtn.pri:active,
+#pg-landing .launch-btn:active,
+.topup-submit:active,
+.sb-top-btn:active{
+  box-shadow:none !important;
+  transform:translate(2px,2px);
+}
+
+/* ---- 9. ВТОРИЧНЫЕ КНОПКИ — плоская сталь (light + dark раздельно) ---- */
+html[data-theme="light"] #pg-landing .cbtn.ghost,html[data-theme="light"] .bc-btn.secondary,html[data-theme="light"] .m-btn.secondary,html[data-theme="light"] .ud-back{
+  background:#eef2f6 !important;
+  border:1px solid #8a98a8 !important;
+  color:#1c3550 !important;
+  box-shadow:1px 1px 0 rgba(0,0,0,.15) !important;
+}
+html[data-theme="light"] #pg-landing .cbtn.ghost:hover,html[data-theme="light"] .bc-btn.secondary:hover,html[data-theme="light"] .m-btn.secondary:hover{background:#dde6ee !important;}
+html[data-theme="dark"] #pg-landing .cbtn.ghost,html[data-theme="dark"] .bc-btn.secondary,html[data-theme="dark"] .m-btn.secondary,html[data-theme="dark"] .ud-back{
+  background:#242f3d !important;
+  border:1px solid #536679 !important;
+  color:#e8edf2 !important;
+  box-shadow:1px 1px 0 rgba(0,0,0,.4) !important;
+}
+html[data-theme="dark"] #pg-landing .cbtn.ghost:hover,html[data-theme="dark"] .bc-btn.secondary:hover,html[data-theme="dark"] .m-btn.secondary:hover{background:#2c3a4a !important;}
+#pg-landing .fcta .cbtn.ghost{background:transparent !important;border:1px solid rgba(255,255,255,.6) !important;color:#fff !important;box-shadow:none !important;}
+#pg-landing .fcta .cbtn.ghost:hover{background:rgba(255,255,255,.15) !important;}
+
+/* ---- 10. GPU MARKETPLACE — настоящая прайс-таблица ---- */
+/* структурные свойства — общие для обеих тем, цвета в них не участвуют */
+#pg-landing .tier-cards{padding:0 !important;gap:0 !important;}
+#pg-landing .gpu-card{border-left:0 !important;border-right:0 !important;border-top:0 !important;}
+#pg-landing .tier-cards .gpu-card:last-child{border-bottom:0 !important;}
+#pg-landing .gpu-price-col{padding-left:14px;margin-left:6px;}
+
+/* light */
+html[data-theme="light"] #pg-landing .tier-header{
+  background:linear-gradient(to bottom,#e3e9ef,#c2cedb) !important;
+  border-bottom:1px solid #8a98a8 !important;
+}
+html[data-theme="light"] #pg-landing .tier-header:hover{background:linear-gradient(to bottom,#eaeff4,#cdd8e3) !important;}
+html[data-theme="light"] #pg-landing .gpu-card{border-bottom:1px solid #ccd5de !important;}
+html[data-theme="light"] #pg-landing .gpu-card:nth-child(even){background:#f2f5f8 !important;}
+html[data-theme="light"] #pg-landing .gpu-card:hover{background:#e9eff5 !important;}
+html[data-theme="light"] #pg-landing .gpu-card.selected{background:#dfe7ee !important;box-shadow:inset 4px 0 0 #2c4a6e !important;}
+html[data-theme="light"] #pg-landing .gpu-price-col{border-left:1px solid #d2dae2 !important;}
+
+/* dark */
+html[data-theme="dark"] #pg-landing .tier-header{
+  background:linear-gradient(to bottom,#2d3b4a,#1c2530) !important;
+  border-bottom:1px solid #3d4c5c !important;
+}
+html[data-theme="dark"] #pg-landing .tier-header:hover{background:linear-gradient(to bottom,#34465a,#232e3b) !important;}
+html[data-theme="dark"] #pg-landing .gpu-card{border-bottom:1px solid #2f3d4c !important;}
+html[data-theme="dark"] #pg-landing .gpu-card:nth-child(even){background:#202a36 !important;}
+html[data-theme="dark"] #pg-landing .gpu-card:hover{background:#28344e !important;}
+html[data-theme="dark"] #pg-landing .gpu-card.selected{background:#2c3e50 !important;box-shadow:inset 4px 0 0 #7d97b3 !important;}
+html[data-theme="dark"] #pg-landing .gpu-price-col{border-left:1px solid #3d4c5c !important;}
+
+/* ---- 11. ФИЧИ / МЕТРИКИ / HOW-IT-WORKS ---- */
+#pg-landing .feat .ic{border-color:#9aa6b2 !important;}
+#pg-landing .metrics{border-top:1px solid #9aa6b2 !important;border-bottom:1px solid #9aa6b2 !important;padding:24px 0 !important;}
+#pg-landing .hiw-num{border:1px solid #1c3550 !important;}
+
+/* ---- 12. ГРАДИЕНТНЫЕ БЛОКИ — сине-серый, без фиолетового/электрик-блю ---- */
+#pg-landing .mission-box{background:linear-gradient(160deg,#3f5872,#7d97b3) !important;}
+#pg-landing .fcta{background:linear-gradient(160deg,#2e4258,#5c7a99) !important;}
+#pg-landing .enterprise-card{background:linear-gradient(170deg,#2e4258,#1c2c3c) !important;}
+
+/* ---- 13. ВСПЛЫВАЮЩИЕ ЭЛЕМЕНТЫ — жёсткая офсетная тень вместо мягкого блюра ---- */
+.modal-overlay .modal,.modal-bg .modal,.user-dropdown.open,#pg-landing .sidebar.show{
+  box-shadow:4px 4px 0 rgba(0,0,0,.25) !important;
+  border:1px solid #6e7c8a !important;
+}
+
+/* ---- 14. МЕЛКАЯ ДОВОДКА ---- */
+html[data-theme="light"] .balance-card{background:linear-gradient(165deg,#eef2f6,#ffffff) !important;border:1px solid #9aa6b2 !important;}
+html[data-theme="dark"] .balance-card{background:linear-gradient(165deg,#1f2937,#242f3d) !important;border:1px solid #3d4c5c !important;}
+.balance-card::before{display:none !important;}
+
+/* ---- 15. УТИЛИТИ-БАР (тонкая полоса над основной шапкой) ---- */
+#pg-landing .util-bar{
+  background:#16212c !important;
+  color:#b7c5d6 !important;
+  font-family:var(--mono) !important;
+  font-size:10.5px !important;
+  padding:6px 16px !important;
+  display:flex !important;
+  justify-content:space-between !important;
+  align-items:center !important;
+  gap:12px !important;
+  flex-wrap:wrap !important;
+  border-bottom:1px solid #0d161f !important;
+}
+#pg-landing .util-bar a{color:#9cc4ff !important;text-decoration:underline !important;}
+#pg-landing .util-bar a:hover{color:#fff !important;}
+
+/* ---- 16. NAV-ВКЛАДКИ — рамки вместо пилюль, классические подчёркнутые ссылки ---- */
+#pg-landing .nav-cl{
+  border:1px solid rgba(255,255,255,.28) !important;
+  background:rgba(255,255,255,.06) !important;
+  text-decoration:none !important;
+}
+#pg-landing .nav-cl:hover{
+  text-decoration:underline !important;
+  background:rgba(255,255,255,.18) !important;
+}
+
+/* ---- 17. ШАПКА-КОЛОНКИ ПРАЙС-ТАБЛИЦЫ + СЕТКА СТРОК ---- */
+#pg-landing .gpu-table-head,
+#pg-landing .gpu-row-grid{
+  display:grid !important;
+  grid-template-columns:2.1fr .8fr .8fr .7fr 1.1fr 1.2fr !important;
+  align-items:center !important;
+  gap:6px !important;
+}
+#pg-landing .gpu-table-head{
+  padding:9px 8px !important;
+  font-family:var(--mono) !important;
+  font-size:9.5px !important;
+  font-weight:700 !important;
+  letter-spacing:.03em !important;
+  text-transform:uppercase !important;
+  text-align:center !important;
+  margin-bottom:6px !important;
+}
+#pg-landing .gpu-table-head > div:first-child{text-align:left !important;}
+#pg-landing .gpu-row-grid{padding:11px 8px !important;}
+#pg-landing .gpu-col{font-size:11px !important;text-align:center !important;}
+#pg-landing .gpu-col-name{display:flex !important;align-items:center !important;gap:6px !important;text-align:left !important;flex-wrap:wrap !important;}
+#pg-landing .gpu-col-vram,#pg-landing .gpu-col-ram,#pg-landing .gpu-col-vcpu{font-family:var(--mono) !important;}
+#pg-landing .gpu-col-price .gpu-price{font-size:12.5px !important;}
+#pg-landing .gpu-col-avail{font-size:9px !important;font-weight:600 !important;}
+
+html[data-theme="light"] #pg-landing .gpu-table-head{background:linear-gradient(to bottom,#e3e9ef,#c2cedb) !important;border:1px solid #8a98a8 !important;color:#1c3550 !important;}
+html[data-theme="light"] #pg-landing .gpu-price{color:#b3392b !important;}
+
+html[data-theme="dark"] #pg-landing .gpu-table-head{background:linear-gradient(to bottom,#2d3b4a,#1c2530) !important;border:1px solid #3d4c5c !important;color:#cfdce8 !important;}
+html[data-theme="dark"] #pg-landing .gpu-price{color:#e0796b !important;}
+
+/* ---- 18. BEGINNER GUIDE BOX — самый заметный блок на странице, жёлтый акцент ---- */
+#pg-landing .beginner-wrap{margin-bottom:40px;}
+#pg-landing .beginner-box{
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  background:linear-gradient(to bottom,#fff8dc,#fef0b8) !important;
+  border:1px solid #c9a227 !important;
+  padding:20px 22px !important;
+  box-shadow:3px 3px 0 rgba(0,0,0,.15) !important;
+}
+#pg-landing .beginner-box-icon{font-size:34px;flex-shrink:0;}
+#pg-landing .beginner-box-text{flex:1;min-width:220px;}
+#pg-landing .beginner-box-text h3{font-family:var(--disp);font-size:17px;font-weight:700;color:#5c4400;margin-bottom:6px;}
+#pg-landing .beginner-box-text p{font-size:13px;color:#5c4400;line-height:1.55;}
+#pg-landing .beginner-box-btn{
+  flex-shrink:0;padding:12px 20px;
+  background:linear-gradient(to bottom,#3f5872,#2c4a6e) !important;
+  border:1px solid #1c3550 !important;
+  color:#fff !important;font-weight:700 !important;
+  box-shadow:2px 2px 0 rgba(0,0,0,.22) !important;
+  cursor:pointer;
+}
+#pg-landing .beginner-box-btn:hover{background:linear-gradient(to bottom,#4a6886,#3a5878) !important;}
+html[data-theme="dark"] #pg-landing .beginner-box{background:linear-gradient(to bottom,#3a3216,#2c2610) !important;border-color:#7a6020 !important;}
+html[data-theme="dark"] #pg-landing .beginner-box-text h3,html[data-theme="dark"] #pg-landing .beginner-box-text p{color:#f0dca0 !important;}
+
+/* ---- 19. B2B BOX — деловой стальной акцент ---- */
+#pg-landing .b2b-wrap{margin-bottom:40px;}
+#pg-landing .b2b-box{
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  background:linear-gradient(to bottom,#eef2f6,#dfe7ee) !important;
+  border:1px solid #6e7c8a !important;
+  padding:20px 22px !important;
+  box-shadow:3px 3px 0 rgba(0,0,0,.12) !important;
+}
+#pg-landing .b2b-box-icon{font-size:34px;flex-shrink:0;}
+#pg-landing .b2b-box-text{flex:1;min-width:220px;}
+#pg-landing .b2b-box-text h3{font-family:var(--disp);font-size:17px;font-weight:700;color:#1c3550;margin-bottom:6px;}
+#pg-landing .b2b-box-text p{font-size:13px;color:#3a3a3a;line-height:1.55;}
+#pg-landing .b2b-box-btn{
+  flex-shrink:0;padding:12px 20px;
+  background:linear-gradient(to bottom,#fff3b0,#ffcc00) !important;
+  border:1px solid #8a6d00 !important;
+  color:#3a2c00 !important;font-weight:700 !important;
+  box-shadow:2px 2px 0 rgba(0,0,0,.22) !important;
+  cursor:pointer;
+}
+#pg-landing .b2b-box-btn:hover{background:linear-gradient(to bottom,#ffe680,#ffc515) !important;}
+html[data-theme="dark"] #pg-landing .b2b-box{background:linear-gradient(to bottom,#202a36,#1c2530) !important;border-color:#3d4c5c !important;}
+html[data-theme="dark"] #pg-landing .b2b-box-text h3{color:#e8edf2 !important;}
+html[data-theme="dark"] #pg-landing .b2b-box-text p{color:#b7c2cc !important;}
+
+
+
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"NODE.CLOUD","alternateName":"gnode.cloud","url":"https://gnode.cloud","logo":"https://gnode.cloud/logo.svg","image":"https://gnode.cloud/og-image.png","description":"Аренда GPU с оплатой рублём (карта РФ, СБП, крипто). RTX 4090, H100, Blackwell B300 из глобальных дата-центров. Поддержка на русском.","sameAs":["https://t.me/gnodecloud"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","url":"https://t.me/gnodecloud"}}
@@ -765,16 +1100,22 @@ html[data-theme="light"] .topnav{background:rgba(255,255,255,.55)}
 <!-- ════════ LANDING ════════ -->
 <div id="pg-landing" class="spa-page active">
 
+<div class="util-bar">
+  <span class="util-bar-tagline" data-i18n="util.tagline">NODE.CLOUD — аренда GPU-серверов · работаем с клиентами по РФ и СНГ</span>
+  <span class="util-bar-links">
+    <a onclick="openInfo('sitemap')" data-i18n="util.sitemap">Карта сайта</a> | <a onclick="openEnterpriseModal()" data-i18n="util.contacts">Контакты</a>
+  </span>
+</div>
 <nav>
   <a class="nav-logo" href="#" onclick="goPage('pg-landing'); return false;">
     <div class="nav-logo-icon">G</div><span class="nav-logo-text">NODE.CLOUD</span>
   </a>
   <div class="nav-center">
-    <a class="nav-cl" href="#marketplace" data-i18n="nav.gpu">GPU</a>
-    <a class="nav-cl" href="#features" data-i18n="nav.platform">Платформа</a>
-    <a class="nav-cl" href="#" onclick="document.querySelector('.sidebar-item:nth-child(3)');return true" data-i18n="nav.docs">Документация</a>
+    <a class="nav-cl" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false" data-i18n="nav.home">Главная</a>
+    <a class="nav-cl" href="#marketplace" data-i18n="nav.catalog">Каталог GPU</a>
     <a class="nav-cl" href="#marketplace" data-i18n="nav.pricing">Цены</a>
-    <a class="nav-cl" href="#" onclick="openEnterpriseModal();return false" data-i18n="nav.enterprise">Enterprise</a>
+    <a class="nav-cl" href="#howitworks" data-i18n="nav.howitworks">Как это работает</a>
+    <a class="nav-cl" href="#features" data-i18n="nav.payment">Оплата</a>
   </div>
   <div class="nav-right" id="landNavRight">
     <button class="theme-btn" onclick="toggleTheme()" aria-label="Тема" title="Тема">
@@ -801,6 +1142,18 @@ html[data-theme="light"] .topnav{background:rgba(255,255,255,.55)}
       <button class="cbtn ghost" onclick="openEnterpriseModal()" data-i18n="btn.contact_sales">Связаться с отделом продаж</button>
     </div>
     <div class="hero-pay" id="heroPay">Оплата рублём · карта РФ, СБП или крипта · поддержка на русском</div>
+  </section>
+
+  <!-- BEGINNER GUIDE -->
+  <section class="beginner-wrap reveal">
+    <div class="beginner-box">
+      <div class="beginner-box-icon">🔰</div>
+      <div class="beginner-box-text">
+        <h3 data-i18n="beg.title">Первый раз арендуете GPU?</h3>
+        <p data-i18n="beg.desc">Если вы никогда не работали с облачными видеокартами — ничего страшного. Подготовили пошаговую инструкцию для новичков: что такое аренда GPU, зачем она нужна и как запустить первый сервер, даже если вы не разработчик.</p>
+      </div>
+      <button class="beginner-box-btn" onclick="openInfo('beginner')" data-i18n="beg.btn">Открыть инструкцию →</button>
+    </div>
   </section>
 
   <!-- METRICS -->
@@ -864,6 +1217,14 @@ html[data-theme="light"] .topnav{background:rgba(255,255,255,.55)}
     <div class="layout">
       <div>
         <div class="section-label" id="gpuSectionLabel">Доступные GPU — On-Demand</div>
+        <div class="gpu-table-head">
+          <div class="gpu-col gpu-col-name" data-i18n="col.model">Модель GPU</div>
+          <div class="gpu-col gpu-col-vram" data-i18n="col.vram">VRAM</div>
+          <div class="gpu-col gpu-col-ram" data-i18n="col.ram">ОЗУ</div>
+          <div class="gpu-col gpu-col-vcpu" data-i18n="col.vcpu">vCPU</div>
+          <div class="gpu-col gpu-col-price" data-i18n="col.price">Цена / сутки</div>
+          <div class="gpu-col gpu-col-avail" data-i18n="col.avail">Наличие</div>
+        </div>
         <div id="gpuList"></div>
       </div>
       <div class="right-panel">
@@ -884,6 +1245,18 @@ html[data-theme="light"] .topnav{background:rgba(255,255,255,.55)}
           <button class="ent-btn" id="entBtn" onclick="openEnterpriseModal()">Связаться с отделом продаж</button>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- B2B -->
+  <section class="b2b-wrap reveal">
+    <div class="b2b-box">
+      <div class="b2b-box-icon">🤝</div>
+      <div class="b2b-box-text">
+        <h3 data-i18n="b2b.title">Работаете как юрлицо? Сотрудничаем с B2B</h3>
+        <p data-i18n="b2b.desc">Готовы обсуждать индивидуальные условия для компаний: закрывающие документы, выделенные мощности, гибкие тарифы при постоянной загрузке. Напишите — обсудим формат сотрудничества и предложим выгодные условия.</p>
+      </div>
+      <button class="b2b-box-btn" onclick="openEnterpriseModal()" data-i18n="b2b.btn">Связаться по B2B →</button>
     </div>
   </section>
 
@@ -983,7 +1356,7 @@ html[data-theme="light"] .topnav{background:rgba(255,255,255,.55)}
   </div>
   <div class="foot-bottom">
     <div class="foot-bottom-in">
-      <div class="foot-copy">© 2026 NODE.CLOUD · ООО «Технологии»</div>
+      <div class="foot-copy">© 2016 NODE.CLOUD</div>
       <div class="foot-legal">
         <a onclick="openInfo('terms')">Terms</a><a onclick="openInfo('privacy')">Privacy</a><a onclick="openInfo('security')">Security</a><a onclick="openInfo('cookies')">Cookies</a>
       </div>
@@ -1087,7 +1460,7 @@ html[data-theme="light"] .topnav{background:rgba(255,255,255,.55)}
       <a class="sb-item" onclick="showPage('settings')"><span class="sb-item-icon">⚙️</span>Настройки</a>
       <a class="sb-item" onclick="showPage('ssh')"><span class="sb-item-icon">🔑</span>SSH-ключи</a>
     </nav>
-    <div class="sb-footer"><div class="sb-footer-text">NODE.CLOUD · v4.2 · 2026</div></div>
+    <div class="sb-footer"><div class="sb-footer-text">NODE.CLOUD · v4.2 · 2016</div></div>
   </aside>
 
   <div class="main" id="mainArea">
@@ -1175,7 +1548,7 @@ html[data-theme="light"] .topnav{background:rgba(255,255,255,.55)}
           <div class="modal-row"><div class="modal-label">Фамилия</div><input class="modal-input" value="Кузнецов"></div>
           <div class="modal-row"><div class="modal-label">Email</div><input class="modal-input" id="settingsInputEmail" value=""></div>
           <div class="modal-row"><div class="modal-label">Телефон</div><input class="modal-input" value="+7 999 123-45-67"></div>
-          <div class="modal-row"><div class="modal-label">Компания</div><input class="modal-input" value="ООО Технологии"></div>
+          <div class="modal-row"><div class="modal-label">Компания</div><input class="modal-input" value=""></div>
           <div class="modal-row"><div class="modal-label">Telegram</div><input class="modal-input" value="@alex_dev"></div>
         </div>
         <button class="inst-btn primary" style="margin-top:16px;padding:12px;width:200px" onclick="saveProfile()">Сохранить изменения</button>
@@ -1385,6 +1758,11 @@ function setHtml(id,v){const e=document.getElementById(id);if(e)e.innerHTML=v;}
 const I18N = {
   RU: {
     'nav.gpu':'GPU','nav.platform':'Платформа','nav.docs':'Документация','nav.pricing':'Цены','nav.enterprise':'Enterprise',
+    'nav.home':'Главная','nav.catalog':'Каталог GPU','nav.howitworks':'Как это работает','nav.payment':'Оплата',
+    'util.tagline':'NODE.CLOUD — аренда GPU-серверов · работаем с клиентами по РФ и СНГ','util.sitemap':'Карта сайта','util.contacts':'Контакты',
+    'col.model':'Модель GPU','col.vram':'VRAM','col.ram':'ОЗУ','col.vcpu':'vCPU','col.price':'Цена / сутки','col.avail':'Наличие',
+    'beg.title':'Первый раз арендуете GPU?','beg.desc':'Если вы никогда не работали с облачными видеокартами — ничего страшного. Подготовили пошаговую инструкцию для новичков: что такое аренда GPU, зачем она нужна и как запустить первый сервер, даже если вы не разработчик.','beg.btn':'Открыть инструкцию →',
+    'b2b.title':'Работаете как юрлицо? Сотрудничаем с B2B','b2b.desc':'Готовы обсуждать индивидуальные условия для компаний: закрывающие документы, выделенные мощности, гибкие тарифы при постоянной загрузке. Напишите — обсудим формат сотрудничества и предложим выгодные условия.','b2b.btn':'Связаться по B2B →',
     'nav.login':'Войти',
     'feat.pay.t':'Оплата рублём','feat.pay.d':'Карта российского банка, СБП или криптовалюта. Без зарубежных карт, VPN и валютных конвертаций.',
     'feat.support.t':'Поддержка на русском','feat.support.d':'Отвечаем в Telegram по существу. Помогаем с запуском, образами и настройкой окружения.',
@@ -1426,6 +1804,11 @@ const I18N = {
   },
   EN: {
     'nav.gpu':'GPU','nav.platform':'Platform','nav.docs':'Docs','nav.pricing':'Pricing','nav.enterprise':'Enterprise',
+    'nav.home':'Home','nav.catalog':'GPU Catalog','nav.howitworks':'How it works','nav.payment':'Payment',
+    'util.tagline':'NODE.CLOUD — GPU server rental · serving clients across Russia and the CIS','util.sitemap':'Sitemap','util.contacts':'Contacts',
+    'col.model':'GPU Model','col.vram':'VRAM','col.ram':'RAM','col.vcpu':'vCPU','col.price':'Price / day','col.avail':'Availability',
+    'beg.title':'Renting a GPU for the first time?','beg.desc':"If you've never worked with cloud GPUs before — that's completely fine. We put together a step-by-step guide for beginners: what GPU rental is, why you need it, and how to launch your first server even if you're not a developer.",'beg.btn':'Open the guide →',
+    'b2b.title':'Operating as a business? We work with B2B','b2b.desc':"We're happy to discuss individual terms for companies: paperwork for accounting, dedicated capacity, flexible rates for sustained usage. Get in touch — we'll work out a cooperation format and favorable terms.",'b2b.btn':'Contact us about B2B →',
     'nav.login':'Sign in',
     'feat.pay.t':'Pay in roubles','feat.pay.d':'Russian bank card, SBP or crypto. No foreign cards, VPN or currency conversion.',
     'feat.support.t':'Support in Russian','feat.support.d':'We answer to the point in Telegram. Help with launch, images and environment setup.',
@@ -1530,7 +1913,11 @@ function render(){
       const daily=hourlyUSD[key]*24,{full,final,saved}=calcPrice(key,period);
       const usesHTML=g.uses.map(u=>`<span class="use-chip">${u}</span>`).join('');
       const savClass=period==='day'?'price-savings hidden':'price-savings';
-      return`<div class="gpu-card ${isSelected?'selected':''}" id="card-${key}" onclick="selectGpu('${key}')"><div class="gpu-card-header"><div class="gpu-status"></div><div class="gpu-info"><div class="gpu-name-row"><span class="gpu-name">${g.name}</span><span class="gpu-badge" style="${g.badgeStyle}">${g.badge}</span></div><div class="gpu-spec">${g.spec}</div><div class="gpu-avail" id="avail-${key}" style="margin-top:5px;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.02em"></div></div><div class="gpu-price-col"><div class="gpu-price">${fmt(daily)}</div><div class="gpu-price-label">${t.rateLabel}</div></div></div><div class="gpu-expand ${isSelected?'open':''}" id="expand-${key}"><div class="gpu-expand-inner" onclick="event.stopPropagation()"><div class="divider"></div><div class="period-label">${t.useCasesLabel}</div><div class="use-cases">${usesHTML}</div><div class="period-label">${t.periodLabel}</div><div class="period-row"><button class="period-pill ${period==='day'?'active':''}" onclick="setPeriod('${key}','day',event)">${t.pDay}</button><button class="period-pill ${period==='week'?'active':''}" onclick="setPeriod('${key}','week',event)">${t.pWeek}</button><button class="period-pill ${period==='month'?'active':''}" onclick="setPeriod('${key}','month',event)">${t.pMonth}</button></div><div class="price-box"><div class="price-box-label">${t.costLabel}</div><div class="price-main" id="pMain-${key}">${fmt(final)}</div><div class="${savClass}" id="pSavings-${key}"><span class="price-old">${t.baseLabel} <s id="pOld-${key}">${fmt(full)}</s></span><span class="price-save" id="pSave-${key}">${t.saveLabel} ${fmt(saved)}</span></div></div><button class="launch-btn" onclick="launchGpu('${key}',event)">${t.launchBtn}</button></div></div></div>`;
+      const specParts=(g.spec||'').split(' · ');
+      const vramStr=specParts[0]||'';
+      const ramStr=specParts[1]||'';
+      const vcpuStr=specParts[2]||'';
+      return`<div class="gpu-card ${isSelected?'selected':''}" id="card-${key}" onclick="selectGpu('${key}')"><div class="gpu-card-header gpu-row-grid"><div class="gpu-col gpu-col-name"><span class="gpu-status"></span><span class="gpu-name">${g.name}</span><span class="gpu-badge" style="${g.badgeStyle}">${g.badge}</span></div><div class="gpu-col gpu-col-vram">${vramStr}</div><div class="gpu-col gpu-col-ram">${ramStr}</div><div class="gpu-col gpu-col-vcpu">${vcpuStr}</div><div class="gpu-col gpu-col-price"><span class="gpu-price">${fmt(daily)}</span></div><div class="gpu-col gpu-col-avail" id="avail-${key}"></div></div><div class="gpu-expand ${isSelected?'open':''}" id="expand-${key}"><div class="gpu-expand-inner" onclick="event.stopPropagation()"><div class="divider"></div><div class="period-label">${t.useCasesLabel}</div><div class="use-cases">${usesHTML}</div><div class="period-label">${t.periodLabel}</div><div class="period-row"><button class="period-pill ${period==='day'?'active':''}" onclick="setPeriod('${key}','day',event)">${t.pDay}</button><button class="period-pill ${period==='week'?'active':''}" onclick="setPeriod('${key}','week',event)">${t.pWeek}</button><button class="period-pill ${period==='month'?'active':''}" onclick="setPeriod('${key}','month',event)">${t.pMonth}</button></div><div class="price-box"><div class="price-box-label">${t.costLabel}</div><div class="price-main" id="pMain-${key}">${fmt(final)}</div><div class="${savClass}" id="pSavings-${key}"><span class="price-old">${t.baseLabel} <s id="pOld-${key}">${fmt(full)}</s></span><span class="price-save" id="pSave-${key}">${t.saveLabel} ${fmt(saved)}</span></div></div><button class="launch-btn" onclick="launchGpu('${key}',event)">${t.launchBtn}</button></div></div></div>`;
     }).join('');
     group.innerHTML=`<div class="tier-header" onclick="toggleTier('${tier.id}')"><div class="tier-dot" style="background:${tInfo.color};color:${tInfo.color}"></div><div class="tier-info"><div class="tier-name" style="color:${tInfo.color}">${tInfo.label}</div><div class="tier-sub">${tInfo.sub}</div></div><svg class="tier-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></div><div class="tier-cards">${cardsHTML}</div>`;
     group.querySelector('.tier-cards').style.maxHeight=(tier.keys.length*200+400)+'px';
@@ -1655,7 +2042,42 @@ const INFO_PAGES={
     <h4 style="color:var(--green)">● Все системы работают</h4>
     <p>API, биллинг, провижининг инстансов и веб-кабинет функционируют в штатном режиме.</p>
     <h4>Аптайм</h4>
-    <p>Мы работаем над максимальной стабильностью сервиса. О плановых работах сообщаем заранее в Telegram-канале.</p>`}
+    <p>Мы работаем над максимальной стабильностью сервиса. О плановых работах сообщаем заранее в Telegram-канале.</p>`},
+  sitemap:{t:'Карта сайта',h:`
+    <p>Все разделы сайта одним списком:</p>
+    <p style="line-height:2.3;margin-top:10px">
+    <a onclick="closeInfo();window.scrollTo({top:0,behavior:'smooth'})" style="color:var(--acc);cursor:pointer;text-decoration:underline">Главная</a><br>
+    <a onclick="closeInfo();openInfo('beginner')" style="color:var(--acc);cursor:pointer;text-decoration:underline">Инструкция для новичка</a><br>
+    <a onclick="closeInfo();document.getElementById('marketplace').scrollIntoView({behavior:'smooth'})" style="color:var(--acc);cursor:pointer;text-decoration:underline">Каталог GPU и цены</a><br>
+    <a onclick="closeInfo();document.getElementById('howitworks').scrollIntoView({behavior:'smooth'})" style="color:var(--acc);cursor:pointer;text-decoration:underline">Как это работает</a><br>
+    <a onclick="closeInfo();document.getElementById('features').scrollIntoView({behavior:'smooth'})" style="color:var(--acc);cursor:pointer;text-decoration:underline">Оплата и возможности</a><br>
+    <a onclick="closeInfo();document.getElementById('mission').scrollIntoView({behavior:'smooth'})" style="color:var(--acc);cursor:pointer;text-decoration:underline">Наша миссия</a><br>
+    <a onclick="closeInfo();openEnterpriseModal()" style="color:var(--acc);cursor:pointer;text-decoration:underline">Enterprise-кластеры и B2B</a><br>
+    <a onclick="closeInfo();openInfo('docs')" style="color:var(--acc);cursor:pointer;text-decoration:underline">Документация</a><br>
+    <a onclick="closeInfo();openInfo('api')" style="color:var(--acc);cursor:pointer;text-decoration:underline">API Reference</a><br>
+    <a onclick="closeInfo();openInfo('guides')" style="color:var(--acc);cursor:pointer;text-decoration:underline">Гайды</a><br>
+    <a onclick="closeInfo();openInfo('blog')" style="color:var(--acc);cursor:pointer;text-decoration:underline">Блог</a><br>
+    <a onclick="closeInfo();openInfo('about')" style="color:var(--acc);cursor:pointer;text-decoration:underline">О компании</a><br>
+    <a onclick="closeInfo();openInfo('status')" style="color:var(--acc);cursor:pointer;text-decoration:underline">Статус систем</a><br>
+    <a onclick="closeInfo();openEnterpriseModal()" style="color:var(--acc);cursor:pointer;text-decoration:underline">Контакты</a>
+    </p>`},
+  beginner:{t:'Инструкция для новичка',h:`
+    <p>Если вы первый раз арендуете видеокарту в облаке — здесь весь путь по шагам, без лишних терминов.</p>
+    <h4>Зачем вообще арендовать GPU?</h4>
+    <p>Видеокарты уровня H100 или RTX 4090 стоят сотни тысяч рублей и требуют отдельного сервера для работы. Аренда даёт доступ к такой же мощности на час, день или месяц — без покупки железа. Платите только за то время, что реально используете.</p>
+    <h4>Шаг 1. Регистрация</h4>
+    <p>Создайте аккаунт по email — это бесплатно и занимает минуту. Подтверждать ничего дополнительно не нужно.</p>
+    <h4>Шаг 2. Пополнение баланса</h4>
+    <p>Пополните счёт рублями — картой РФ, через СБП или криптовалютой. Деньги ложатся на баланс личного кабинета, аренда списывается с него при запуске.</p>
+    <h4>Шаг 3. Выбор видеокарты</h4>
+    <p>В каталоге выберите GPU под задачу. Не уверены, что нужно? Для старта (учебные проекты, инференс, рендеринг) обычно достаточно RTX 4090 или L4. Для обучения больших моделей — H100 или старше.</p>
+    <h4>Шаг 4. Запуск и подключение</h4>
+    <p>Через 1-2 минуты после запуска вы получите IP-адрес, доступ по SSH и ссылку на Jupyter. CUDA, PyTorch и драйверы уже установлены — ничего настраивать не нужно.</p>
+    <h4>Что такое SSH и Jupyter?</h4>
+    <p>SSH — способ подключиться к серверу через терминал (командную строку) и управлять им напрямую. Jupyter — веб-интерфейс для работы с кодом прямо в браузере, без терминала. Для первого раза вполне достаточно одного Jupyter.</p>
+    <h4>Если что-то не получается</h4>
+    <p>Пишите в Telegram-поддержку — отвечаем на русском и помогаем разобраться, даже если вопрос кажется совсем базовым.</p>
+    <p style="color:var(--ink-3);font-size:12px;margin-top:18px">Эта инструкция не требует технического опыта — рассчитана на тех, кто арендует сервер впервые.</p>`}
 };
 function openInfo(key){const p=INFO_PAGES[key];if(!p)return;document.getElementById('infoTitle').textContent=p.t;document.getElementById('infoBody').innerHTML='<div class="info-content" style="font-size:13.5px;line-height:1.65;color:var(--ink-2)">'+p.h+'</div>';document.getElementById('infoOverlay').classList.add('show');}
 function closeInfo(){document.getElementById('infoOverlay').classList.remove('show');}
@@ -1701,7 +2123,7 @@ function updateUIAfterLogin(user){const name_=user.name||user.email.split('@')[0
 function logout(){authToken=null;currentUser=null;localStorage.removeItem('nodecloud_token');localStorage.removeItem('nodecloud_user');const gp=document.getElementById('udGuestPanel');const up=document.getElementById('udUserPanel');if(gp)gp.style.display='block';if(up)up.style.display='none';(function(){var b=document.getElementById('navBtnTxt');if(b){b.setAttribute('data-i18n','btn.login');b.textContent=i18n('btn.login');}})();(function(){var a=document.getElementById('sbAccountLabel');if(a){a.setAttribute('data-i18n','sb.login');a.textContent=i18n('sb.login');}})();setTxt('navBtnAvt','G');closeUserDropdown();goPage('pg-landing');showToast('\u0414\u043e \u0441\u0432\u0438\u0434\u0430\u043d\u0438\u044f!','\ud83d\udc4b');}
 let instanceTimers={};
 async function loadPricing(){try{const p=await apiFetch('/api/gpu/pricing');if(p&&p.rubRate)rubRate=p.rubRate;if(p&&p.hourly)Object.assign(hourlyUSD,p.hourly);render();}catch(e){console.warn('pricing fallback',e.message);}}
-async function loadAvailability(){try{gpuAvail=await apiFetch('/api/gpu/availability');document.querySelectorAll('.gpu-card').forEach(card=>{const key=card.id.replace('card-','');const raw=gpuAvail[key];const dot=card.querySelector('.gpu-status');const badge=card.querySelector('#avail-'+key);let count=null,st='unknown';if(typeof raw==='number'){count=raw;st=raw>3?'high':raw>0?'low':'none';}else if(raw&&typeof raw==='object'){count=(raw.count!=null?raw.count:raw.available);st=raw.status||(count>3?'high':count>0?'low':'none');}else if(typeof raw==='string'){st=raw;}let col='rgba(255,255,255,.14)',txt='',tcol='var(--ink-3)';if(st==='high'){col='var(--green)';tcol='var(--green)';txt=count!=null?('\u25cf '+count+' \u0441\u0432\u043e\u0431\u043e\u0434\u043d\u043e'):'\u25cf \u0412 \u043d\u0430\u043b\u0438\u0447\u0438\u0438';}else if(st==='low'){col='var(--orange)';tcol='var(--orange)';txt=count!=null?('\u25cf '+count+' \u0441\u0432\u043e\u0431\u043e\u0434\u043d\u043e'):'\u25cf \u041c\u0430\u043b\u043e';}else if(st==='none'){col='var(--red)';tcol='var(--red)';txt='\u25cf \u041d\u0435\u0442 \u0432 \u043d\u0430\u043b\u0438\u0447\u0438\u0438';}if(dot&&!card.classList.contains('selected'))dot.style.background=col;if(badge){badge.textContent=txt;badge.style.color=tcol;}});}catch(e){}}
+async function loadAvailability(){try{gpuAvail=await apiFetch('/api/gpu/availability');document.querySelectorAll('.gpu-card').forEach(card=>{const key=card.id.replace('card-','');const raw=gpuAvail[key];const dot=card.querySelector('.gpu-status');const badge=card.querySelector('#avail-'+key);let count=null,st='unknown';if(typeof raw==='number'){count=raw;st=raw>3?'high':raw>0?'low':'none';}else if(raw&&typeof raw==='object'){count=(raw.count!=null?raw.count:raw.available);st=raw.status||(count>3?'high':count>0?'low':'none');}else if(typeof raw==='string'){st=raw;}let col='rgba(255,255,255,.14)',txt='',tcol='var(--ink-3)';if(st==='high'){col='var(--green)';tcol='var(--green)';txt=count!=null?('• '+count+' своб.'):'• есть';}else if(st==='low'){col='var(--orange)';tcol='var(--orange)';txt=count!=null?('• '+count+' своб.'):'• мало';}else if(st==='none'){col='var(--red)';tcol='var(--red)';txt='• нет в наличии';}if(dot&&!card.classList.contains('selected'))dot.style.background=col;if(badge){badge.textContent=txt;badge.style.color=tcol;}});}catch(e){}}
 async function loadDashboard(){
   try{const d=await apiFetch('/api/billing/balance');const bal=d.balance||0;const f=new Intl.NumberFormat('ru-RU').format(bal)+' \u20bd';const usd=(bal/rubRate).toFixed(2);const h100hours=(bal/(hourlyUSD.h100_sxm*rubRate)).toFixed(0);['sbBalVal','statBal','dashBalVal','billingBalVal'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=f;});const sub=document.getElementById('sbBalSub');if(sub)sub.textContent='\u2248 $'+usd+' \u00b7 ~'+h100hours+' \u0447 H100';const dbSub=document.getElementById('dashBalSub');if(dbSub)dbSub.textContent='\u2248 $'+usd+' \u00b7 \u041e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u043e \u0442\u043e\u043b\u044c\u043a\u043e \u0447\u0442\u043e';}catch(e){console.log('Balance:',e.message);}
   try{const inst=await apiFetch('/api/gpu/instances');renderDashInstances(inst);renderInstancesPage(inst);const running=inst.filter(i=>i.status==='running'||i.status==='pending');const el=document.getElementById('statActiveGpu');if(el)el.textContent=running.length;const sub=document.getElementById('statActiveGpuSub');if(sub)sub.textContent=running.length?running.map(i=>i.gpu_name||i.gpu_key).join(', ').substring(0,30):'\u041d\u0435\u0442 \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445';const cnt=document.getElementById('activeCount');if(cnt)cnt.textContent=running.length+' running';}catch(e){console.log('Instances:',e.message);renderDashInstances([]);}
