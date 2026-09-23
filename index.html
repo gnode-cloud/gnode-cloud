@@ -633,27 +633,6 @@ html[data-theme="light"] .topnav{background:rgba(255,255,255,.55)}
 ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
 ::selection{background:rgba(118,179,255,.3)}
 
-/* ============================================================
-   NODE.CLOUD — RETRO 2000s THEME OVERRIDE
-   ------------------------------------------------------------
-   КАК ПРИМЕНИТЬ:
-   1. Открой свой index.html в GitHub (редактор файла).
-   2. Найди (Ctrl+F / поиск в редакторе) эту строку — она почти
-      в самом конце CSS, прямо перед закрывающим style-тегом:
-
-          ::selection{background:rgba(118,179,255,.3)}
-
-   3. Вставь весь этот файл целиком СРАЗУ ПОСЛЕ этой строки
-      (перед закрывающим style-тегом).
-   4. Сохрани / закоммить.
-
-   Ничего больше менять не нужно — ни JS, ни HTML, ни остальной
-   CSS не удаляется. Этот блок только ДОБАВЛЯЕТ правила, которые
-   перекрывают старые за счёт порядка в каскаде. Если что-то не
-   понравится — просто удали этот блок целиком, и сайт вернётся
-   ровно в текущее состояние. Никакого all:unset тут нет, поэтому
-   layout/flex/JS не должны пострадать.
-   ============================================================ */
 
 /* ---- 1. ГЛОБАЛЬНЫЙ СБРОС: убираем скругления, блюр, мягкие тени, зерно ---- */
 *{
@@ -1385,6 +1364,8 @@ html[data-theme="dark"] #pg-landing .b2b-box-text p{color:#b7c2cc !important;}
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px">
           <button class="pay-method active" id="payMethodCrypto" onclick="selPayMethod('crypto',this)">₿ Криптовалюта</button>
           <button class="pay-method" id="payMethodTransfer" onclick="selPayMethod('transfer',this)">💸 Перевод (₽)</button>
+          <button class="pay-method" id="payMethodFinik" onclick="selPayMethod('finik',this)">📱 Оплата QR</button>
+
         </div>
       </div>
 
@@ -1419,7 +1400,18 @@ html[data-theme="dark"] #pg-landing .b2b-box-text p{color:#b7c2cc !important;}
           <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:20px;height:20px;border-radius:50%;background:rgba(94,139,255,.15);color:var(--accent);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:12px;color:var(--text2);line-height:1.5">Пришлите подтверждение — зачислим баланс после получения перевода.</div></div>
         </div>
         <a class="topup-submit" id="payTransferTgBtn" href="https://t.me/gnodecloud" target="_blank" rel="noopener" style="display:block;text-align:center;text-decoration:none;padding:13px">Написать в Telegram →</a>
-        <div style="font-size:10px;color:var(--text3);line-height:1.5;margin-top:10px">Поможем на каждом шаге. Не все карты РФ подходят для переводов — подскажем рабочий способ в Telegram.</div>
+        <div style="font-size:10px;color:var(--text3);line-height:1.5;margin-top:10px">Поможем на каждом шаге. Не все карты РФ подходят для переводов — подскажем рабочий способ в Telegram.</div>    
+        <div id="payFinikBlock" style="display:none">
+        <div class="modal-row">
+          <div class="modal-label">Сумма пополнения</div>
+          <div class="topup-input-row">
+            <input class="modal-input" type="number" id="topupAmountFinik" value="500" placeholder="Введите сумму">
+            <button class="topup-submit" onclick="doFinikTopup()">Оплатить QR</button>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--text3);line-height:1.5">📱 Оплата через QR-код — Элдик, Bakai, MBANK, Optima24, О!Деньги и другие банки Кыргызстана. Баланс зачисляется автоматически после подтверждения оплаты.</div>
+      </div>
+
       </div>
     </div>
   </div>
@@ -2100,19 +2092,53 @@ function selPayMethod(method,btn){
   btn.classList.add('active');
   const cryptoB=document.getElementById('payCryptoBlock');
   const transferB=document.getElementById('payTransferBlock');
+  const finikB=document.getElementById('payFinikBlock');
+  if(cryptoB)cryptoB.style.display='none';
+  if(transferB)transferB.style.display='none';
+  if(finikB)finikB.style.display='none';
   if(method==='transfer'){
-    if(cryptoB)cryptoB.style.display='none';
     if(transferB)transferB.style.display='block';
     const amt=parseInt(document.getElementById('topupAmount')?.value)||0;
     const msg='💸 [ОПЛАТА ПЕРЕВОДОМ]\nЗдравствуйте! Хочу пополнить баланс NODE.CLOUD переводом'+(amt?(' на '+amt+' ₽'):'')+'.\nПришлите, пожалуйста, реквизиты (Astrasend / Omnypay / Золотая Корона).';
     const tgBtn=document.getElementById('payTransferTgBtn');
     if(tgBtn)tgBtn.href='https://t.me/'+TG_USERNAME+'?text='+encodeURIComponent(msg);
+  }else if(method==='finik'){
+    if(finikB)finikB.style.display='block';
   }else{
     if(cryptoB)cryptoB.style.display='block';
-    if(transferB)transferB.style.display='none';
   }
 }
-function doTopup(){doTopupReal();}
+
+function doTopup(){doTopupReal();async function doFinikTopup(){
+  if(!authToken){showToast('Войдите в аккаунт','⚠️');return;}
+  const v=parseInt(document.getElementById('topupAmountFinik')?.value)||0;
+  if(v<10){showToast('Минимум 10','⚠️');return;}
+  showToast('Создаём платёж...','📱');
+  let resp,data,rawText;
+  try{
+    resp=await fetch(API_BASE+'/api/payments/finik/create',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+authToken},body:JSON.stringify({amount:v})});
+  }catch(netErr){
+    showToast('Сеть недоступна: '+netErr.message,'❌');
+    return;
+  }
+  try{rawText=await resp.text();}catch(e){rawText='';}
+  if(!resp.ok){
+    showToast('Сервер '+resp.status+': '+(rawText||'').slice(0,80),'❌');
+    return;
+  }
+  try{data=JSON.parse(rawText);}catch(e){
+    showToast('Ответ не JSON: '+(rawText||'').slice(0,80),'❌');
+    return;
+  }
+  if(data&&data.payment_url){
+    const om=document.querySelector('.modal-bg.show');if(om)om.classList.remove('show');
+    showToast('Переходим к оплате...','📱');
+    window.location.assign(data.payment_url);
+  }else{
+    showToast('Бэк не вернул ссылку. Ответ: '+rawText.slice(0,80),'❌');
+  }
+}
+ }
 function markRead(el){el.classList.remove('unread');const d=el.querySelector('.notif-unread-dot');if(d)d.style.opacity='0';}
 showPage('dashboard');
 window.addEventListener('load',()=>{injectUserBtn();render();});
