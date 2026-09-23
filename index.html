@@ -2109,7 +2109,8 @@ function selPayMethod(method,btn){
   }
 }
 
-function doTopup(){doTopupReal();async function doFinikTopup(){
+function doTopup(){doTopupReal();}
+  async function doFinikTopup(){
   if(!authToken){showToast('Войдите в аккаунт','⚠️');return;}
   const v=parseInt(document.getElementById('topupAmountFinik')?.value)||0;
   if(v<10){showToast('Минимум 10','⚠️');return;}
@@ -2138,7 +2139,6 @@ function doTopup(){doTopupReal();async function doFinikTopup(){
     showToast('Бэк не вернул ссылку. Ответ: '+rawText.slice(0,80),'❌');
   }
 }
- }
 function markRead(el){el.classList.remove('unread');const d=el.querySelector('.notif-unread-dot');if(d)d.style.opacity='0';}
 showPage('dashboard');
 window.addEventListener('load',()=>{injectUserBtn();render();});
