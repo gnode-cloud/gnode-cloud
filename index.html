@@ -6,11 +6,11 @@
 <title>NODE.CLOUD — GPU Cloud Infrastructure</title>
 
 
-<meta name="description" content="NODE.CLOUD — аренда GPU с оплатой рублём: карта РФ, СБП, крипто. RTX 4090, H100, Blackwell B300 из глобальных дата-центров. Запуск за пару минут, поддержка на русском в Telegram.">
+<meta name="description" content="NODE.CLOUD — аренда GPU с оплатой рублём и криптовалютой, без зарубежных карт и VPN. RTX 4090, H100, Blackwell B300 из глобальных дата-центров. Запуск за пару минут, поддержка на русском в Telegram.">
 <meta name="keywords" content="аренда GPU, GPU облако, RTX 4090 аренда, H100 аренда, облачные вычисления, GPU сервер Россия, машинное обучение, нейронные сети GPU">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="NODE.CLOUD — Аренда GPU с оплатой рублём | RTX 4090, H100, B300">
-<meta property="og:description" content="Аренда GPU с оплатой рублём — карта РФ, СБП, крипто. RTX 4090, H100, Blackwell B300 из глобальных дата-центров. Поддержка на русском.">
+<meta property="og:description" content="Аренда GPU с оплатой рублём и криптовалютой, без зарубежных карт и VPN. RTX 4090, H100, Blackwell B300 из глобальных дата-центров. Поддержка на русском.">
 <meta property="og:url" content="https://gnode.cloud">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://gnode.cloud/og-image.png">
@@ -110,7 +110,7 @@ html[data-theme="dark"] .theme-btn .th-moon{display:block}
 #pg-landing .theme-btn{border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.5);backdrop-filter:blur(12px);border-radius:999px;color:var(--ink-2)}
 #pg-landing .theme-btn:hover{border-color:var(--line-2);background:#f4f6f8;color:var(--acc)}
 html[data-theme="dark"] #pg-landing .theme-btn{background:rgba(255,255,255,.02);color:var(--ink-2)}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:hidden;max-width:100%}
 body{font-family:var(--body);background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.5;}
 /* светлая тема: убираем тёмное зерно по всему сайту */
 html[data-theme="light"] body::after{display:none}
@@ -178,6 +178,14 @@ html[data-theme="dark"] #pg-landing .divider{background:rgba(255,255,255,.08)}
 #pg-landing .nav-cl{padding:8px 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--ink-2);text-decoration:none;transition:all .18s var(--r);cursor:pointer}
 #pg-landing .nav-cl:hover{color:var(--ink);background:rgba(255,255,255,.7);box-shadow:0 1px 4px rgba(11,31,51,.08)}
 #pg-landing .nav-right{display:flex;align-items:center;gap:10px}
+@media(max-width:480px){
+  #pg-landing nav{padding:0 12px;gap:6px}
+  #pg-landing .nav-right{gap:6px}
+  #pg-landing .nav-logo-text{display:none}
+  #pg-landing .lang-pill{display:none}
+  #pg-landing .user-btn span{display:none}
+  #pg-landing .user-btn{padding:7px}
+}
 #pg-landing .lang-pill{display:flex;background:rgba(255,255,255,.5);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:3px;gap:2px}
 #pg-landing .lang-btn{padding:4px 11px;border-radius:999px;font-family:var(--mono);font-size:11px;font-weight:600;border:none;background:transparent;color:var(--ink-3);cursor:pointer;transition:.15s;letter-spacing:.02em}
 #pg-landing .lang-btn.active{background:var(--acc);color:#fff}
@@ -291,6 +299,8 @@ html[data-theme="dark"] #pg-landing .divider{background:rgba(255,255,255,.08)}
 #pg-landing .shead p{color:var(--ink-2);font-size:16px}
 #pg-landing .feats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:96px}
 @media(max-width:900px){#pg-landing .feats{grid-template-columns:1fr}}
+#pg-landing .feats.faq-grid{grid-template-columns:1fr 1fr}
+@media(max-width:900px){#pg-landing .feats.faq-grid{grid-template-columns:1fr}}
 #pg-landing .feat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px;transition:border-color .15s,box-shadow .15s;position:relative;overflow:hidden}
 #pg-landing .feat:hover{border-color:var(--line-2);box-shadow:0 4px 16px rgba(11,31,51,.06)}
 #pg-landing .feat::before{display:none}
@@ -629,7 +639,7 @@ html[data-theme="light"] .topnav{background:rgba(255,255,255,.55)}
 .spa-page.active{display:block!important}
 #pg-dash.active{display:block!important}
 #pg-landing{position:relative;z-index:1}
-@media(max-width:768px){.layout{grid-template-columns:1fr}.user-dropdown{right:-10px;width:260px}}
+@media(max-width:768px){.layout{grid-template-columns:1fr}.user-dropdown{position:fixed;top:70px;right:12px;left:12px;width:auto;max-width:340px;margin-left:auto}}
 ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
 ::selection{background:rgba(118,179,255,.3)}
 
@@ -643,6 +653,12 @@ html[data-theme="light"] .topnav{background:rgba(255,255,255,.55)}
   text-shadow:none !important;
 }
 body::after,#pg-dash::after{display:none !important;} /* убираем шумовую текстуру (грейн) — это как раз тот "AI-tell" */
+
+/* ---- 1b. ИСКЛЮЧЕНИЯ ИЗ СБРОСА: круглые аватарки должны остаться кругами ---- */
+.sb-avatar,.user-btn-avatar,.ud-user-avatar,#udUserAvatar,#sbAvt,#navBtnAvt,#topAvt,#settingsAvt,
+.status-dot,.tier-dot,.gpu-status,.notif-unread-dot{
+  border-radius:50% !important;
+}
 
 /* ---- 2. ШРИФТЫ + БАЗОВЫЕ ТОКЕНЫ ---- */
 :root{
@@ -850,6 +866,8 @@ html[data-theme="dark"] .balance-card{background:linear-gradient(165deg,#1f2937,
 }
 #pg-landing .util-bar a{color:#9cc4ff !important;text-decoration:underline !important;}
 #pg-landing .util-bar a:hover{color:#fff !important;}
+#pg-landing .util-bar-tagline,#pg-landing .util-bar-links{min-width:0;overflow-wrap:break-word}
+@media(max-width:640px){#pg-landing .util-bar-tagline{display:none}}
 
 /* ---- 16. NAV-ВКЛАДКИ — рамки вместо пилюль, классические подчёркнутые ссылки ---- */
 #pg-landing .nav-cl{
@@ -949,7 +967,7 @@ html[data-theme="dark"] #pg-landing .b2b-box-text p{color:#b7c2cc !important;}
 
 </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Organization","name":"NODE.CLOUD","alternateName":"gnode.cloud","url":"https://gnode.cloud","logo":"https://gnode.cloud/logo.svg","image":"https://gnode.cloud/og-image.png","description":"Аренда GPU с оплатой рублём (карта РФ, СБП, крипто). RTX 4090, H100, Blackwell B300 из глобальных дата-центров. Поддержка на русском.","sameAs":["https://t.me/gnodecloud"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","url":"https://t.me/gnodecloud"}}
+{"@context":"https://schema.org","@type":"Organization","name":"NODE.CLOUD","alternateName":"gnode.cloud","url":"https://gnode.cloud","logo":"https://gnode.cloud/logo.svg","image":"https://gnode.cloud/og-image.png","description":"Аренда GPU с оплатой рублём и криптовалютой, без зарубежных карт и VPN. RTX 4090, H100, Blackwell B300 из глобальных дата-центров. Поддержка на русском.","sameAs":["https://t.me/gnodecloud"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","url":"https://t.me/gnodecloud"}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","name":"NODE.CLOUD","url":"https://gnode.cloud"}
@@ -971,13 +989,22 @@ html[data-theme="dark"] #pg-landing .b2b-box-text p{color:#b7c2cc !important;}
 <div class="user-dropdown" id="userDropdown">
   <div id="udGuestPanel">
     <div class="ud-head">
-      <div class="ud-head-title">Войти в NODE.CLOUD</div>
-      <div class="ud-head-sub">Вход или регистрация по email</div>
+      <div class="ud-head-title" data-i18n="ud.title">Войти в NODE.CLOUD</div>
+      <div class="ud-head-sub" data-i18n="ud.subtitle">Вход или регистрация по email</div>
     </div>
     <div id="udMethods" class="ud-methods">
+      <button class="ud-method" onclick="authTelegram()">
+        <div class="ud-method-icon" style="background:rgba(94,139,255,.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="#5e8bff"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></div>
+        <div class="ud-method-text"><div class="ud-method-title">Telegram</div><div class="ud-method-sub" data-i18n="ud.telegram_sub">Войти в один клик</div></div>
+      </button>
+      <button class="ud-method" onclick="authGoogle()">
+        <div class="ud-method-icon" style="background:rgba(255,255,255,.05)"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.48a5.55 5.55 0 0 1-2.4 3.64v3h3.88c2.27-2.09 3.56-5.17 3.56-8.83z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.07 7.96-2.9l-3.88-3c-1.08.72-2.45 1.15-4.08 1.15-3.14 0-5.8-2.12-6.75-4.96H1.24v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.25 14.29a7.2 7.2 0 0 1 0-4.58v-3.1H1.24a12 12 0 0 0 0 10.78l4.01-3.1z"/><path fill="#EA4335" d="M12 4.75c1.76 0 3.34.6 4.58 1.79l3.44-3.44C17.94 1.19 15.24 0 12 0A12 12 0 0 0 1.24 6.61l4.01 3.1C6.2 6.87 8.86 4.75 12 4.75z"/></svg></div>
+        <div class="ud-method-text"><div class="ud-method-title">Google</div><div class="ud-method-sub" data-i18n="ud.google_sub">Войти через аккаунт Google</div></div>
+      </button>
+      <div class="ud-divider"></div>
       <button class="ud-method" onclick="showEmailForm()">
         <div class="ud-method-icon" style="background:rgba(255,255,255,.05)"><svg width="18" height="18" fill="none" stroke="rgba(244,245,246,.7)" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
-        <div class="ud-method-text"><div class="ud-method-title">Email и пароль</div><div class="ud-method-sub">Войти или зарегистрироваться</div></div>
+        <div class="ud-method-text"><div class="ud-method-title" data-i18n="ud.email_title">Email и пароль</div><div class="ud-method-sub" data-i18n="ud.email_sub">Войти или зарегистрироваться</div></div>
       </button>
     </div>
     <div class="ud-email-form" id="udEmailForm">
@@ -1120,7 +1147,16 @@ html[data-theme="dark"] #pg-landing .b2b-box-text p{color:#b7c2cc !important;}
       <button class="cbtn pri" onclick="document.getElementById('marketplace').scrollIntoView({behavior:'smooth'})" data-i18n="btn.launch_gpu">Запустить GPU →</button>
       <button class="cbtn ghost" onclick="openEnterpriseModal()" data-i18n="btn.contact_sales">Связаться с отделом продаж</button>
     </div>
-    <div class="hero-pay" id="heroPay">Оплата рублём · карта РФ, СБП или крипта · поддержка на русском</div>
+    <div class="hero-pay" id="heroPay">Оплата рублём и криптой · без зарубежных карт и VPN · поддержка на русском</div>
+    <div class="trust reveal">
+      <div class="trust-label" id="trustLabel">Что вы получаете уже сегодня</div>
+      <div class="trust-row">
+        <span id="trust1">20+ моделей GPU</span>
+        <span id="trust2">~2 мин до SSH</span>
+        <span id="trust3">CUDA / PyTorch из коробки</span>
+        <span id="trust4">Поддержка в Telegram</span>
+      </div>
+    </div>
   </section>
 
   <!-- BEGINNER GUIDE -->
@@ -1159,7 +1195,7 @@ html[data-theme="dark"] #pg-landing .b2b-box-text p{color:#b7c2cc !important;}
       <div class="hiw-step reveal">
         <div class="hiw-num">2</div>
         <h3 id="hiw2t">Пополнение баланса</h3>
-        <p id="hiw2d">Пополните счёт рублями — картой РФ, через СБП или криптой. Деньги ложатся на баланс, с него оплачивается аренда.</p>
+        <p id="hiw2d">Пополните счёт рублями или криптой — по инструкции в Telegram. Деньги ложатся на баланс, с него оплачивается аренда.</p>
       </div>
       <div class="hiw-step reveal">
         <div class="hiw-num">3</div>
@@ -1247,7 +1283,7 @@ html[data-theme="dark"] #pg-landing .b2b-box-text p{color:#b7c2cc !important;}
       <p id="featHp">Доступ к зарубежным GPU без зарубежной карты и VPN.</p>
     </div>
     <div class="feats">
-      <div class="feat reveal"><div class="ic">₽</div><h3 data-i18n="feat.pay.t">Оплата рублём</h3><p data-i18n="feat.pay.d">Карта российского банка, СБП или криптовалюта. Без зарубежных карт, VPN и валютных конвертаций.</p></div>
+      <div class="feat reveal"><div class="ic">₽</div><h3 data-i18n="feat.pay.t">Оплата рублём</h3><p data-i18n="feat.pay.d">Рубли и криптовалюта через удобный Telegram-флоу. Без зарубежных карт и VPN.</p></div>
       <div class="feat reveal"><div class="ic">RU</div><h3 data-i18n="feat.support.t">Поддержка на русском</h3><p data-i18n="feat.support.d">Отвечаем в Telegram по существу. Помогаем с запуском, образами и настройкой окружения.</p></div>
       <div class="feat reveal"><div class="ic">‹›</div><h3 data-i18n="feat.deploy.t">Запуск за пару минут</h3><p data-i18n="feat.deploy.d">Готовые образы PyTorch, CUDA и Jupyter. SSH-доступ и публичный IP сразу после старта инстанса.</p></div>
       <div class="feat reveal"><div class="ic">∑</div><h3 data-i18n="feat.bill.t">Понятная цена</h3><p data-i18n="feat.bill.d">Выбираете период — день, неделю или месяц — и платите фиксированную сумму вперёд. Никаких скрытых доплат и абонентской платы.</p></div>
@@ -1278,6 +1314,21 @@ html[data-theme="dark"] #pg-landing .b2b-box-text p{color:#b7c2cc !important;}
         <div class="o">ssh root@<span class="h">185.12.44.91</span> -p 22</div>
         <div><span class="p">$</span> <span style="color:var(--ink-4)">▍</span></div>
       </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="shead reveal">
+      <div class="section-label" id="faqKicker">FAQ</div>
+      <h2 id="faqH2">Частые вопросы</h2>
+      <p id="faqHp">Если чего-то не нашли здесь — пишите в Telegram, ответим по делу.</p>
+    </div>
+    <div class="feats faq-grid" id="faqList">
+      <div class="feat reveal"><h3 data-i18n="faq.pay.q">Как именно проходит оплата?</h3><p data-i18n="faq.pay.a">Пополнение — рублями или криптой. Для рублёвого перевода менеджер в Telegram присылает реквизиты и подтверждает зачисление вручную — обычно это занимает несколько минут в рабочее время.</p></div>
+      <div class="feat reveal"><h3 data-i18n="faq.refund.q">Что если я остановлю аренду раньше срока?</h3><p data-i18n="faq.refund.a">Оплаченный период не пересчитывается и не возвращается — вы платите вперёд за выбранный срок (час, день, неделя, месяц). Это стоит учитывать при выборе периода аренды.</p></div>
+      <div class="feat reveal"><h3 data-i18n="faq.security.q">Насколько безопасен доступ к серверу?</h3><p data-i18n="faq.security.a">Доступ — по SSH-ключу или паролю, трафик личного кабинета идёт по TLS, пароли хранятся в виде хэшей. Каждый инстанс изолирован от других клиентов.</p></div>
+      <div class="feat reveal"><h3 data-i18n="faq.data.q">Что будет с моими данными, если инстанс истечёт?</h3><p data-i18n="faq.data.a">Постоянные тома и снапшоты сохраняются отдельно от инстанса — продлите аренду или сделайте снапшот заранее, чтобы не потерять данные при остановке.</p></div>
     </div>
   </section>
 
@@ -1335,14 +1386,12 @@ html[data-theme="dark"] #pg-landing .b2b-box-text p{color:#b7c2cc !important;}
   </div>
   <div class="foot-bottom">
     <div class="foot-bottom-in">
-      <div class="foot-copy">© 2016 NODE.CLOUD</div>
+      <div class="foot-copy">© 2026 NODE.CLOUD</div>
       <div class="foot-legal">
         <a onclick="openInfo('terms')">Terms</a><a onclick="openInfo('privacy')">Privacy</a><a onclick="openInfo('security')">Security</a><a onclick="openInfo('cookies')">Cookies</a>
       </div>
       <div class="foot-social">
         <a href="https://t.me/gnodecloud" target="_blank" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
-        <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-        <a href="#" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
       </div>
     </div>
   </div>
@@ -1460,7 +1509,7 @@ html[data-theme="dark"] #pg-landing .b2b-box-text p{color:#b7c2cc !important;}
       <a class="sb-item" onclick="showPage('settings')"><span class="sb-item-icon">⚙️</span>Настройки</a>
       <a class="sb-item" onclick="showPage('ssh')"><span class="sb-item-icon">🔑</span>SSH-ключи</a>
     </nav>
-    <div class="sb-footer"><div class="sb-footer-text">NODE.CLOUD · v4.2 · 2016</div></div>
+    <div class="sb-footer"><div class="sb-footer-text">NODE.CLOUD · v4.2</div></div>
   </aside>
 
   <div class="main" id="mainArea">
@@ -1730,7 +1779,7 @@ function setUdTab(tab){document.getElementById('udTabLogin').classList.toggle('o
 function showUdErr(msg){const e=document.getElementById('udErrMsg');e.textContent=msg;e.style.display='block';}
 function injectUserBtn(){const navRight=document.getElementById('landNavRight');if(!navRight)return;const wrap=document.createElement('div');wrap.className='user-btn-wrap';wrap.innerHTML='<button class="user-btn" onclick="toggleUserDropdown()"><div class="user-btn-avatar" id="navBtnAvt">G</div><span id="navBtnTxt" data-i18n="btn.login">\u0412\u043e\u0439\u0442\u0438</span><svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>';wrap.appendChild(document.getElementById('userDropdown'));navRight.appendChild(wrap);}
 const TG_USERNAME='gnodecloud';
-let lang='RU',selectedGpu=null,cardPeriods={};
+let lang='RU',selectedGpu=null,cardPeriods={},collapsedTiers={};
 let rubRate=100;
 let hourlyUSD={l4:1.56,a40:1.76,rtx_3090:1.84,rtx_a6000:1.96,rtx_4090:2.76,rtx_6000_ada:3.08,l40:3.28,l40s:3.44,rtx_5090:3.96,a100_pcie:5.56,a100_sxm:5.96,rtx_pro_6000_wk:7.56,rtx_pro_6000:8.36,mi300x:7.96,h100_pcie:11.56,h100_nvl:12.76,h100_sxm:13.16,h200_nvl:15.16,h200_sxm:17.56,b200:23.56,b300:29.56};
 let hourlyEntry={l4:1.07,a40:1.21,rtx_3090:0.64,rtx_a6000:1.35,rtx_4090:0.79,rtx_6000_ada:2.12,l40:2.26,l40s:2.37,rtx_5090:1.24,a100_pcie:1.70,a100_sxm:1.80,rtx_pro_6000_wk:5.20,rtx_pro_6000:5.75,mi300x:5.47,h100_pcie:3.30,h100_nvl:3.45,h100_sxm:3.45,h200_nvl:4.05,h200_sxm:4.83,b200:16.20,b300:20.32};
@@ -1765,7 +1814,7 @@ const I18N = {
     'beg.title':'Первый раз арендуете GPU?','beg.desc':'Если вы никогда не работали с облачными видеокартами — ничего страшного. Подготовили пошаговую инструкцию для новичков: что такое аренда GPU, зачем она нужна и как запустить первый сервер, даже если вы не разработчик.','beg.btn':'Открыть инструкцию →',
     'b2b.title':'Работаете как юрлицо? Сотрудничаем с B2B','b2b.desc':'Готовы обсуждать индивидуальные условия для компаний: закрывающие документы, выделенные мощности, гибкие тарифы при постоянной загрузке. Напишите — обсудим формат сотрудничества и предложим выгодные условия.','b2b.btn':'Связаться по B2B →',
     'nav.login':'Войти',
-    'feat.pay.t':'Оплата рублём','feat.pay.d':'Карта российского банка, СБП или криптовалюта. Без зарубежных карт, VPN и валютных конвертаций.',
+    'feat.pay.t':'Оплата рублём','feat.pay.d':'Рубли и криптовалюта через удобный Telegram-флоу. Без зарубежных карт и VPN.',
     'feat.support.t':'Поддержка на русском','feat.support.d':'Отвечаем в Telegram по существу. Помогаем с запуском, образами и настройкой окружения.',
     'feat.deploy.t':'Запуск за пару минут','feat.deploy.d':'Готовые образы PyTorch, CUDA и Jupyter. SSH-доступ и публичный IP сразу после старта инстанса.',
     'feat.bill.t':'Понятная цена','feat.bill.d':'Выбираете период — день, неделю или месяц — и платите фиксированную сумму вперёд. Никаких скрытых доплат и абонентской платы.',
@@ -1801,7 +1850,12 @@ const I18N = {
     'toast.extending':'Продлеваем аренду...','toast.extended':'Аренда продлена на 1 день',
     'set.pwd_title':'Смена пароля','set.pwd_current':'Текущий пароль','set.pwd_new':'Новый пароль','set.pwd_confirm':'Повторите новый пароль','set.pwd_btn':'Изменить пароль',
     'set.pwd_fill':'Заполните поля пароля','set.pwd_short':'Пароль слишком короткий (мин. 6)','set.pwd_mismatch':'Пароли не совпадают','set.pwd_ok':'Пароль изменён',
-    'common.logout':'Выйти'
+    'common.logout':'Выйти',
+    'faq.pay.q':'Как именно проходит оплата?','faq.pay.a':'Пополнение — рублями или криптой. Для рублёвого перевода менеджер в Telegram присылает реквизиты и подтверждает зачисление вручную — обычно это занимает несколько минут в рабочее время.',
+    'faq.refund.q':'Что если я остановлю аренду раньше срока?','faq.refund.a':'Оплаченный период не пересчитывается и не возвращается — вы платите вперёд за выбранный срок (час, день, неделя, месяц). Это стоит учитывать при выборе периода аренды.',
+    'faq.security.q':'Насколько безопасен доступ к серверу?','faq.security.a':'Доступ — по SSH-ключу или паролю, трафик личного кабинета идёт по TLS, пароли хранятся в виде хэшей. Каждый инстанс изолирован от других клиентов.',
+    'faq.data.q':'Что будет с моими данными, если инстанс истечёт?','faq.data.a':'Постоянные тома и снапшоты сохраняются отдельно от инстанса — продлите аренду или сделайте снапшот заранее, чтобы не потерять данные при остановке.',
+    'ud.title':'Войти в NODE.CLOUD','ud.subtitle':'Вход или регистрация по email','ud.telegram_sub':'Войти в один клик','ud.google_sub':'Войти через аккаунт Google','ud.email_title':'Email и пароль','ud.email_sub':'Войти или зарегистрироваться'
   },
   EN: {
     'nav.gpu':'GPU','nav.platform':'Platform','nav.docs':'Docs','nav.pricing':'Pricing','nav.enterprise':'Enterprise',
@@ -1811,7 +1865,7 @@ const I18N = {
     'beg.title':'Renting a GPU for the first time?','beg.desc':"If you've never worked with cloud GPUs before — that's completely fine. We put together a step-by-step guide for beginners: what GPU rental is, why you need it, and how to launch your first server even if you're not a developer.",'beg.btn':'Open the guide →',
     'b2b.title':'Operating as a business? We work with B2B','b2b.desc':"We're happy to discuss individual terms for companies: paperwork for accounting, dedicated capacity, flexible rates for sustained usage. Get in touch — we'll work out a cooperation format and favorable terms.",'b2b.btn':'Contact us about B2B →',
     'nav.login':'Sign in',
-    'feat.pay.t':'Pay in roubles','feat.pay.d':'Russian bank card, SBP or crypto. No foreign cards, VPN or currency conversion.',
+    'feat.pay.t':'Pay in roubles','feat.pay.d':'Roubles and crypto via a guided Telegram flow. No foreign cards or VPN required.',
     'feat.support.t':'Support in Russian','feat.support.d':'We answer to the point in Telegram. Help with launch, images and environment setup.',
     'feat.deploy.t':'Deploy in minutes','feat.deploy.d':'Ready-made PyTorch, CUDA and Jupyter images. SSH access and public IP right after the instance starts.',
     'feat.bill.t':'Clear pricing','feat.bill.d':'Pick a period — day, week or month — and pay a fixed amount upfront. No hidden charges or subscription fees.',
@@ -1847,7 +1901,12 @@ const I18N = {
     'toast.extending':'Extending rental...','toast.extended':'Rental extended by 1 day',
     'set.pwd_title':'Change password','set.pwd_current':'Current password','set.pwd_new':'New password','set.pwd_confirm':'Repeat new password','set.pwd_btn':'Change password',
     'set.pwd_fill':'Fill in the password fields','set.pwd_short':'Password too short (min. 6)','set.pwd_mismatch':'Passwords do not match','set.pwd_ok':'Password changed',
-    'common.logout':'Sign out'
+    'common.logout':'Sign out',
+    'faq.pay.q':'How exactly does payment work?','faq.pay.a':'Top up in roubles or crypto. For a rouble transfer, our Telegram manager sends you the details and confirms the top-up manually — usually within a few minutes during working hours.',
+    'faq.refund.q':'What happens if I stop a rental early?','faq.refund.a':'The paid period is not refunded or recalculated — you pay upfront for the chosen term (hour, day, week, month). Keep this in mind when choosing a period.',
+    'faq.security.q':'How secure is access to the server?','faq.security.a':'Access is via SSH key or password, dashboard traffic runs over TLS, and passwords are stored as hashes. Every instance is isolated from other customers.',
+    'faq.data.q':'What happens to my data if an instance expires?','faq.data.a':'Persistent volumes and snapshots are stored separately from the instance — extend the rental or take a snapshot ahead of time so you don\'t lose data when it stops.',
+    'ud.title':'Sign in to NODE.CLOUD','ud.subtitle':'Sign in or create an account by email','ud.telegram_sub':'One-click sign in','ud.google_sub':'Sign in with your Google account','ud.email_title':'Email and password','ud.email_sub':'Sign in or register'
   }
 };
 function applyI18n(){
@@ -1883,21 +1942,25 @@ function applyTranslations(){
   if(lang==='EN'){
     setTxt('gpuKicker','GPU Marketplace');setTxt('gpuH2','Choose your configuration');setTxt('gpuHp','On-demand access to any GPU class. Flexible billing, instant deploy.');
     setTxt('featKicker','Platform');setTxt('featH2','Nothing to set up');setTxt('featHp','The environment is ready. You focus on your model, not on drivers.');
-    setTxt('m1l','Environment setup');setTxt('m2l','From launch to SSH');setTxt('m3l','PyTorch & Jupyter out of the box');setTxt('m4l','GPU models in catalog');var hp=document.getElementById('heroPay');if(hp)hp.textContent='Pay in roubles \u00b7 Russian card, SBP or crypto \u00b7 support in Russian';
+    setTxt('m1l','Environment setup');setTxt('m2l','From launch to SSH');setTxt('m3l','PyTorch & Jupyter out of the box');setTxt('m4l','GPU models in catalog');var hp=document.getElementById('heroPay');if(hp)hp.textContent='Pay in roubles or crypto \u00b7 no foreign cards or VPN \u00b7 support in Russian';
+    setTxt('trustLabel','What you get today');setTxt('trust1','20+ GPU models');setTxt('trust2','~2 min to SSH');setTxt('trust3','CUDA / PyTorch preinstalled');setTxt('trust4','Support on Telegram');
     setHtml('fctaH2','Launch your first GPU<br>today');setTxt('fctaP','Sign up in a minute. Top up in roubles and launch a GPU \u2014 no foreign cards or VPN.');
     setTxt('hiwKicker','How it works');setTxt('hiwH2','From sign-up to GPU \u2014 4 steps');setTxt('hiwP','New to renting GPUs? Here is the whole path. Takes a few minutes.');
     setTxt('hiw1t','Sign up');setTxt('hiw1d','Create an account with email or sign in via Telegram. Free, takes a minute.');
-    setTxt('hiw2t','Top up balance');setTxt('hiw2d','Add funds in roubles \u2014 Russian card, SBP or crypto. The balance is used to pay for rentals.');
+    setTxt('hiw2t','Top up balance');setTxt('hiw2d','Add funds in roubles or crypto via our Telegram-guided top-up flow. The balance is used to pay for rentals.');
     setTxt('hiw3t','Pick GPU and period');setTxt('hiw3d','Choose a GPU for your task and a rental term \u2014 day, week or month. The price is shown upfront and charged at launch.');
     setTxt('hiw4t','Connect to the server');setTxt('hiw4d','In a couple of minutes you get an IP, SSH access and a Jupyter link. CUDA and PyTorch are preinstalled.');
     setTxt('hiwNote','Billing starts the moment the instance launches and runs continuously. If you stop early, the paid period is not refunded \u2014 keep this in mind when choosing the term.');
     setTxt('missionKicker','Mission');setTxt('missionH2','Top-tier GPUs \u2014 for everyone who builds.');setTxt('missionP','Data-center-grade compute has long been a privilege of those with a budget for their own hardware. We remove that barrier \u2014 giving the same access to top GPUs to a student on their first project and to a team that needs to scale. Minimum effort, maximum power.');
+    setTxt('faqKicker','FAQ');setTxt('faqH2','Frequently asked questions');setTxt('faqHp','Didn\u2019t find what you needed? Message us on Telegram and we\u2019ll answer directly.');
   } else {
     setTxt('gpuKicker','GPU Marketplace');setTxt('gpuH2','\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u0432\u043e\u044e \u043a\u043e\u043d\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044e');setTxt('gpuHp','On-Demand \u0434\u043e\u0441\u0442\u0443\u043f \u043a GPU \u043b\u044e\u0431\u043e\u0433\u043e \u043a\u043b\u0430\u0441\u0441\u0430. \u0413\u0438\u0431\u043a\u0430\u044f \u0441\u0438\u0441\u0442\u0435\u043c\u0430 \u043e\u043f\u043b\u0430\u0442\u044b, \u043c\u0433\u043d\u043e\u0432\u0435\u043d\u043d\u044b\u0439 \u0437\u0430\u043f\u0443\u0441\u043a.');
     setTxt('featKicker','\u041f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430');setTxt('featH2','\u041d\u0438\u0447\u0435\u0433\u043e \u043d\u0435 \u043d\u0443\u0436\u043d\u043e \u043d\u0430\u0441\u0442\u0440\u0430\u0438\u0432\u0430\u0442\u044c');setTxt('featHp','\u041e\u043a\u0440\u0443\u0436\u0435\u043d\u0438\u0435 \u0443\u0436\u0435 \u0433\u043e\u0442\u043e\u0432\u043e. \u0412\u044b \u0437\u0430\u043d\u0438\u043c\u0430\u0435\u0442\u0435\u0441\u044c \u043c\u043e\u0434\u0435\u043b\u044c\u044e, \u0430 \u043d\u0435 \u0434\u0440\u0430\u0439\u0432\u0435\u0440\u0430\u043c\u0438.');
     setTxt('m1l','\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u043e\u043a\u0440\u0443\u0436\u0435\u043d\u0438\u044f');setTxt('m2l','\u041e\u0442 \u0437\u0430\u043f\u0443\u0441\u043a\u0430 \u0434\u043e SSH');setTxt('m3l','PyTorch \u0438 Jupyter \u0438\u0437 \u043a\u043e\u0440\u043e\u0431\u043a\u0438');setTxt('m4l','\u041c\u043e\u0434\u0435\u043b\u0435\u0439 GPU \u0432 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0435');var hpr=document.getElementById('heroPay');if(hpr)hpr.textContent='\u041e\u043f\u043b\u0430\u0442\u0430 \u0440\u0443\u0431\u043b\u0451\u043c \u00b7 \u043a\u0430\u0440\u0442\u0430 \u0420\u0424, \u0421\u0411\u041f \u0438\u043b\u0438 \u043a\u0440\u0438\u043f\u0442\u0430 \u00b7 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430 \u043d\u0430 \u0440\u0443\u0441\u0441\u043a\u043e\u043c';
     setHtml('fctaH2','\u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u0435 \u043f\u0435\u0440\u0432\u044b\u0439 GPU<br>\u0443\u0436\u0435 \u0441\u0435\u0433\u043e\u0434\u043d\u044f');setTxt('fctaP','\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044f \u0437\u0430 \u043c\u0438\u043d\u0443\u0442\u0443. \u041f\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435 \u0431\u0430\u043b\u0430\u043d\u0441 \u0440\u0443\u0431\u043b\u044f\u043c\u0438 \u0438 \u0437\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u0435 GPU \u2014 \u0431\u0435\u0437 \u0437\u0430\u0440\u0443\u0431\u0435\u0436\u043d\u044b\u0445 \u043a\u0430\u0440\u0442 \u0438 VPN.');
     setTxt('hiwKicker','\u041a\u0430\u043a \u044d\u0442\u043e \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442');setTxt('hiwH2','\u041e\u0442 \u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u0438 \u0434\u043e GPU \u2014 4 \u0448\u0430\u0433\u0430');setTxt('hiwP','\u0415\u0441\u043b\u0438 \u0432\u044b \u0432\u043f\u0435\u0440\u0432\u044b\u0435 \u0430\u0440\u0435\u043d\u0434\u0443\u0435\u0442\u0435 GPU \u2014 \u0432\u043e\u0442 \u0432\u0435\u0441\u044c \u043f\u0443\u0442\u044c. \u0417\u0430\u043d\u0438\u043c\u0430\u0435\u0442 \u043d\u0435\u0441\u043a\u043e\u043b\u044c\u043a\u043e \u043c\u0438\u043d\u0443\u0442.');setTxt('missionKicker','\u041c\u0438\u0441\u0441\u0438\u044f');setTxt('missionH2','\u0422\u043e\u043f\u043e\u0432\u044b\u0435 GPU \u2014 \u0434\u043b\u044f \u043a\u0430\u0436\u0434\u043e\u0433\u043e, \u043a\u0442\u043e \u0441\u0442\u0440\u043e\u0438\u0442.');setTxt('missionP','\u0414\u043e\u0441\u0442\u0443\u043f \u043a \u0432\u044b\u0447\u0438\u0441\u043b\u0435\u043d\u0438\u044f\u043c \u0443\u0440\u043e\u0432\u043d\u044f \u0434\u0430\u0442\u0430-\u0446\u0435\u043d\u0442\u0440\u043e\u0432 \u0441\u043b\u0438\u0448\u043a\u043e\u043c \u0434\u043e\u043b\u0433\u043e \u0431\u044b\u043b \u043f\u0440\u0438\u0432\u0438\u043b\u0435\u0433\u0438\u0435\u0439 \u0442\u0435\u0445, \u0443 \u043a\u043e\u0433\u043e \u0435\u0441\u0442\u044c \u0431\u044e\u0434\u0436\u0435\u0442 \u043d\u0430 \u0441\u0432\u043e\u0451 \u0436\u0435\u043b\u0435\u0437\u043e. \u041c\u044b \u0443\u0431\u0438\u0440\u0430\u0435\u043c \u044d\u0442\u043e\u0442 \u0431\u0430\u0440\u044c\u0435\u0440 \u2014 \u0434\u0430\u0451\u043c \u043e\u0434\u0438\u043d\u0430\u043a\u043e\u0432\u044b\u0439 \u0434\u043e\u0441\u0442\u0443\u043f \u043a \u0442\u043e\u043f\u043e\u0432\u044b\u043c \u0432\u0438\u0434\u0435\u043e\u043a\u0430\u0440\u0442\u0430\u043c \u0438 \u0441\u0442\u0443\u0434\u0435\u043d\u0442\u0443 \u0441 \u043f\u0435\u0440\u0432\u044b\u043c \u043f\u0440\u043e\u0435\u043a\u0442\u043e\u043c, \u0438 \u043a\u043e\u043c\u0430\u043d\u0434\u0435, \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u043d\u0443\u0436\u043d\u043e \u0440\u0430\u0441\u0442\u0438. \u041c\u0438\u043d\u0438\u043c\u0443\u043c \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439, \u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c \u043c\u043e\u0449\u043d\u043e\u0441\u0442\u0438.');
+    setTxt('trustLabel','\u0427\u0442\u043e \u0432\u044b \u043f\u043e\u043b\u0443\u0447\u0430\u0435\u0442\u0435 \u0443\u0436\u0435 \u0441\u0435\u0433\u043e\u0434\u043d\u044f');setTxt('trust1','20+ \u043c\u043e\u0434\u0435\u043b\u0435\u0439 GPU');setTxt('trust2','~2 \u043c\u0438\u043d \u0434\u043e SSH');setTxt('trust3','CUDA / PyTorch \u0438\u0437 \u043a\u043e\u0440\u043e\u0431\u043a\u0438');setTxt('trust4','\u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430 \u0432 Telegram');
+    setTxt('faqKicker','FAQ');setTxt('faqH2','\u0427\u0430\u0441\u0442\u044b\u0435 \u0432\u043e\u043f\u0440\u043e\u0441\u044b');setTxt('faqHp','\u0415\u0441\u043b\u0438 \u0447\u0435\u0433\u043e-\u0442\u043e \u043d\u0435 \u043d\u0430\u0448\u043b\u0438 \u0437\u0434\u0435\u0441\u044c \u2014 \u043f\u0438\u0448\u0438\u0442\u0435 \u0432 Telegram, \u043e\u0442\u0432\u0435\u0442\u0438\u043c \u043f\u043e \u0434\u0435\u043b\u0443.');
   }
 }
 function render(){
@@ -1907,13 +1970,13 @@ function render(){
   container.innerHTML='';
   TIERS.forEach((tier,idx)=>{
     const tInfo=tiers[idx],group=document.createElement('div');
-    group.className='tier-group';group.id='tier-'+tier.id;
+    group.className='tier-group'+(collapsedTiers[tier.id]?' collapsed':'');group.id='tier-'+tier.id;
     const cardsHTML=tier.keys.map(key=>{
       const g=gpus[key];if(!g)return'';
       const period=cardPeriods[key]||'hour',isSelected=selectedGpu===key;
       const cardHourly=hourlyEntry[key],{full,final,saved}=calcPrice(key,period);
       const usesHTML=g.uses.map(u=>`<span class="use-chip">${u}</span>`).join('');
-      const savClass=period==='day'?'price-savings hidden':'price-savings';
+      const savClass=(period==='day'||period==='hour'||saved<=0)?'price-savings hidden':'price-savings';
       const specParts=(g.spec||'').split(' · ');
       const vramStr=specParts[0]||'';
       const ramStr=specParts[1]||'';
@@ -1927,9 +1990,9 @@ function render(){
   const es=document.getElementById('emptyState');if(es)es.style.display=selectedGpu?'none':'block';
   loadAvailability();
 }
-function toggleTier(id){document.getElementById('tier-'+id).classList.toggle('collapsed');}
+function toggleTier(id){const el=document.getElementById('tier-'+id);el.classList.toggle('collapsed');collapsedTiers[id]=el.classList.contains('collapsed');}
 function selectGpu(key){selectedGpu=selectedGpu===key?null:key;if(selectedGpu&&!cardPeriods[key])cardPeriods[key]='hour';render();if(selectedGpu)setTimeout(()=>{const c=document.getElementById('card-'+key);if(c)c.scrollIntoView({behavior:'smooth',block:'nearest'});},50);}
-function setPeriod(key,period,e){e.stopPropagation();cardPeriods[key]=period;const t=T[lang],{full,final,saved}=calcPrice(key,period);['hour','day','week','month'].forEach(p=>{const btn=document.querySelector(`#expand-${key} .period-pill:nth-child(${['hour','day','week','month'].indexOf(p)+1})`);if(btn)btn.className='period-pill'+(p===period?' active':'');});const mEl=document.getElementById('pMain-'+key);if(mEl)mEl.textContent=fmt(final);const sEl=document.getElementById('pSavings-'+key);if(sEl){if(period==='day'||period==='hour'){sEl.classList.add('hidden');}else{sEl.classList.remove('hidden');const oEl=document.getElementById('pOld-'+key);if(oEl)oEl.textContent=fmt(full);const svEl=document.getElementById('pSave-'+key);if(svEl)svEl.textContent=t.saveLabel+' '+fmt(saved);}}}
+function setPeriod(key,period,e){e.stopPropagation();cardPeriods[key]=period;const t=T[lang],{full,final,saved}=calcPrice(key,period);['hour','day','week','month'].forEach(p=>{const btn=document.querySelector(`#expand-${key} .period-pill:nth-child(${['hour','day','week','month'].indexOf(p)+1})`);if(btn)btn.className='period-pill'+(p===period?' active':'');});const mEl=document.getElementById('pMain-'+key);if(mEl)mEl.textContent=fmt(final);const sEl=document.getElementById('pSavings-'+key);if(sEl){if(period==='day'||period==='hour'||saved<=0){sEl.classList.add('hidden');}else{sEl.classList.remove('hidden');const oEl=document.getElementById('pOld-'+key);if(oEl)oEl.textContent=fmt(full);const svEl=document.getElementById('pSave-'+key);if(svEl)svEl.textContent=t.saveLabel+' '+fmt(saved);}}}
 function launchGpu(key,event){event.stopPropagation();if(currentUser){const period=cardPeriods[key]||'hour';const g=GPUS[lang][key];const {final}=calcPrice(key,period);const periodLabel={hour:lang==='RU'?'1 \u0447\u0430\u0441':'1 hour',day:lang==='RU'?'1 \u0434\u0435\u043d\u044c':'1 day',week:lang==='RU'?'1 \u043d\u0435\u0434\u0435\u043b\u044f':'1 week',month:lang==='RU'?'1 \u043c\u0435\u0441\u044f\u0446':'1 month'}[period];showLaunchConfirm(key,g,period,periodLabel,final);}else{pendingLaunch=key;const dd=document.getElementById('userDropdown');document.getElementById('udGuestPanel').style.display='block';document.getElementById('udUserPanel').style.display='none';dd.classList.add('open');showEmailForm();setUdTab('reg');}}
 let pendingLaunch=null;
 function showLaunchConfirm(key,g,period,periodLabel,price){const priceStr=fmt(price);const overlay=document.getElementById('launchConfirmOverlay');document.getElementById('lcGpuName').textContent=g.name;document.getElementById('lcPeriod').textContent=periodLabel;document.getElementById('lcPrice').textContent=priceStr;document.getElementById('lcSpec').textContent=g.spec;document.getElementById('lcConfirmBtn').onclick=()=>{closeLaunchConfirm();launchGpuReal(key,period,'pytorch',g.name.toLowerCase().replace(/\s+/g,'-')+'-'+Date.now());};overlay.classList.add('show');}
