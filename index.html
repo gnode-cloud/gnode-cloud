@@ -6,7 +6,7 @@
 <title>NODE.CLOUD — GPU Cloud Infrastructure</title>
 
 
-<meta name="description" content="GNODE.CLOUD — аренда GPU с оплатой рублём и криптовалютой, без зарубежных карт и VPN. RTX 4090, H100, Blackwell B300 из глобальных дата-центров. Запуск за пару минут, поддержка на русском в Telegram.">
+<meta name="description" content="NODE.CLOUD — аренда GPU с оплатой рублём и криптовалютой, без зарубежных карт и VPN. RTX 4090, H100, Blackwell B300 из глобальных дата-центров. Запуск за пару минут, поддержка на русском в Telegram.">
 <meta name="keywords" content="аренда GPU, GPU облако, RTX 4090 аренда, H100 аренда, облачные вычисления, GPU сервер Россия, машинное обучение, нейронные сети GPU">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="NODE.CLOUD — Аренда GPU с оплатой рублём | RTX 4090, H100, B300">
@@ -776,7 +776,7 @@ h1,h2,h3,.metric .v,.price-main,.stat-val,.bc-val{font-family:var(--disp);font-w
 #pg-landing .tier-name{color:var(--ink)!important;font-size:15px;font-weight:600}
 #pg-landing .tier-sub{font-size:14px;color:var(--ink-2)}
 #pg-landing .tier-cards{padding:0!important}
-#pg-landing .gpu-table-head,#pg-landing .gpu-row-grid{display:grid!important;grid-template-columns:1.9fr 1fr .9fr .8fr .9fr 1.1fr;align-items:center;gap:6px}
+#pg-landing .gpu-table-head,#pg-landing .gpu-row-grid{display:grid!important;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr) minmax(0,.9fr) minmax(0,.8fr) minmax(0,.9fr) minmax(0,1.1fr);align-items:center;gap:6px}
 @media(min-width:881px){#pg-landing .layout{grid-template-columns:minmax(0,1fr) 320px}}
 #pg-landing .gpu-col{white-space:nowrap}
 #pg-landing .gpu-col-name{white-space:normal}
@@ -801,22 +801,27 @@ h1,h2,h3,.metric .v,.price-main,.stat-val,.bc-val{font-family:var(--disp);font-w
 #pg-landing .price-old s{color:var(--ink-3)}
 #pg-landing .right-panel{top:80px}
 @media(max-width:700px){
-  #pg-landing .gpu-table-head,#pg-landing .gpu-row-grid{grid-template-columns:1.6fr .8fr 1fr 1fr!important}
-  #pg-landing .gpu-col-ram,#pg-landing .gpu-col-vcpu{display:none!important}
+  #pg-landing .gpu-table-head{display:none!important}
+  #pg-landing .gpu-row-grid{display:flex!important;flex-wrap:wrap;align-items:baseline;gap:4px 6px;padding:14px 0}
+  #pg-landing .gpu-col-name{order:1;flex:1 1 calc(100% - 110px);min-width:0;text-align:left!important}
+  #pg-landing .gpu-col-price{order:2;flex:0 0 100px;text-align:right!important}
+  #pg-landing .gpu-col-vram,#pg-landing .gpu-col-ram,#pg-landing .gpu-col-vcpu{order:3;flex:none;text-align:left!important;color:var(--ink-2);font-size:13px!important}
+  #pg-landing .gpu-col-vram::after,#pg-landing .gpu-col-ram::after{content:","}
+  #pg-landing .gpu-col-avail{order:4;flex:1 1 auto;padding:0;text-align:right!important}
   #pg-landing .hiw-step{padding-right:0}
 }
 
-/* ---- плашки на контрастном фоне (как «Кластеры» в новом макете) ---- */
-#pg-landing .mission-box,#pg-landing .fcta,#pg-landing .enterprise-card{background:var(--band)!important;background-image:none!important;border:0!important;color:var(--band-ink)!important;text-align:left}
+/* ---- «Миссия», «Создайте аккаунт», Enterprise: цвета страницы ---- */
+#pg-landing .mission-box,#pg-landing .fcta,#pg-landing .enterprise-card{background:var(--bg-elev)!important;background-image:none!important;border:1px solid var(--line)!important;border-top:1px solid var(--ink)!important;color:var(--ink)!important;text-align:left}
 #pg-landing .mission-box{max-width:none;padding:56px max(24px,4vw)}
 #pg-landing .fcta{padding:64px max(24px,4vw)}
-#pg-landing .mission-box h2,#pg-landing .fcta h2,#pg-landing .ent-title{color:var(--band-ink)!important}
-#pg-landing .mission-box p,#pg-landing .fcta p,#pg-landing .ent-desc,#pg-landing .ent-spec-row{color:var(--band-muted)!important}
-#pg-landing .mission-box .section-label,#pg-landing .ent-badge{color:var(--band-muted)!important;background:transparent;border:0;padding:0;font-family:var(--body);letter-spacing:0;text-transform:none;font-size:13px}
-#pg-landing .ent-spec-val{color:var(--band-ink)}
+#pg-landing .mission-box h2,#pg-landing .fcta h2,#pg-landing .ent-title{color:var(--ink)!important}
+#pg-landing .mission-box p,#pg-landing .fcta p,#pg-landing .ent-desc,#pg-landing .ent-spec-row{color:var(--ink-2)!important}
+#pg-landing .mission-box .section-label,#pg-landing .ent-badge{color:var(--ink-2)!important;background:transparent;border:0;padding:0;font-family:var(--body);letter-spacing:0;text-transform:none;font-size:13px}
+#pg-landing .ent-spec-val{color:var(--ink)}
 #pg-landing .ent-spec-row::before{background:var(--brand)}
 #pg-landing .fcta .hero-cta{justify-content:flex-start}
-#pg-landing .fcta .cbtn.ghost{border-color:var(--band-ink)!important;color:var(--band-ink)!important}
+#pg-landing .fcta .cbtn.ghost{border-color:var(--ink)!important;color:var(--ink)!important}
 #pg-landing .fcta .cbtn.ghost:hover{background:transparent!important;text-decoration:underline}
 #pg-landing .fcta p{margin-inline:0}
 
@@ -905,14 +910,29 @@ h1,h2,h3,.metric .v,.price-main,.stat-val,.bc-val{font-family:var(--disp);font-w
 .art .hub-mark{fill:var(--brand-ink)}
 .art .lamp{fill:var(--line)}
 @media(max-width:1000px){
-  #pg-landing .hero{grid-template-columns:1fr;gap:8px}
-  .art{order:-1;width:min(560px,100%);justify-self:center;margin-bottom:-56px;-webkit-mask-image:linear-gradient(to bottom,#000 55%,transparent 96%);mask-image:linear-gradient(to bottom,#000 55%,transparent 96%)}
+  #pg-landing .hero{grid-template-columns:1fr;gap:8px;padding-top:8px}
+  .art{order:-1;justify-self:center;width:min(860px,112%);margin:-10px 0 -110px;-webkit-mask-image:linear-gradient(to bottom,#000 55%,transparent 96%);mask-image:linear-gradient(to bottom,#000 55%,transparent 96%)}
 }
+@media(max-width:600px){
+  .art{width:150%;margin:-10px -25% -96px;justify-self:auto;position:relative;left:1.2%;-webkit-mask-image:linear-gradient(to bottom,#000 52%,transparent 96%);mask-image:linear-gradient(to bottom,#000 52%,transparent 96%)}
+}
+/* короткая презентация: без ряда «что вы получаете», сразу магазин */
+#pg-landing .hero{border-bottom:0;padding-bottom:32px}
+#pg-landing .hero .trust{display:none}
 
 /* ---- перебить жёстко прописанный тёмный фон старой темы ---- */
 html[data-theme] #pg-landing{background:var(--bg)!important}
 html[data-theme] #pg-landing .feat,html[data-theme] #pg-landing .metric,html[data-theme] #pg-landing .tier-group,html[data-theme] #pg-landing .empty-state,html[data-theme] #pg-landing .hiw-grid,html[data-theme] #pg-landing .hiw-step,html[data-theme] #pg-landing footer,html[data-theme] #pg-landing .price-box{background:transparent!important}
 html[data-theme] #pg-landing .gpu-card,html[data-theme] #pg-landing .period-pill{background:transparent!important}
+
+/* ---- кнопки шапки: малыш в очках и костюме, бургер-еда, инь-ян ---- */
+:root{--kid:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M5 40c0-8 5.5-11 15-11s15 3 15 11z' fill='%232b3a4a'/%3E%3Cpath d='M15 29l5 8 5-8z' fill='%23fff'/%3E%3Cpath d='M19 32h2l1.2 7h-4.4z' fill='%23ffcc00'/%3E%3Cpath d='M15 29l-3 5M25 29l3 5' stroke='%231b2733' stroke-width='1.2' fill='none'/%3E%3Crect x='17.5' y='24' width='5' height='6' fill='%23e9bd92'/%3E%3Ccircle cx='11' cy='17' r='2' fill='%23f1c79c'/%3E%3Ccircle cx='29' cy='17' r='2' fill='%23f1c79c'/%3E%3Ccircle cx='20' cy='16' r='9' fill='%23f6d2ab'/%3E%3Cpath d='M10.5 15c-.5-6.5 4-10 9.5-10s10 3.500 9.500 10c-1.800-3-5-4.500-9.500-4.500S12.300 12 10.500 15z' fill='%233b2a20'/%3E%3Ccircle cx='15.700' cy='17' r='3.300' fill='%23fff' fill-opacity='.55' stroke='%2317191b' stroke-width='1.200'/%3E%3Ccircle cx='24.300' cy='17' r='3.300' fill='%23fff' fill-opacity='.55' stroke='%2317191b' stroke-width='1.200'/%3E%3Cpath d='M19 17h2' stroke='%2317191b' stroke-width='1.200'/%3E%3Ccircle cx='15.700' cy='17.200' r='.9' fill='%2317191b'/%3E%3Ccircle cx='24.300' cy='17.200' r='.9' fill='%2317191b'/%3E%3Cpath d='M17 21.500q3 2.600 6 0' stroke='%2317191b' stroke-width='1.100' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")}
+#pg-landing #navBtnAvt{width:32px;height:32px;flex:none;font-size:0!important;line-height:0;color:transparent!important;background:var(--kid) center/contain no-repeat!important;border:0!important}
+#pg-landing .user-btn{padding:3px 12px 3px 6px;gap:8px}
+#pg-landing .menu-btn,#pg-landing .theme-btn,.theme-btn{width:40px;height:40px;padding:0}
+#pg-landing .menu-btn svg{width:26px;height:26px}
+.theme-btn svg.yy{width:22px;height:22px;display:block!important;transition:transform .5s}
+html[data-theme="dark"] .theme-btn svg.yy{transform:rotate(180deg)}
 
 </style>
 <script type="application/ld+json">
@@ -1064,17 +1084,12 @@ html[data-theme] #pg-landing .gpu-card,html[data-theme] #pg-landing .period-pill
     <a class="nav-cl" href="#features" data-i18n="nav.payment">Оплата</a>
   </div>
   <div class="nav-right" id="landNavRight">
-    <button class="theme-btn" onclick="toggleTheme()" aria-label="Тема" title="Тема">
-      <svg class="th-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-      <svg class="th-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-    </button>
+    <button class="theme-btn" onclick="toggleTheme()" aria-label="Тема" title="Тема"><svg class="yy" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 2A10 10 0 0 1 12 22A5 5 0 0 1 12 12A5 5 0 0 0 12 2z" fill="currentColor"/><circle cx="12" cy="7" r="1.6" fill="currentColor"/><circle cx="12" cy="17" r="1.6" style="fill:var(--bg)"/></svg></button>
     <div class="lang-pill">
       <button class="lang-btn active" onclick="setLang('RU',this)">RU</button>
       <button class="lang-btn" onclick="setLang('EN',this)">EN</button>
     </div>
-    <button class="menu-btn" onclick="openSidebar()">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7"/></svg>
-    </button>
+    <button class="menu-btn" onclick="openSidebar()" aria-label="Меню"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11C3 6.600 7 4 12 4s9 2.600 9 7z" fill="#e8a33d"/><ellipse cx="8.500" cy="8" rx="1" ry=".55" fill="#fff3d6"/><ellipse cx="12" cy="6.500" rx="1" ry=".55" fill="#fff3d6"/><ellipse cx="15.500" cy="8" rx="1" ry=".55" fill="#fff3d6"/><path d="M2.500 12.600q1.400-1.800 2.800 0t2.800 0 2.800 0 2.800 0 2.800 0 2.800 0" fill="none" stroke="#5fb04a" stroke-width="2" stroke-linecap="round"/><path d="M3.500 13.800h17l-2.100 2.200-2.200-2.200-2.200 2.200-2.200-2.200-2.200 2.200-2.200-2.200-2.200 2.200z" fill="#ffcc00"/><rect x="3" y="15.700" width="18" height="3" rx="1.500" fill="#6b3b25"/><path d="M3 19.600h18v.2c0 1.300-1.100 2.200-2.500 2.200h-13C4.100 22 3 21.100 3 19.800z" fill="#e8a33d"/></svg></button>
   </div>
 </nav>
 
@@ -1098,6 +1113,47 @@ html[data-theme] #pg-landing .gpu-card,html[data-theme] #pg-landing .period-pill
       </div>
     </div>
   </div><figure class="art" id="art" aria-hidden="true"><svg id="artSvg"></svg><svg id="artFx"></svg></figure></section>
+
+  <!-- MARKETPLACE -->
+  <section id="marketplace">
+    <div class="mkt-head">
+      <div class="section-label" id="gpuKicker">GPU Marketplace</div>
+      <h2 id="gpuH2">Выберите свою конфигурацию</h2>
+      <p id="gpuHp">On-Demand доступ к GPU любого класса. Гибкая система оплаты, мгновенный запуск.</p>
+    </div>
+    <div class="layout">
+      <div>
+        <div class="section-label" id="gpuSectionLabel">Доступные GPU — On-Demand</div>
+        <div class="gpu-table-head">
+          <div class="gpu-col gpu-col-name" data-i18n="col.model">Модель GPU</div>
+          <div class="gpu-col gpu-col-vram" data-i18n="col.vram">VRAM</div>
+          <div class="gpu-col gpu-col-ram" data-i18n="col.ram">ОЗУ</div>
+          <div class="gpu-col gpu-col-vcpu" data-i18n="col.vcpu">vCPU</div>
+          <div class="gpu-col gpu-col-price" data-i18n="col.price">Цена / час</div>
+          <div class="gpu-col gpu-col-avail" data-i18n="col.avail">Наличие</div>
+        </div>
+        <div id="gpuList"></div>
+      </div>
+      <div class="right-panel">
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon">⌘</div>
+          <div class="empty-title" id="emptyTitle">Выберите GPU</div>
+          <div class="empty-sub" id="emptySub">Нажмите на карточку слева,<br>чтобы настроить аренду</div>
+        </div>
+        <div class="enterprise-card">
+          <div class="ent-badge" id="entBadge">Enterprise</div>
+          <div class="ent-title" id="entTitle">Blackwell x8<br>AI Кластеры</div>
+          <div class="ent-desc" id="entDesc">Для масштабного обучения LLM. 8× B200 / B300 объединены через NVLink с InfiniBand-сетью.</div>
+          <div class="ent-specs">
+            <div class="ent-spec-row">Мин. срок: <span class="ent-spec-val" id="entTerm">&nbsp;3 месяца</span></div>
+            <div class="ent-spec-row">Сеть: <span class="ent-spec-val" id="entNet">&nbsp;InfiniBand / NVLink</span></div>
+            <div class="ent-spec-row">Конфигурация: <span class="ent-spec-val" id="entConfig">&nbsp;Custom</span></div>
+          </div>
+          <button class="ent-btn" id="entBtn" onclick="openEnterpriseModal()">Связаться с отделом продаж</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- BEGINNER GUIDE -->
   <section class="beginner-wrap reveal">
@@ -1159,47 +1215,6 @@ html[data-theme] #pg-landing .gpu-card,html[data-theme] #pg-landing .period-pill
       <div class="section-label" id="missionKicker" style="color:rgba(255,255,255,.7)">Миссия</div>
       <h2 id="missionH2">Топовые GPU — для каждого, кто строит.</h2>
       <p id="missionP">Доступ к вычислениям уровня дата-центров слишком долго был привилегией тех, у кого есть бюджет на своё железо. Мы убираем этот барьер — даём одинаковый доступ к топовым видеокартам и студенту с первым проектом, и команде, которой нужно расти. Минимум действий, максимум мощности.</p>
-    </div>
-  </section>
-
-  <!-- MARKETPLACE -->
-  <section id="marketplace">
-    <div class="mkt-head">
-      <div class="section-label" id="gpuKicker">GPU Marketplace</div>
-      <h2 id="gpuH2">Выберите свою конфигурацию</h2>
-      <p id="gpuHp">On-Demand доступ к GPU любого класса. Гибкая система оплаты, мгновенный запуск.</p>
-    </div>
-    <div class="layout">
-      <div>
-        <div class="section-label" id="gpuSectionLabel">Доступные GPU — On-Demand</div>
-        <div class="gpu-table-head">
-          <div class="gpu-col gpu-col-name" data-i18n="col.model">Модель GPU</div>
-          <div class="gpu-col gpu-col-vram" data-i18n="col.vram">VRAM</div>
-          <div class="gpu-col gpu-col-ram" data-i18n="col.ram">ОЗУ</div>
-          <div class="gpu-col gpu-col-vcpu" data-i18n="col.vcpu">vCPU</div>
-          <div class="gpu-col gpu-col-price" data-i18n="col.price">Цена / час</div>
-          <div class="gpu-col gpu-col-avail" data-i18n="col.avail">Наличие</div>
-        </div>
-        <div id="gpuList"></div>
-      </div>
-      <div class="right-panel">
-        <div class="empty-state" id="emptyState">
-          <div class="empty-icon">⌘</div>
-          <div class="empty-title" id="emptyTitle">Выберите GPU</div>
-          <div class="empty-sub" id="emptySub">Нажмите на карточку слева,<br>чтобы настроить аренду</div>
-        </div>
-        <div class="enterprise-card">
-          <div class="ent-badge" id="entBadge">Enterprise</div>
-          <div class="ent-title" id="entTitle">Blackwell x8<br>AI Кластеры</div>
-          <div class="ent-desc" id="entDesc">Для масштабного обучения LLM. 8× B200 / B300 объединены через NVLink с InfiniBand-сетью.</div>
-          <div class="ent-specs">
-            <div class="ent-spec-row">Мин. срок: <span class="ent-spec-val" id="entTerm">&nbsp;3 месяца</span></div>
-            <div class="ent-spec-row">Сеть: <span class="ent-spec-val" id="entNet">&nbsp;InfiniBand / NVLink</span></div>
-            <div class="ent-spec-row">Конфигурация: <span class="ent-spec-val" id="entConfig">&nbsp;Custom</span></div>
-          </div>
-          <button class="ent-btn" id="entBtn" onclick="openEnterpriseModal()">Связаться с отделом продаж</button>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -1463,10 +1478,7 @@ html[data-theme] #pg-landing .gpu-card,html[data-theme] #pg-landing .period-pill
         <span class="topnav-title" id="topnavTitle">Дашборд</span>
       </div>
       <div class="topnav-right">
-        <button class="theme-btn" onclick="toggleTheme()" aria-label="Тема" title="Тема">
-          <svg class="th-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-          <svg class="th-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-        </button>
+        <button class="theme-btn" onclick="toggleTheme()" aria-label="Тема" title="Тема"><svg class="yy" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 2A10 10 0 0 1 12 22A5 5 0 0 1 12 12A5 5 0 0 0 12 2z" fill="currentColor"/><circle cx="12" cy="7" r="1.6" fill="currentColor"/><circle cx="12" cy="17" r="1.6" style="fill:var(--bg)"/></svg></button>
         <button class="notif-btn" onclick="showPage('notifications')">
           <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
           <div class="notif-dot"></div>
@@ -2169,7 +2181,7 @@ function updateUIAfterLogin(user){const name_=user.name||user.email.split('@')[0
 function logout(){authToken=null;currentUser=null;localStorage.removeItem('nodecloud_token');localStorage.removeItem('nodecloud_user');const gp=document.getElementById('udGuestPanel');const up=document.getElementById('udUserPanel');if(gp)gp.style.display='block';if(up)up.style.display='none';(function(){var b=document.getElementById('navBtnTxt');if(b){b.setAttribute('data-i18n','btn.login');b.textContent=i18n('btn.login');}})();(function(){var a=document.getElementById('sbAccountLabel');if(a){a.setAttribute('data-i18n','sb.login');a.textContent=i18n('sb.login');}})();setTxt('navBtnAvt','G');closeUserDropdown();goPage('pg-landing');showToast('\u0414\u043e \u0441\u0432\u0438\u0434\u0430\u043d\u0438\u044f!','\ud83d\udc4b');}
 let instanceTimers={};
 async function loadPricing(){try{const p=await apiFetch('/api/gpu/pricing');if(p&&p.rubRate)rubRate=p.rubRate;if(p&&p.hourly)Object.assign(hourlyUSD,p.hourly);if(p&&p.hourlyEntry)Object.assign(hourlyEntry,p.hourlyEntry);if(p&&typeof p.diskRate==='number')diskRateUSD=p.diskRate;render();}catch(e){console.warn('pricing fallback',e.message);}}
-async function loadAvailability(){try{gpuAvail=await apiFetch('/api/gpu/availability');document.querySelectorAll('.gpu-card').forEach(card=>{const key=card.id.replace('card-','');const raw=gpuAvail[key];const dot=card.querySelector('.gpu-status');const badge=card.querySelector('#avail-'+key);let count=null,st='unknown';if(typeof raw==='number'){count=raw;st=raw>3?'high':raw>0?'low':'none';}else if(raw&&typeof raw==='object'){count=(raw.count!=null?raw.count:raw.available);st=raw.status||(count>3?'high':count>0?'low':'none');}else if(typeof raw==='string'){st=raw;}let col='rgba(255,255,255,.14)',txt='',tcol='var(--ink-3)';if(st==='high'){col='var(--green)';tcol='var(--green)';txt=count!=null?('• '+count+' своб.'):'• есть';}else if(st==='low'){col='var(--orange)';tcol='var(--orange)';txt=count!=null?('• '+count+' своб.'):'• мало';}else if(st==='none'){col='var(--red)';tcol='var(--red)';txt='• нет в наличии';}if(dot&&!card.classList.contains('selected'))dot.style.background=col;if(badge){badge.textContent=txt;badge.style.color=tcol;}});}catch(e){}}
+async function loadAvailability(){try{gpuAvail=await apiFetch('/api/gpu/availability');document.querySelectorAll('.gpu-card').forEach(card=>{const key=card.id.replace('card-','');const raw=gpuAvail[key];const dot=card.querySelector('.gpu-status');const badge=card.querySelector('#avail-'+key);let count=null,st='unknown';if(typeof raw==='number'){count=raw;st=raw>3?'high':raw>0?'low':'none';}else if(raw&&typeof raw==='object'){count=(raw.count!=null?raw.count:raw.available);st=raw.status||(count>3?'high':count>0?'low':'none');}else if(typeof raw==='string'){st=raw;}let col='rgba(255,255,255,.14)',txt='',tcol='var(--ink-3)';if(st==='high'){col='var(--green)';tcol='var(--green)';txt=count!=null?('• '+count+(lang==='EN'?' left':' своб.')):(lang==='EN'?'• in stock':'• есть');}else if(st==='low'){col='var(--orange)';tcol='var(--orange)';txt=count!=null?('• '+count+(lang==='EN'?' left':' своб.')):(lang==='EN'?'• few left':'• мало');}else if(st==='none'){col='var(--red)';tcol='var(--red)';txt=(lang==='EN'?'• out of stock':'• нет в наличии');}if(dot&&!card.classList.contains('selected'))dot.style.background=col;if(badge){badge.textContent=txt;badge.style.color=tcol;}});}catch(e){}}
 async function loadDashboard(){
   try{const d=await apiFetch('/api/billing/balance');const bal=d.balance||0;const f=new Intl.NumberFormat('ru-RU').format(bal)+' \u20bd';const usd=(bal/rubRate).toFixed(2);const h100hours=(bal/(hourlyUSD.h100_sxm*rubRate)).toFixed(0);['sbBalVal','statBal','dashBalVal','billingBalVal'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=f;});const sub=document.getElementById('sbBalSub');if(sub)sub.textContent='\u2248 $'+usd+' \u00b7 ~'+h100hours+' \u0447 H100';const dbSub=document.getElementById('dashBalSub');if(dbSub)dbSub.textContent='\u2248 $'+usd+' \u00b7 \u041e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u043e \u0442\u043e\u043b\u044c\u043a\u043e \u0447\u0442\u043e';}catch(e){console.log('Balance:',e.message);}
   try{const inst=await apiFetch('/api/gpu/instances');renderDashInstances(inst);renderInstancesPage(inst);const running=inst.filter(i=>i.status==='running'||i.status==='pending');const el=document.getElementById('statActiveGpu');if(el)el.textContent=running.length;const sub=document.getElementById('statActiveGpuSub');if(sub)sub.textContent=running.length?running.map(i=>i.gpu_name||i.gpu_key).join(', ').substring(0,30):'\u041d\u0435\u0442 \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445';const cnt=document.getElementById('activeCount');if(cnt)cnt.textContent=running.length+' running';}catch(e){console.log('Instances:',e.message);renderDashInstances([]);}
